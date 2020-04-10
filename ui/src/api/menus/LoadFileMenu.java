@@ -1,10 +1,10 @@
-package impl.menus;
+package api.menus;
 
 import java.util.Scanner;
 
-public class LoadFileOperation extends Operation {
+public class LoadFileMenu extends UnoptionedMenu {
 
-    public LoadFileOperation(String title) {
+    public LoadFileMenu(String title) {
         super(title);
     }
 

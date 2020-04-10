@@ -1,6 +1,6 @@
-package impl;
+package api;
 
-import impl.menus.*;
+import api.menus.*;
 
 public class ConsoleUserInterface {
 
@@ -22,11 +22,8 @@ public class ConsoleUserInterface {
     }
 
     public void run() {
-        OptionedMenu mainMenu = new MainMenu("Transpool");          //Make this of type Menu.
+        Menu mainMenu = new MainMenu("TransPool!");
         mainMenu.execute();
     }
 
-    private boolean userInputIsValid(int userInput, Menu menu) {
-        return true;
-    }
 }

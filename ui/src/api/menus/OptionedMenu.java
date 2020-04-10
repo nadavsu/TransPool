@@ -1,9 +1,16 @@
-package impl.menus;
+package api.menus;
+
+import api.menus.components.MenuTitle;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+
+/**
+ * An optioned menu is a menu with more menus inside it.
+ * Example - Main menu, Options menu etc.
+ */
 public abstract class OptionedMenu extends Menu {
     protected List<Menu> menus;
 
@@ -29,7 +36,7 @@ public abstract class OptionedMenu extends Menu {
 
     @Override
     public void show() {
-        title.execute();
+        title.show();
         System.out.println(this);
     }
 

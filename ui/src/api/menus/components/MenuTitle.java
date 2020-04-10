@@ -1,9 +1,10 @@
-package impl.menus;
+package api.menus.components;
 
 public class MenuTitle {
+
     private String titleName;
 
-    MenuTitle(String title) {
+    public MenuTitle(String title) {
         this.titleName = title;
     }
 
@@ -11,7 +12,7 @@ public class MenuTitle {
         return titleName;
     }
 
-    public void execute() {
+    public void show() {
         System.out.print(titleHorizontalLine() + titleContents() + titleHorizontalLine());
     }
 
@@ -37,20 +38,15 @@ public class MenuTitle {
 
         builder.append(Constants.TITLE_VLINE);
         for (int i = 0; i < (Constants.MENU_WIDTH - 2 - titleName.length()) / 2; i++) {
-            builder.append(Constants.TITLE_BLANK);
+            builder.append(Constants.TITLE_FILL);
         }
         builder.append(titleName);
         for (int i = 0; i < (Constants.MENU_WIDTH - 2 - titleName.length()) / 2; i++) {
-            builder.append(Constants.TITLE_BLANK);
+            builder.append(Constants.TITLE_FILL);
         }
         builder.append(Constants.TITLE_VLINE);
         builder.append("\r\n");
 
         return builder.toString();
     }
-
-    /*@Override
-    public String toString() {
-        return titleHorizontalLine() + titleContents() + titleHorizontalLine();
-    }*/
 }

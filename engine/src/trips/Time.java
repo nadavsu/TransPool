@@ -1,22 +1,19 @@
-package trips;//TODO: Add setHours and setMins input validation? Maybe do it in user input class.
+package trips;
 
 public class Time {
     private int hours;
     private int mins;
 
+    public Time(int hours, int mins) {      //TODO: round the time to the nearest 5 minutes here.
+        this.hours = hours;
+        this.mins = mins;
+    }
+
     public int getHours() {
         return hours;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
-    }
-
     public int getMins() {
         return mins;
-    }
-
-    public void setMins(int mins) {
-        this.mins = mins;
     }
 }

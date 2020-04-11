@@ -1,5 +1,6 @@
 package api;
 
+import api.exceptions.QuitOnFinishException;
 import api.menus.*;
 
 public class ConsoleUserInterface {
@@ -22,8 +23,17 @@ public class ConsoleUserInterface {
     }
 
     public void run() {
-        Menu mainMenu = new MainMenu("TransPool!");
-        mainMenu.execute();
-    }
+        boolean quit = false;
 
+        Menu mainMenu = new MainMenu("Main Menu");
+
+        do {
+            try {
+                mainMenu.execute();
+            } catch (QuitOnFinishException e) {
+                quit = true;
+                System.out.println(e.getMessage());
+            }
+        } while (!quit);
+    }
 }

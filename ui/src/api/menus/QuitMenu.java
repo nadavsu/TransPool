@@ -1,6 +1,8 @@
 package api.menus;
 
 import api.ConsoleUserInterface;
+import api.exceptions.QuitOnFinishException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -12,25 +14,28 @@ public class QuitMenu extends UnoptionedMenu {
     }
 
     @Override
-    public void execute() {
-        String userInput = "";
+    public void execute() throws QuitOnFinishException {
+        String userInput;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         do {
             System.out.print("Are you sure? [y/n]: ");
             try {
                 userInput = in.readLine().toLowerCase();
-                if (userInput.equals("y")) {
-                    System.out.println("Thank you for using Transpool!");
-                } else if (userInput.equals("n")) {
-                    ConsoleUserInterface.getInstance().run();
-                } else if (userInput.equals("y or n")) {
-                    System.out.println("Very funny.");
-                } else {
-                    System.out.println("Invalid input. Please enter y or n.");
+                switch (userInput) {
+                    case "y":
+                        throw new QuitOnFinishException();
+                    case "n":
+                        return;
+                    case "y or n":
+                        System.out.println("Very funny.");
+                        break;
+                    default:
+                        System.out.println("Invalid input. Please enter y or n.");
+                        break;
                 }
             } catch (IOException iox) {
                 System.out.print("Invalid input");
             }
-        } while (!userInput.equals("y") && !userInput.equals("n"));
+        } while (true);
     }
 }

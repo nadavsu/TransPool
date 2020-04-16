@@ -6,7 +6,7 @@
 //
 
 
-package jaxb;
+package jaxb.generated;
 
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlElementDecl;

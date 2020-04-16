@@ -1,4 +1,4 @@
-package api.exceptions;
+package exceptions.system;
 
 public class QuitOnFinishException extends Exception {
     private final String EXCEPTION_MESSAGE = "Thank you for using TransPool!";

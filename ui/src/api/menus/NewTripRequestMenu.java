@@ -1,10 +1,8 @@
 package api.menus;
-import api.exceptions.InvalidHoursException;
-import api.exceptions.InvalidMinutesException;
-import api.exceptions.InvalidTimeException;
+import api.Engine;
+import exceptions.data.time.InvalidTimeException;
+import validators.Validator;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -14,15 +12,15 @@ public class NewTripRequestMenu extends UnoptionedMenu {
         super(title);
     }
 
+
     @Override
-    public void execute() {
-        title.show();
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    public void run() {
+        show();
         Scanner sc = new Scanner(System.in);
         String stopSource, stopDestination;
 
         int hour, min;
-        boolean validTime;
+        boolean isValid;
 
         System.out.print("Enter your departure source: ");
         stopSource = sc.nextLine();
@@ -32,23 +30,30 @@ public class NewTripRequestMenu extends UnoptionedMenu {
 
         do {
             try {
+                Validator validator = new Validator();
+
                 System.out.print("Enter your departure time in the format HH MM: ");
                 hour = sc.nextInt();
                 min = sc.nextInt();
-                isTimeValid(hour, min);
+                validator.validateTime(hour, min);
 
                 printCreationMessage(stopSource, stopDestination, hour, min);
-                //TODO: Send the data to the engine.
-                validTime = true;
+                Engine.getInstance().createNewTripRequest(stopSource, stopDestination, hour, min);
+
+                isValid = true;
+                System.out.println("Trip created successfully!");
             } catch (InvalidTimeException e) {
-                System.out.println(e);
-                validTime = false;
+                System.out.println(e.getMessage());
+                isValid = false;
             } catch (InputMismatchException e) {
                 System.out.println("Time must only contain numbers!");
                 sc.next();
-                validTime = false;
+                isValid = false;
+            } catch (Exception e) {
+                System.out.println("Trip could not be created. Reason unknown.");
+                isValid = false;
             }
-        } while (!validTime);
+        } while (!isValid);
 
     }
 
@@ -61,18 +66,9 @@ public class NewTripRequestMenu extends UnoptionedMenu {
             System.out.print(hour + ":");
         }
         if (min < 10) {
-            System.out.print("0" + min + "...");
+            System.out.print("0" + min + "...\r\n");
         } else {
-            System.out.print(min + "..." + "\r\n");
-        }
-    }
-
-    private void isTimeValid(int hour, int min) throws InvalidTimeException {
-        if (hour < 0 || hour >= 24) {
-            throw new InvalidHoursException();
-        }
-        if (min < 0 || min >= 60) {
-            throw new InvalidMinutesException();
+            System.out.print(min + "...\r\n");
         }
     }
 }

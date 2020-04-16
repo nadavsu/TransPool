@@ -1,6 +1,8 @@
-package api.exceptions;
+package exceptions.data.time;
 
-public class InvalidTimeException extends Exception {
+import java.io.IOException;
+
+public class InvalidTimeException extends IOException {
     private final String EXCEPTION_MESSAGE = "Time is not valid! Must be in the range of 00:00 to 23:59";
 
     public InvalidTimeException() {

@@ -6,7 +6,7 @@
 //
 
 
-package jaxb;
+package jaxb.generated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +27,7 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element ref="{}map.Stop" maxOccurs="unbounded" minOccurs="2"/&gt;
+ *         &lt;element ref="{}Path" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "stop"
+    "path"
 })
-@XmlRootElement(name = "Stops")
-public class Stops {
+@XmlRootElement(name = "Paths")
+public class Paths {
 
-    @XmlElement(name = "map.Stop", required = true)
-    protected List<Stop> stop;
+    @XmlElement(name = "Path", required = true)
+    protected List<Path> path;
 
     /**
-     * Gets the value of the stop property.
+     * Gets the value of the path property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the stop property.
+     * This is why there is not a <CODE>set</CODE> method for the path property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getStop().add(newItem);
+     *    getPath().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Stop }
+     * {@link Path }
      * 
      * 
      */
-    public List<Stop> getStop() {
-        if (stop == null) {
-            stop = new ArrayList<Stop>();
+    public List<Path> getPath() {
+        if (path == null) {
+            path = new ArrayList<Path>();
         }
-        return this.stop;
+        return this.path;
     }
 
 }

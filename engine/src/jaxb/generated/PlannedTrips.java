@@ -6,7 +6,7 @@
 //
 
 
-package jaxb;
+package jaxb.generated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence&gt;
- *         &lt;element ref="{}Path" maxOccurs="unbounded"/&gt;
+ *       &lt;sequence maxOccurs="unbounded"&gt;
+ *         &lt;element ref="{}TransPoolTrip"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "path"
+    "transPoolTrip"
 })
-@XmlRootElement(name = "Paths")
-public class Paths {
+@XmlRootElement(name = "PlannedTrips")
+public class PlannedTrips {
 
-    @XmlElement(name = "Path", required = true)
-    protected List<Path> path;
+    @XmlElement(name = "TransPoolTrip", required = true)
+    protected List<TransPoolTrip> transPoolTrip;
 
     /**
-     * Gets the value of the path property.
+     * Gets the value of the transPoolTrip property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the path property.
+     * This is why there is not a <CODE>set</CODE> method for the transPoolTrip property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getPath().add(newItem);
+     *    getTransPoolTrip().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Path }
+     * {@link TransPoolTrip }
      * 
      * 
      */
-    public List<Path> getPath() {
-        if (path == null) {
-            path = new ArrayList<Path>();
+    public List<TransPoolTrip> getTransPoolTrip() {
+        if (transPoolTrip == null) {
+            transPoolTrip = new ArrayList<TransPoolTrip>();
         }
-        return this.path;
+        return this.transPoolTrip;
     }
 
 }

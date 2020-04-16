@@ -6,7 +6,7 @@
 //
 
 
-package jaxb;
+package jaxb.generated;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +26,8 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;sequence maxOccurs="unbounded"&gt;
- *         &lt;element ref="{}TransPoolTrip"/&gt;
+ *       &lt;sequence&gt;
+ *         &lt;element ref="{}map.Stop" maxOccurs="unbounded" minOccurs="2"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -38,41 +38,41 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "transPoolTrip"
+    "stop"
 })
-@XmlRootElement(name = "PlannedTrips")
-public class PlannedTrips {
+@XmlRootElement(name = "Stops")
+public class Stops {
 
-    @XmlElement(name = "TransPoolTrip", required = true)
-    protected List<TransPoolTrip> transPoolTrip;
+    @XmlElement(name = "map.Stop", required = true)
+    protected List<Stop> stop;
 
     /**
-     * Gets the value of the transPoolTrip property.
+     * Gets the value of the stop property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the transPoolTrip property.
+     * This is why there is not a <CODE>set</CODE> method for the stop property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getTransPoolTrip().add(newItem);
+     *    getStop().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link TransPoolTrip }
+     * {@link Stop }
      * 
      * 
      */
-    public List<TransPoolTrip> getTransPoolTrip() {
-        if (transPoolTrip == null) {
-            transPoolTrip = new ArrayList<TransPoolTrip>();
+    public List<Stop> getStop() {
+        if (stop == null) {
+            stop = new ArrayList<Stop>();
         }
-        return this.transPoolTrip;
+        return this.stop;
     }
 
 }

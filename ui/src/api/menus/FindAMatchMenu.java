@@ -6,7 +6,7 @@ public class FindAMatchMenu extends UnoptionedMenu {
     }
 
     @Override
-    public void execute() {
+    public void run() {
 
     }
 }

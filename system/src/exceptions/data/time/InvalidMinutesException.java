@@ -1,4 +1,4 @@
-package api.exceptions;
+package exceptions.data.time;
 
 public class InvalidMinutesException extends InvalidTimeException {
     private final String EXCEPTION_MESSAGE = "Minutes are not valid! Must be in the range of 0-59";

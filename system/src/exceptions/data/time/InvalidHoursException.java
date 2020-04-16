@@ -1,4 +1,4 @@
-package api.exceptions;
+package exceptions.data.time;
 
 public class InvalidHoursException extends InvalidTimeException {
     private final String EXCEPTION_MESSAGE = "Hour is not valid! Must be in the range of 0 - 23";

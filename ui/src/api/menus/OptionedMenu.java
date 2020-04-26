@@ -1,6 +1,6 @@
 package api.menus;
 
-import api.exceptions.QuitOnFinishException;
+import exceptions.system.QuitOnFinishException;
 import api.menus.components.MenuTitle;
 
 import java.util.ArrayList;
@@ -22,10 +22,10 @@ public abstract class OptionedMenu extends Menu {
     }
 
     /**
-     * @see Menu#execute()
+     * @see Menu#run()
      */
     @Override
-    public void execute() throws QuitOnFinishException {
+    public void run() throws QuitOnFinishException {
         show();
         int userIntegerInput;
         boolean isValidInput;
@@ -36,7 +36,8 @@ public abstract class OptionedMenu extends Menu {
             try {
                 isValidInput = true;
                 userIntegerInput = in.nextInt();
-                getOption(userIntegerInput).execute();
+                getOption(userIntegerInput).run();
+                pause();
             } catch (InputMismatchException e) {
                 System.out.println("You must enter a number between 1 and " + menus.size() + ".");
                 in.next();
@@ -86,5 +87,11 @@ public abstract class OptionedMenu extends Menu {
             stringBuilder.append(menus.get(i).title.getTitleName()).append("\r\n");
         }
         return stringBuilder.toString();
+    }
+
+    private void pause() {
+        System.out.println("\r\nPress ENTER to continue.");
+        Scanner sc = new Scanner(System.in);
+        sc.nextLine();
     }
 }

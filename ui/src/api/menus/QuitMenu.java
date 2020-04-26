@@ -1,7 +1,6 @@
 package api.menus;
 
-import api.ConsoleUserInterface;
-import api.exceptions.QuitOnFinishException;
+import exceptions.system.QuitOnFinishException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +13,7 @@ public class QuitMenu extends UnoptionedMenu {
     }
 
     @Override
-    public void execute() throws QuitOnFinishException {
+    public void run() throws QuitOnFinishException {
         String userInput;
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         do {
@@ -34,7 +33,7 @@ public class QuitMenu extends UnoptionedMenu {
                         break;
                 }
             } catch (IOException iox) {
-                System.out.print("Invalid input");
+                System.out.print("Input output error!");
             }
         } while (true);
     }

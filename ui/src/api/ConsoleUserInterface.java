@@ -1,27 +1,14 @@
 package api;
 
-import api.exceptions.QuitOnFinishException;
+import exceptions.system.QuitOnFinishException;
 import api.menus.*;
 
-public class ConsoleUserInterface {
+public class ConsoleUserInterface implements Runnable {
 
-    private static ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
-
-    public static void main(String[] args) {
-        consoleUserInterface.run();
+    public ConsoleUserInterface() {
     }
 
-    private ConsoleUserInterface() {
-
-    }
-
-    public static ConsoleUserInterface getInstance() {
-        if (consoleUserInterface == null) {
-            consoleUserInterface = new ConsoleUserInterface();
-        }
-        return consoleUserInterface;
-    }
-
+    @Override
     public void run() {
         boolean quit = false;
 
@@ -29,7 +16,7 @@ public class ConsoleUserInterface {
 
         do {
             try {
-                mainMenu.execute();
+                mainMenu.run();
             } catch (QuitOnFinishException e) {
                 quit = true;
                 System.out.println(e.getMessage());

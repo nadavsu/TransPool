@@ -1,7 +1,10 @@
 package api.menus;
 
-import api.ConsoleUserInterface;
+import api.Engine;
+import validators.Constants;
+import validators.Validator;
 
+import javax.xml.bind.JAXBException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,27 +16,33 @@ public class LoadFileMenu extends UnoptionedMenu {
     }
 
     /**
-     * Gets the String of file address of the file to load from the user sends it to the engine.
+     * Gets the String of file address of the file to load from the data.transpool.user sends it to the engine.
      */
     @Override
-    public void execute() {
+    public void run() {
         show();
-
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         boolean isValidInput;
-        String  userStringInput;
-        System.out.print("Enter your file address: ");
+        String fileAddress;
 
         do {
             try {
+                Validator validator = new Validator();
+
+                System.out.print("Enter your file address: ");
+                fileAddress = in.readLine();
+                validator.validateFileType(fileAddress, Constants.SUPPORTED_DATA_FILE_TYPE);
+
+                System.out.println("Loading " + fileAddress + " to system...");
+                Engine.getInstance().loadFile(fileAddress);
+                System.out.println("File loaded successfully!");
+
                 isValidInput = true;
-                userStringInput = in.readLine();
-                //TODO: send the userStringInput to the engine and let it handle it from now on.
-                //For example Engine.getInstance().loadFile(userStringInput);
-            } catch (IOException iox) {
-                System.out.println("Input output error!");
+            } catch (IOException | JAXBException e) {
+                System.out.println(e.getMessage());
                 isValidInput = false;
             }
         } while (!isValidInput);
     }
 }
+

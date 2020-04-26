@@ -10,6 +10,11 @@ public class Stop {
         stop = new Pair<>(coordinates, name);
     }
 
+    public Stop(data.generated.Stop JAXBStop) {
+        Coordinates coords = new Coordinates(JAXBStop.getX(), JAXBStop.getY());
+        stop = new Pair<>(coords, JAXBStop.getName());
+    }
+
     public Pair<Coordinates, String> getStop() {
         return stop;
     }

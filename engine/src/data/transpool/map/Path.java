@@ -17,6 +17,15 @@ public class Path {
         this.destination = destination;
     }
 
+    public Path(data.generated.Path JAXBPath) {
+        length = JAXBPath.getLength();
+        fuelConsumption = JAXBPath.getFuelConsumption();
+        speedLimit = JAXBPath.getSpeedLimit();
+        isOneWay = JAXBPath.isOneWay();
+        source = JAXBPath.getFrom();
+        destination = JAXBPath.getTo();
+    }
+
     public int getLength() {
         return length;
     }

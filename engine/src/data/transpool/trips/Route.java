@@ -3,6 +3,14 @@ package data.transpool.trips;
 public class Route {
     private String path;
 
+    public Route(String path) {
+        this.path = path;
+    }
+
+    public Route(data.generated.Route route) {
+        path = route.getPath();
+    }
+
     public String getPath() {
         return path;
     }

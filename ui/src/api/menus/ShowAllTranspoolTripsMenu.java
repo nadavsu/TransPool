@@ -13,7 +13,7 @@ public class ShowAllTranspoolTripsMenu extends UnoptionedMenu {
         try {
             Engine.getInstance().showAllTranspoolTrips();
         } catch (NullPointerException e) {
-            System.out.println("No TransPool trips found at the moment.");
+            System.out.println("No TransPool data.transpool.trips found at the moment.");
         }
     }
 }

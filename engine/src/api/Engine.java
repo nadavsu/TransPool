@@ -1,33 +1,36 @@
 package api;
 
+import data.generated.TransPool;
+import api.loaders.Loader;
+import api.loaders.TransPoolLoader;
 import exceptions.file.TransPoolFileNotFoundException;
-import jaxb.generated.*;
-import map.Map;
-import trips.TranspoolTrip;
-import trips.TripRequest;
+import data.transpool.map.Map;
+import data.transpool.trips.TranspoolTrip;
+import data.transpool.trips.TripRequest;
 import validators.Constants;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Engine {
-
-    private static volatile Engine engine = new Engine();
-
-    private static volatile Map transpoolMap;
-    private static volatile List<TripRequest> tripRequests;
-    private static volatile List<TranspoolTrip> transpoolTrips;
+    private static Engine engine = new Engine();
+    private Map transpoolMap;
+    private List<TripRequest> tripRequests;
+    private List<TranspoolTrip> transpoolTrips;
 
     private Engine() {
-
+        transpoolMap = new Map();
+        tripRequests = new ArrayList<>();
+        transpoolTrips = new ArrayList<>();
     }
 
     public static Engine getInstance() {
-        if (engine != null) {
+        if (engine == null) {
             engine = new Engine();
         }
         return engine;
@@ -38,46 +41,38 @@ public class Engine {
     }
 
     public void setTransPoolMap(Map transpoolMap) {
-        Engine.transpoolMap = transpoolMap;
+        this.transpoolMap = transpoolMap;
     }
 
-    public static List<TripRequest> getTripRequests() {
+    public List<TripRequest> getTripRequests() {
         return tripRequests;
     }
 
-    public static void setTripRequests(List<TripRequest> tripRequests) {
-        Engine.tripRequests = tripRequests;
+    public void setTripRequests(List<TripRequest> tripRequests) {
+        this.tripRequests = tripRequests;
     }
 
-    public static List<TranspoolTrip> getTransPoolTrips() {
+    public List<TranspoolTrip> getTransPoolTrips() {
         return transpoolTrips;
     }
 
-    public static void setTransPoolTrips(List<TranspoolTrip> transpoolTrips) {
-        Engine.transpoolTrips = transpoolTrips;
+    public void setTransPoolTrips(List<TranspoolTrip> transpoolTrips) {
+        this.transpoolTrips = transpoolTrips;
     }
 
     //---------------------------------------------------------------------------------------------
 
-    public void loadFile(String fileAddress) throws FileNotFoundException {
-        try {
-            File fileToLoad = new File(fileAddress);
-            if (!fileToLoad.exists()) {
-                throw new TransPoolFileNotFoundException();
-            }
-
-            JAXBContext jaxbContext = JAXBContext.newInstance(Constants.JAXB_XML_PACKAGE_NAME);
-            Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-
-            TransPool JAXBData = (TransPool) unmarshaller.unmarshal(fileToLoad);
-            Loader loader = new TransPoolLoader(JAXBData);
-            loader.load();
-            //this.new ClassLoader().loadClassesFromJAXBGenerated(JAXBData);
-
-        } catch (JAXBException e) {
-            System.out.println(e.getMessage());
+    public void loadFile(String fileAddress) throws JAXBException, FileNotFoundException {
+        InputStream istream =  Engine.class.getResourceAsStream("/resources/" + fileAddress);
+        if (istream == null) {
+            throw new TransPoolFileNotFoundException();
         }
+        JAXBContext jc = JAXBContext.newInstance(Constants.JAXB_XML_PACKAGE_NAME);
+        Unmarshaller unmarshaller = jc.createUnmarshaller();
+        TransPool JAXBData = (TransPool) unmarshaller.unmarshal(istream);
 
+        Loader transPoolClassLoader = new TransPoolLoader(JAXBData);
+        transPoolClassLoader.load();
     }
 
     public void createNewTripRequest(String stopSource, String stopDestination, int hour, int min) {

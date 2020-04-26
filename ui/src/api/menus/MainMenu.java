@@ -3,7 +3,7 @@ package api.menus;
 /**
  * The main menu of the program.
  * Contains a list of menus and a title.
- * The user will choose one of these submenus in the superclass' (OptionedMenu) run function.
+ * The data.transpool.user will choose one of these submenus in the superclass' (OptionedMenu) run function.
  */
 public class MainMenu extends OptionedMenu {
 

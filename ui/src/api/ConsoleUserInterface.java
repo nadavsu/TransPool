@@ -5,11 +5,6 @@ import api.menus.*;
 
 public class ConsoleUserInterface implements Runnable {
 
-    public static void main(String[] args) {
-        ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
-        consoleUserInterface.run();
-    }
-
     public ConsoleUserInterface() {
     }
 

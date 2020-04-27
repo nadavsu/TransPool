@@ -37,8 +37,6 @@ public class Stop {
 
     @Override
     public String toString() {
-        return "Stop{" +
-                "stop=" + stop +
-                '}';
+        return stop.getValue();
     }
 }

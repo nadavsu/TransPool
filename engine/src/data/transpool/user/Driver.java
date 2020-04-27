@@ -16,4 +16,9 @@ public class Driver implements Account {
     public void setName(String name) {
         this.name = name;
     }
+
+    @Override
+    public String toString() {
+        return "Driver Name: '" + name;
+    }
 }

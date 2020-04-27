@@ -1,18 +1,23 @@
 package exceptions.data;
 
-public class StopNotFoundException extends Exception {
-    private final String EXCEPTION_MESSAGE = "Stop does not exist!";
+import java.io.IOException;
 
-    public StopNotFoundException() {
+public class StopNotFoundException extends IOException {
+    private String stopName;
+    private String message;
+
+    public StopNotFoundException(String stopName) {
+        this.stopName = stopName;
+        this.message = "There is no such stop as " + stopName + ".";
     }
 
     @Override
     public String getMessage() {
-        return EXCEPTION_MESSAGE;
+        return message;
     }
 
     @Override
     public String toString() {
-        return EXCEPTION_MESSAGE;
+        return message;
     }
 }

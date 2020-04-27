@@ -4,9 +4,9 @@ public class Time {
     private int hours;
     private int mins;
 
-    public Time(int hours, int mins) {      //TODO: round the time to the nearest 5 minutes here.
+    public Time(int hours, int mins) {
         this.hours = hours;
-        this.mins = mins;
+        this.mins = 0;
     }
 
     public int getHours() {
@@ -15,5 +15,19 @@ public class Time {
 
     public int getMins() {
         return mins;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        if (hours < 10) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append(hours + ":");
+        if (mins < 10) {
+            stringBuilder.append(0);
+        }
+        stringBuilder.append(mins);
+        return stringBuilder.toString();
     }
 }

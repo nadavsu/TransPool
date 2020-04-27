@@ -2,8 +2,10 @@ package data.transpool;
 
 import data.generated.TransPool;
 import data.transpool.map.Map;
+import data.transpool.map.Stop;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TripRequest;
+import exceptions.data.StopNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,5 +44,13 @@ public class TransPoolData {
 
     public List<TransPoolTrip> getTranspoolTrips() {
         return transpoolTrips;
+    }
+
+    public void addRequest(TripRequest newRequest) {
+        tripRequests.add(newRequest);
+    }
+
+    public Stop getStop(String stopName) throws StopNotFoundException {
+        return transpoolMap.getStop(stopName);
     }
 }

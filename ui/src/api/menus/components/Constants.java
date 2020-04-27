@@ -7,5 +7,6 @@ public class Constants {
     public static final String TITLE_VLINE = "|";
     public static final String TITLE_HLINE = "=";
     public static final String TITLE_FILL = "-";
+    public static final String BODY_LINE = "-";
 
 }

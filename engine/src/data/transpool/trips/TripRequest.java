@@ -7,13 +7,13 @@ public class TripRequest {
     private int ID;
     private Stop source;
     private Stop destination;
-    private int hour;
+    private Time timeOfDeparture;
 
-    public TripRequest(Stop source, Stop destination, int hour) {
+    public TripRequest(Stop source, Stop destination, Time timeOfDeparture) {
         this.ID = IDGenerator++;
         this.source = source;
         this.destination = destination;
-        this.hour = hour;
+        this.timeOfDeparture = timeOfDeparture;
     }
 
     public int getID() { return ID; }
@@ -34,11 +34,18 @@ public class TripRequest {
         this.destination = destination;
     }
 
-    public int getHour() {
-        return hour;
+    public Time getTimeOfDeparture() {
+        return timeOfDeparture;
+    }
+    public void setTimeOfDeparture(Time timeOfDeparture) {
+        this.timeOfDeparture = timeOfDeparture;
     }
 
-    public void setHour(int hour) {
-        this.hour = hour;
+    @Override
+    public String toString() {
+        return "ID: " + ID +
+                "\nSource: " + source +
+                "\nDestination: " + destination +
+                "\nTime of departure: " + timeOfDeparture;
     }
 }

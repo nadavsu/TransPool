@@ -2,6 +2,7 @@ package data.transpool.map;
 
 import data.generated.MapDescriptor;
 import data.generated.TransPool;
+import exceptions.data.StopNotFoundException;
 
 import javax.xml.bind.JAXB;
 import java.util.ArrayList;
@@ -54,12 +55,25 @@ public class Map {
         this.length = length;
     }
 
-    public List<Stop> getStops() {
+    public List<Stop> getStopsList() {
         return stops;
     }
 
-    public void setStops(List<Stop> stops) {
+    public void setStopsList(List<Stop> stops) {
         this.stops = stops;
+    }
+
+    public Stop getStop(String stopName) throws StopNotFoundException {
+        Stop theStop = null;
+        for (Stop stop : stops) {
+            if (stop.getName().equals(stopName)) {
+                theStop = stop;
+            }
+        }
+        if (null == theStop) {
+            throw new StopNotFoundException(stopName);
+        }
+        return theStop;
     }
 
     public List<Path> getPaths() {

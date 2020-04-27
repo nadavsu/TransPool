@@ -34,4 +34,11 @@ public class Schedule {
     public void setTimeOfDeparture(Time timeOfDeparture) {
         this.timeOfDeparture = timeOfDeparture;
     }
+
+    @Override
+    public String toString() {
+        return "Day: " + day +
+                "\nTime of departure: " + timeOfDeparture +
+                "\nRecurrences: " + recurrences;
+    }
 }

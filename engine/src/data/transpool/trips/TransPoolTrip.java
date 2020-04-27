@@ -4,6 +4,7 @@ import data.generated.TransPool;
 import data.transpool.map.Stop;
 import data.transpool.user.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class TransPoolTrip {
@@ -31,11 +32,13 @@ public class TransPoolTrip {
     }
 
     public TransPoolTrip(data.generated.TransPoolTrip JAXBTrip) {
-        driver = new Driver(JAXBTrip.getOwner());
-        route = new Route(JAXBTrip.getRoute());
-        PPK = JAXBTrip.getPPK();
-        schedule = new Schedule(JAXBTrip.getScheduling());
-        riderCapacity = JAXBTrip.getCapacity();
+        IDGenerator = 20000;
+        this.ID = IDGenerator++;
+        this.driver = new Driver(JAXBTrip.getOwner());
+        this.route = new Route(JAXBTrip.getRoute());
+        this.PPK = JAXBTrip.getPPK();
+        this.schedule = new Schedule(JAXBTrip.getScheduling());
+        this.riderCapacity = JAXBTrip.getCapacity();
     }
 
     public int getID() {
@@ -72,5 +75,19 @@ public class TransPoolTrip {
 
     public int getExpectedFuelConsumption() {
         return expectedFuelConsumption;
+    }
+
+    @Override
+    public String toString() {
+        return
+                "\n---TransPoolTrip:---" +
+                "\nTrip ID: " + ID +
+                "\n" + driver +
+                "\n" + route +
+                "\nPrice per KM: " + PPK +
+                "\n" + schedule +
+                "\nRider capacity: " + riderCapacity +
+                "\nTime of Arrival: " + timeOfArrival +
+                "\nExpected Fuel Consumption: " + expectedFuelConsumption;
     }
 }

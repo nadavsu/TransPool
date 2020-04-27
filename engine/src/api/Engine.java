@@ -2,18 +2,19 @@ package api;
 
 import data.generated.TransPool;
 import data.transpool.TransPoolData;
-import exceptions.file.TransPoolFileNotFoundException;
-import data.transpool.map.Map;
-import data.transpool.trips.TransPoolTrip;
+import data.transpool.map.Stop;
+import data.transpool.trips.Time;
 import data.transpool.trips.TripRequest;
+import exceptions.data.StopNotFoundException;
+import exceptions.file.TransPoolFileNotFoundException;
 import validators.Constants;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
 
 public class Engine {
     private static Engine engine = new Engine();
@@ -41,26 +42,31 @@ public class Engine {
         }
         JAXBContext jc = JAXBContext.newInstance(Constants.JAXB_XML_PACKAGE_NAME);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
-        data.generated.TransPool JAXBData = (TransPool) unmarshaller.unmarshal(istream);
+        TransPool JAXBData = (TransPool) unmarshaller.unmarshal(istream);
+
         data = new TransPoolData(JAXBData);
     }
 
-    public void createNewTripRequest(String stopSource, String stopDestination, int hour, int min) {
-
-        //create a stop for destination
-        //create a stop for source
-        //create a new trip request using the constructor
-        //add it to the list here.
+    public void createNewTripRequest(String sourceName, String destinationName, int hour, int min) throws StopNotFoundException {
+            Stop sourceStop = getStop(sourceName);
+            Stop destinationStop = getStop(destinationName);
+            addRequest(new TripRequest(sourceStop, destinationStop, new Time(hour, min)));
     }
 
-    //Todo: toString for transpool trip.
-    public void showAllTranspoolTrips() {
+    public void showAllTransPoolTrips() {
         data.getTranspoolTrips().forEach(System.out::println);
     }
 
-    //Todo: toString for trip requests.
     public void showAllTripRequests() {
         data.getTripRequests().forEach(System.out::println);
+    }
+
+    public void addRequest(TripRequest newRequest) {
+        data.addRequest(newRequest);
+    }
+
+    public Stop getStop(String stopName) throws StopNotFoundException {
+        return data.getStop(stopName);
     }
 
 }

@@ -17,7 +17,7 @@ public class Path {
         this.destination = destination;
     }
 
-    public Path(data.generated.Path JAXBPath) {
+    public Path(data.jaxb.Path JAXBPath) {
         length = JAXBPath.getLength();
         fuelConsumption = JAXBPath.getFuelConsumption();
         speedLimit = JAXBPath.getSpeedLimit();

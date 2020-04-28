@@ -1,6 +1,6 @@
 package api;
 
-import exceptions.system.QuitOnFinishException;
+import exceptions.QuitOnFinishException;
 import api.menus.*;
 
 public class ConsoleUserInterface implements Runnable {

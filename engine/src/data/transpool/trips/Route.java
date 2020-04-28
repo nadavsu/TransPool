@@ -7,7 +7,7 @@ public class Route {
         this.path = path;
     }
 
-    public Route(data.generated.Route route) {
+    public Route(data.jaxb.Route route) {
         path = route.getPath();
     }
 

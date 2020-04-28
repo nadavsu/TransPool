@@ -1,8 +1,8 @@
 package data.transpool.trips;
 
-import data.generated.Scheduling;
+import exceptions.data.time.InvalidTimeException;
 
-public class Schedule {
+public class Scheduling {
     private enum Day {
         SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
     }
@@ -15,13 +15,13 @@ public class Schedule {
     private Time timeOfDeparture;
     private String recurrences;
 
-    public Schedule(Day day, Time timeOfDeparture, String recurrences) {
+    public Scheduling(Day day, Time timeOfDeparture, String recurrences) {
         this.day = day;
         this.timeOfDeparture = timeOfDeparture;
         this.recurrences = recurrences;
     }
 
-    public Schedule(Scheduling scheduling) {
+    public Scheduling(data.jaxb.Scheduling scheduling) throws InvalidTimeException {
         day = Day.values()[scheduling.getDayStart() - 1];
         recurrences = scheduling.getRecurrences();
         timeOfDeparture = new Time(scheduling.getHourStart(), 0);

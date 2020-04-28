@@ -1,9 +1,9 @@
 package api.menus;
 import api.Engine;
-import data.transpool.trips.Time;
 import exceptions.data.StopNotFoundException;
+import exceptions.data.time.InvalidHoursException;
+import exceptions.data.time.InvalidMinutesException;
 import exceptions.data.time.InvalidTimeException;
-import validators.Validator;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -20,13 +20,15 @@ public class NewTripRequestMenu extends UnoptionedMenu {
         show();
         Scanner sc = new Scanner(System.in);
         String stopSource, stopDestination;
+        String riderName;
 
         int hour, min;
         boolean isValid;
 
         do {
             try {
-                Validator validator = new Validator();
+                System.out.print("Enter your name: ");
+                riderName = sc.nextLine();
 
                 System.out.print("Enter your departure source: ");
                 stopSource = sc.nextLine();
@@ -37,10 +39,10 @@ public class NewTripRequestMenu extends UnoptionedMenu {
                 System.out.print("Enter your departure time in the format HH MM: ");
                 hour = sc.nextInt();
                 min = sc.nextInt();
-                validator.validateTime(hour, min);
+                validateTime(hour, min);
 
-                printCreationMessage(stopSource, stopDestination, hour, min);
-                Engine.getInstance().createNewTripRequest(stopSource, stopDestination, hour, min);
+                System.out.println("Creating trip request...");
+                Engine.getInstance().createNewTripRequest(riderName, stopSource, stopDestination, hour, min);
 
                 isValid = true;
                 System.out.println("Trip created successfully!");
@@ -61,10 +63,14 @@ public class NewTripRequestMenu extends UnoptionedMenu {
 
     }
 
-    private void printCreationMessage(String stopSource, String stopDestination, int hour, int min) {
-        Time time = new Time(hour, min);
-        System.out.print("Creating new trip request from " + stopSource + " to "
-                + stopDestination + " at " + time + "...\n");
+    public void validateTime(int hour, int min) throws InvalidTimeException {
+        if (hour < 0 || hour > 23) {
+            throw new InvalidHoursException();
+        }
+        if (min < 0 || min > 60) {
+            throw  new InvalidMinutesException();
+        }
     }
+
 }
 

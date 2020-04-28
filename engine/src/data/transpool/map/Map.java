@@ -1,49 +1,62 @@
 package data.transpool.map;
 
-import data.generated.MapDescriptor;
-import data.generated.TransPool;
+import data.jaxb.MapDescriptor;
+import exceptions.data.PathDoesNotExistException;
 import exceptions.data.StopNotFoundException;
+import exceptions.data.TransPoolDataException;
+import exceptions.data.MapDimensionsException;
+import exceptions.data.StopDuplicationException;
+import exceptions.data.StopOutOfBoundsException;
 
-import javax.xml.bind.JAXB;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 public class Map {
-    private int width;
-    private int length;
-    private List<Stop> stops;
-    private List<Path> paths;
+    private static final int MAX_MAP_SIZE = 100;
+    private static final int MIN_MAP_SIZE = 6;
+
+    public int width;
+    public int length;
+    private Set<Stop> stopSet;
+    private List<Path> pathList;
+
+    private Set<Coordinates> stopCoordinates = new HashSet<>();
+    private Set<String> stopNames = new HashSet<>();
 
     public Map() {
-        stops = new ArrayList<>();
-        paths = new ArrayList<>();
-        this.width = 0;
-        this.length = 0;
+        stopSet = new HashSet<>();
+        pathList = new ArrayList<>();
+        width = MIN_MAP_SIZE;
+        length = MIN_MAP_SIZE;
     }
 
-    public Map(MapDescriptor JAXBMap) {
-        width = JAXBMap.getMapBoundries().getWidth();
-        length = JAXBMap.getMapBoundries().getLength();
-        stops = JAXBMap
-                .getStops()
-                .getStop()
-                .stream()
-                .map(Stop::new)
-                .collect(Collectors.toList());
-        paths = JAXBMap
-                .getPaths()
-                .getPath()
-                .stream()
-                .map(Path::new)
-                .collect(Collectors.toList());
+    public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
+        stopSet = new HashSet<>();
+        pathList = new ArrayList<>();
+        setWidth(JAXBMap.getMapBoundries().getWidth());
+        setLength(JAXBMap.getMapBoundries().getLength());
+
+        List<data.jaxb.Stop> JAXBStopsList = JAXBMap.getStops().getStop();
+        for (data.jaxb.Stop JAXBStop : JAXBStopsList) {
+            addStop(new Stop(JAXBStop));
+        }
+
+        List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
+        for (data.jaxb.Path JAXBPath : JAXBPathList) {
+            addPath(new Path(JAXBPath));
+        }
     }
 
     public int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    private void setWidth(int width) throws MapDimensionsException {
+        if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
+            throw new MapDimensionsException();
+        }
         this.width = width;
     }
 
@@ -51,21 +64,20 @@ public class Map {
         return length;
     }
 
-    public void setLength(int length) {
+    private void setLength(int length) throws MapDimensionsException {
+        if (length < MIN_MAP_SIZE || length > MAX_MAP_SIZE) {
+            throw new MapDimensionsException();
+        }
         this.length = length;
     }
 
-    public List<Stop> getStopsList() {
-        return stops;
-    }
-
-    public void setStopsList(List<Stop> stops) {
-        this.stops = stops;
+    public void setStopSet(Set<Stop> stopSet) {
+        this.stopSet = stopSet;
     }
 
     public Stop getStop(String stopName) throws StopNotFoundException {
         Stop theStop = null;
-        for (Stop stop : stops) {
+        for (Stop stop : stopSet) {
             if (stop.getName().equals(stopName)) {
                 theStop = stop;
             }
@@ -76,11 +88,31 @@ public class Map {
         return theStop;
     }
 
-    public List<Path> getPaths() {
-        return paths;
+    public List<Path> getPathList() {
+        return pathList;
     }
 
-    public void setPaths(List<Path> paths) {
-        this.paths = paths;
+    public void setPathList(List<Path> pathList) {
+        this.pathList = pathList;
+    }
+
+    public void addStop(Stop stop) throws StopOutOfBoundsException, StopDuplicationException {
+        if (!stopNames.add(stop.getName())) {
+            throw new StopDuplicationException();
+        }
+        if (!stopCoordinates.add(stop.getCoordinates())) {
+            throw new StopDuplicationException();
+        }
+        if (!stop.isInBoundsOf(width, length)) {
+            throw new StopOutOfBoundsException();
+        }
+        stopSet.add(stop);
+    }
+
+    public void addPath(Path path) throws PathDoesNotExistException {
+        if (!stopNames.contains(path.getDestination()) || !stopNames.contains(path.getSource())) {
+            throw new PathDoesNotExistException(path.getSource(), path.getDestination());
+        }
+        pathList.add(path);
     }
 }

@@ -1,13 +1,17 @@
 package api;
 
-import data.generated.TransPool;
+import data.jaxb.TransPool;
 import data.transpool.TransPoolData;
 import data.transpool.map.Stop;
 import data.transpool.trips.Time;
 import data.transpool.trips.TripRequest;
+import data.transpool.user.Rider;
+import exceptions.data.PathDoesNotExistException;
 import exceptions.data.StopNotFoundException;
+import exceptions.data.TransPoolDataException;
+import exceptions.data.time.InvalidTimeException;
 import exceptions.file.TransPoolFileNotFoundException;
-import validators.Constants;
+import exceptions.file.UnsupportedFileException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -17,6 +21,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class Engine {
+    public static final String JAXB_XML_PACKAGE_NAME = "data.jaxb";
+
     private static Engine engine = new Engine();
     private TransPoolData data;
 
@@ -35,22 +41,23 @@ public class Engine {
         return data;
     }
 
-    public void loadFile(String fileAddress) throws JAXBException, FileNotFoundException {
-        InputStream istream =  Engine.class.getResourceAsStream("/resources/" + fileAddress);
+    public void loadFile(String fileName) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException {
+        InputStream istream =  Engine.class.getResourceAsStream("/resources/" + fileName);
         if (istream == null) {
             throw new TransPoolFileNotFoundException();
         }
-        JAXBContext jc = JAXBContext.newInstance(Constants.JAXB_XML_PACKAGE_NAME);
+        JAXBContext jc = JAXBContext.newInstance(JAXB_XML_PACKAGE_NAME);
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         TransPool JAXBData = (TransPool) unmarshaller.unmarshal(istream);
-
         data = new TransPoolData(JAXBData);
     }
 
-    public void createNewTripRequest(String sourceName, String destinationName, int hour, int min) throws StopNotFoundException {
+    public void createNewTripRequest(String riderName, String sourceName, String destinationName, int hour, int min)
+            throws StopNotFoundException, InvalidTimeException {
+
             Stop sourceStop = getStop(sourceName);
             Stop destinationStop = getStop(destinationName);
-            addRequest(new TripRequest(sourceStop, destinationStop, new Time(hour, min)));
+            addRequest(new TripRequest(new Rider(riderName), sourceStop, destinationStop, new Time(hour, min)));
     }
 
     public void showAllTransPoolTrips() {
@@ -61,12 +68,11 @@ public class Engine {
         data.getTripRequests().forEach(System.out::println);
     }
 
-    public void addRequest(TripRequest newRequest) {
+    private void addRequest(TripRequest newRequest) {
         data.addRequest(newRequest);
     }
 
-    public Stop getStop(String stopName) throws StopNotFoundException {
+    private Stop getStop(String stopName) throws StopNotFoundException {
         return data.getStop(stopName);
     }
-
 }

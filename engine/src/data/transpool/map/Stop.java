@@ -1,42 +1,57 @@
 package data.transpool.map;
 
-import javafx.util.Pair;
+import java.util.Objects;
 
 public class Stop {
 
-    private Pair<Coordinates, String> stop;
+    private Coordinates coordinates;
+    private String name;
 
     public Stop(Coordinates coordinates, String name) {
-        stop = new Pair<>(coordinates, name);
+        this.coordinates = coordinates;
+        this.name = name;
     }
 
-    public Stop(data.generated.Stop JAXBStop) {
-        Coordinates coords = new Coordinates(JAXBStop.getX(), JAXBStop.getY());
-        stop = new Pair<>(coords, JAXBStop.getName());
-    }
-
-    public Pair<Coordinates, String> getStop() {
-        return stop;
-    }
-
-    public void setStop(Coordinates coordinates, String name) {
-        this.stop = new Pair<>(coordinates, name);
-    }
-
-    public void setStop(Pair<Coordinates, String> stop) {
-        this.stop = stop;
+    public Stop(data.jaxb.Stop JAXBStop) {
+        coordinates = new Coordinates(JAXBStop.getX(), JAXBStop.getY());
+        name = JAXBStop.getName();
     }
 
     public Coordinates getCoordinates() {
-        return stop.getKey();
+        return coordinates;
+    }
+
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
     }
 
     public String getName() {
-        return stop.getValue();
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isInBoundsOf(int width, int length) {
+        return coordinates.isInBoundsOf(width, length);
     }
 
     @Override
     public String toString() {
-        return stop.getValue();
+        return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stop stop = (Stop) o;
+        return name.equals(stop.name) || coordinates.equals(stop.coordinates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
     }
 }

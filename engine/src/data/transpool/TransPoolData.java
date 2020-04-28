@@ -1,11 +1,14 @@
 package data.transpool;
 
-import data.generated.TransPool;
+import data.jaxb.TransPool;
 import data.transpool.map.Map;
 import data.transpool.map.Stop;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TripRequest;
+import exceptions.data.PathDoesNotExistException;
 import exceptions.data.StopNotFoundException;
+import exceptions.data.TransPoolDataException;
+import exceptions.data.time.InvalidTimeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +26,15 @@ public class TransPoolData {
         transpoolTrips = new ArrayList<>();
     }
 
-    public TransPoolData(TransPool JAXBData) {
+    public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
+        this.transpoolTrips = new ArrayList<>();
+        this.tripRequests = new ArrayList<>();
         this.transpoolMap = new Map(JAXBData.getMapDescriptor());
-        transpoolTrips = JAXBData
-                .getPlannedTrips()
-                .getTransPoolTrip()
-                .stream()
-                .map(TransPoolTrip::new)
-                .collect(Collectors.toList());
-        tripRequests = new ArrayList<>();
+
+        List<data.jaxb.TransPoolTrip> JAXBTransPoolTripsList = JAXBData.getPlannedTrips().getTransPoolTrip();
+        for (data.jaxb.TransPoolTrip JAXBTransPoolTrip : JAXBTransPoolTripsList) {
+            transpoolTrips.add(new TransPoolTrip(JAXBTransPoolTrip));
+        }
     }
 
     public Map getTranspoolMap() {

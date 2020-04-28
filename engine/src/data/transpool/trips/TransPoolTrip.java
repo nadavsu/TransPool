@@ -1,10 +1,9 @@
 package data.transpool.trips;
 
-import data.generated.TransPool;
 import data.transpool.map.Stop;
 import data.transpool.user.*;
+import exceptions.data.time.InvalidTimeException;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TransPoolTrip {
@@ -14,30 +13,31 @@ public class TransPoolTrip {
     private Driver driver;
     private Route route;
     private int PPK;
-    private Schedule schedule;
+    private Scheduling scheduling;
     private int riderCapacity;
 
+    private int totalPrice;
     private Time timeOfArrival;
     private int[] matchedIDs;                   //This is the ID of the requestedTrips that got matched to this ride.
     private List<Stop> rideStops;               //TODO: This is not defined right.
     private int expectedFuelConsumption;
 
-    public TransPoolTrip(Driver driver, Route route, int PPK, Schedule schedule, int riderCapacity) {
+    public TransPoolTrip(Driver driver, Route route, int PPK, Scheduling scheduling, int riderCapacity) {
         this.ID = IDGenerator++;
         this.driver = driver;
         this.route = route;
         this.PPK = PPK;
-        this.schedule = schedule;
+        this.scheduling = scheduling;
         this.riderCapacity = riderCapacity;
     }
 
-    public TransPoolTrip(data.generated.TransPoolTrip JAXBTrip) {
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTrip) throws InvalidTimeException {
         IDGenerator = 20000;
         this.ID = IDGenerator++;
         this.driver = new Driver(JAXBTrip.getOwner());
         this.route = new Route(JAXBTrip.getRoute());
         this.PPK = JAXBTrip.getPPK();
-        this.schedule = new Schedule(JAXBTrip.getScheduling());
+        this.scheduling = new Scheduling(JAXBTrip.getScheduling());
         this.riderCapacity = JAXBTrip.getCapacity();
     }
 
@@ -57,8 +57,8 @@ public class TransPoolTrip {
         return PPK;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public Scheduling getScheduling() {
+        return scheduling;
     }
 
     public Time getTimeOfArrival() {
@@ -85,7 +85,7 @@ public class TransPoolTrip {
                 "\n" + driver +
                 "\n" + route +
                 "\nPrice per KM: " + PPK +
-                "\n" + schedule +
+                "\n" + scheduling +
                 "\nRider capacity: " + riderCapacity +
                 "\nTime of Arrival: " + timeOfArrival +
                 "\nExpected Fuel Consumption: " + expectedFuelConsumption;

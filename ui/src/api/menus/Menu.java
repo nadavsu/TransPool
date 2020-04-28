@@ -1,6 +1,6 @@
 package api.menus;
 
-import exceptions.system.QuitOnFinishException;
+import exceptions.QuitOnFinishException;
 import api.menus.components.MenuTitle;
 
 public abstract class Menu {

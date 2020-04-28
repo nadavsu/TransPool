@@ -6,7 +6,7 @@
 //
 
 
-package data.generated;
+package data.jaxb;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -24,9 +24,7 @@ import javax.xml.bind.annotation.XmlType;
  * &lt;complexType&gt;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;attribute name="y" use="required" type="{http://www.w3.org/2001/XMLSchema}int" /&gt;
- *       &lt;attribute name="x" use="required" type="{http://www.w3.org/2001/XMLSchema}int" /&gt;
- *       &lt;attribute name="name" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="path" use="required" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;
@@ -36,70 +34,34 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "")
-@XmlRootElement(name = "Stop")
-public class Stop {
+@XmlRootElement(name = "Route")
+public class Route {
 
-    @XmlAttribute(name = "y", required = true)
-    protected int y;
-    @XmlAttribute(name = "x", required = true)
-    protected int x;
-    @XmlAttribute(name = "name", required = true)
-    protected String name;
+    @XmlAttribute(name = "path", required = true)
+    protected String path;
 
     /**
-     * Gets the value of the y property.
-     * 
-     */
-    public int getY() {
-        return y;
-    }
-
-    /**
-     * Sets the value of the y property.
-     * 
-     */
-    public void setY(int value) {
-        this.y = value;
-    }
-
-    /**
-     * Gets the value of the x property.
-     * 
-     */
-    public int getX() {
-        return x;
-    }
-
-    /**
-     * Sets the value of the x property.
-     * 
-     */
-    public void setX(int value) {
-        this.x = value;
-    }
-
-    /**
-     * Gets the value of the name property.
+     * Gets the value of the path property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getName() {
-        return name;
+    public String getPath() {
+        return path;
     }
 
     /**
-     * Sets the value of the name property.
+     * Sets the value of the path property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setName(String value) {
-        this.name = value;
+    public void setPath(String value) {
+        this.path = value;
     }
 
 }

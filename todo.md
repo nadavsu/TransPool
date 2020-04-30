@@ -12,13 +12,13 @@
       from the tripRequest?)
  
 ##Engine:
- - Check if the file uploaded is valid application wise (paths, stops rides etc.)
-    - Size of map needs to be between 6 and 100 (both width and length)
-    - Every stop has a unique name and coordinates.
-    - There cannot be 2 stops with the same coordinates.
-    - Every stop is in the map's boundaries.
-    - Every path is constructed of defined stops.
-    - *Every TransPool ride goes through defined paths and stops.
+ - DONE Check if the file uploaded is valid application wise (paths, stops rides etc.)
+    - DONE Size of map needs to be between 6 and 100 (both width and length)
+    - DONE Every stop has a unique name and coordinates.
+    - DONE There cannot be 2 stops with the same coordinates.
+    - DONE Every stop is in the map's boundaries.
+    - DONE Every path is constructed of defined stops.
+    - DONE *Every TransPool ride goes through defined paths and stops.
  
  ##Matching
    - Create the matching menu.

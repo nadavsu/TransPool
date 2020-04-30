@@ -3,7 +3,6 @@ package data.transpool.trips;
 import data.transpool.map.Stop;
 import data.transpool.user.*;
 import exceptions.data.TransPoolDataException;
-import exceptions.data.time.InvalidTimeException;
 
 import java.util.List;
 
@@ -13,7 +12,7 @@ public class TransPoolTrip {
 
     private Driver driver;
     private Route route;
-    private int PPK;
+    private int AveragePPK;
     private Scheduling scheduling;
     private int riderCapacity;
 
@@ -23,11 +22,11 @@ public class TransPoolTrip {
     private List<Stop> rideStops;               //TODO: This is not defined right.
     private int expectedFuelConsumption;
 
-    public TransPoolTrip(Driver driver, Route route, int PPK, Scheduling scheduling, int riderCapacity) {
+    public TransPoolTrip(Driver driver, Route route, int AveragePPK, Scheduling scheduling, int riderCapacity) {
         this.ID = IDGenerator++;
         this.driver = driver;
         this.route = route;
-        this.PPK = PPK;
+        this.AveragePPK = AveragePPK;
         this.scheduling = scheduling;
         this.riderCapacity = riderCapacity;
     }
@@ -36,7 +35,7 @@ public class TransPoolTrip {
         this.ID = IDGenerator++;
         this.driver = new Driver(JAXBTrip.getOwner());
         this.route = new Route(JAXBTrip.getRoute());
-        this.PPK = JAXBTrip.getPPK();
+        this.AveragePPK = JAXBTrip.getPPK();
         this.scheduling = new Scheduling(JAXBTrip.getScheduling());
         this.riderCapacity = JAXBTrip.getCapacity();
     }
@@ -57,8 +56,8 @@ public class TransPoolTrip {
         return route.getRoute();
     }
 
-    public int getPPK() {
-        return PPK;
+    public int getAveragePPK() {
+        return AveragePPK;
     }
 
     public Scheduling getScheduling() {
@@ -88,7 +87,7 @@ public class TransPoolTrip {
                 "\nTrip ID: " + ID +
                 "\n" + driver +
                 "\n" + route +
-                "\nPrice per KM: " + PPK +
+                "\nPrice per KM: " + AveragePPK +
                 "\n" + scheduling +
                 "\nRider capacity: " + riderCapacity +
                 "\nTime of Arrival: " + timeOfArrival +

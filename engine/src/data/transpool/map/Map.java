@@ -9,25 +9,25 @@ import exceptions.data.StopOutOfBoundsException;
 
 import java.util.*;
 
-public class TransPoolMap {
+public class Map {
     private static final int MAX_MAP_SIZE = 100;
     private static final int MIN_MAP_SIZE = 6;
 
     private int width;
     private int length;
 
-    private List<Stop> stopMap = new ArrayList<>();
+    private List<Stop> stopList = new ArrayList<>();
     private List<Path> pathList = new ArrayList<>();
 
     private Set<String> stopNameSet = new HashSet<>();
     private Set<Coordinates> stopCoordinates = new HashSet<>();
 
-    public TransPoolMap() {
+    public Map() {
         width = MIN_MAP_SIZE;
         length = MIN_MAP_SIZE;
     }
 
-    public TransPoolMap(MapDescriptor JAXBMap) throws TransPoolDataException {
+    public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
 
@@ -77,8 +77,7 @@ public class TransPoolMap {
         if (!stopNameSet.contains(stopName)) {
             throw new StopNotFoundException(stopName);
         }
-
-        return stopMap
+        return stopList
                 .stream()
                 .filter(s -> s.getName().equals(stopName))
                 .findAny()
@@ -95,7 +94,7 @@ public class TransPoolMap {
         if (!stop.isInBoundsOf(width, length)) {
             throw new StopOutOfBoundsException();
         }
-        stopMap.add(stop);
+        stopList.add(stop);
     }
 
     private void addPath(Path path) throws StopNotFoundException {
@@ -109,19 +108,18 @@ public class TransPoolMap {
         }
         pathList.add(path);
         if (!path.isOneWay()) {
-            pathList.add(
-                    new Path(path.getDestination(), path.getSource(), path.getLength(),
-                            path.isOneWay(), path.getFuelConsumption(), path.getSpeedLimit())
-            );
+            Path swappedPath = new Path(path);
+            swappedPath.setSource(destinationName);
+            swappedPath.setDestination(sourceName);
+            pathList.add(swappedPath);
         }
     }
 
-    public boolean doesPathExist(String source, String destination) {
-        Path foundPath = pathList
+    public Path getPath(String source, String destination) throws NullPointerException {
+        return pathList
                 .stream()
                 .filter(path -> path.getSource().equals(source) && path.getDestination().equals(destination))
                 .findAny()
                 .orElse(null);
-        return foundPath != null;
     }
 }

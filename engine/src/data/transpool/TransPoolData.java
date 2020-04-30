@@ -1,7 +1,7 @@
 package data.transpool;
 
 import data.jaxb.TransPool;
-import data.transpool.map.TransPoolMap;
+import data.transpool.map.Map;
 import data.transpool.map.Stop;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TripRequest;
@@ -14,12 +14,12 @@ import java.util.List;
 
 public class TransPoolData {
 
-    private TransPoolMap map;
+    private Map map;
     private List<TripRequest> tripRequests;
     private List<TransPoolTrip> transpoolTrips;
 
     public TransPoolData() {
-        map = new TransPoolMap();
+        map = new Map();
         tripRequests = new ArrayList<>();
         transpoolTrips = new ArrayList<>();
     }
@@ -27,7 +27,7 @@ public class TransPoolData {
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
         this.transpoolTrips = new ArrayList<>();
         this.tripRequests = new ArrayList<>();
-        this.map = new TransPoolMap(JAXBData.getMapDescriptor());
+        this.map = new Map(JAXBData.getMapDescriptor());
 
         List<data.jaxb.TransPoolTrip> JAXBTransPoolTripsList = JAXBData.getPlannedTrips().getTransPoolTrip();
         for (data.jaxb.TransPoolTrip JAXBTransPoolTrip : JAXBTransPoolTripsList) {
@@ -35,7 +35,7 @@ public class TransPoolData {
         }
     }
 
-    public TransPoolMap getMap() {
+    public Map getMap() {
         return map;
     }
 
@@ -58,7 +58,7 @@ public class TransPoolData {
     private void addTransPoolTrip(TransPoolTrip transpoolTrip) throws InvalidRouteException {
         List<String> routeStopNamesList = transpoolTrip.getRouteAsList();
         for (int i = 0; i < routeStopNamesList.size() - 1; i++) {
-            if (!map.doesPathExist(routeStopNamesList.get(i), routeStopNamesList.get(i + 1))) {
+            if (map.getPath(routeStopNamesList.get(i), routeStopNamesList.get(i + 1)) == null) {
                 throw new InvalidRouteException();
             }
         }

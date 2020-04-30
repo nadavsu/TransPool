@@ -4,17 +4,29 @@ import java.util.Objects;
 
 public class Stop {
 
+    private static int IDGenerator = 0;
+    private int ID;
     private Coordinates coordinates;
     private String name;
 
     public Stop(Coordinates coordinates, String name) {
+        this.ID = IDGenerator++;
         this.coordinates = coordinates;
         this.name = name;
     }
 
     public Stop(data.jaxb.Stop JAXBStop) {
+        ID = IDGenerator++;
         coordinates = new Coordinates(JAXBStop.getX(), JAXBStop.getY());
         name = JAXBStop.getName();
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public Coordinates getCoordinates() {

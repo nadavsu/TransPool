@@ -1,14 +1,14 @@
 package data.transpool.map;
 
 public class Path {
+    private String source;
+    private String destination;
+    private boolean isOneWay;
     private int length;
     private int fuelConsumption;
     private int speedLimit;
-    private boolean isOneWay;
-    private String source;
-    private String destination;
 
-    public Path(int length, int fuelConsumption, int speedLimit, boolean isOneWay, String source, String destination) {
+    public Path(String source, String destination, int length, boolean isOneWay, int fuelConsumption, int speedLimit) {
         this.length = length;
         this.fuelConsumption = fuelConsumption;
         this.speedLimit = speedLimit;
@@ -18,12 +18,12 @@ public class Path {
     }
 
     public Path(data.jaxb.Path JAXBPath) {
+        source = JAXBPath.getFrom();
+        destination = JAXBPath.getTo();
         length = JAXBPath.getLength();
         fuelConsumption = JAXBPath.getFuelConsumption();
         speedLimit = JAXBPath.getSpeedLimit();
         isOneWay = JAXBPath.isOneWay();
-        source = JAXBPath.getFrom();
-        destination = JAXBPath.getTo();
     }
 
     public int getLength() {
@@ -62,16 +62,8 @@ public class Path {
         return source;
     }
 
-    public void setSource(String source) {
-        this.source = source;
-    }
-
     public String getDestination() {
         return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     @Override

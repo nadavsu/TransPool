@@ -6,18 +6,14 @@ import data.transpool.map.Stop;
 import data.transpool.trips.Time;
 import data.transpool.trips.TripRequest;
 import data.transpool.user.Rider;
-import exceptions.data.PathDoesNotExistException;
 import exceptions.data.StopNotFoundException;
 import exceptions.data.TransPoolDataException;
 import exceptions.data.time.InvalidTimeException;
 import exceptions.file.TransPoolFileNotFoundException;
-import exceptions.file.UnsupportedFileException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 
 public class Engine {
@@ -61,7 +57,7 @@ public class Engine {
     }
 
     public void showAllTransPoolTrips() {
-        data.getTranspoolTrips().forEach(System.out::println);
+        data.getTransPoolTrips().forEach(System.out::println);
     }
 
     public void showAllTripRequests() {

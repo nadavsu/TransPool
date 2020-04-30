@@ -2,6 +2,7 @@ package data.transpool.trips;
 
 import data.transpool.map.Stop;
 import data.transpool.user.*;
+import exceptions.data.TransPoolDataException;
 import exceptions.data.time.InvalidTimeException;
 
 import java.util.List;
@@ -31,8 +32,7 @@ public class TransPoolTrip {
         this.riderCapacity = riderCapacity;
     }
 
-    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTrip) throws InvalidTimeException {
-        IDGenerator = 20000;
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTrip) throws TransPoolDataException {
         this.ID = IDGenerator++;
         this.driver = new Driver(JAXBTrip.getOwner());
         this.route = new Route(JAXBTrip.getRoute());
@@ -51,6 +51,10 @@ public class TransPoolTrip {
 
     public Route getRoute() {
         return route;
+    }
+
+    public List<String> getRouteAsList() {
+        return route.getRoute();
     }
 
     public int getPPK() {

@@ -1,26 +1,36 @@
 package data.transpool.trips;
 
-public class Route {
-    private String path;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
-    public Route(String path) {
-        this.path = path;
+public class Route {
+    private List<String> route;
+
+    public Route(List<String> route) {
+        this.route = route;
     }
 
     public Route(data.jaxb.Route route) {
-        path = route.getPath();
+        String[] stops = route.getPath().split(",");
+        List<String> fixedLengthRoute = Arrays.asList(stops);
+        this.route = fixedLengthRoute
+                .stream()
+                .map(String::trim)
+                .collect(Collectors.toList());
+
     }
 
-    public String getPath() {
-        return path;
+    public List<String> getRoute() {
+        return route;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setRoute(List<String> route) {
+        this.route = route;
     }
 
     @Override
     public String toString() {
-        return "Route: " + path;
+        return "Route: " + route;
     }
 }

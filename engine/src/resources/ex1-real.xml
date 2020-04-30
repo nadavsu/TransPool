@@ -182,14 +182,14 @@
 			<Owner>Orange</Owner>
 			<Capacity>4</Capacity>
 			<PPK>20</PPK>
-			<Route path="HIT,Yoseftal,MTA,Lagardia,Azriely Mall, Rabin Square,Square Hamedina, Park Hayarkon"/>
+			<Route path="HIT,Yoseftal,Wolfson train,MTA,Lagardia,Azriely Mall, Rabin Square,Square Hamedina, Park Hayarkon"/>
 			<Scheduling hour-start="7"/>
 		</TransPoolTrip>
 		<TransPoolTrip>
 			<Owner>Red</Owner>
 			<Capacity>3</Capacity>
 			<PPK>25</PPK>
-			<Route path="Wolfson train,Yaffa Port,MTA,Lagardia,Ayallon Mall,Bursa,Square Hamedina,Park Hayarkon"/>
+			<Route path="Wolfson train,Yaffa Port,MTA,Lagardia,Azriely Mall,Bursa,Square Hamedina,Park Hayarkon"/>
 			<Scheduling hour-start="8"/>
 		</TransPoolTrip>
 	</PlannedTrips>

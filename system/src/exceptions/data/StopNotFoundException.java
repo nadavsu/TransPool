@@ -2,7 +2,7 @@ package exceptions.data;
 
 import java.io.IOException;
 
-public class StopNotFoundException extends IOException {
+public class StopNotFoundException extends TransPoolDataException {
     private String stopName;
     private String message;
 

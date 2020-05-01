@@ -1,5 +1,7 @@
 package data.transpool.trips;
 
+import data.transpool.map.TransPoolMap;
+import data.transpool.map.Path;
 import data.transpool.map.Stop;
 import data.transpool.user.*;
 import exceptions.data.TransPoolDataException;
@@ -31,10 +33,10 @@ public class TransPoolTrip {
         this.riderCapacity = riderCapacity;
     }
 
-    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTrip) throws TransPoolDataException {
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTrip, TransPoolMap map) throws TransPoolDataException {
         this.ID = IDGenerator++;
         this.driver = new Driver(JAXBTrip.getOwner());
-        this.route = new Route(JAXBTrip.getRoute());
+        this.route = new Route(JAXBTrip.getRoute(), map);
         this.AveragePPK = JAXBTrip.getPPK();
         this.scheduling = new Scheduling(JAXBTrip.getScheduling());
         this.riderCapacity = JAXBTrip.getCapacity();
@@ -52,7 +54,7 @@ public class TransPoolTrip {
         return route;
     }
 
-    public List<String> getRouteAsList() {
+    public List<Path> getRouteAsList() {
         return route.getRoute();
     }
 

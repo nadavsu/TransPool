@@ -1,39 +1,49 @@
 package data.transpool.trips;
 
+import data.transpool.map.TransPoolMap;
 import data.transpool.map.Path;
+import exceptions.data.PathDoesNotExistException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Route {
-    private List<Path> newRoute;    //a route will be a list of paths - A -> B, B -> C, C -> D.
-    private List<String> route;
+    private List<Path> route = new ArrayList<>();
 
-    public Route(List<String> route) {
+    public Route(List<Path> route) {
         this.route = route;
     }
 
-    public Route(data.jaxb.Route route) {
-        String[] stops = route.getPath().split(",");
-        List<String> fixedLengthRoute = Arrays.asList(stops);
-        this.route = fixedLengthRoute
-                .stream()
-                .map(String::trim)
-                .collect(Collectors.toList());
+    public Route(data.jaxb.Route JAXBRoute, TransPoolMap map) throws PathDoesNotExistException {
+        String[] JAXBRouteStops = JAXBRoute.getPath().split(",");
+
+        for (int i = 0; i < JAXBRouteStops.length - 1; i++) {
+            String source = JAXBRouteStops[i].trim();
+            String destination = JAXBRouteStops[i + 1].trim();
+            try {
+                route.add(map.getPathByStopNames(source, destination));
+            } catch (NullPointerException e) {
+                //Maybe Invalid route exception?
+                throw new PathDoesNotExistException(source, destination);
+            }
+        }
     }
 
-    public List<String> getRoute() {
+    public List<Path> getRoute() {
         return route;
     }
 
-    public void setRoute(List<String> route) {
+    public void setRoute(List<Path> route) {
         this.route = route;
     }
 
     @Override
     public String toString() {
-        return "Route: " + route;
+        StringBuilder routeBuilder = new StringBuilder("Route: ");
+        for (Path p : route) {
+            routeBuilder.append(p.getSource()).append(" -> ");
+        }
+        routeBuilder.append(route.get(route.size() - 1).getDestination());
+        return routeBuilder.toString();
     }
 }

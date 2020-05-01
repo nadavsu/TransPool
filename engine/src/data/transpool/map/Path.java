@@ -1,5 +1,8 @@
 package data.transpool.map;
 
+import exceptions.data.StopNotFoundException;
+
+import javax.xml.bind.JAXB;
 import java.util.Objects;
 
 public class Path {
@@ -19,9 +22,17 @@ public class Path {
         this.destination = destination;
     }
 
-    public Path(data.jaxb.Path JAXBPath) {
-        this.source = JAXBPath.getFrom();
-        this.destination = JAXBPath.getTo();
+    public Path(data.jaxb.Path JAXBPath, TransPoolMap map) throws StopNotFoundException {
+        try {
+            this.source = map.getStop(JAXBPath.getFrom());
+        } catch (NullPointerException e) {
+            throw new StopNotFoundException(JAXBPath.getFrom());
+        }
+        try {
+            this.destination = map.getStop(JAXBPath.getTo());
+        } catch (NullPointerException e) {
+            throw new StopNotFoundException(JAXBPath.getTo());
+        }
         this.length = JAXBPath.getLength();
         this.fuelConsumption = JAXBPath.getFuelConsumption();
         this.speedLimit = JAXBPath.getSpeedLimit();
@@ -37,11 +48,11 @@ public class Path {
        this.isOneWay = other.isOneWay;
     }
 
-    public String getSource() {
+    public Stop getSource() {
         return source;
     }
 
-    public String getDestination() {
+    public Stop getDestination() {
         return destination;
     }
 
@@ -69,11 +80,11 @@ public class Path {
         this.fuelConsumption = fuelConsumption;
     }
 
-    public void setSource(String source) {
+    public void setSource(Stop source) {
         this.source = source;
     }
 
-    public void setDestination(String destination) {
+    public void setDestination(Stop destination) {
         this.destination = destination;
     }
 

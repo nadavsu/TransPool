@@ -1,11 +1,10 @@
 package data.transpool;
 
 import data.jaxb.TransPool;
-import data.transpool.map.Map;
+import data.transpool.map.TransPoolMap;
 import data.transpool.map.Stop;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TripRequest;
-import exceptions.data.InvalidRouteException;
 import exceptions.data.StopNotFoundException;
 import exceptions.data.TransPoolDataException;
 
@@ -14,12 +13,12 @@ import java.util.List;
 
 public class TransPoolData {
 
-    private Map map;
+    private TransPoolMap map;
     private List<TripRequest> tripRequests;
     private List<TransPoolTrip> transpoolTrips;
 
     public TransPoolData() {
-        map = new Map();
+        map = new TransPoolMap();
         tripRequests = new ArrayList<>();
         transpoolTrips = new ArrayList<>();
     }
@@ -27,15 +26,15 @@ public class TransPoolData {
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
         this.transpoolTrips = new ArrayList<>();
         this.tripRequests = new ArrayList<>();
-        this.map = new Map(JAXBData.getMapDescriptor());
+        this.map = new TransPoolMap(JAXBData.getMapDescriptor());
 
         List<data.jaxb.TransPoolTrip> JAXBTransPoolTripsList = JAXBData.getPlannedTrips().getTransPoolTrip();
         for (data.jaxb.TransPoolTrip JAXBTransPoolTrip : JAXBTransPoolTripsList) {
-            addTransPoolTrip(new TransPoolTrip(JAXBTransPoolTrip));
+            addTransPoolTrip(new TransPoolTrip(JAXBTransPoolTrip, map));
         }
     }
 
-    public Map getMap() {
+    public TransPoolMap getMap() {
         return map;
     }
 
@@ -52,16 +51,14 @@ public class TransPoolData {
     }
 
     public Stop getStop(String stopName) throws StopNotFoundException {
-        return map.getStop(stopName);
+        try {
+            return map.getStop(stopName);
+        } catch (NullPointerException e) {
+            throw new StopNotFoundException(stopName);
+        }
     }
 
-    private void addTransPoolTrip(TransPoolTrip transpoolTrip) throws InvalidRouteException {
-        List<String> routeStopNamesList = transpoolTrip.getRouteAsList();
-        for (int i = 0; i < routeStopNamesList.size() - 1; i++) {
-            if (map.getPath(routeStopNamesList.get(i), routeStopNamesList.get(i + 1)) == null) {
-                throw new InvalidRouteException();
-            }
-        }
+    private void addTransPoolTrip(TransPoolTrip transpoolTrip) {
         transpoolTrips.add(transpoolTrip);
     }
 }

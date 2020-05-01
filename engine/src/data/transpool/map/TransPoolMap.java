@@ -1,7 +1,6 @@
 package data.transpool.map;
 
 import data.jaxb.MapDescriptor;
-import exceptions.data.StopNotFoundException;
 import exceptions.data.TransPoolDataException;
 import exceptions.data.MapDimensionsException;
 import exceptions.data.StopDuplicationException;
@@ -9,7 +8,7 @@ import exceptions.data.StopOutOfBoundsException;
 
 import java.util.*;
 
-public class Map {
+public class TransPoolMap {
     private static final int MAX_MAP_SIZE = 100;
     private static final int MIN_MAP_SIZE = 6;
 
@@ -22,12 +21,12 @@ public class Map {
     private Set<String> stopNameSet = new HashSet<>();
     private Set<Coordinates> stopCoordinates = new HashSet<>();
 
-    public Map() {
+    public TransPoolMap() {
         width = MIN_MAP_SIZE;
         length = MIN_MAP_SIZE;
     }
 
-    public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
+    public TransPoolMap(MapDescriptor JAXBMap) throws TransPoolDataException {
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
 
@@ -38,7 +37,7 @@ public class Map {
 
         List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
         for (data.jaxb.Path JAXBPath : JAXBPathList) {
-            addPath(new Path(JAXBPath));
+            addPath(new Path(JAXBPath, this));
         }
 
     }
@@ -73,15 +72,12 @@ public class Map {
         return pathList;
     }
 
-    public Stop getStop(String stopName) throws StopNotFoundException {
-        if (!stopNameSet.contains(stopName)) {
-            throw new StopNotFoundException(stopName);
-        }
+    public Stop getStop(String stopName) throws NullPointerException {
         return stopList
                 .stream()
                 .filter(s -> s.getName().equals(stopName))
                 .findAny()
-                .orElse(null);
+                .orElseThrow(NullPointerException::new);
     }
 
     private void addStop(Stop stop) throws StopOutOfBoundsException, StopDuplicationException {
@@ -97,29 +93,21 @@ public class Map {
         stopList.add(stop);
     }
 
-    private void addPath(Path path) throws StopNotFoundException {
-        String destinationName = path.getDestination();
-        String sourceName = path.getSource();
-        if (!stopNameSet.contains(destinationName)) {
-            throw new StopNotFoundException(destinationName);
-        }
-        if (!stopNameSet.contains(sourceName)) {
-            throw new StopNotFoundException(sourceName);
-        }
+    private void addPath(Path path) {
         pathList.add(path);
         if (!path.isOneWay()) {
             Path swappedPath = new Path(path);
-            swappedPath.setSource(destinationName);
-            swappedPath.setDestination(sourceName);
+            swappedPath.setSource(path.getDestination());
+            swappedPath.setDestination(path.getSource());
             pathList.add(swappedPath);
         }
     }
 
-    public Path getPath(String source, String destination) throws NullPointerException {
+    public Path getPathByStopNames(String source, String destination) throws NullPointerException {
         return pathList
                 .stream()
-                .filter(path -> path.getSource().equals(source) && path.getDestination().equals(destination))
+                .filter(path -> path.getSource().getName().equals(source) && path.getDestination().getName().equals(destination))
                 .findAny()
-                .orElse(null);
+                .orElseThrow(NullPointerException::new);
     }
 }

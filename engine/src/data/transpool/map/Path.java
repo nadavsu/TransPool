@@ -3,14 +3,14 @@ package data.transpool.map;
 import java.util.Objects;
 
 public class Path {
-    private String source;
-    private String destination;
+    private Stop source;
+    private Stop destination;
     private boolean isOneWay;
     private int length;
     private int fuelConsumption;
     private int speedLimit;
 
-    public Path(String source, String destination, int length, boolean isOneWay, int fuelConsumption, int speedLimit) {
+    public Path(Stop source, Stop destination, int length, boolean isOneWay, int fuelConsumption, int speedLimit) {
         this.length = length;
         this.fuelConsumption = fuelConsumption;
         this.speedLimit = speedLimit;

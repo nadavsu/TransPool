@@ -1,10 +1,14 @@
 package data.transpool.trips;
 
+import data.transpool.map.Path;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Route {
+    private List<Path> newRoute;    //a route will be a list of paths - A -> B, B -> C, C -> D.
     private List<String> route;
 
     public Route(List<String> route) {
@@ -18,7 +22,6 @@ public class Route {
                 .stream()
                 .map(String::trim)
                 .collect(Collectors.toList());
-
     }
 
     public List<String> getRoute() {

@@ -27,3 +27,6 @@
 ##Exceptions
    - Move exceptions out of system and re-order the package structure.
    - Throw all exceptions to the UI.
+   
+##Scheduling
+   - Should be 2 enums of recurrences and day (maybe remove day - check email).

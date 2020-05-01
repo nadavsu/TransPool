@@ -1,7 +1,7 @@
 package api.menus;
 
-import api.Engine;
 import exceptions.data.TransPoolDataException;
+import exceptions.data.time.InvalidTimeException;
 import exceptions.file.UnsupportedFileException;
 
 import javax.xml.bind.JAXBException;
@@ -34,11 +34,11 @@ public class LoadFileMenu extends UnoptionedMenu {
 
                 validateFileType(fileName);
                 System.out.println("Loading " + fileName + " to system...");
-                Engine.getInstance().loadFile(fileName);
+                engine.loadFile(fileName);
                 System.out.println("File loaded successfully!");
 
                 isValidInput = true;
-            } catch (IOException | JAXBException | TransPoolDataException e) {
+            } catch (IOException | JAXBException | TransPoolDataException | InvalidTimeException e) {
                 System.out.println(e.getMessage());
                 isValidInput = false;
             }

@@ -10,7 +10,7 @@ public class ShowAllTripRequestsMenu extends UnoptionedMenu {
     @Override
     public void run(){
         try {
-            Engine.getInstance().showAllTripRequests();
+            engine.showAllTransPoolTripRequests();
         } catch (NullPointerException e) {
             System.out.println("No trip requests found at the moment.");
         }

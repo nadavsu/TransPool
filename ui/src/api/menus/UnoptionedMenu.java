@@ -1,6 +1,8 @@
 package api.menus;
 
 
+import api.Engine;
+
 import java.util.Scanner;
 
 /**
@@ -9,8 +11,10 @@ import java.util.Scanner;
  */
 public abstract class UnoptionedMenu extends Menu {
 
+    Engine engine;
     UnoptionedMenu(String title) {
         super(title);
+        engine = new Engine();
     }
 
     /**

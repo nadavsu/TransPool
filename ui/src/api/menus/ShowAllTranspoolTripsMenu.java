@@ -11,10 +11,7 @@ public class ShowAllTranspoolTripsMenu extends UnoptionedMenu {
     @Override
     public void run() {
         try {
-            Engine.getInstance()
-                    .getData()
-                    .getTransPoolTrips()
-                    .forEach(System.out::println);
+            engine.showAllTransPoolTrips();
         } catch (NullPointerException e) {
             System.out.println("No TransPool trips found at the moment.");
         }

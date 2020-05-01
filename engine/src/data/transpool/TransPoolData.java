@@ -1,12 +1,10 @@
 package data.transpool;
 
+import data.jaxb.PlannedTrips;
 import data.jaxb.TransPool;
-import data.transpool.map.TransPoolMap;
-import data.transpool.map.Stop;
-import data.transpool.trips.TransPoolTrip;
-import data.transpool.trips.TripRequest;
-import exceptions.data.StopNotFoundException;
+import exceptions.data.PathDoesNotExistException;
 import exceptions.data.TransPoolDataException;
+import exceptions.data.time.InvalidTimeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,51 +12,46 @@ import java.util.List;
 public class TransPoolData {
 
     private TransPoolMap map;
-    private List<TripRequest> tripRequests;
-    private List<TransPoolTrip> transpoolTrips;
+    private List<TransPoolTrip> transpoolTrips = new ArrayList<>();
+    private List<TransPoolTripRequest> transpoolTripRequests = new ArrayList<>();
 
-    public TransPoolData() {
-        map = new TransPoolMap();
-        tripRequests = new ArrayList<>();
-        transpoolTrips = new ArrayList<>();
+    public TransPoolData(TransPool JAXBData) throws TransPoolDataException, InvalidTimeException {
+        map = new TransPoolMap(JAXBData.getMapDescriptor());
+        initTransPoolTrips(JAXBData.getPlannedTrips());
     }
 
-    public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
-        this.transpoolTrips = new ArrayList<>();
-        this.tripRequests = new ArrayList<>();
-        this.map = new TransPoolMap(JAXBData.getMapDescriptor());
-
-        List<data.jaxb.TransPoolTrip> JAXBTransPoolTripsList = JAXBData.getPlannedTrips().getTransPoolTrip();
-        for (data.jaxb.TransPoolTrip JAXBTransPoolTrip : JAXBTransPoolTripsList) {
-            addTransPoolTrip(new TransPoolTrip(JAXBTransPoolTrip, map));
+    private void initTransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolDataException, InvalidTimeException {
+        List<data.jaxb.TransPoolTrip> JAXBTrips = JAXBTransPoolTrips.getTransPoolTrip();
+        for (data.jaxb.TransPoolTrip JAXBTrip : JAXBTrips) {
+            addTransPoolTrip(new TransPoolTrip(JAXBTrip));
         }
+    }
+
+    private void addTransPoolTrip(TransPoolTrip transpoolTrip) throws PathDoesNotExistException {
+        List<String> tripRoute = transpoolTrip.getRoute();
+        for (int i = 0; i <  tripRoute.size() - 1; i++) {
+            String source = tripRoute.get(i);
+            String destination = tripRoute.get(i + 1);
+            if (map.getPathBySourceAndDestination(source, destination) == null) {
+                throw new PathDoesNotExistException(source, destination);
+            }
+        }
+        transpoolTrips.add(transpoolTrip);
+    }
+
+    public void addTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest) {
+        transpoolTripRequests.add(transpoolTripRequest);
     }
 
     public TransPoolMap getMap() {
         return map;
     }
 
-    public List<TripRequest> getTripRequests() {
-        return tripRequests;
-    }
-
-    public List<TransPoolTrip> getTransPoolTrips() {
+    public List<TransPoolTrip> getTranspoolTrips() {
         return transpoolTrips;
     }
 
-    public void addRequest(TripRequest newRequest) {
-        tripRequests.add(newRequest);
-    }
-
-    public Stop getStop(String stopName) throws StopNotFoundException {
-        try {
-            return map.getStop(stopName);
-        } catch (NullPointerException e) {
-            throw new StopNotFoundException(stopName);
-        }
-    }
-
-    private void addTransPoolTrip(TransPoolTrip transpoolTrip) {
-        transpoolTrips.add(transpoolTrip);
+    public List<TransPoolTripRequest> getTranspoolTripRequests() {
+        return transpoolTripRequests;
     }
 }

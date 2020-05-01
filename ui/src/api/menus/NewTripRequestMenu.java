@@ -1,5 +1,4 @@
 package api.menus;
-import api.Engine;
 import exceptions.data.StopNotFoundException;
 import exceptions.data.time.InvalidHoursException;
 import exceptions.data.time.InvalidMinutesException;
@@ -21,6 +20,7 @@ public class NewTripRequestMenu extends UnoptionedMenu {
         Scanner sc = new Scanner(System.in);
         String stopSource, stopDestination;
         String riderName;
+        boolean isContinuous;
 
         int hour, min;
         boolean isValid;
@@ -41,8 +41,11 @@ public class NewTripRequestMenu extends UnoptionedMenu {
                 min = sc.nextInt();
                 validateTime(hour, min);
 
+                System.out.println("Do you want your trip to be continuous? [y/n]: ");
+                isContinuous = sc.nextLine().toLowerCase().equals("y");
+
                 System.out.println("Creating trip request...");
-                Engine.getInstance().createNewTripRequest(riderName, stopSource, stopDestination, hour, min);
+                engine.createNewTransPoolTripRequest(riderName, stopSource, stopDestination, hour, min, isContinuous);
 
                 isValid = true;
                 System.out.println("Trip created successfully!");

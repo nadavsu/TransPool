@@ -26,3 +26,19 @@
 # System
 
 - contains the exceptions (and constants?) relies on the engine.
+
+
+
+        stopSet = JAXBMap
+                .getStops()
+                .getStop()
+                .stream()
+                .map(Stop::new)
+                .collect(Collectors.toSet());
+                
+        List<data.jaxb.Stop> JAXBStops = JAXBMap.getStops().getStop();
+        for (data.jaxb.Stop JAXBStop : JAXBStops) {
+            if (!stopSet.add(new Stop(JAXBStop))) {
+                throw new StopDuplicationException();
+            }
+        }

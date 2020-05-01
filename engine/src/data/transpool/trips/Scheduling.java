@@ -1,29 +1,31 @@
 package data.transpool.trips;
 
-import data.generated.Scheduling;
+import exceptions.data.time.InvalidTimeException;
 
-public class Schedule {
+public class Scheduling {
+/*
     private enum Day {
         SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
     }
+*/
 
 /*    private enum Recurrences {
         DAILY, WEEKLY, MONTHLY
     }*/
 
-    private Day day;
+    private int day;
     private Time timeOfDeparture;
     private String recurrences;
 
-    public Schedule(Day day, Time timeOfDeparture, String recurrences) {
-        this.day = day;
+    public Scheduling(int day, Time timeOfDeparture, String recurrences) {
+        //this.day = day;
+        //this.recurrences = recurrences;
         this.timeOfDeparture = timeOfDeparture;
-        this.recurrences = recurrences;
     }
 
-    public Schedule(Scheduling scheduling) {
-        day = Day.values()[scheduling.getDayStart() - 1];
-        recurrences = scheduling.getRecurrences();
+    public Scheduling(data.jaxb.Scheduling scheduling) throws InvalidTimeException {
+        //day = scheduling.getDayStart();
+        //recurrences = scheduling.getRecurrences();
         timeOfDeparture = new Time(scheduling.getHourStart(), 0);
     }
 
@@ -37,8 +39,6 @@ public class Schedule {
 
     @Override
     public String toString() {
-        return "Day: " + day +
-                "\nTime of departure: " + timeOfDeparture +
-                "\nRecurrences: " + recurrences;
+        return  "Time of departure: " + timeOfDeparture;
     }
 }

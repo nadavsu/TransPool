@@ -1,48 +1,48 @@
 package data.transpool;
 
-import data.generated.TransPool;
-import data.transpool.map.Map;
+import data.jaxb.TransPool;
+import data.transpool.map.TransPoolMap;
 import data.transpool.map.Stop;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TripRequest;
 import exceptions.data.StopNotFoundException;
+import exceptions.data.TransPoolDataException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TransPoolData {
 
-    private Map transpoolMap;
+    private TransPoolMap map;
     private List<TripRequest> tripRequests;
     private List<TransPoolTrip> transpoolTrips;
 
     public TransPoolData() {
-        transpoolMap = new Map();
+        map = new TransPoolMap();
         tripRequests = new ArrayList<>();
         transpoolTrips = new ArrayList<>();
     }
 
-    public TransPoolData(TransPool JAXBData) {
-        this.transpoolMap = new Map(JAXBData.getMapDescriptor());
-        transpoolTrips = JAXBData
-                .getPlannedTrips()
-                .getTransPoolTrip()
-                .stream()
-                .map(TransPoolTrip::new)
-                .collect(Collectors.toList());
-        tripRequests = new ArrayList<>();
+    public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
+        this.transpoolTrips = new ArrayList<>();
+        this.tripRequests = new ArrayList<>();
+        this.map = new TransPoolMap(JAXBData.getMapDescriptor());
+
+        List<data.jaxb.TransPoolTrip> JAXBTransPoolTripsList = JAXBData.getPlannedTrips().getTransPoolTrip();
+        for (data.jaxb.TransPoolTrip JAXBTransPoolTrip : JAXBTransPoolTripsList) {
+            addTransPoolTrip(new TransPoolTrip(JAXBTransPoolTrip, map));
+        }
     }
 
-    public Map getTranspoolMap() {
-        return transpoolMap;
+    public TransPoolMap getMap() {
+        return map;
     }
 
     public List<TripRequest> getTripRequests() {
         return tripRequests;
     }
 
-    public List<TransPoolTrip> getTranspoolTrips() {
+    public List<TransPoolTrip> getTransPoolTrips() {
         return transpoolTrips;
     }
 
@@ -51,6 +51,14 @@ public class TransPoolData {
     }
 
     public Stop getStop(String stopName) throws StopNotFoundException {
-        return transpoolMap.getStop(stopName);
+        try {
+            return map.getStop(stopName);
+        } catch (NullPointerException e) {
+            throw new StopNotFoundException(stopName);
+        }
+    }
+
+    private void addTransPoolTrip(TransPoolTrip transpoolTrip) {
+        transpoolTrips.add(transpoolTrip);
     }
 }

@@ -6,7 +6,7 @@
 //
 
 
-package data.generated;
+package data.jaxb;
 
 import java.util.ArrayList;
 import java.util.List;

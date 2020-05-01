@@ -1,14 +1,19 @@
 package data.transpool.map;
 
+import exceptions.data.StopNotFoundException;
+
+import javax.xml.bind.JAXB;
+import java.util.Objects;
+
 public class Path {
+    private Stop source;
+    private Stop destination;
+    private boolean isOneWay;
     private int length;
     private int fuelConsumption;
     private int speedLimit;
-    private boolean isOneWay;
-    private String source;
-    private String destination;
 
-    public Path(int length, int fuelConsumption, int speedLimit, boolean isOneWay, String source, String destination) {
+    public Path(Stop source, Stop destination, int length, boolean isOneWay, int fuelConsumption, int speedLimit) {
         this.length = length;
         this.fuelConsumption = fuelConsumption;
         this.speedLimit = speedLimit;
@@ -17,61 +22,78 @@ public class Path {
         this.destination = destination;
     }
 
-    public Path(data.generated.Path JAXBPath) {
-        length = JAXBPath.getLength();
-        fuelConsumption = JAXBPath.getFuelConsumption();
-        speedLimit = JAXBPath.getSpeedLimit();
-        isOneWay = JAXBPath.isOneWay();
-        source = JAXBPath.getFrom();
-        destination = JAXBPath.getTo();
+    public Path(data.jaxb.Path JAXBPath, TransPoolMap map) throws StopNotFoundException {
+        try {
+            this.source = map.getStop(JAXBPath.getFrom());
+        } catch (NullPointerException e) {
+            throw new StopNotFoundException(JAXBPath.getFrom());
+        }
+        try {
+            this.destination = map.getStop(JAXBPath.getTo());
+        } catch (NullPointerException e) {
+            throw new StopNotFoundException(JAXBPath.getTo());
+        }
+        this.length = JAXBPath.getLength();
+        this.fuelConsumption = JAXBPath.getFuelConsumption();
+        this.speedLimit = JAXBPath.getSpeedLimit();
+        this.isOneWay = JAXBPath.isOneWay();
+    }
+
+    public Path(Path other) {
+       this.source = other.source;
+       this.destination = other.destination;
+       this.length = other.length;
+       this.fuelConsumption = other.fuelConsumption;
+       this.speedLimit = other.speedLimit;
+       this.isOneWay = other.isOneWay;
+    }
+
+    public Stop getSource() {
+        return source;
+    }
+
+    public Stop getDestination() {
+        return destination;
     }
 
     public int getLength() {
         return length;
     }
 
-    public void setLength(int length) {
-        this.length = length;
+    public boolean isOneWay() {
+        return isOneWay;
     }
 
     public int getFuelConsumption() {
         return fuelConsumption;
     }
 
+    public int getSpeedLimit() {
+        return speedLimit;
+    }
+
+    public void setLength(int length) {
+        this.length = length;
+    }
+
     public void setFuelConsumption(int fuelConsumption) {
         this.fuelConsumption = fuelConsumption;
     }
 
-    public int getSpeedLimit() {
-        return speedLimit;
+    public void setSource(Stop source) {
+        this.source = source;
+    }
+
+    public void setDestination(Stop destination) {
+        this.destination = destination;
     }
 
     public void setSpeedLimit(int speedLimit) {
         this.speedLimit = speedLimit;
     }
 
-    public boolean isOneWay() {
-        return isOneWay;
-    }
-
     public void setOneWay(boolean oneWay) {
         isOneWay = oneWay;
-    }
-
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(String source) {
-        this.source = source;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
     }
 
     @Override
@@ -84,5 +106,23 @@ public class Path {
                 ", source='" + source + '\'' +
                 ", destination='" + destination + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Path)) return false;
+        Path path = (Path) o;
+        return isOneWay == path.isOneWay &&
+                length == path.length &&
+                fuelConsumption == path.fuelConsumption &&
+                speedLimit == path.speedLimit &&
+                source.equals(path.source) &&
+                destination.equals(path.destination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(source, destination);
     }
 }

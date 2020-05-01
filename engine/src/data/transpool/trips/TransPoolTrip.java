@@ -1,10 +1,11 @@
 package data.transpool.trips;
 
-import data.generated.TransPool;
+import data.transpool.map.TransPoolMap;
+import data.transpool.map.Path;
 import data.transpool.map.Stop;
 import data.transpool.user.*;
+import exceptions.data.TransPoolDataException;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class TransPoolTrip {
@@ -13,31 +14,31 @@ public class TransPoolTrip {
 
     private Driver driver;
     private Route route;
-    private int PPK;
-    private Schedule schedule;
+    private int AveragePPK;
+    private Scheduling scheduling;
     private int riderCapacity;
 
+    private int totalPrice;
     private Time timeOfArrival;
     private int[] matchedIDs;                   //This is the ID of the requestedTrips that got matched to this ride.
     private List<Stop> rideStops;               //TODO: This is not defined right.
     private int expectedFuelConsumption;
 
-    public TransPoolTrip(Driver driver, Route route, int PPK, Schedule schedule, int riderCapacity) {
+    public TransPoolTrip(Driver driver, Route route, int AveragePPK, Scheduling scheduling, int riderCapacity) {
         this.ID = IDGenerator++;
         this.driver = driver;
         this.route = route;
-        this.PPK = PPK;
-        this.schedule = schedule;
+        this.AveragePPK = AveragePPK;
+        this.scheduling = scheduling;
         this.riderCapacity = riderCapacity;
     }
 
-    public TransPoolTrip(data.generated.TransPoolTrip JAXBTrip) {
-        IDGenerator = 20000;
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTrip, TransPoolMap map) throws TransPoolDataException {
         this.ID = IDGenerator++;
         this.driver = new Driver(JAXBTrip.getOwner());
-        this.route = new Route(JAXBTrip.getRoute());
-        this.PPK = JAXBTrip.getPPK();
-        this.schedule = new Schedule(JAXBTrip.getScheduling());
+        this.route = new Route(JAXBTrip.getRoute(), map);
+        this.AveragePPK = JAXBTrip.getPPK();
+        this.scheduling = new Scheduling(JAXBTrip.getScheduling());
         this.riderCapacity = JAXBTrip.getCapacity();
     }
 
@@ -53,12 +54,16 @@ public class TransPoolTrip {
         return route;
     }
 
-    public int getPPK() {
-        return PPK;
+    public List<Path> getRouteAsList() {
+        return route.getRoute();
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public int getAveragePPK() {
+        return AveragePPK;
+    }
+
+    public Scheduling getScheduling() {
+        return scheduling;
     }
 
     public Time getTimeOfArrival() {
@@ -84,8 +89,8 @@ public class TransPoolTrip {
                 "\nTrip ID: " + ID +
                 "\n" + driver +
                 "\n" + route +
-                "\nPrice per KM: " + PPK +
-                "\n" + schedule +
+                "\nPrice per KM: " + AveragePPK +
+                "\n" + scheduling +
                 "\nRider capacity: " + riderCapacity +
                 "\nTime of Arrival: " + timeOfArrival +
                 "\nExpected Fuel Consumption: " + expectedFuelConsumption;

@@ -1,6 +1,6 @@
 package api.menus;
 
-import exceptions.system.QuitOnFinishException;
+import exceptions.QuitOnFinishException;
 
 import java.io.BufferedReader;
 import java.io.IOException;

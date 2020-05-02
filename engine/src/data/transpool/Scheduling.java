@@ -32,4 +32,9 @@ public class Scheduling {
     public Time getTime() {
         return time;
     }
+
+    @Override
+    public String toString() {
+        return recurrences + " at days " + day + " at time " + time;
+    }
 }

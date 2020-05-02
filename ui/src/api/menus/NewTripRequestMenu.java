@@ -42,6 +42,7 @@ public class NewTripRequestMenu extends UnoptionedMenu {
                 validateTime(hour, min);
 
                 System.out.println("Do you want your trip to be continuous? [y/n]: ");
+                sc.next();
                 isContinuous = sc.nextLine().toLowerCase().equals("y");
 
                 System.out.println("Creating trip request...");

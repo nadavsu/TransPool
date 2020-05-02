@@ -4,6 +4,9 @@ import data.jaxb.TransPool;
 import data.transpool.Time;
 import data.transpool.TransPoolData;
 import data.transpool.TransPoolTripRequest;
+import data.transpool.structures.TransPoolMap;
+import data.transpool.structures.TransPoolTripRequests;
+import data.transpool.structures.TransPoolTrips;
 import exceptions.data.StopNotFoundException;
 import exceptions.data.TransPoolDataException;
 import exceptions.data.time.InvalidTimeException;
@@ -13,6 +16,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.util.Calendar;
 
 public class Engine {
 
@@ -32,6 +36,7 @@ public class Engine {
         Unmarshaller unmarshaller = jc.createUnmarshaller();
         TransPool JAXBData = (TransPool) unmarshaller.unmarshal(istream);
         data = new TransPoolData(JAXBData);
+
     }
 
     public TransPoolData getData() {
@@ -40,28 +45,26 @@ public class Engine {
 
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               int hour, int min, boolean isContinuous) throws InvalidTimeException, StopNotFoundException {
-        if (!data
-                .getMap()
-                .getStops()
-                .containsKey(source)) {
+        if (!TransPoolMap.getAllStops().containsName(source)) {
             throw new StopNotFoundException(source);
         }
-        if (data
-                .getMap()
-                .getStops()
-                .containsKey(destination)) {
+        if (!TransPoolMap.getAllStops().containsName(destination)) {
             throw new StopNotFoundException(destination);
         }
-        Time time = new Time(hour, min);
-        data.addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination, time, isContinuous));
+        Calendar time = Calendar.getInstance();
+        time.set(Calendar.HOUR, hour);
+        time.set(Calendar.MINUTE, min);
+        TransPoolData
+                .getAllTransPoolTripRequests()
+                .addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination, time, isContinuous));
     }
 
-    public void showAllTransPoolTrips() {
-        data.getTranspoolTrips().forEach(System.out::println);
+    public TransPoolTrips getAllTransPoolTrips() {
+        return TransPoolData.getAllTransPoolTrips();
     }
 
-    public void showAllTransPoolTripRequests() {
-        data.getTranspoolTripRequests().forEach(System.out::println);
+    public TransPoolTripRequests getAllTransPoolTripRequests() {
+        return TransPoolData.getAllTransPoolTripRequests();
     }
 
 }

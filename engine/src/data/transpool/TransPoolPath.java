@@ -63,6 +63,10 @@ public class TransPoolPath {
         return maxSpeed;
     }
 
+    public int getPathTime() {
+        return (60 * length) / maxSpeed;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

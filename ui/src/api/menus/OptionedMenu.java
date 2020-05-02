@@ -29,11 +29,20 @@ public abstract class OptionedMenu extends Menu {
     @Override
     public void run() throws QuitOnFinishException {
         show();
+        boolean isValidInput;
         int chosenOption = getOptionFromUser();
-        getOption(chosenOption).run();
+        do {
+            try {
+                getOption(chosenOption).run();
+                isValidInput = true;
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("You must enter a number between 1 and " + options.size() + ".");
+                isValidInput = false;
+            }
+        } while (!isValidInput);
     }
 
-    public int getOptionFromUser() throws QuitOnFinishException {
+    public int getOptionFromUser() {
         int userIntegerInput = 1;
         boolean isValidInput;
         Scanner in = new Scanner(System.in);
@@ -46,10 +55,8 @@ public abstract class OptionedMenu extends Menu {
                 System.out.println("You must enter a number between 1 and " + options.size() + ".");
                 in.next();
                 isValidInput = false;
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("You must enter a number between 1 and " + options.size() + ".");
-                isValidInput = false;
             }
+
         } while (!isValidInput);
         return userIntegerInput;
     }

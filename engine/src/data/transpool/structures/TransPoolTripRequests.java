@@ -20,6 +20,14 @@ public class TransPoolTripRequests {
         return transpoolTripRequests;
     }
 
+    public TransPoolTripRequest getTripRequestByID(int ID) throws NullPointerException {
+        return transpoolTripRequests
+                .stream()
+                .filter(t -> t.getID() == ID)
+                .findFirst()
+                .orElseThrow(NullPointerException::new);
+    }
+
     @Override
     public String toString() {
         StringBuilder allRequests = new StringBuilder();

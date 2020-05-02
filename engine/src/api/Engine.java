@@ -3,12 +3,14 @@ package api;
 import data.jaxb.TransPool;
 import data.transpool.Time;
 import data.transpool.TransPoolData;
+import data.transpool.TransPoolTrip;
 import data.transpool.TransPoolTripRequest;
 import data.transpool.structures.TransPoolMap;
 import data.transpool.structures.TransPoolTripRequests;
 import data.transpool.structures.TransPoolTrips;
 import exceptions.data.StopNotFoundException;
 import exceptions.data.TransPoolDataException;
+import exceptions.data.TransPoolTripRequestNotFoundException;
 import exceptions.data.time.InvalidTimeException;
 import exceptions.file.TransPoolFileNotFoundException;
 
@@ -16,6 +18,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
 public class Engine {
 
     private static TransPoolData data;
@@ -64,8 +70,20 @@ public class Engine {
         return TransPoolData.getAllTransPoolTripRequests();
     }
 
-    public void matchTrip(int tripID) {
+    public List<TransPoolTrip> findAMatch(int tripID, int maximumMatches) {
+        TransPoolTripRequest theRequest = TransPoolData.getAllTransPoolTripRequests().getTripRequestByID(tripID);
 
+        Predicate<TransPoolTrip> matchPredicate = transPoolTrip ->
+            transPoolTrip.containsSubRoute(theRequest.getSource(), theRequest.getDestination())
+                    && transPoolTrip.getSchedule().getTime().equals(theRequest.getTimeOfDeparture());
+
+        return TransPoolData
+                .getAllTransPoolTrips()
+                .getTranspoolTrips()
+                .stream()
+                .filter(matchPredicate)
+                .limit(maximumMatches)
+                .collect(Collectors.toList());
     }
 
     public void _debugfill() throws InvalidTimeException, StopNotFoundException {

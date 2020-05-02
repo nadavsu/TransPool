@@ -5,6 +5,7 @@ import exceptions.data.time.InvalidMinutesException;
 import exceptions.data.time.InvalidTimeException;
 
 import java.util.Calendar;
+import java.util.Objects;
 
 public class Time {
 
@@ -53,5 +54,19 @@ public class Time {
         }
         stringBuilder.append(calendar.get(Calendar.MINUTE));
         return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Time)) return false;
+        Time time = (Time) o;
+        return time.calendar.get(Calendar.HOUR) == this.calendar.get(Calendar.HOUR)
+                && time.calendar.get(Calendar.MINUTE) == this.calendar.get(Calendar.MINUTE);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(calendar);
     }
 }

@@ -57,6 +57,10 @@ public class TransPoolTrip {
                 .orElse(0);
     }
 
+    public boolean containsSubRoute(String source, String destination) {
+        return route.containsSubRoute(source, destination);
+    }
+
     public String getOwner() {
         return owner;
     }

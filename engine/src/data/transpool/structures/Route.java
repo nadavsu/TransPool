@@ -28,10 +28,18 @@ public class Route {
         }
     }
 
-    public List<TransPoolPath> getSubRouteAsPathList(String source, String destination) throws StopNotFoundException {
+    public List<TransPoolPath> getSubRouteAsPathList(String source, String destination) {
         int sourceIndex = getIndexByStopName(source);
         int destinationIndex = getIndexByStopName(destination);
         return new ArrayList<>(usedPaths.subList(sourceIndex, destinationIndex + 1));
+    }
+
+    public boolean containsSubRoute(String source, String destination) {
+        int sourceIndex = getIndexByStopName(source);
+        int destinationIndex = getIndexByStopName(destination);
+
+        return (sourceIndex < destinationIndex) && (sourceIndex >= 0);
+
     }
 
     public int getNumberOfStops() {
@@ -42,13 +50,13 @@ public class Route {
         return route.get(stopIndex);
     }
 
-    public int getIndexByStopName(String stopName) throws StopNotFoundException {
+    public int getIndexByStopName(String stopName) {
         for (int i = 0; i < route.size(); i++) {
             if (route.get(i).equals(stopName)) {
                 return i;
             }
         }
-        throw new StopNotFoundException(stopName);
+        return -1;
     }
 
     public List<String> getRoute() {

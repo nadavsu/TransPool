@@ -3,7 +3,6 @@ package api.menus;
 
 import api.Engine;
 import api.menus.components.MenuTitle;
-import exceptions.QuitOnFinishException;
 
 import java.util.Scanner;
 
@@ -32,17 +31,17 @@ public abstract class InputMenu extends Menu {
     }
 
     public String getStringFromUser(String message) {
-        System.out.println(message);
+        System.out.print(message);
         return sc.nextLine().trim();
     }
 
     public int getIntegerFromUser(String message) {
-        System.out.println(message);
+        System.out.print(message);
         return sc.nextInt();
     }
 
     public boolean getBooleanFromUser(String message){
-        System.out.println(message);
+        System.out.print(message);
         return sc.nextLine().toLowerCase().equals("y");
     }
 }

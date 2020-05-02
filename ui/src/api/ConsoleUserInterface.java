@@ -3,6 +3,8 @@ package api;
 import exceptions.QuitOnFinishException;
 import api.menus.*;
 
+import java.util.Scanner;
+
 public class ConsoleUserInterface implements Runnable {
 
     public ConsoleUserInterface() {
@@ -17,10 +19,17 @@ public class ConsoleUserInterface implements Runnable {
         do {
             try {
                 mainMenu.run();
+                pause();
             } catch (QuitOnFinishException e) {
                 quit = true;
                 System.out.println(e.getMessage());
             }
         } while (!quit);
+    }
+
+    private void pause() {
+        System.out.println("\r\nPress ENTER to continue.");
+        Scanner sc = new Scanner(System.in);
+        sc.nextLine();
     }
 }

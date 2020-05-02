@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class QuitMenu extends UnoptionedMenu {
+public class QuitMenu extends InputMenu {
 
     public QuitMenu(String title) {
         super(title);

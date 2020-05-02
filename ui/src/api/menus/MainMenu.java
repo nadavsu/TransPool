@@ -9,12 +9,13 @@ public class MainMenu extends OptionedMenu {
 
     public MainMenu(String title) {
         super(title);
-        this.addMenu(new LoadFileMenu("Load file"));
-        this.addMenu(new NewTripRequestMenu("Create a new ride request"));
-        this.addMenu(new ShowAllTranspoolTripsMenu("Show all available TransPool Trips"));
-        this.addMenu(new ShowAllTripRequestsMenu("Show all ride requests"));
-        this.addMenu(new FindAMatchMenu("Find a match for a ride"));
-        this.addMenu(new QuitMenu("Quit."));
+        this.addOption(new LoadFileMenu("Load file"));
+        this.addOption(new NewTripRequestMenu("Create a new ride request"));
+        this.addOption(new ShowAllTranspoolTripsMenu("Show all available TransPool Trips"));
+        this.addOption(new ShowAllTripRequestsMenu("Show all ride requests"));
+        this.addOption(new FindAMatchMenu("Find a match for a ride"));
+        this.addOption(new QuitMenu("Quit."));
+        this.addOption(new _debugfill("debug fill"));
     }
 
 

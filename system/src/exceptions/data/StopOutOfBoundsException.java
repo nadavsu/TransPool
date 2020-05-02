@@ -1,20 +1,19 @@
 package exceptions.data;
 
-//TODO: Find the stop that is out of bounds and pass it as a parameter in the constructor.
-public class StopOutOfBoundsException extends TransPoolDataException {
-    private final String EXCEPTION_MESSAGE = "Stop coordinates are out of bounds.";
+public class StopOutOfBoundsException extends TransPoolDataException{
+    private String message;
 
-    public StopOutOfBoundsException() {
-
+    public StopOutOfBoundsException(String stopName) {
+        this.message = "The stop " + stopName + " is out of the map bounds.";
     }
 
     @Override
     public String getMessage() {
-        return EXCEPTION_MESSAGE;
+        return message;
     }
 
     @Override
     public String toString() {
-        return EXCEPTION_MESSAGE;
+        return message;
     }
 }

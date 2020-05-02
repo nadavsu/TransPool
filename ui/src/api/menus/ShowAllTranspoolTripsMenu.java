@@ -1,8 +1,6 @@
 package api.menus;
 
-import api.Engine;
-
-public class ShowAllTranspoolTripsMenu extends UnoptionedMenu {
+public class ShowAllTranspoolTripsMenu extends InputMenu {
 
     public ShowAllTranspoolTripsMenu(String title) {
         super(title);
@@ -11,10 +9,8 @@ public class ShowAllTranspoolTripsMenu extends UnoptionedMenu {
     @Override
     public void run() {
         try {
-            Engine.getInstance()
-                    .getData()
-                    .getTransPoolTrips()
-                    .forEach(System.out::println);
+            show();
+            System.out.println(engine.getAllTransPoolTrips());
         } catch (NullPointerException e) {
             System.out.println("No TransPool trips found at the moment.");
         }

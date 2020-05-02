@@ -1,10 +1,10 @@
 package exceptions.data;
 
-public class StopNotFoundException extends Exception {
+public class StopNameDuplicationException extends TransPoolDataException {
     private String message;
 
-    public StopNotFoundException(String stopName) {
-        message = "There is no such stop as " + stopName + ".";
+    public StopNameDuplicationException(String stopName) {
+        message = "There are two or more stops named " + stopName + ".";
     }
 
     @Override

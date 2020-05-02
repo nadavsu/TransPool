@@ -1,8 +1,6 @@
 package api.menus;
 
-import api.Engine;
-
-public class ShowAllTripRequestsMenu extends UnoptionedMenu {
+public class ShowAllTripRequestsMenu extends InputMenu {
     public ShowAllTripRequestsMenu(String title) {
         super(title);
     }
@@ -10,7 +8,8 @@ public class ShowAllTripRequestsMenu extends UnoptionedMenu {
     @Override
     public void run(){
         try {
-            Engine.getInstance().showAllTripRequests();
+            show();
+            System.out.println(engine.getAllTransPoolTripRequests());
         } catch (NullPointerException e) {
             System.out.println("No trip requests found at the moment.");
         }

@@ -1,23 +1,19 @@
 package exceptions.data;
 
-public class PathDoesNotExistException extends TransPoolDataException {
-    private String exceptionMessage;
-    private String source;
-    private String destination;
+public class PathDoesNotExistException extends TransPoolDataException{
+    private String message;
 
     public PathDoesNotExistException(String source, String destination) {
-        this.source = source;
-        this.destination = destination;
-        exceptionMessage = "There is no such path from " + source + " to " + destination + ".";
+        message = "There is no such path from " + source + " to " + destination + ".";
     }
 
     @Override
     public String getMessage() {
-        return exceptionMessage;
+        return message;
     }
 
     @Override
     public String toString() {
-        return exceptionMessage;
+        return message;
     }
 }

@@ -14,11 +14,13 @@ import java.util.Scanner;
  * Example - Main menu, Options menu etc.
  */
 public abstract class OptionedMenu extends Menu {
-    protected List<Menu> menus;
+    protected List<Menu> options;
+    protected MenuTitle title;
 
-    OptionedMenu(String title) {
-        super(title);
-        this.menus = new ArrayList<>();
+    OptionedMenu(String menuName) {
+        super(menuName);
+        this.title = new MenuTitle(menuName);
+        this.options = new ArrayList<>();
     }
 
     /**
@@ -27,26 +29,29 @@ public abstract class OptionedMenu extends Menu {
     @Override
     public void run() throws QuitOnFinishException {
         show();
-        int userIntegerInput;
+        int chosenOption = getOptionFromUser();
+        getOption(chosenOption).run();
+    }
+
+    public int getOptionFromUser() throws QuitOnFinishException {
+        int userIntegerInput = 1;
         boolean isValidInput;
         Scanner in = new Scanner(System.in);
-
         do {
-            System.out.print("Enter your option (1 - " + menus.size() + "): ");
+            System.out.print("Enter your option (1 - " + options.size() + "): ");
             try {
                 isValidInput = true;
                 userIntegerInput = in.nextInt();
-                getOption(userIntegerInput).run();
-                pause();
             } catch (InputMismatchException e) {
-                System.out.println("You must enter a number between 1 and " + menus.size() + ".");
+                System.out.println("You must enter a number between 1 and " + options.size() + ".");
                 in.next();
                 isValidInput = false;
             } catch (IndexOutOfBoundsException e) {
-                System.out.println("You must enter a number between 1 and " + menus.size() + ".");
+                System.out.println("You must enter a number between 1 and " + options.size() + ".");
                 isValidInput = false;
             }
-        } while (!isValidInput) ;
+        } while (!isValidInput);
+        return userIntegerInput;
     }
 
     /**
@@ -62,12 +67,12 @@ public abstract class OptionedMenu extends Menu {
      * Adds a new menu to the list of submenus. The menu can be an OptionedMenu or an UnoptionedMenu.
      * @param menu - the menu to add to the menus list.
      */
-    public void addMenu(Menu menu) {
-        menus.add(menu);
+    public void addOption(Menu menu) {
+        options.add(menu);
     }
 
     private Menu getOption(int i) {
-        return menus.get(i - 1);
+        return options.get(i - 1);
     }
 
     public MenuTitle getTitle() {
@@ -75,23 +80,17 @@ public abstract class OptionedMenu extends Menu {
     }
 
     public int getMenuLength() {
-        return menus.size();
+        return options.size();
     }
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
 
-        for (int i = 0; i < menus.size(); i++) {
+        for (int i = 0; i < options.size(); i++) {
             stringBuilder.append(i + 1).append(". ");
-            stringBuilder.append(menus.get(i).title.getTitleName()).append("\r\n");
+            stringBuilder.append(options.get(i).getMenuName()).append("\r\n");
         }
         return stringBuilder.toString();
-    }
-
-    private void pause() {
-        System.out.println("\r\nPress ENTER to continue.");
-        Scanner sc = new Scanner(System.in);
-        sc.nextLine();
     }
 }

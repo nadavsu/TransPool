@@ -7,7 +7,7 @@ import exceptions.data.time.InvalidTimeException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class NewTripRequestMenu extends UnoptionedMenu {
+public class NewTripRequestMenu extends InputMenu {
 
     public NewTripRequestMenu(String title) {
         super(title);
@@ -17,7 +17,6 @@ public class NewTripRequestMenu extends UnoptionedMenu {
     @Override
     public void run() {
         show();
-        Scanner sc = new Scanner(System.in);
         String stopSource, stopDestination;
         String riderName;
         boolean isContinuous;
@@ -27,23 +26,13 @@ public class NewTripRequestMenu extends UnoptionedMenu {
 
         do {
             try {
-                System.out.print("Enter your name: ");
-                riderName = sc.nextLine();
-
-                System.out.print("Enter your departure source: ");
-                stopSource = sc.nextLine();
-
-                System.out.print("Enter your arrival destination: ");
-                stopDestination = sc.nextLine();
-
-                System.out.print("Enter your departure time in the format HH MM: ");
-                hour = sc.nextInt();
+                riderName = getStringFromUser("Enter your name: ");
+                stopSource = getStringFromUser("Enter your departure source: ");
+                stopDestination = getStringFromUser("Enter your arrival destination: ");
+                hour = getIntegerFromUser("Enter your departure time in the format HH MM: ");
                 min = sc.nextInt();
                 validateTime(hour, min);
-
-                System.out.println("Do you want your trip to be continuous? [y/n]: ");
-                sc.next();
-                isContinuous = sc.nextLine().toLowerCase().equals("y");
+                isContinuous = getBooleanFromUser("Do you want your trip to be continuous? [y/n]: ");
 
                 System.out.println("Creating trip request...");
                 engine.createNewTransPoolTripRequest(riderName, stopSource, stopDestination, hour, min, isContinuous);

@@ -8,11 +8,11 @@ import java.util.Calendar;
 
 public class Time {
 
-    private Calendar calendar;
+    private Calendar calendar = Calendar.getInstance();
 
     public Time(int hour, int min) throws InvalidTimeException {
         setHour(hour);
-        setMin(min);
+        setMin(0);
     }
 
     public int getHour() {
@@ -43,6 +43,15 @@ public class Time {
 
     @Override
     public String toString() {
-        return calendar.toString();
+        StringBuilder stringBuilder = new StringBuilder();
+        if (calendar.get(Calendar.HOUR) < 10) {
+            stringBuilder.append("0");
+        }
+        stringBuilder.append(calendar.get(Calendar.HOUR)).append(":");
+        if (calendar.get(Calendar.MINUTE) < 10) {
+            stringBuilder.append(0);
+        }
+        stringBuilder.append(calendar.get(Calendar.MINUTE));
+        return stringBuilder.toString();
     }
 }

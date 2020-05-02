@@ -1,6 +1,6 @@
 package api.menus;
 
-public class ShowAllTripRequestsMenu extends UnoptionedMenu {
+public class ShowAllTripRequestsMenu extends InputMenu {
     public ShowAllTripRequestsMenu(String title) {
         super(title);
     }

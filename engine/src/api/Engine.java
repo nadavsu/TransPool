@@ -16,8 +16,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
-import java.util.Calendar;
-
 public class Engine {
 
     private static TransPoolData data;
@@ -44,19 +42,18 @@ public class Engine {
     }
 
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
-                                              int hour, int min, boolean isContinuous) throws InvalidTimeException, StopNotFoundException {
+                                              int hour, int min, boolean isContinuous) throws InvalidTimeException,
+                                              StopNotFoundException {
         if (!TransPoolMap.getAllStops().containsName(source)) {
             throw new StopNotFoundException(source);
         }
         if (!TransPoolMap.getAllStops().containsName(destination)) {
             throw new StopNotFoundException(destination);
         }
-        Calendar time = Calendar.getInstance();
-        time.set(Calendar.HOUR, hour);
-        time.set(Calendar.MINUTE, min);
         TransPoolData
                 .getAllTransPoolTripRequests()
-                .addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination, time, isContinuous));
+                .addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination,
+                                         new Time(hour, min), isContinuous));
     }
 
     public TransPoolTrips getAllTransPoolTrips() {
@@ -67,4 +64,14 @@ public class Engine {
         return TransPoolData.getAllTransPoolTripRequests();
     }
 
+    public void matchTrip(int tripID) {
+
+    }
+
+    public void _debugfill() throws InvalidTimeException, StopNotFoundException {
+        createNewTransPoolTripRequest("Nadav", "MTA", "Bursa", 17, 0, true);
+        createNewTransPoolTripRequest("Lasri", "Park Hayarkon", "Wolfson train", 6, 0, true);
+        createNewTransPoolTripRequest("Shaide", "Lagardia", "HIT", 22, 0, true);
+        createNewTransPoolTripRequest("Rami", "HIT", "MTA", 23, 0, true);
+    }
 }

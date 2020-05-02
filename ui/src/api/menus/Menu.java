@@ -1,14 +1,16 @@
 package api.menus;
 
+import api.Engine;
 import exceptions.QuitOnFinishException;
-import api.menus.components.MenuTitle;
 
 public abstract class Menu {
+    protected Engine engine;
+    protected String menuName;
 
-    protected MenuTitle title;
-
-    public Menu(String title) {
-        this.title = new MenuTitle(title);
+    public Menu(String menuName)
+    {
+        this.menuName = menuName;
+        this.engine = new Engine();
     }
 
      /**
@@ -28,4 +30,7 @@ public abstract class Menu {
      */
     public abstract void show();
 
+    public String getMenuName() {
+        return menuName;
+    }
 }

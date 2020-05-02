@@ -1,67 +1,74 @@
 package data.transpool;
 
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.Timer;
-
-public class TransPoolTripRequest implements TripRequest {
+public class TransPoolTripRequest {
     private static int IDGenerator = 20000;
     private int ID;
-    private String riderName;
+    private String requesterName;
     private String source;
     private String destination;
     private Time timeOfDeparture;
     private boolean isContinuous;
+    private boolean isMatched;
 
-    public TransPoolTripRequest(String riderName, String source, String destination, Time timeOfDeparture, boolean isContinuous) {
+    public TransPoolTripRequest(String requesterName, String source, String destination, Time timeOfDeparture, boolean isContinuous) {
         this.ID = IDGenerator++;
-        this.riderName = riderName;
+        this.requesterName = requesterName;
         this.source = source;
         this.destination = destination;
         this.timeOfDeparture = timeOfDeparture;
         this.isContinuous = isContinuous;
+        this.isMatched = false;
     }
 
-    @Override
+    public boolean isMatched() {
+        return isMatched;
+    }
+
     public String getRequesterName() {
-        return riderName;
+        return requesterName;
     }
 
-    @Override
     public String getSource() {
         return source;
     }
 
-    @Override
     public String getDestination() {
         return destination;
     }
 
-    @Override
     public Time getTimeOfDeparture() {
         return timeOfDeparture;
     }
 
-    @Override
     public boolean isContinuous() {
         return isContinuous;
     }
 
-    @Override
     public int getID() {
         return ID;
     }
 
-    @Override
     public String toString() {
         String requestString = "";
-        requestString += "------Trip Request------\n";
+        if (!isMatched) {
+            requestString += "------Trip Request------\n";
+        }
         requestString += "Trip request ID: " + ID + "\n";
-        requestString += "Rider name: " + riderName + "\n";
+        requestString += "Rider name: " + requesterName + "\n";
         requestString += "Source: " + source + "\n";
         requestString += "Destination: " + destination + "\n";
         requestString += "Time of departure: " + timeOfDeparture + "\n";
         requestString += "Continuous ride? " + isContinuous + "\n";
+
+        return requestString;
+    }
+
+    public String getDryInfoAsString() {
+        String requestString = "";
+        requestString += "Name of requester: " + requesterName + "\n";
+        requestString += "Stop source: " + source + "\n";
+        requestString += "Stop destination: " + destination + "\n";
+        requestString += "Time of departure: " + timeOfDeparture + "\n";
 
         return requestString;
     }

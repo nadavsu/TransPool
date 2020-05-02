@@ -2,36 +2,36 @@ package data.transpool.structures;
 
 import data.jaxb.TransPoolTrip;
 import data.transpool.TransPoolPath;
+import exceptions.data.PathDoesNotExistException;
+import exceptions.data.StopNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Route {
     private List<String> route = new ArrayList<>();
+    private List<TransPoolPath> usedPaths = new ArrayList<>();
 
-    public Route(TransPoolTrip JAXBTransPoolTrip) {
+    public Route(TransPoolTrip JAXBTransPoolTrip) throws PathDoesNotExistException {
         String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
         for (String str : routeArray) {
             route.add(str.trim());
         }
+        initUsedPaths();
     }
 
-    public TransPoolPath getPathOfSource(int index) {
-        return TransPoolMap
-                .getAllPaths()
-                .getPathBySourceAndDestination(route.get(index), route.get(index + 1));
+    private void initUsedPaths() throws PathDoesNotExistException {
+        for (int i = 0; i < route.size() - 1; i++) {
+            usedPaths.add(TransPoolMap
+                    .getAllPaths()
+                    .getPathBySourceAndDestination(route.get(i), route.get(i + 1)));
+        }
     }
 
-    public List<TransPoolPath> getSubRouteAsPathList(String source, String destination) {
-        List<TransPoolPath> subRoutePathList = new ArrayList<>();
+    public List<TransPoolPath> getSubRouteAsPathList(String source, String destination) throws StopNotFoundException {
         int sourceIndex = getIndexByStopName(source);
         int destinationIndex = getIndexByStopName(destination);
-
-        for (int i = sourceIndex; i < destinationIndex - 1; i++) {
-            subRoutePathList.add(getPathOfSource(i));
-        }
-        return subRoutePathList;
+        return new ArrayList<>(usedPaths.subList(sourceIndex, destinationIndex + 1));
     }
 
     public int getNumberOfStops() {
@@ -42,17 +42,21 @@ public class Route {
         return route.get(stopIndex);
     }
 
-    public int getIndexByStopName(String stopName) {
+    public int getIndexByStopName(String stopName) throws StopNotFoundException {
         for (int i = 0; i < route.size(); i++) {
             if (route.get(i).equals(stopName)) {
                 return i;
             }
         }
-        return -1;
+        throw new StopNotFoundException(stopName);
     }
 
     public List<String> getRoute() {
         return route;
+    }
+
+    public List<TransPoolPath> getUsedPaths() {
+        return usedPaths;
     }
 
     @Override
@@ -61,7 +65,7 @@ public class Route {
         StringBuilder routeString = new StringBuilder();
         for (i = 0; i < route.size() - 1; i++) {
             routeString.append(route.get(i));
-            routeString.append("->");
+            routeString.append(" -> ");
         }
         routeString.append(route.get(i));
         return routeString.toString();

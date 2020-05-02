@@ -1,13 +1,12 @@
 package data.transpool.structures;
 
 import data.transpool.TransPoolTripRequest;
-import data.transpool.TripRequest;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransPoolTripRequests {
-    private List<TripRequest> transpoolTripRequests;
+    private List<TransPoolTripRequest> transpoolTripRequests;
 
     public TransPoolTripRequests() {
         transpoolTripRequests = new ArrayList<>();
@@ -17,17 +16,25 @@ public class TransPoolTripRequests {
         transpoolTripRequests.add(transpoolTripRequest);
     }
 
-    public List<TripRequest> getTranspoolTripRequests() {
+    public List<TransPoolTripRequest> getTranspoolTripRequests() {
         return transpoolTripRequests;
     }
 
     @Override
     public String toString() {
         StringBuilder allRequests = new StringBuilder();
-        for (TripRequest request : transpoolTripRequests) {
+        for (TransPoolTripRequest request : transpoolTripRequests) {
             allRequests.append(request.toString());
             allRequests.append("\n");
         }
         return allRequests.toString();
+    }
+    public String getDryInfoAsString() {
+        StringBuilder transpoolTripsString = new StringBuilder();
+        for (TransPoolTripRequest trip : transpoolTripRequests) {
+            transpoolTripsString.append(trip.getDryInfoAsString());
+            transpoolTripsString.append("\n");
+        }
+        return transpoolTripsString.toString();
     }
 }

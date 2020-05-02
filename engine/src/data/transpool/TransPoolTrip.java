@@ -1,9 +1,9 @@
 package data.transpool;
 
 import data.transpool.structures.Route;
+import exceptions.data.TransPoolDataException;
 import exceptions.data.time.InvalidTimeException;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TransPoolTrip {
@@ -19,43 +19,43 @@ public class TransPoolTrip {
     private int tripPrice;
     private double averageFuelConsumption;
 
-    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException {
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException, TransPoolDataException {
         this.ID = IDGenerator++;
         this.owner = JAXBTransPoolTrip.getOwner();
         this.passengerCapacity = JAXBTransPoolTrip.getCapacity();
         this.PPK = JAXBTransPoolTrip.getPPK();
         this.schedule = new Scheduling(JAXBTransPoolTrip.getScheduling());
         this.route = new Route(JAXBTransPoolTrip);
-        calculateTotalPrice();
+
+        calculatePriceOfRoute();
         calculateTripDuration();
         calculateAverageFuelConsumption();
     }
 
-    private void calculateTotalPrice() {
-        tripPrice = 0;
-        for (int i = 0; i < route.getNumberOfStops() - 1; i++) {
-            TransPoolPath currentRoutePath = route.getPathOfSource(i);
-            tripPrice += currentRoutePath.getLength() * PPK;
-        }
+    private void calculatePriceOfRoute() {
+        tripPrice = route.
+                getUsedPaths()
+                .stream()
+                .mapToInt(p -> p.getLength() * PPK)
+                .sum();
     }
 
     private void calculateTripDuration() {
-        tripDurationInMinutes = 0;
-        for (int i = 0; i < route.getNumberOfStops() - 1; i++) {
-            TransPoolPath currentRoutePath = route.getPathOfSource(i);
-            tripDurationInMinutes += (double) (60 * currentRoutePath.getLength() / currentRoutePath.getMaxSpeed());
-        }
+        tripDurationInMinutes = route.
+                getUsedPaths()
+                .stream()
+                .mapToInt(TransPoolPath::getPathTime)
+                .sum();
     }
 
     private void calculateAverageFuelConsumption() {
-        double totalFuelConsumption = 0;
-        for (int i = 0; i < route.getNumberOfStops() - 1; i++) {
-            TransPoolPath currentRoutePath = route.getPathOfSource(i);
-            totalFuelConsumption += currentRoutePath.getFuelConsumption();
-        }
-        averageFuelConsumption = totalFuelConsumption / route.getNumberOfStops();
+        averageFuelConsumption = route
+                .getUsedPaths()
+                .stream()
+                .mapToDouble(TransPoolPath::getFuelConsumption)
+                .average()
+                .orElse(0);
     }
-
 
     public String getOwner() {
         return owner;

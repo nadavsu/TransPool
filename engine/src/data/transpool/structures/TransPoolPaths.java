@@ -2,7 +2,6 @@ package data.transpool.structures;
 
 import data.jaxb.MapDescriptor;
 import data.jaxb.Path;
-import data.transpool.TransPoolData;
 import data.transpool.TransPoolPath;
 import exceptions.data.PathDoesNotExistException;
 import exceptions.data.PathDuplicationException;
@@ -39,12 +38,13 @@ public class TransPoolPaths {
 
     }
 
-    public TransPoolPath getPathBySourceAndDestination(String source, String destination) {
-        return paths
-                .stream()
-                .filter(p -> p.getSource().equals(source) &&
-                        p.getDestination().equals(destination))
-                .findAny()
-                .orElse(null);
+    public TransPoolPath getPathBySourceAndDestination(String source, String destination) throws PathDoesNotExistException {
+        for (TransPoolPath path : paths) {
+            if (path.getSource().equals(source)
+                    && path.getDestination().equals(destination)) {
+                return path;
+            }
+        }
+        throw new PathDoesNotExistException(source, destination);
     }
 }

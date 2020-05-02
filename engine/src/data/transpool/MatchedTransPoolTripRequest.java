@@ -1,8 +1,10 @@
 package data.transpool;
 
+import exceptions.data.StopNotFoundException;
+
 import java.util.List;
 
-public class MatchedTransPoolTripRequest implements TripRequest {
+public class MatchedTransPoolTripRequest {
 
     private TransPoolTripRequest transpoolTripRequest;
     private TransPoolTrip matchedTrip;
@@ -11,7 +13,7 @@ public class MatchedTransPoolTripRequest implements TripRequest {
     private int tripPrice;
     private Time expectedTimeOfArrival;
 
-    public MatchedTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) {
+    public MatchedTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) throws StopNotFoundException {
         this.transpoolTripRequest = transpoolTripRequest;
         this.matchedTrip = matchedTrip;
         calculateTripPrice();
@@ -19,7 +21,7 @@ public class MatchedTransPoolTripRequest implements TripRequest {
         calculateExpectedTimeOfArrival();
     }
 
-    private void calculateTripPrice() {
+    private void calculateTripPrice() throws StopNotFoundException {
         List<TransPoolPath> subRoutePath = matchedTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(), transpoolTripRequest.getDestination());
@@ -29,7 +31,7 @@ public class MatchedTransPoolTripRequest implements TripRequest {
                 .sum();
     }
 
-    private void calculatePersonalFuelConsumption() {
+    private void calculatePersonalFuelConsumption() throws StopNotFoundException {
         List<TransPoolPath> subRoutePath = matchedTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
@@ -39,7 +41,7 @@ public class MatchedTransPoolTripRequest implements TripRequest {
                 .sum();
     }
 
-    private void calculateExpectedTimeOfArrival() {
+    private void calculateExpectedTimeOfArrival() throws StopNotFoundException {
         expectedTimeOfArrival = transpoolTripRequest.getTimeOfDeparture();
         List<TransPoolPath> subRoutePath = matchedTrip
                 .getRoute()
@@ -71,35 +73,40 @@ public class MatchedTransPoolTripRequest implements TripRequest {
         return tripPrice;
     }
 
-    @Override
     public int getID() {
         return transpoolTripRequest.getID();
     }
 
-    @Override
     public String getRequesterName() {
         return transpoolTripRequest.getRequesterName();
     }
 
-    @Override
     public String getSource() {
         return transpoolTripRequest.getSource();
     }
 
-    @Override
     public String getDestination() {
         return transpoolTripRequest.getDestination();
     }
 
-    @Override
     public Time getTimeOfDeparture() {
         return transpoolTripRequest.getTimeOfDeparture();
     }
 
-    @Override
     public boolean isContinuous() {
         return transpoolTripRequest.isContinuous();
     }
 
+    public String toString() {
+        String matchedTripString = "";
+        matchedTripString += "------Matched Trip------\n";
+        matchedTripString += transpoolTripRequest.toString();
+        matchedTripString += "Matched trip ID: " + matchedTrip.getID();
+        matchedTripString += "Name of driver: " + matchedTrip.getOwner();
+        matchedTripString += "Price of trip: " + tripPrice;
+        matchedTripString += "Expected time of arrival: " + expectedTimeOfArrival;
+        matchedTripString += "Personal fuel consumption: " + personalFuelConsumption;
 
+        return matchedTripString;
+    }
 }

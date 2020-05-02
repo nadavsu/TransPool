@@ -1,6 +1,6 @@
 package api.menus;
 
-public class ShowAllTranspoolTripsMenu extends UnoptionedMenu {
+public class ShowAllTranspoolTripsMenu extends InputMenu {
 
     public ShowAllTranspoolTripsMenu(String title) {
         super(title);

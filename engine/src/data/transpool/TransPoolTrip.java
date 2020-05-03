@@ -102,4 +102,13 @@ public class TransPoolTrip {
 
         return transpoolTripString;
     }
+
+    public String getDryInfoAsString() {
+        String transpoolTripString = "";
+
+        transpoolTripString += "TransPool trip ID: " + ID + "\n";
+        transpoolTripString += "Driver name: " + owner + "\n";
+        //more
+        return transpoolTripString;
+    }
 }

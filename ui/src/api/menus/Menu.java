@@ -4,13 +4,12 @@ import api.Engine;
 import exceptions.QuitOnFinishException;
 
 public abstract class Menu {
-    protected Engine engine;
+
     protected String menuName;
 
     public Menu(String menuName)
     {
         this.menuName = menuName;
-        this.engine = new Engine();
     }
 
      /**

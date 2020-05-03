@@ -1,5 +1,6 @@
 package api.menus;
 
+import api.Engine;
 import exceptions.data.TransPoolDataException;
 import exceptions.data.time.InvalidTimeException;
 import exceptions.file.UnsupportedFileException;
@@ -9,10 +10,11 @@ import java.io.IOException;
 
 public class LoadFileMenu extends InputMenu {
 
-    public static final String SUPPORTED_DATA_FILE_TYPE = ".XML";
+    private static final String SUPPORTED_DATA_FILE_TYPE = ".XML";
 
     public LoadFileMenu(String title) {
         super(title);
+        engine = new Engine();
     }
 
     /**

@@ -1,6 +1,6 @@
 package exceptions.data;
 
-public class StopNotFoundException extends Exception {
+public class StopNotFoundException extends RuntimeException {
     private String message;
 
     public StopNotFoundException(String stopName) {

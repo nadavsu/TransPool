@@ -2,6 +2,8 @@ package api.menus;
 
 import api.Engine;
 
+import java.util.List;
+
 public class ShowAllTripRequestsMenu extends InputMenu {
     private Engine engine;
     public ShowAllTripRequestsMenu(String title) {
@@ -14,7 +16,8 @@ public class ShowAllTripRequestsMenu extends InputMenu {
     public void run(){
         try {
             show();
-            System.out.println(engine.getAllTransPoolTripRequests());
+            List<String> allTransPoolTrips = engine.getAllTransPoolTripRequestsAsStrings();
+            allTransPoolTrips.forEach(System.out::println);
         } catch (NullPointerException e) {
             System.out.println("No trip requests found at the moment.");
         }

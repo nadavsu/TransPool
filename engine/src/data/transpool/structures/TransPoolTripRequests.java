@@ -28,6 +28,10 @@ public class TransPoolTripRequests {
                 .orElseThrow(NullPointerException::new);
     }
 
+    public void deleteTripRequest(TransPoolTripRequest requestToDelete) {
+        transpoolTripRequests.remove(requestToDelete);
+    }
+
     @Override
     public String toString() {
         StringBuilder allRequests = new StringBuilder();
@@ -36,13 +40,5 @@ public class TransPoolTripRequests {
             allRequests.append("\n");
         }
         return allRequests.toString();
-    }
-    public String getDryInfoAsString() {
-        StringBuilder transpoolTripsString = new StringBuilder();
-        for (TransPoolTripRequest trip : transpoolTripRequests) {
-            transpoolTripsString.append(trip.getDryInfoAsString());
-            transpoolTripsString.append("\n");
-        }
-        return transpoolTripsString.toString();
     }
 }

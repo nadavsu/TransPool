@@ -7,8 +7,12 @@ import exceptions.TransPoolRunTimeException;
 import exceptions.file.TransPoolFileDataException;
 import exceptions.time.InvalidTimeException;
 
-public class TransPoolTrip extends Trip {
+import java.util.Objects;
+
+public class TransPoolTrip {
     private static int IDGenerator = 10000;
+    private int ID;
+    private TransPoolDriver transpoolDriver;
     private int passengerCapacity;
     private Route route;
     private int PPK;
@@ -20,7 +24,7 @@ public class TransPoolTrip extends Trip {
 
     public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException, TransPoolFileDataException {
         this.ID = IDGenerator++;
-        this.associatedAccount = new TransPoolDriver(JAXBTransPoolTrip.getOwner());
+        this.transpoolDriver = new TransPoolDriver(JAXBTransPoolTrip.getOwner());
         this.passengerCapacity = JAXBTransPoolTrip.getCapacity();
         this.PPK = JAXBTransPoolTrip.getPPK();
         this.schedule = new Scheduling(JAXBTransPoolTrip.getScheduling());
@@ -60,7 +64,7 @@ public class TransPoolTrip extends Trip {
         return route.containsSubRoute(source, destination);
     }
 
-    public void addPassenger() throws TransPoolRunTimeException {
+    public void updateAfterMatch() {
         if (passengerCapacity == 0) {
             throw new TransPoolRunTimeException();
         }
@@ -68,7 +72,7 @@ public class TransPoolTrip extends Trip {
     }
 
     public TransPoolDriver getOwner() {
-        return (TransPoolDriver) associatedAccount;
+        return (TransPoolDriver) transpoolDriver;
     }
 
     public int getPassengerCapacity() {
@@ -97,7 +101,7 @@ public class TransPoolTrip extends Trip {
 
         transpoolTripString += "------TransPool Trip------\n";
         transpoolTripString += "TransPool trip ID: " + ID + "\n";
-        transpoolTripString += "Driver name: " + associatedAccount + "\n";
+        transpoolTripString += "Driver name: " + transpoolDriver + "\n";
         transpoolTripString += "Passenger capacity: " + passengerCapacity + "\n";
         transpoolTripString += "Route: " + route + "\n";
         transpoolTripString += "Schedule: " + schedule + "\n";
@@ -109,12 +113,16 @@ public class TransPoolTrip extends Trip {
         return transpoolTripString;
     }
 
-    public String getDryInfoAsString() {
-        String transpoolTripString = "";
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TransPoolTrip)) return false;
+        TransPoolTrip that = (TransPoolTrip) o;
+        return ID == that.ID;
+    }
 
-        transpoolTripString += "TransPool trip ID: " + ID + "\n";
-        transpoolTripString += "Driver name: " + associatedAccount + "\n";
-        //todo: add the rest.
-        return transpoolTripString;
+    @Override
+    public int hashCode() {
+        return Objects.hash(ID);
     }
 }

@@ -25,7 +25,7 @@ public class FindAMatchMenu extends OptionedMenu {
         Scanner sc = new Scanner(System.in);
         List<TransPoolTripRequest> allRequests = new ArrayList<>(engine.getAllTransPoolTripRequests().getTranspoolTripRequests());
         for (TransPoolTripRequest request : allRequests) {
-            this.addOption(new Option(request.getDryInfoAsString()));
+            this.addOption(new Option(request.toString()));
         }
 
         show();
@@ -40,10 +40,14 @@ public class FindAMatchMenu extends OptionedMenu {
 
         try {
             engine.findPossibleMatches(allRequests.get(chosenOption).getID(), maxMatches);
+
             OptionedMenu chooseAMatchMenu = new ChooseAMatchMenu("Here is a list of possible matches for your ride", engine);
             chooseAMatchMenu.run();
+
         } catch (NoMatchesFoundException e) {
             System.out.println(e.getMessage());
+        } finally {
+            options.clear();
         }
     }
 

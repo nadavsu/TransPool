@@ -2,6 +2,7 @@ package api.menus;
 
 import api.ConsoleUserInterface;
 import api.MatchingEngine;
+import data.transpool.trips.PossibleMatch;
 import data.transpool.trips.TransPoolTrip;
 
 public class ChooseAMatchMenu extends OptionedMenu {
@@ -11,8 +12,8 @@ public class ChooseAMatchMenu extends OptionedMenu {
     ChooseAMatchMenu(String menuName, MatchingEngine engine) {
         super(menuName);
         this.engine = engine;
-        for (TransPoolTrip trip : engine.getPossibleMatches()) {
-            this.addOption(new Option(trip.getDryInfoAsString()));
+        for (PossibleMatch possibleMatch : engine.getPossibleMatches()) {
+            this.addOption(new Option(possibleMatch.toString()));
         }
     }
 

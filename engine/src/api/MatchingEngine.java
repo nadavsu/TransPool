@@ -2,6 +2,7 @@ package api;
 
 import data.transpool.TransPoolData;
 import data.transpool.trips.MatchedTransPoolTripRequest;
+import data.transpool.trips.PossibleMatch;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TransPoolTripRequest;
 import exceptions.NoMatchesFoundException;
@@ -14,7 +15,8 @@ import java.util.stream.Collectors;
 
 public class MatchingEngine extends Engine {
     private TransPoolTripRequest tripRequestToMatch;
-    private List<TransPoolTrip> possibleMatches;
+    private PossibleMatch chosenTransPoolTripToMatch;
+    private List<PossibleMatch> possibleMatches;
 
     public MatchingEngine() {
         possibleMatches = new ArrayList<>();
@@ -38,6 +40,7 @@ public class MatchingEngine extends Engine {
                 .filter(containsSubRoutePredicate)
                 .filter(timeMatchPredicate)
                 .limit(maximumMatches)
+                .map(transpoolTrip -> new PossibleMatch(tripRequestToMatch, transpoolTrip))
                 .collect(Collectors.toList());
 
         if (possibleMatches.isEmpty()) {
@@ -46,15 +49,18 @@ public class MatchingEngine extends Engine {
     }
 
     public void createNewMatch(int indexOfPossibleMatchesList) throws StopNotFoundException {
-        TransPoolTrip chosenTransPoolTrip = possibleMatches.get(indexOfPossibleMatchesList);
-        TransPoolData.addMatch(new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTrip));
+        chosenTransPoolTripToMatch = possibleMatches.get(indexOfPossibleMatchesList);
+        TransPoolData.addMatch(new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTripToMatch));
+
+        chosenTransPoolTripToMatch.getPossibleTransPoolTrip().updateAfterMatch();
+        TransPoolData.allTransPoolTripRequests.deleteTripRequest(tripRequestToMatch);
     }
 
-    public List<TransPoolTrip> getPossibleMatches() {
+    public List<PossibleMatch> getPossibleMatches() {
         return possibleMatches;
     }
 
-    public TransPoolTrip getPossibleMatch(int index) {
+    public PossibleMatch getPossibleMatch(int index) {
         return possibleMatches.get(index);
     }
 }

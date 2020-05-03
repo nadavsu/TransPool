@@ -1,8 +1,13 @@
 package api.menus;
 
+import api.Engine;
+
 public class ShowAllTripRequestsMenu extends InputMenu {
+    private Engine engine;
     public ShowAllTripRequestsMenu(String title) {
         super(title);
+        engine = new Engine();
+
     }
 
     @Override

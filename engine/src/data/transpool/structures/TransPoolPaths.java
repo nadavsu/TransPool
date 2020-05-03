@@ -2,10 +2,10 @@ package data.transpool.structures;
 
 import data.jaxb.MapDescriptor;
 import data.jaxb.Path;
-import data.transpool.TransPoolPath;
-import exceptions.data.PathDoesNotExistException;
-import exceptions.data.PathDuplicationException;
-import exceptions.data.TransPoolDataException;
+import data.transpool.map.TransPoolPath;
+import exceptions.file.PathDoesNotExistException;
+import exceptions.file.PathDuplicationException;
+import exceptions.file.TransPoolFileDataException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class TransPoolPaths {
     private List<TransPoolPath> paths = new ArrayList<>();
 
-    public TransPoolPaths(MapDescriptor JAXBMap) throws TransPoolDataException {
+    public TransPoolPaths(MapDescriptor JAXBMap) throws TransPoolFileDataException {
         List<Path> JAXBPathList = JAXBMap.getPaths().getPath();
         for (Path JAXBPath : JAXBPathList) {
             TransPoolPath transpoolPath = new TransPoolPath(JAXBPath);

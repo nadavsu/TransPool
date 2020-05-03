@@ -1,9 +1,14 @@
 package api.menus;
 
+import api.Engine;
+
 public class ShowAllTranspoolTripsMenu extends InputMenu {
+
+    private Engine engine;
 
     public ShowAllTranspoolTripsMenu(String title) {
         super(title);
+        engine = new Engine();
     }
 
     @Override

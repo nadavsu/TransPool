@@ -1,5 +1,6 @@
 package api;
 
+import api.menus.components.Constants;
 import exceptions.QuitOnFinishException;
 import api.menus.*;
 
@@ -31,5 +32,12 @@ public class ConsoleUserInterface implements Runnable {
         System.out.println("\r\nPress ENTER to continue.");
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
+    }
+
+    public static void printLine() {
+        for (int i = 0; i < Constants.MENU_WIDTH; i++) {
+            System.out.print("-");
+        }
+        System.out.print("\n");
     }
 }

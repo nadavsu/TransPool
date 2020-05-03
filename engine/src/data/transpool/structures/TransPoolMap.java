@@ -2,7 +2,10 @@ package data.transpool.structures;
 
 import data.jaxb.MapDescriptor;
 import data.jaxb.Stop;
-import exceptions.data.*;
+import exceptions.file.MapDimensionsException;
+import exceptions.file.StopCoordinatesDuplicationException;
+import exceptions.file.StopOutOfBoundsException;
+import exceptions.file.TransPoolFileDataException;
 
 import java.util.List;
 
@@ -18,7 +21,7 @@ public class TransPoolMap {
     private static TransPoolStops allStops;
     private static TransPoolPaths allPaths;
 
-    public TransPoolMap(MapDescriptor JAXBMap) throws TransPoolDataException {
+    public TransPoolMap(MapDescriptor JAXBMap) throws TransPoolFileDataException {
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
         allStops = new TransPoolStops(JAXBMap);
@@ -60,7 +63,7 @@ public class TransPoolMap {
         return allPaths;
     }
 
-    public class MapMatrix {
+    public static class MapMatrix {
         private String[][] mapMatrix = new String[TransPoolMap.MAX_MAP_SIZE][TransPoolMap.MAX_MAP_SIZE];
 
         public MapMatrix(MapDescriptor JAXBMap) throws StopOutOfBoundsException, StopCoordinatesDuplicationException {

@@ -1,7 +1,8 @@
 package api.menus;
 
-import api.Engine;
-import data.transpool.TransPoolTripRequest;
+import api.MatchingEngine;
+import data.transpool.trips.TransPoolTripRequest;
+import exceptions.NoMatchesFoundException;
 import exceptions.QuitOnFinishException;
 
 import java.util.ArrayList;
@@ -10,11 +11,11 @@ import java.util.Scanner;
 
 public class FindAMatchMenu extends OptionedMenu {
 
-    private Engine engine;
+    private MatchingEngine engine;
 
     public FindAMatchMenu(String title) {
         super(title);
-        engine = new Engine();
+        engine = new MatchingEngine();
     }
 
     @Override
@@ -28,14 +29,22 @@ public class FindAMatchMenu extends OptionedMenu {
         }
 
         show();
+        chosenOption = getOptionFromUser();
         do {
-            chosenOption = getOptionFromUser();
             System.out.print("Enter the maximum matches to find: ");
             maxMatches = sc.nextInt();
+            if (maxMatches <= 0) {
+                System.out.println("The maximum number of matches needs to be bigger than 0.");
+            }
         } while (maxMatches < 1);
 
-        engine.findPossibleMatches(allRequests.get(chosenOption - 1).getID(), maxMatches);
-        OptionedMenu chooseAMatchMenu = new ChooseATripMenu("Choose your match", engine);
-        chooseAMatchMenu.run();
+        try {
+            engine.findPossibleMatches(allRequests.get(chosenOption).getID(), maxMatches);
+            OptionedMenu chooseAMatchMenu = new ChooseAMatchMenu("Here is a list of possible matches for your ride", engine);
+            chooseAMatchMenu.run();
+        } catch (NoMatchesFoundException e) {
+            System.out.println(e.getMessage());
+        }
     }
+
 }

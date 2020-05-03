@@ -1,5 +1,6 @@
 package api.menus;
 
+import exceptions.InvalidOptionException;
 import exceptions.QuitOnFinishException;
 import api.menus.components.MenuTitle;
 
@@ -29,36 +30,37 @@ public abstract class OptionedMenu extends Menu {
     @Override
     public void run() throws QuitOnFinishException {
         show();
-        boolean isValidInput;
         int chosenOption = getOptionFromUser();
-        do {
-            try {
-                getOption(chosenOption).run();
-                isValidInput = true;
-            } catch (IndexOutOfBoundsException e) {
-                System.out.println("You must enter a number between 1 and " + options.size() + ".");
-                isValidInput = false;
-            }
-        } while (!isValidInput);
+        options.get(chosenOption).run();
     }
 
-    public int getOptionFromUser() {
+    public int getOptionFromUser() throws IndexOutOfBoundsException {
         int userIntegerInput = 1;
         boolean isValidInput;
         Scanner in = new Scanner(System.in);
         do {
             System.out.print("Enter your option (1 - " + options.size() + "): ");
             try {
-                isValidInput = true;
                 userIntegerInput = in.nextInt();
+                validateOptionInput(userIntegerInput);
+                isValidInput = true;
             } catch (InputMismatchException e) {
                 System.out.println("You must enter a number between 1 and " + options.size() + ".");
                 in.next();
                 isValidInput = false;
+            } catch (InvalidOptionException e) {
+                System.out.println("You must enter a number between 1 and " + options.size() + ".");
+                isValidInput = false;
             }
 
         } while (!isValidInput);
-        return userIntegerInput;
+        return userIntegerInput - 1;
+    }
+
+    private void validateOptionInput(int userInput) throws InvalidOptionException {
+        if (userInput > options.size() || userInput <= 0) {
+            throw new InvalidOptionException();
+        }
     }
 
     /**
@@ -76,18 +78,6 @@ public abstract class OptionedMenu extends Menu {
      */
     public void addOption(Menu menu) {
         options.add(menu);
-    }
-
-    private Menu getOption(int i) {
-        return options.get(i - 1);
-    }
-
-    public MenuTitle getTitle() {
-        return title;
-    }
-
-    public int getMenuLength() {
-        return options.size();
     }
 
     @Override

@@ -1,9 +1,8 @@
 package data.transpool.structures;
 
 import data.jaxb.TransPoolTrip;
-import data.transpool.TransPoolPath;
-import exceptions.data.PathDoesNotExistException;
-import exceptions.data.StopNotFoundException;
+import data.transpool.map.TransPoolPath;
+import exceptions.file.PathDoesNotExistException;
 
 import java.util.ArrayList;
 import java.util.List;

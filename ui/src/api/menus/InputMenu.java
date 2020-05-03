@@ -13,12 +13,10 @@ import java.util.Scanner;
 public abstract class InputMenu extends Menu {
     protected MenuTitle title;
     protected Scanner sc;
-    protected Engine engine;
 
     InputMenu(String menuName) {
         super(menuName);
         this.title = new MenuTitle(menuName);
-        this.engine = new Engine();
         this.sc = new Scanner(System.in);
 
     }

@@ -7,7 +7,7 @@ package api.menus.components;
 public class MenuTitle {
 
     private String titleName;
-
+    private String theTitle;
     public MenuTitle(String title) {
         this.titleName = title;
     }
@@ -32,7 +32,6 @@ public class MenuTitle {
         }
         builder.append(Constants.TITLE_EDGE);
         builder.append("\r\n");
-
         return builder.toString();
     }
 

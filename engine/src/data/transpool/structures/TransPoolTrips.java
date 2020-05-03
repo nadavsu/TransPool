@@ -1,11 +1,11 @@
 package data.transpool.structures;
 
 import data.jaxb.PlannedTrips;
-import data.transpool.TransPoolPath;
-import data.transpool.TransPoolTrip;
-import exceptions.data.PathDoesNotExistException;
-import exceptions.data.TransPoolDataException;
-import exceptions.data.time.InvalidTimeException;
+import data.transpool.map.TransPoolPath;
+import data.transpool.trips.TransPoolTrip;
+import exceptions.file.PathDoesNotExistException;
+import exceptions.file.TransPoolFileDataException;
+import exceptions.time.InvalidTimeException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.List;
 public class TransPoolTrips {
     private List<TransPoolTrip> transpoolTrips = new ArrayList<>();
 
-    public TransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolDataException, InvalidTimeException {
+    public TransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolFileDataException, InvalidTimeException {
         List<data.jaxb.TransPoolTrip> JAXBTrips = JAXBTransPoolTrips.getTransPoolTrip();
         for (data.jaxb.TransPoolTrip JAXBTrip : JAXBTrips) {
             addTransPoolTrip(new TransPoolTrip(JAXBTrip));

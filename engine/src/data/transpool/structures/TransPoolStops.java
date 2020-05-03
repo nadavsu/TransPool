@@ -2,8 +2,8 @@ package data.transpool.structures;
 
 import data.jaxb.MapDescriptor;
 import data.jaxb.Stop;
-import data.transpool.TransPoolStop;
-import exceptions.data.StopNameDuplicationException;
+import data.transpool.map.TransPoolStop;
+import exceptions.file.StopNameDuplicationException;
 
 import java.util.HashMap;
 import java.util.List;

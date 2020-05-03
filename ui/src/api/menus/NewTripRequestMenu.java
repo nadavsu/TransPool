@@ -1,16 +1,17 @@
 package api.menus;
-import api.Engine;
-import exceptions.data.StopNotFoundException;
-import exceptions.data.time.InvalidHoursException;
-import exceptions.data.time.InvalidMinutesException;
-import exceptions.data.time.InvalidTimeException;
+import api.TripEngine;
+import exceptions.StopNotFoundException;
+import exceptions.time.InvalidHoursException;
+import exceptions.time.InvalidMinutesException;
+import exceptions.time.InvalidTimeException;
 
 import java.util.InputMismatchException;
 
 public class NewTripRequestMenu extends InputMenu {
-
+    private TripEngine engine;
     public NewTripRequestMenu(String title) {
         super(title);
+        engine = new TripEngine();
     }
 
 

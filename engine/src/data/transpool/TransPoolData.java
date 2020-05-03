@@ -4,20 +4,22 @@ import data.jaxb.TransPool;
 import data.transpool.structures.TransPoolMap;
 import data.transpool.structures.TransPoolTripRequests;
 import data.transpool.structures.TransPoolTrips;
-import exceptions.data.TransPoolDataException;
-import exceptions.data.time.InvalidTimeException;
+import data.transpool.trips.MatchedTransPoolTripRequest;
+import data.transpool.trips.TransPoolTripRequest;
+import exceptions.file.TransPoolFileDataException;
+import exceptions.time.InvalidTimeException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransPoolData {
 
-    private static TransPoolMap map;
-    private static TransPoolTrips allTransPoolTrips;
-    private static TransPoolTripRequests allTransPoolTripRequests;
-    private static List<MatchedTransPoolTripRequest> allMatchedTrips;
+    public static TransPoolMap map;
+    public static TransPoolTrips allTransPoolTrips;
+    public static TransPoolTripRequests allTransPoolTripRequests;
+    public static List<MatchedTransPoolTripRequest> allMatchedTrips;
 
-    public TransPoolData(TransPool JAXBData) throws TransPoolDataException, InvalidTimeException {
+    public TransPoolData(TransPool JAXBData) throws TransPoolFileDataException, InvalidTimeException {
         map = new TransPoolMap(JAXBData.getMapDescriptor());
         allTransPoolTrips = new TransPoolTrips(JAXBData.getPlannedTrips());
         allTransPoolTripRequests = new TransPoolTripRequests();
@@ -46,7 +48,11 @@ public class TransPoolData {
         return allMatchedTrips;
     }
 
-    public void addMatch(MatchedTransPoolTripRequest matchedTransPoolTripRequest) {
+    public static void addTransPoolTripRequest(TransPoolTripRequest transPoolTripRequest) {
+        allTransPoolTripRequests.addTransPoolTripRequest(transPoolTripRequest);
+    }
+
+    public static void addMatch(MatchedTransPoolTripRequest matchedTransPoolTripRequest) {
         allMatchedTrips.add(matchedTransPoolTripRequest);
     }
 }

@@ -1,10 +1,9 @@
 package data.transpool.structures;
 
-import data.transpool.TransPoolTripRequest;
+import data.transpool.trips.TransPoolTripRequest;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TransPoolTripRequests {
     private List<TransPoolTripRequest> transpoolTripRequests;

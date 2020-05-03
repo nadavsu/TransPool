@@ -1,9 +1,9 @@
 package api.menus;
 
-import api.Engine;
-import exceptions.data.TransPoolDataException;
-import exceptions.data.time.InvalidTimeException;
-import exceptions.file.UnsupportedFileException;
+import api.FileEngine;
+import exceptions.UnsupportedFileException;
+import exceptions.file.TransPoolFileDataException;
+import exceptions.time.InvalidTimeException;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -11,10 +11,9 @@ import java.io.IOException;
 public class LoadFileMenu extends InputMenu {
 
     private static final String SUPPORTED_DATA_FILE_TYPE = ".XML";
-
+    private FileEngine engine;
     public LoadFileMenu(String title) {
         super(title);
-        engine = new Engine();
     }
 
     /**
@@ -32,12 +31,13 @@ public class LoadFileMenu extends InputMenu {
                 validateFileType(fileName);
 
                 System.out.println("Loading " + fileName + " to system...");
-                engine.loadFile(fileName);
+                engine = new FileEngine(fileName);
+                engine.loadFile();
 
                 System.out.println("File loaded successfully!");
 
                 isValidInput = true;
-            } catch (IOException | JAXBException | TransPoolDataException | InvalidTimeException e) {
+            } catch (IOException | JAXBException | TransPoolFileDataException | InvalidTimeException e) {
                 System.out.println(e.getMessage());
                 isValidInput = false;
             }

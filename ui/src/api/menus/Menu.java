@@ -2,6 +2,7 @@ package api.menus;
 
 import api.Engine;
 import exceptions.QuitOnFinishException;
+import exceptions.TransPoolFileNotLoadedException;
 
 public abstract class Menu {
 
@@ -22,7 +23,7 @@ public abstract class Menu {
      * @throws QuitOnFinishException - A menu can throw a QuitOnFinishException to signal the program to stop running
      *                                 when finished running the menu.
      */
-    public abstract void run() throws QuitOnFinishException;
+    public abstract void run() throws QuitOnFinishException, TransPoolFileNotLoadedException;
 
     /**
      * Prints to the console the menu in the proper format.

@@ -1,27 +1,24 @@
 package data.transpool.trips;
 
-import data.transpool.map.TransPoolPath;
 import data.transpool.user.TransPoolDriver;
 import data.transpool.user.TransPoolRider;
 import exceptions.StopNotFoundException;
 
-import java.util.List;
-
 public class MatchedTransPoolTripRequest {
     private int requestID;
-    private String transpoolRiderName;
+    private TransPoolRider transpoolRider;
     private String source;
     private String destination;
 
     private int transpoolTripID;
-    private String transpoolDriverName;
+    private TransPoolDriver transpoolDriverName;
     private int tripPrice;
     private double personalFuelConsumption;
     private Time expectedTimeOfArrival;
 
     public MatchedTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest, PossibleMatch matchedTrip) throws StopNotFoundException {
         this.requestID = transpoolTripRequest.getID();
-        this.transpoolRiderName = transpoolTripRequest.getTranspoolRider().getUsername();
+        this.transpoolRider = transpoolTripRequest.getTranspoolRider();
         this.source = transpoolTripRequest.getSource();
         this.destination = transpoolTripRequest.getDestination();
         this.tripPrice = matchedTrip.getTripPrice();
@@ -36,8 +33,8 @@ public class MatchedTransPoolTripRequest {
         return requestID;
     }
 
-    public String getTranspoolRiderName() {
-        return transpoolRiderName;
+    public TransPoolRider getTranspoolRider() {
+        return transpoolRider;
     }
 
     public String getSource() {
@@ -52,7 +49,7 @@ public class MatchedTransPoolTripRequest {
         return transpoolTripID;
     }
 
-    public String getTranspoolDriverName() {
+    public TransPoolDriver getTranspoolDriverName() {
         return transpoolDriverName;
     }
 
@@ -72,7 +69,7 @@ public class MatchedTransPoolTripRequest {
         String matchedTripString = "";
         matchedTripString += "------Matched Trip------\n";
         matchedTripString += "Request ID: " + requestID + "\n";
-        matchedTripString += "Name of rider: " + transpoolRiderName + "\n";
+        matchedTripString += "Name of rider: " + transpoolRider + "\n";
         matchedTripString += "Source stop: " + source + "\n";
         matchedTripString += "Destination stop: " + destination + "\n";
         matchedTripString += "Matched trip ID: " + transpoolTripID + "\n";

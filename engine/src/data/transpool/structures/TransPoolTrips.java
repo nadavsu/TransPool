@@ -1,7 +1,8 @@
 package data.transpool.structures;
 
 import data.jaxb.PlannedTrips;
-import data.transpool.map.TransPoolPath;
+import data.transpool.map.Map;
+import data.transpool.map.Path;
 import data.transpool.trips.TransPoolTrip;
 import exceptions.file.PathDoesNotExistException;
 import exceptions.file.TransPoolFileDataException;
@@ -22,11 +23,10 @@ public class TransPoolTrips {
 
     private void addTransPoolTrip(TransPoolTrip transpoolTrip) throws PathDoesNotExistException {
         Route tripRoute = transpoolTrip.getRoute();
-
         for (int i = 0; i <  tripRoute.getNumberOfStops() - 1; i++) {
             String source = tripRoute.getStopNameByIndex(i);
             String destination = tripRoute.getStopNameByIndex(i + 1);
-            TransPoolPath thePath = TransPoolMap
+            Path thePath = Map
                     .getAllPaths()
                     .getPathBySourceAndDestination(source, destination);
 

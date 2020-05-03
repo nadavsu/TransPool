@@ -1,8 +1,7 @@
 package data.transpool.structures;
 
 import data.jaxb.MapDescriptor;
-import data.jaxb.Stop;
-import data.transpool.map.TransPoolStop;
+import data.transpool.map.Stop;
 import exceptions.file.StopNameDuplicationException;
 
 import java.util.HashMap;
@@ -11,19 +10,19 @@ import java.util.Map;
 
 public class TransPoolStops {
 
-    private Map<String, TransPoolStop> stops = new HashMap<>();
+    private Map<String, Stop> stops = new HashMap<>();
 
     public TransPoolStops(MapDescriptor JAXBMap) throws StopNameDuplicationException {
-        List<Stop> JAXBStopsList = JAXBMap.getStops().getStop();
-        for(Stop stop : JAXBStopsList) {
+        List<data.jaxb.Stop> JAXBStopsList = JAXBMap.getStops().getStop();
+        for(data.jaxb.Stop stop : JAXBStopsList) {
             if (stops.containsKey(stop.getName())) {
                 throw new StopNameDuplicationException(stop.getName());
             }
-            stops.put(stop.getName(), new TransPoolStop(stop));
+            stops.put(stop.getName(), new Stop(stop));
         }
     }
 
-    public Map<String, TransPoolStop> getStops() {
+    public Map<String, Stop> getStops() {
         return stops;
     }
 

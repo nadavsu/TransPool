@@ -2,7 +2,7 @@ package data.transpool.map;
 
 import java.util.Objects;
 
-public class TransPoolPath {
+public class Path {
     private String source;
     private String destination;
     private boolean isOneWay;
@@ -10,7 +10,7 @@ public class TransPoolPath {
     private double fuelConsumption;
     private int maxSpeed;
 
-    public TransPoolPath(data.jaxb.Path JAXBPath) {
+    public Path(data.jaxb.Path JAXBPath) {
         this.source = JAXBPath.getFrom().trim();
         this.destination = JAXBPath.getTo().trim();
         this.isOneWay = JAXBPath.isOneWay();
@@ -19,7 +19,7 @@ public class TransPoolPath {
         this.maxSpeed = JAXBPath.getSpeedLimit();
     }
 
-    public TransPoolPath(TransPoolPath other) {
+    public Path(Path other) {
         this.source = other.source;
         this.destination = other.destination;
         this.isOneWay = other.isOneWay;
@@ -70,8 +70,8 @@ public class TransPoolPath {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof TransPoolPath)) return false;
-        TransPoolPath that = (TransPoolPath) o;
+        if (!(o instanceof Path)) return false;
+        Path that = (Path) o;
 
         return ((this.source.equals(that.source)
                 && this.destination.equals(that.destination)) ||

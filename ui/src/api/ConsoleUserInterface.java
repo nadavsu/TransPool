@@ -3,6 +3,7 @@ package api;
 import api.menus.components.Constants;
 import exceptions.QuitOnFinishException;
 import api.menus.*;
+import exceptions.TransPoolFileNotLoadedException;
 
 import java.util.Scanner;
 
@@ -23,6 +24,8 @@ public class ConsoleUserInterface implements Runnable {
                 pause();
             } catch (QuitOnFinishException e) {
                 quit = true;
+                System.out.println(e.getMessage());
+            } catch (TransPoolFileNotLoadedException e) {
                 System.out.println(e.getMessage());
             }
         } while (!quit);

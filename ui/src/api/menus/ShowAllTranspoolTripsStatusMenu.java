@@ -1,18 +1,23 @@
 package api.menus;
 
 import api.Engine;
+import exceptions.TransPoolFileNotLoadedException;
 
-public class ShowAllTranspoolTripsMenu extends InputMenu {
+public class ShowAllTranspoolTripsStatusMenu extends InputMenu {
 
     private Engine engine;
 
-    public ShowAllTranspoolTripsMenu(String title) {
+    public ShowAllTranspoolTripsStatusMenu(String title) {
         super(title);
         engine = new Engine();
     }
 
     @Override
-    public void run() {
+    public void run() throws TransPoolFileNotLoadedException {
+        if (!engine.isFileLoaded()) {
+            throw new TransPoolFileNotLoadedException();
+        }
+
         try {
             show();
             System.out.println(engine.getAllTransPoolTrips());

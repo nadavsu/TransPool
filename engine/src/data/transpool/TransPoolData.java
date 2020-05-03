@@ -1,7 +1,7 @@
 package data.transpool;
 
 import data.jaxb.TransPool;
-import data.transpool.structures.TransPoolMap;
+import data.transpool.map.Map;
 import data.transpool.structures.TransPoolTripRequests;
 import data.transpool.structures.TransPoolTrips;
 import data.transpool.trips.MatchedTransPoolTripRequest;
@@ -14,19 +14,22 @@ import java.util.List;
 
 public class TransPoolData {
 
-    public static TransPoolMap map;
+    public static Map map;
     public static TransPoolTrips allTransPoolTrips;
     public static TransPoolTripRequests allTransPoolTripRequests;
     public static List<MatchedTransPoolTripRequest> allMatchedTrips;
 
+    public static boolean isLoaded = false;
+
     public TransPoolData(TransPool JAXBData) throws TransPoolFileDataException, InvalidTimeException {
-        map = new TransPoolMap(JAXBData.getMapDescriptor());
+        isLoaded = true;
+        map = new Map(JAXBData.getMapDescriptor());
         allTransPoolTrips = new TransPoolTrips(JAXBData.getPlannedTrips());
         allTransPoolTripRequests = new TransPoolTripRequests();
         allMatchedTrips = new ArrayList<>();
     }
 
-    public static TransPoolMap getMap() {
+    public static Map getMap() {
         return map;
     }
 

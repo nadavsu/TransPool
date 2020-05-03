@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
 
 public class MatchingEngine extends Engine {
     private TransPoolTripRequest tripRequestToMatch;
-    private PossibleMatch chosenTransPoolTripToMatch;
     private List<PossibleMatch> possibleMatches;
+    private PossibleMatch chosenTransPoolTripToMatch;
 
     public MatchingEngine() {
         possibleMatches = new ArrayList<>();
@@ -50,17 +50,18 @@ public class MatchingEngine extends Engine {
 
     public void createNewMatch(int indexOfPossibleMatchesList) throws StopNotFoundException {
         chosenTransPoolTripToMatch = possibleMatches.get(indexOfPossibleMatchesList);
-        TransPoolData.addMatch(new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTripToMatch));
+        MatchedTransPoolTripRequest theMatchedRequest = new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTripToMatch);
+        TransPoolData.addMatch(theMatchedRequest);
 
-        chosenTransPoolTripToMatch.getPossibleTransPoolTrip().updateAfterMatch();
+        updateTransPoolDataAfterMatch(theMatchedRequest);
+    }
+
+    private void updateTransPoolDataAfterMatch(MatchedTransPoolTripRequest theMatchedRequest) {
+        chosenTransPoolTripToMatch.getPossibleTransPoolTrip().updateAfterMatch(theMatchedRequest);
         TransPoolData.allTransPoolTripRequests.deleteTripRequest(tripRequestToMatch);
     }
 
     public List<PossibleMatch> getPossibleMatches() {
         return possibleMatches;
-    }
-
-    public PossibleMatch getPossibleMatch(int index) {
-        return possibleMatches.get(index);
     }
 }

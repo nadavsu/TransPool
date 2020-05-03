@@ -1,13 +1,13 @@
 package data.transpool.trips;
 
-import data.transpool.map.TransPoolPath;
+import data.transpool.map.Path;
 import data.transpool.structures.Route;
 import data.transpool.user.TransPoolDriver;
 import exceptions.TransPoolRunTimeException;
 import exceptions.file.TransPoolFileDataException;
 import exceptions.time.InvalidTimeException;
 
-import java.util.Objects;
+import java.util.*;
 
 public class TransPoolTrip {
     private static int IDGenerator = 10000;
@@ -21,6 +21,8 @@ public class TransPoolTrip {
     private int tripDurationInMinutes;
     private int tripPrice;
     private double averageFuelConsumption;
+
+    private List<RiderStatus> allRiderStatuses = new ArrayList<>();
 
     public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException, TransPoolFileDataException {
         this.ID = IDGenerator++;
@@ -47,7 +49,7 @@ public class TransPoolTrip {
         tripDurationInMinutes = route.
                 getUsedPaths()
                 .stream()
-                .mapToInt(TransPoolPath::getPathTime)
+                .mapToInt(Path::getPathTime)
                 .sum();
     }
 
@@ -55,7 +57,7 @@ public class TransPoolTrip {
         averageFuelConsumption = route
                 .getUsedPaths()
                 .stream()
-                .mapToDouble(TransPoolPath::getFuelConsumption)
+                .mapToDouble(Path::getFuelConsumption)
                 .average()
                 .orElse(0);
     }
@@ -64,15 +66,16 @@ public class TransPoolTrip {
         return route.containsSubRoute(source, destination);
     }
 
-    public void updateAfterMatch() {
+    public void updateAfterMatch(MatchedTransPoolTripRequest matchedRequest) {
         if (passengerCapacity == 0) {
             throw new TransPoolRunTimeException();
         }
         passengerCapacity--;
+        allRiderStatuses.add(new RiderStatus(matchedRequest));
     }
 
     public TransPoolDriver getOwner() {
-        return (TransPoolDriver) transpoolDriver;
+        return transpoolDriver;
     }
 
     public int getPassengerCapacity() {
@@ -109,6 +112,7 @@ public class TransPoolTrip {
         transpoolTripString += "Average fuel consumption: " + averageFuelConsumption + "\n";
         transpoolTripString += "Price per kilometer: " + PPK + "\n";
         transpoolTripString += "Total trip price: " + tripPrice + "\n";
+        transpoolTripString += "Rider details: " + allRiderStatuses + "\n";
 
         return transpoolTripString;
     }
@@ -124,5 +128,22 @@ public class TransPoolTrip {
     @Override
     public int hashCode() {
         return Objects.hash(ID);
+    }
+
+    private class RiderStatus {
+        private int riderID;
+        private String source;
+        private String destination;
+
+        public RiderStatus(MatchedTransPoolTripRequest matchedRequest) {
+            this.riderID = matchedRequest.getTranspoolRider().getID();
+            this.source = matchedRequest.getSource();
+            this.destination = matchedRequest.getDestination();
+        }
+
+        @Override
+        public String toString() {
+            return "Rider " + riderID + " gets on at " + source + " and gets off at " + destination;
+        }
     }
 }

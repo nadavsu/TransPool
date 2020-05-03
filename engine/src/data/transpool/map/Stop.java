@@ -1,11 +1,11 @@
 package data.transpool.map;
 
-public class TransPoolStop {
+public class Stop {
     private int x;
     private int y;
     private String name;
 
-    public TransPoolStop(data.jaxb.Stop JAXBStop) {
+    public Stop(data.jaxb.Stop JAXBStop) {
         this.x = JAXBStop.getX();
         this.y = JAXBStop.getY();
         this.name = JAXBStop.getName();

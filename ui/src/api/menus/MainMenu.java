@@ -11,7 +11,7 @@ public class MainMenu extends OptionedMenu {
         super(title);
         this.addOption(new LoadFileMenu("Load file"));
         this.addOption(new NewTripRequestMenu("Create a new ride request"));
-        this.addOption(new ShowAllTranspoolTripsMenu("Show all available TransPool Trips"));
+        this.addOption(new ShowAllTranspoolTripsStatusMenu("Show all available TransPool Trips"));
         this.addOption(new ShowAllTripRequestsMenu("Show all ride requests"));
         this.addOption(new FindAMatchMenu("Find a match for a ride"));
         this.addOption(new QuitMenu("Quit."));

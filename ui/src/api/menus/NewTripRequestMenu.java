@@ -1,6 +1,7 @@
 package api.menus;
 import api.TripEngine;
 import exceptions.StopNotFoundException;
+import exceptions.TransPoolFileNotLoadedException;
 import exceptions.time.InvalidHoursException;
 import exceptions.time.InvalidMinutesException;
 import exceptions.time.InvalidTimeException;
@@ -16,7 +17,11 @@ public class NewTripRequestMenu extends InputMenu {
 
 
     @Override
-    public void run() {
+    public void run() throws TransPoolFileNotLoadedException {
+        if (!engine.isFileLoaded()) {
+            throw new TransPoolFileNotLoadedException();
+        }
+
         show();
         String stopSource, stopDestination;
         String riderName;
@@ -50,7 +55,7 @@ public class NewTripRequestMenu extends InputMenu {
                 isValid = false;
             } catch (InputMismatchException e) {
                 System.out.println("Time must only contain numbers!");
-                sc.next();
+                sc.nextLine();
                 isValid = false;
             }
         } while (!isValid);

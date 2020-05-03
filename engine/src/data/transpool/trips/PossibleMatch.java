@@ -1,14 +1,16 @@
 package data.transpool.trips;
 
-import data.transpool.map.TransPoolPath;
+import data.transpool.map.Path;
+import data.transpool.user.TransPoolDriver;
 import exceptions.StopNotFoundException;
+import exceptions.time.InvalidTimeException;
 
 import java.util.List;
 
 public class PossibleMatch {
 
     private int transpoolTripID;
-    private String transpoolDriverName;
+    private TransPoolDriver transpoolDriver;
     private int tripPrice;
     private Time estimatedTimeOfArrival;
     private double averageFuelConsumption;
@@ -18,14 +20,16 @@ public class PossibleMatch {
     public PossibleMatch(TransPoolTripRequest transpoolTripRequest, TransPoolTrip possibleTransPoolTrip) {
         this.possibleTransPoolTrip = possibleTransPoolTrip;
         this.transpoolTripID = possibleTransPoolTrip.getID();
-        this.transpoolDriverName = possibleTransPoolTrip.getOwner().getUsername();
+        this.transpoolDriver = possibleTransPoolTrip.getOwner();
+        this.estimatedTimeOfArrival = new Time(possibleTransPoolTrip.getSchedule().getTime());
+
         calculateTripPrice(transpoolTripRequest, possibleTransPoolTrip);
         calculateEstimatedTimeOfArrival(transpoolTripRequest, possibleTransPoolTrip);
         calculateAverageFuelConsumption(transpoolTripRequest, possibleTransPoolTrip);
     }
 
     private void calculateTripPrice(TransPoolTripRequest transpoolTripRequest, TransPoolTrip possibleTransPoolTrip) throws StopNotFoundException {
-        List<TransPoolPath> subRoutePath = possibleTransPoolTrip
+        List<Path> subRoutePath = possibleTransPoolTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(), transpoolTripRequest.getDestination());
 
@@ -36,23 +40,24 @@ public class PossibleMatch {
     }
 
     private void calculateAverageFuelConsumption(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) throws StopNotFoundException {
-        List<TransPoolPath> subRoutePath = matchedTrip
+        List<Path> subRoutePath = matchedTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
+
         averageFuelConsumption = subRoutePath
                 .stream()
-                .mapToDouble(TransPoolPath::getFuelConsumption)
+                .mapToDouble(Path::getFuelConsumption)
                 .sum();
     }
 
     private void calculateEstimatedTimeOfArrival(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) throws StopNotFoundException {
-        estimatedTimeOfArrival = transpoolTripRequest.getTimeOfDeparture();
-        List<TransPoolPath> subRoutePath = matchedTrip
+        List<Path> subRoutePath = matchedTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
+
         int minutesToAdd = subRoutePath
                 .stream()
-                .mapToInt(TransPoolPath::getPathTime)
+                .mapToInt(Path::getPathTime)
                 .sum();
         estimatedTimeOfArrival.addMinutes(minutesToAdd);
     }
@@ -61,8 +66,8 @@ public class PossibleMatch {
         return transpoolTripID;
     }
 
-    public String getTranspoolDriverName() {
-        return transpoolDriverName;
+    public TransPoolDriver getTranspoolDriverName() {
+        return transpoolDriver;
     }
 
     public int getTripPrice() {
@@ -84,7 +89,7 @@ public class PossibleMatch {
     @Override
     public String toString() {
         return "TransPool Trip ID: " + transpoolTripID + "\n"
-                + "Driver name: " + transpoolDriverName + "\n"
+                + "Driver name: " + transpoolDriver + "\n"
                 + "Estimated time of arrival: " + estimatedTimeOfArrival + "\n"
                 + "Average fuel consumption: " + averageFuelConsumption + "\n"
                 + "Trip price: " + tripPrice + "\n";

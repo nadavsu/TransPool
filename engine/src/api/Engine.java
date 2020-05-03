@@ -47,4 +47,8 @@ public class Engine {
         return unmatchedTransPoolTripRequestStrings;
     }
 
+    public boolean isFileLoaded() {
+        return TransPoolData.isLoaded;
+    }
+
 }

@@ -1,9 +1,12 @@
 package api.menus;
 
 import api.MatchingEngine;
+import data.transpool.TransPoolData;
 import data.transpool.trips.TransPoolTripRequest;
+import data.transpool.user.TransPoolDriver;
 import exceptions.NoMatchesFoundException;
 import exceptions.QuitOnFinishException;
+import exceptions.TransPoolFileNotLoadedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +22,11 @@ public class FindAMatchMenu extends OptionedMenu {
     }
 
     @Override
-    public void run() throws QuitOnFinishException {
+    public void run() throws QuitOnFinishException, TransPoolFileNotLoadedException {
+        if (!engine.isFileLoaded()) {
+            throw new TransPoolFileNotLoadedException();
+        }
+
         int maxMatches;
         int chosenOption;
         Scanner sc = new Scanner(System.in);

@@ -11,17 +11,17 @@ public class Scheduling {
         DAILY, BIDAILY, WEEKLY, MONTHLY
     }
 
-    private Day day;
+    private int day;
     private Recurrences recurrences;
     private Time time;
 
     public Scheduling(data.jaxb.Scheduling JAXBScheduling) throws InvalidTimeException {
-        day = Day.MONDAY;
+        day = 0;
         recurrences = Recurrences.DAILY;
         time = new Time(JAXBScheduling.getHourStart(), 0);
     }
 
-    public Day getDay() {
+    public int getDay() {
         return day;
     }
 

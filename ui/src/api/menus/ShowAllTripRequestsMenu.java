@@ -1,6 +1,7 @@
 package api.menus;
 
 import api.Engine;
+import exceptions.TransPoolFileNotLoadedException;
 
 import java.util.List;
 
@@ -13,7 +14,11 @@ public class ShowAllTripRequestsMenu extends InputMenu {
     }
 
     @Override
-    public void run(){
+    public void run() throws TransPoolFileNotLoadedException {
+        if (!engine.isFileLoaded()) {
+            throw new TransPoolFileNotLoadedException();
+        }
+
         try {
             show();
             List<String> allTransPoolTrips = engine.getAllTransPoolTripRequestsAsStrings();

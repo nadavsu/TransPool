@@ -1,7 +1,7 @@
 package api;
 
 import data.transpool.TransPoolData;
-import data.transpool.structures.TransPoolMap;
+import data.transpool.map.Map;
 import data.transpool.trips.Time;
 import data.transpool.trips.TransPoolTripRequest;
 import exceptions.StopNotFoundException;
@@ -14,10 +14,10 @@ public class TripEngine extends Engine {
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               int hour, int min, boolean isContinuous) throws InvalidTimeException,
                                                 StopNotFoundException {
-        if (!TransPoolMap.getAllStops().containsName(source)) {
+        if (!Map.getAllStops().containsName(source)) {
             throw new StopNotFoundException(source);
         }
-        if (!TransPoolMap.getAllStops().containsName(destination)) {
+        if (!Map.getAllStops().containsName(destination)) {
             throw new StopNotFoundException(destination);
         }
         TransPoolData.addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination,
@@ -25,9 +25,9 @@ public class TripEngine extends Engine {
     }
 
     public void _debugfill() throws InvalidTimeException, StopNotFoundException {
-        createNewTransPoolTripRequest("Nadav", "MTA", "Bursa", 17, 0, true);
-        createNewTransPoolTripRequest("Lasri", "Park Hayarkon", "Wolfson train", 6, 0, true);
-        createNewTransPoolTripRequest("Shaide", "Lagardia", "HIT", 22, 0, true);
+        createNewTransPoolTripRequest("Nadav", "Wolfson train", "MTA", 13, 0, true);
+        createNewTransPoolTripRequest("Lasri", "Yoseftal", "Wolfson train", 13, 0, true);
+        createNewTransPoolTripRequest("Shaide", "MTA", "Rabin Square", 22, 0, true);
         createNewTransPoolTripRequest("Rami", "HIT", "MTA", 7, 0, true);
     }
 }

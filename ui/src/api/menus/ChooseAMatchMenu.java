@@ -1,9 +1,7 @@
 package api.menus;
 
-import api.ConsoleUserInterface;
 import api.MatchingEngine;
 import data.transpool.trips.PossibleMatch;
-import data.transpool.trips.TransPoolTrip;
 
 public class ChooseAMatchMenu extends OptionedMenu {
 

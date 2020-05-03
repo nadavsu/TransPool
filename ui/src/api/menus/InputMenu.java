@@ -41,6 +41,7 @@ public abstract class InputMenu extends Menu {
 
     public boolean getBooleanFromUser(String message){
         System.out.print(message);
+        sc.nextLine();
         return sc.nextLine().toLowerCase().equals("y");
     }
 }

@@ -1,7 +1,9 @@
-package data.transpool.structures;
+package data.transpool.map;
 
 import data.jaxb.MapDescriptor;
 import data.jaxb.Stop;
+import data.transpool.structures.TransPoolPaths;
+import data.transpool.structures.TransPoolStops;
 import exceptions.file.MapDimensionsException;
 import exceptions.file.StopCoordinatesDuplicationException;
 import exceptions.file.StopOutOfBoundsException;
@@ -9,7 +11,7 @@ import exceptions.file.TransPoolFileDataException;
 
 import java.util.List;
 
-public class TransPoolMap {
+public class Map {
 
     public final static int MIN_MAP_SIZE = 6;
     public final static int MAX_MAP_SIZE = 100;
@@ -21,7 +23,7 @@ public class TransPoolMap {
     private static TransPoolStops allStops;
     private static TransPoolPaths allPaths;
 
-    public TransPoolMap(MapDescriptor JAXBMap) throws TransPoolFileDataException {
+    public Map(MapDescriptor JAXBMap) throws TransPoolFileDataException {
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
         allStops = new TransPoolStops(JAXBMap);
@@ -33,14 +35,14 @@ public class TransPoolMap {
         if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
             throw new MapDimensionsException();
         }
-        TransPoolMap.width = width;
+        Map.width = width;
     }
 
     private void setLength(int length) throws MapDimensionsException {
         if (length > MAX_MAP_SIZE || length < MIN_MAP_SIZE) {
             throw new MapDimensionsException();
         }
-        TransPoolMap.length = length;
+        Map.length = length;
     }
 
     public static int getWidth() {
@@ -64,7 +66,7 @@ public class TransPoolMap {
     }
 
     public static class MapMatrix {
-        private String[][] mapMatrix = new String[TransPoolMap.MAX_MAP_SIZE][TransPoolMap.MAX_MAP_SIZE];
+        private String[][] mapMatrix = new String[Map.MAX_MAP_SIZE][Map.MAX_MAP_SIZE];
 
         public MapMatrix(MapDescriptor JAXBMap) throws StopOutOfBoundsException, StopCoordinatesDuplicationException {
             List<Stop> JAXBStopsList = JAXBMap.getStops().getStop();

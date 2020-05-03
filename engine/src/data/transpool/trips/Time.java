@@ -16,15 +16,20 @@ public class Time {
         setMin(0);
     }
 
+    public Time(Time other) {
+        calendar.set(Calendar.HOUR_OF_DAY, other.getHour());
+        calendar.set(Calendar.MINUTE, other.getMin());
+    }
+
     public int getHour() {
-        return calendar.get(Calendar.HOUR);
+        return calendar.get(Calendar.HOUR_OF_DAY);
     }
 
     public void setHour(int hour) throws InvalidTimeException {
         if (hour < 0 || hour > 23) {
             throw new InvalidHoursException();
         }
-        calendar.set(Calendar.HOUR, hour);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
     }
 
     public int getMin() {
@@ -45,10 +50,10 @@ public class Time {
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
-        if (calendar.get(Calendar.HOUR) < 10) {
+        if (calendar.get(Calendar.HOUR_OF_DAY) < 10) {
             stringBuilder.append("0");
         }
-        stringBuilder.append(calendar.get(Calendar.HOUR)).append(":");
+        stringBuilder.append(calendar.get(Calendar.HOUR_OF_DAY)).append(":");
         if (calendar.get(Calendar.MINUTE) < 10) {
             stringBuilder.append(0);
         }
@@ -61,7 +66,7 @@ public class Time {
         if (this == o) return true;
         if (!(o instanceof Time)) return false;
         Time time = (Time) o;
-        return time.calendar.get(Calendar.HOUR) == this.calendar.get(Calendar.HOUR)
+        return time.calendar.get(Calendar.HOUR_OF_DAY) == this.calendar.get(Calendar.HOUR_OF_DAY)
                 && time.calendar.get(Calendar.MINUTE) == this.calendar.get(Calendar.MINUTE);
     }
 

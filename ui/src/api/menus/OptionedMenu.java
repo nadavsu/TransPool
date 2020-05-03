@@ -3,6 +3,7 @@ package api.menus;
 import exceptions.InvalidOptionException;
 import exceptions.QuitOnFinishException;
 import api.menus.components.MenuTitle;
+import exceptions.TransPoolFileNotLoadedException;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
@@ -28,7 +29,7 @@ public abstract class OptionedMenu extends Menu {
      * @see Menu#run()
      */
     @Override
-    public void run() throws QuitOnFinishException {
+    public void run() throws QuitOnFinishException, TransPoolFileNotLoadedException {
         show();
         int chosenOption = getOptionFromUser();
         options.get(chosenOption).run();

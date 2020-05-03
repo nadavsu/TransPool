@@ -1,7 +1,8 @@
 package data.transpool.structures;
 
 import data.jaxb.TransPoolTrip;
-import data.transpool.map.TransPoolPath;
+import data.transpool.map.Map;
+import data.transpool.map.Path;
 import exceptions.file.PathDoesNotExistException;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class Route {
     private List<String> route = new ArrayList<>();
-    private List<TransPoolPath> usedPaths = new ArrayList<>();
+    private List<Path> usedPaths = new ArrayList<>();
 
     public Route(TransPoolTrip JAXBTransPoolTrip) throws PathDoesNotExistException {
         String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
@@ -21,16 +22,16 @@ public class Route {
 
     private void initUsedPaths() throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
-            usedPaths.add(TransPoolMap
+            usedPaths.add(Map
                     .getAllPaths()
                     .getPathBySourceAndDestination(route.get(i), route.get(i + 1)));
         }
     }
 
-    public List<TransPoolPath> getSubRouteAsPathList(String source, String destination) {
+    public List<Path> getSubRouteAsPathList(String source, String destination) {
         int sourceIndex = getIndexByStopName(source);
         int destinationIndex = getIndexByStopName(destination);
-        return new ArrayList<>(usedPaths.subList(sourceIndex, destinationIndex + 1));
+        return new ArrayList<>(usedPaths.subList(sourceIndex, destinationIndex));
     }
 
     public boolean containsSubRoute(String source, String destination) {
@@ -62,7 +63,7 @@ public class Route {
         return route;
     }
 
-    public List<TransPoolPath> getUsedPaths() {
+    public List<Path> getUsedPaths() {
         return usedPaths;
     }
 

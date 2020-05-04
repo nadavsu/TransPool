@@ -1,6 +1,9 @@
 package exceptions.file;
 
-public class PathDuplicationException extends TransPoolDataFileException {
+/**
+ * Thrown when there are two paths of the same source and destination in a file.
+ */
+public class PathDuplicationException extends TransPoolDataException {
     private String message;
 
     public PathDuplicationException(String source, String destination) {

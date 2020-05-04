@@ -1,6 +1,6 @@
 package api.menus;
 import api.TripEngine;
-import exceptions.StopNotFoundException;
+import exceptions.file.StopNotFoundException;
 import exceptions.TransPoolFileNotLoadedException;
 import exceptions.time.InvalidHoursException;
 import exceptions.time.InvalidMinutesException;
@@ -31,7 +31,7 @@ public class NewTripRequestMenu extends InputMenu {
             throw new TransPoolFileNotLoadedException();
         }
 
-        show();
+        showMenu();
         String stopSource, stopDestination;
         String riderName;
         boolean isContinuous;

@@ -15,7 +15,6 @@ public class MainMenu extends OptionedMenu {
         this.addOption(new ShowAllTripRequestsMenu("Show all ride requests"));
         this.addOption(new FindAMatchMenu("Find a match for a ride"));
         this.addOption(new QuitMenu("Quit."));
-        this.addOption(new _debugfill("debug fill"));
     }
 
 

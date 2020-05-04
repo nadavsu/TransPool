@@ -1,10 +1,10 @@
-package exceptions;
+package exceptions.file;
 
-public class StopNotFoundException extends RuntimeException {
+public class StopNotFoundException extends Exception {
     private String message;
 
     public StopNotFoundException(String stopName) {
-        message = "There is no such stop as " + stopName + ".";
+        message = "The stop " + stopName + " was not found.";
     }
 
     @Override

@@ -1,6 +1,9 @@
 package exceptions.file;
 
-public class MapDimensionsException extends TransPoolDataFileException {
+/**
+ * Thrown when trying to create a new map with invalid dimensions.
+ */
+public class MapDimensionsException extends TransPoolDataException {
     private final String EXCEPTION_MESSAGE = "Map dimensions are invalid.";
 
     public MapDimensionsException() {

@@ -2,7 +2,7 @@ package data.transpool.trips;
 
 import data.transpool.user.TransPoolDriver;
 import data.transpool.user.TransPoolRider;
-import exceptions.StopNotFoundException;
+import exceptions.file.StopNotFoundException;
 
 public class MatchedTransPoolTripRequest {
     private int requestID;
@@ -16,7 +16,7 @@ public class MatchedTransPoolTripRequest {
     private double personalFuelConsumption;
     private Time expectedTimeOfArrival;
 
-    public MatchedTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest, PossibleMatch matchedTrip) throws StopNotFoundException {
+    public MatchedTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest, PossibleMatch matchedTrip) {
         this.requestID = transpoolTripRequest.getID();
         this.transpoolRider = transpoolTripRequest.getTranspoolRider();
         this.source = transpoolTripRequest.getSource();

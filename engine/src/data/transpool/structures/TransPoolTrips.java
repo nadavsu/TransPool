@@ -5,7 +5,7 @@ import data.transpool.map.Map;
 import data.transpool.map.Path;
 import data.transpool.trips.TransPoolTrip;
 import exceptions.file.PathDoesNotExistException;
-import exceptions.file.TransPoolDataFileException;
+import exceptions.file.TransPoolDataException;
 import exceptions.time.InvalidTimeException;
 
 import java.util.ArrayList;
@@ -14,26 +14,26 @@ import java.util.List;
 public class TransPoolTrips {
     private List<TransPoolTrip> transpoolTrips = new ArrayList<>();
 
-    public TransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolDataFileException, InvalidTimeException {
+    public TransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolDataException {
         List<data.jaxb.TransPoolTrip> JAXBTrips = JAXBTransPoolTrips.getTransPoolTrip();
         for (data.jaxb.TransPoolTrip JAXBTrip : JAXBTrips) {
             addTransPoolTrip(new TransPoolTrip(JAXBTrip));
         }
     }
 
-    private void addTransPoolTrip(TransPoolTrip transpoolTrip) throws PathDoesNotExistException {
-        Route tripRoute = transpoolTrip.getRoute();
+    /**
+     * Adds a TP trip to the structure.
+     * @param transpoolTrip - the trip to add.
+     */
+    private void addTransPoolTrip(TransPoolTrip transpoolTrip) {
+        /*Route tripRoute = transpoolTrip.getRoute();
         for (int i = 0; i <  tripRoute.getNumberOfStops() - 1; i++) {
             String source = tripRoute.getStopNameByIndex(i);
             String destination = tripRoute.getStopNameByIndex(i + 1);
-            Path thePath = Map
-                    .getAllPaths()
-                    .getPathBySourceAndDestination(source, destination);
-
-            if (thePath == null) {
+            if (!Map.getAllPaths().containsPath(source, destination)) {
                 throw new PathDoesNotExistException(source, destination);
             }
-        }
+        }*/
         transpoolTrips.add(transpoolTrip);
     }
 

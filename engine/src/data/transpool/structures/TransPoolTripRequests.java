@@ -20,6 +20,13 @@ public class TransPoolTripRequests {
         return transpoolTripRequests;
     }
 
+    /**
+     * Finds a trip request by given trip request ID by iterating over all trip requests.
+     * @param ID - The ID of the desired request.
+     * @return -
+     * @throws NullPointerException - If TP trip request was not found.
+     * TODO: Create a TransPoolTripRequestNotFoundException and throw it here?
+     */
     public TransPoolTripRequest getTripRequestByID(int ID) throws NullPointerException {
         return transpoolTripRequests
                 .stream()

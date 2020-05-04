@@ -3,7 +3,7 @@ package exceptions;
 /**
  * QuitOnFinishException is thrown when the user decides to terminate the program and quit.
  */
-public class QuitOnFinishException extends Exception {
+public class QuitOnFinishException extends RuntimeException {
     private final String EXCEPTION_MESSAGE = "Thank you for using TransPool!";
 
     public QuitOnFinishException() {

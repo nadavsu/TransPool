@@ -1,7 +1,6 @@
 package api.menus;
 
 
-import api.Engine;
 import api.menus.components.MenuTitle;
 
 import java.util.Scanner;
@@ -22,10 +21,10 @@ public abstract class InputMenu extends Menu {
     }
 
     /**
-     * @see Menu#show()
+     * @see Menu#showMenu()
      */
     @Override
-    public void show() {
+    public void showMenu() {
         title.show();
     }
 

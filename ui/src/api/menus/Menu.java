@@ -23,12 +23,12 @@ public abstract class Menu {
      * @throws QuitOnFinishException - A menu can throw a QuitOnFinishException to signal the program to stop running
      *                                 when finished running the menu.
      */
-    public abstract void run() throws QuitOnFinishException, TransPoolFileNotLoadedException;
+    public abstract void run() throws TransPoolFileNotLoadedException;
 
     /**
      * Prints to the console the menu in the proper format.
      */
-    public abstract void show();
+    public abstract void showMenu();
 
     public String getMenuName() {
         return menuName;

@@ -2,8 +2,7 @@ package data.transpool.trips;
 
 import data.transpool.map.Path;
 import data.transpool.user.TransPoolDriver;
-import exceptions.StopNotFoundException;
-import exceptions.time.InvalidTimeException;
+import exceptions.file.StopNotFoundException;
 
 import java.util.List;
 
@@ -28,7 +27,7 @@ public class PossibleMatch {
         calculateAverageFuelConsumption(transpoolTripRequest, possibleTransPoolTrip);
     }
 
-    private void calculateTripPrice(TransPoolTripRequest transpoolTripRequest, TransPoolTrip possibleTransPoolTrip) throws StopNotFoundException {
+    private void calculateTripPrice(TransPoolTripRequest transpoolTripRequest, TransPoolTrip possibleTransPoolTrip) {
         List<Path> subRoutePath = possibleTransPoolTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(), transpoolTripRequest.getDestination());
@@ -39,7 +38,7 @@ public class PossibleMatch {
                 .sum();
     }
 
-    private void calculateAverageFuelConsumption(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) throws StopNotFoundException {
+    private void calculateAverageFuelConsumption(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) {
         List<Path> subRoutePath = matchedTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
@@ -50,7 +49,7 @@ public class PossibleMatch {
                 .sum();
     }
 
-    private void calculateEstimatedTimeOfArrival(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) throws StopNotFoundException {
+    private void calculateEstimatedTimeOfArrival(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) {
         List<Path> subRoutePath = matchedTrip
                 .getRoute()
                 .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
@@ -88,7 +87,8 @@ public class PossibleMatch {
 
     @Override
     public String toString() {
-        return "TransPool Trip ID: " + transpoolTripID + "\n"
+        return "------TransPool Trip------"
+                + "TransPool Trip ID: " + transpoolTripID + "\n"
                 + "Driver name: " + transpoolDriver + "\n"
                 + "Estimated time of arrival: " + estimatedTimeOfArrival + "\n"
                 + "Average fuel consumption: " + averageFuelConsumption + "\n"

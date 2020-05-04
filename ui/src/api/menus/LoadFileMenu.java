@@ -2,8 +2,7 @@ package api.menus;
 
 import api.FileEngine;
 import exceptions.UnsupportedFileException;
-import exceptions.file.TransPoolDataFileException;
-import exceptions.time.InvalidTimeException;
+import exceptions.file.TransPoolDataException;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -21,7 +20,7 @@ public class LoadFileMenu extends InputMenu {
      */
     @Override
     public void run() {
-        show();
+        showMenu();
         boolean isValidInput;
         String fileName;
 
@@ -37,7 +36,7 @@ public class LoadFileMenu extends InputMenu {
                 System.out.println("File loaded successfully!");
 
                 isValidInput = true;
-            } catch (IOException | JAXBException | TransPoolDataFileException | InvalidTimeException e) {
+            } catch (IOException | JAXBException | TransPoolDataException e) {
                 System.out.println(e.getMessage());
                 isValidInput = false;
             }

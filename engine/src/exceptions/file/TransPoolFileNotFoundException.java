@@ -2,6 +2,9 @@ package exceptions.file;
 
 import java.io.FileNotFoundException;
 
+/**
+ * Thrown when the file trying to load was not found.
+ */
 public class TransPoolFileNotFoundException extends FileNotFoundException {
     private final String EXCEPTION_MESSAGE = "File not found!";
 

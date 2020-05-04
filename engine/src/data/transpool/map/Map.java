@@ -7,7 +7,7 @@ import data.transpool.structures.TransPoolStops;
 import exceptions.file.MapDimensionsException;
 import exceptions.file.StopCoordinatesDuplicationException;
 import exceptions.file.StopOutOfBoundsException;
-import exceptions.file.TransPoolDataFileException;
+import exceptions.file.TransPoolDataException;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public class Map {
     /**
      * Constructor for creating a map out of the JAXB generated classes.
      * @param JAXBMap - JAXB Generated map.
-     * @throws TransPoolDataFileException - Thrown if there's a problem with the data inside the TP data file.
+     * @throws TransPoolDataException - Thrown if there's a problem with the data inside the TP data file.
      */
-    public Map(MapDescriptor JAXBMap) throws TransPoolDataFileException {
+    public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
         allStops = new TransPoolStops(JAXBMap);

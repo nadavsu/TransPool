@@ -1,11 +1,9 @@
 package api.menus;
 
 import api.MatchingEngine;
-import data.transpool.TransPoolData;
 import data.transpool.trips.TransPoolTripRequest;
-import data.transpool.user.TransPoolDriver;
 import exceptions.NoMatchesFoundException;
-import exceptions.QuitOnFinishException;
+import exceptions.NoOptionsToShowException;
 import exceptions.TransPoolFileNotLoadedException;
 
 import java.util.ArrayList;
@@ -28,18 +26,15 @@ public class FindAMatchMenu extends OptionedMenu {
     }
 
     @Override
-    public void run() throws QuitOnFinishException, TransPoolFileNotLoadedException {
+    public void run() throws TransPoolFileNotLoadedException {
         if (!engine.isFileLoaded()) {
             throw new TransPoolFileNotLoadedException();
         }
 
         //Getting the trip requests as options in the options list.
         List<TransPoolTripRequest> allRequests = new ArrayList<>(engine.getAllTransPoolTripRequests().getTranspoolTripRequests());
-        for (TransPoolTripRequest request : allRequests) {
-            this.addOption(new Option(request.toString()));
-        }
-
-        show();
+        createOptions(allRequests);
+        showMenu();
         getOptionFromUser();
         int maxMatches = getMaxMatches();
 
@@ -69,6 +64,16 @@ public class FindAMatchMenu extends OptionedMenu {
             }
         } while (maxMatches < 1);
         return maxMatches;
+    }
+
+    private void createOptions(List<TransPoolTripRequest> allRequests) throws NoOptionsToShowException {
+        for (TransPoolTripRequest request : allRequests) {
+            this.addOption(new Option(request.toString()));
+        }
+
+        if (options.isEmpty()) {
+            throw new NoOptionsToShowException();
+        }
     }
 
 }

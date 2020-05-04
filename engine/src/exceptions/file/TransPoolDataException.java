@@ -1,11 +1,12 @@
 package exceptions.file;
 
-import java.io.IOException;
-
-public class TransPoolDataFileException extends Exception {
+/**
+ * Master class for all file exceptions.
+ */
+public class TransPoolDataException extends Exception {
     private final String EXCEPTION_MESSAGE = "Data in the file is invalid!";
 
-    public TransPoolDataFileException() {
+    public TransPoolDataException() {
 
     }
 

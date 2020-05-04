@@ -24,7 +24,7 @@ public class ShowAllTranspoolTripsStatusMenu extends InputMenu {
         }
 
         try {
-            show();
+            showMenu();
             System.out.println(engine.getAllTransPoolTrips());
         } catch (NullPointerException e) {
             System.out.println("No TransPool trips found at the moment.");

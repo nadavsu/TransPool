@@ -1,9 +1,9 @@
 package exceptions;
 
-public class TripRequestAlreadyMatchedException extends Exception {
-    private final String EXCEPTION_MESSAGE = "Trip request is already matched!";
+public class NoOptionsToShowException extends TransPoolRunTimeException {
+    private final String EXCEPTION_MESSAGE = "There are no options to show.";
 
-    public TripRequestAlreadyMatchedException() {
+    public NoOptionsToShowException() {
     }
 
     @Override

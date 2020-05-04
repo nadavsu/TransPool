@@ -5,16 +5,24 @@ import data.transpool.map.Map;
 import data.transpool.map.Path;
 import exceptions.file.PathDoesNotExistException;
 import exceptions.file.PathDuplicationException;
-import exceptions.file.TransPoolDataFileException;
+import exceptions.file.TransPoolDataException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
+/**
+ * A structure containing the list of paths.
+ */
 public class TransPoolPaths {
     private List<Path> paths = new ArrayList<>();
 
-    public TransPoolPaths(MapDescriptor JAXBMap) throws TransPoolDataFileException {
+    /**
+     * Constructor for creating a list of paths from JAXB generated path classes.
+     * @param JAXBMap - The JAXB generated path.
+     * @throws TransPoolDataException - thrown if there's a problem with the data inside the JAXB classes/file.
+     */
+    public TransPoolPaths(MapDescriptor JAXBMap) throws TransPoolDataException {
         List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
         for (data.jaxb.Path JAXBPath : JAXBPathList) {
             Path transpoolPath = new Path(JAXBPath);
@@ -39,19 +47,24 @@ public class TransPoolPaths {
 
     }
 
-    public Path getPathBySourceAndDestination(String source, String destination) throws PathDoesNotExistException {
+    /**
+     * Finds the path with the given source and destination stop names.
+     * @param source - The name of the source stop.
+     * @param destination - The name of the destination stop.
+     * @return A reference to the path from the list of all paths if found, null otherwise.
+     */
+    public Path getPathBySourceAndDestination(String source, String destination) {
         Predicate<Path> sourceDestinationMatchPredicate = p ->
                 p.getDestination().equals(destination) && p.getSource().equals(source);
 
-        Path foundPath = paths
+        return paths
                 .stream()
                 .filter(sourceDestinationMatchPredicate)
                 .findFirst()
                 .orElse(null);
+    }
 
-        if (foundPath == null) {
-            throw new PathDoesNotExistException(source, destination);
-        }
-        return foundPath;
+    public boolean containsPath(String source, String destination) {
+        return getPathBySourceAndDestination(source, destination) != null;
     }
 }

@@ -1,6 +1,9 @@
 package exceptions.file;
 
-public class StopCoordinatesDuplicationException extends TransPoolDataFileException {
+/**
+ * Thrown when trying to create a new stop with coordinates that already taken.
+ */
+public class StopCoordinatesDuplicationException extends TransPoolDataException {
     private String message;
 
     public StopCoordinatesDuplicationException(int x, int y) {

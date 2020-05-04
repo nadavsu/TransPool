@@ -4,7 +4,7 @@ import data.transpool.TransPoolData;
 import data.transpool.map.Map;
 import data.transpool.trips.Time;
 import data.transpool.trips.TransPoolTripRequest;
-import exceptions.StopNotFoundException;
+import exceptions.file.StopNotFoundException;
 import exceptions.time.InvalidTimeException;
 
 /**
@@ -36,13 +36,5 @@ public class TripEngine extends Engine {
         }
         TransPoolData.addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination,
                         new Time(hour, min), isContinuous));
-    }
-
-    //TODO: delete this!
-    public void _debugfill() throws InvalidTimeException, StopNotFoundException {
-        createNewTransPoolTripRequest("Nadav", "Wolfson train", "MTA", 13, 0, true);
-        createNewTransPoolTripRequest("Lasri", "Yoseftal", "Wolfson train", 13, 0, true);
-        createNewTransPoolTripRequest("Shaide", "MTA", "Rabin Square", 22, 0, true);
-        createNewTransPoolTripRequest("Rami", "HIT", "MTA", 7, 0, true);
     }
 }

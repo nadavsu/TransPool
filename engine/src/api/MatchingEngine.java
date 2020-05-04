@@ -6,7 +6,6 @@ import data.transpool.trips.PossibleMatch;
 import data.transpool.trips.TransPoolTrip;
 import data.transpool.trips.TransPoolTripRequest;
 import exceptions.NoMatchesFoundException;
-import exceptions.StopNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,7 +66,7 @@ public class MatchingEngine extends Engine {
      * Updates TransPoolData after a match was made.
      * @param indexOfPossibleMatchesList - The index of the chosen possible match in the possible matches list.
      */
-    public void createNewMatch(int indexOfPossibleMatchesList) throws StopNotFoundException {
+    public void createNewMatch(int indexOfPossibleMatchesList) {
         chosenTransPoolTripToMatch = possibleMatches.get(indexOfPossibleMatchesList);
         MatchedTransPoolTripRequest theMatchedRequest = new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTripToMatch);
         TransPoolData.addMatch(theMatchedRequest);

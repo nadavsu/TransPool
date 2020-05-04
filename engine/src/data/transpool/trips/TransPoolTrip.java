@@ -4,11 +4,15 @@ import data.transpool.map.Path;
 import data.transpool.structures.Route;
 import data.transpool.user.TransPoolDriver;
 import exceptions.TransPoolRunTimeException;
-import exceptions.file.TransPoolDataFileException;
+import exceptions.file.StopNotFoundException;
+import exceptions.file.TransPoolDataException;
 import exceptions.time.InvalidTimeException;
 
 import java.util.*;
 
+/**
+ * Contains the data for a TransPool trip offered by TransPool drivers.
+ */
 public class TransPoolTrip {
     private static int IDGenerator = 10000;
     private int ID;
@@ -24,7 +28,7 @@ public class TransPoolTrip {
 
     private List<RiderStatus> allRiderStatuses = new ArrayList<>();
 
-    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException, TransPoolDataFileException {
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
         this.ID = IDGenerator++;
         this.transpoolDriver = new TransPoolDriver(JAXBTransPoolTrip.getOwner());
         this.passengerCapacity = JAXBTransPoolTrip.getCapacity();
@@ -66,6 +70,11 @@ public class TransPoolTrip {
         return route.containsSubRoute(source, destination);
     }
 
+    /**
+     * Updates the trip after there is a found match for it.
+     * Adds the details from the match to the status list, decrements the passenger capacity.
+     * @param matchedRequest - the mathed request.
+     */
     public void updateAfterMatch(MatchedTransPoolTripRequest matchedRequest) {
         if (passengerCapacity == 0) {
             throw new TransPoolRunTimeException();
@@ -130,6 +139,10 @@ public class TransPoolTrip {
         return Objects.hash(ID);
     }
 
+    /**
+     * The status of the matched requests.
+     * Contains ID, source and destination.
+     */
     private class RiderStatus {
         private int riderID;
         private String source;

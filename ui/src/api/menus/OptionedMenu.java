@@ -1,7 +1,6 @@
 package api.menus;
 
 import exceptions.InvalidOptionException;
-import exceptions.QuitOnFinishException;
 import api.menus.components.MenuTitle;
 import exceptions.TransPoolFileNotLoadedException;
 
@@ -30,8 +29,8 @@ public abstract class OptionedMenu extends Menu {
      * @see Menu#run()
      */
     @Override
-    public void run() throws QuitOnFinishException, TransPoolFileNotLoadedException {
-        show();
+    public void run() throws TransPoolFileNotLoadedException {
+        showMenu();
         getOptionFromUser();
         options.get(chosenOption).run();
     }
@@ -66,10 +65,10 @@ public abstract class OptionedMenu extends Menu {
     }
 
     /**
-     * @see Menu#show()
+     * @see Menu#showMenu()
      */
     @Override
-    public void show() {
+    public void showMenu() {
         title.show();
         System.out.println(this);
     }

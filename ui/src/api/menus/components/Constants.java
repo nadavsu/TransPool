@@ -1,5 +1,8 @@
 package api.menus.components;
 
+/**
+ * Contains the styles for the CUI.
+ */
 public class Constants {
     public static final int MENU_WIDTH = 50;
 

@@ -4,11 +4,11 @@ import api.FileEngine;
 import api.TripEngine;
 import exceptions.StopNotFoundException;
 import exceptions.file.TransPoolFileNotFoundException;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 import exceptions.time.InvalidTimeException;
 
 import javax.xml.bind.JAXBException;
-
+//TODO: Remove this!
 public class _debugfill extends InputMenu {
     private TripEngine tripEngine;
     private FileEngine fileEngine;
@@ -27,7 +27,7 @@ public class _debugfill extends InputMenu {
             System.out.println("filled successfully.");
         } catch (InvalidTimeException | StopNotFoundException e) {
             System.out.println("fix yo time nigga or yo stops");
-        } catch (TransPoolFileDataException | JAXBException | TransPoolFileNotFoundException e) {
+        } catch (TransPoolDataFileException | JAXBException | TransPoolFileNotFoundException e) {
             e.printStackTrace();
         }
     }

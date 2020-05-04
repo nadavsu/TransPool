@@ -12,6 +12,11 @@ public class ShowAllTranspoolTripsStatusMenu extends InputMenu {
         engine = new Engine();
     }
 
+    /**
+     * Shows the status of all offered TransPool trips.
+     * Gets the list of TransPool trips from the engine and prints it as a string to the console.
+     * @throws TransPoolFileNotLoadedException - If no file is loaded.
+     */
     @Override
     public void run() throws TransPoolFileNotLoadedException {
         if (!engine.isFileLoaded()) {

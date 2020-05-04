@@ -7,10 +7,14 @@ import data.transpool.structures.TransPoolStops;
 import exceptions.file.MapDimensionsException;
 import exceptions.file.StopCoordinatesDuplicationException;
 import exceptions.file.StopOutOfBoundsException;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 
 import java.util.List;
 
+/**
+ * The map.
+ * Contains a list of stops, a list of paths, and a matrix containing the stops' positions on the map.
+ */
 public class Map {
 
     public final static int MIN_MAP_SIZE = 6;
@@ -23,13 +27,19 @@ public class Map {
     private static TransPoolStops allStops;
     private static TransPoolPaths allPaths;
 
-    public Map(MapDescriptor JAXBMap) throws TransPoolFileDataException {
+    /**
+     * Constructor for creating a map out of the JAXB generated classes.
+     * @param JAXBMap - JAXB Generated map.
+     * @throws TransPoolDataFileException - Thrown if there's a problem with the data inside the TP data file.
+     */
+    public Map(MapDescriptor JAXBMap) throws TransPoolDataFileException {
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
         allStops = new TransPoolStops(JAXBMap);
         mapMatrix = new MapMatrix(JAXBMap);
         allPaths = new TransPoolPaths(JAXBMap);
     }
+
 
     private void setWidth(int width) throws MapDimensionsException {
         if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
@@ -65,6 +75,9 @@ public class Map {
         return allPaths;
     }
 
+    /**
+     * 2 Dimensional array of strings containing the name of the stop in each coordinate.
+     */
     public static class MapMatrix {
         private String[][] mapMatrix = new String[Map.MAX_MAP_SIZE][Map.MAX_MAP_SIZE];
 

@@ -1,6 +1,8 @@
 package exceptions.time;
 
-public class InvalidTimeException extends Exception {
+import exceptions.file.TransPoolDataFileException;
+
+public class InvalidTimeException extends TransPoolDataFileException {
     private final String EXCEPTION_MESSAGE = "Time is not valid! Must be in the range of 00:00 to 23:59";
 
     public InvalidTimeException() {

@@ -13,6 +13,10 @@ public class ShowAllTripRequestsMenu extends InputMenu {
 
     }
 
+    /**
+     * Gets all TP trips as a list of strings from the engine and prints each trip to the console.
+     * @throws TransPoolFileNotLoadedException - If no file is loaded.
+     */
     @Override
     public void run() throws TransPoolFileNotLoadedException {
         if (!engine.isFileLoaded()) {

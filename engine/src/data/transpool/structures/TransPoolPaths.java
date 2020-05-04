@@ -5,7 +5,7 @@ import data.transpool.map.Map;
 import data.transpool.map.Path;
 import exceptions.file.PathDoesNotExistException;
 import exceptions.file.PathDuplicationException;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 public class TransPoolPaths {
     private List<Path> paths = new ArrayList<>();
 
-    public TransPoolPaths(MapDescriptor JAXBMap) throws TransPoolFileDataException {
+    public TransPoolPaths(MapDescriptor JAXBMap) throws TransPoolDataFileException {
         List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
         for (data.jaxb.Path JAXBPath : JAXBPathList) {
             Path transpoolPath = new Path(JAXBPath);

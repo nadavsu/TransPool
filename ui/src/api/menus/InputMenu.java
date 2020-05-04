@@ -29,16 +29,27 @@ public abstract class InputMenu extends Menu {
         title.show();
     }
 
+    /**
+     * Functions that take input from the user.
+     * @param message
+     * @return The user's input.
+     */
     public String getStringFromUser(String message) {
         System.out.print(message);
         return sc.nextLine().trim();
     }
 
+    /**
+     * @see InputMenu#getStringFromUser(String)
+     */
     public int getIntegerFromUser(String message) {
         System.out.print(message);
         return sc.nextInt();
     }
 
+    /**
+     * @see InputMenu#getStringFromUser(String)
+     */
     public boolean getBooleanFromUser(String message){
         System.out.print(message);
         sc.nextLine();

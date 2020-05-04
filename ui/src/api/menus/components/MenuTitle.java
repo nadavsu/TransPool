@@ -7,7 +7,6 @@ package api.menus.components;
 public class MenuTitle {
 
     private String titleName;
-    private String theTitle;
     public MenuTitle(String title) {
         this.titleName = title;
     }

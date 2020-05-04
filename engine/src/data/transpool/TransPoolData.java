@@ -6,7 +6,7 @@ import data.transpool.structures.TransPoolTripRequests;
 import data.transpool.structures.TransPoolTrips;
 import data.transpool.trips.MatchedTransPoolTripRequest;
 import data.transpool.trips.TransPoolTripRequest;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 import exceptions.time.InvalidTimeException;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class TransPoolData {
 
     public static boolean isLoaded = false;
 
-    public TransPoolData(TransPool JAXBData) throws TransPoolFileDataException, InvalidTimeException {
+    public TransPoolData(TransPool JAXBData) throws TransPoolDataFileException, InvalidTimeException {
         isLoaded = true;
         map = new Map(JAXBData.getMapDescriptor());
         allTransPoolTrips = new TransPoolTrips(JAXBData.getPlannedTrips());

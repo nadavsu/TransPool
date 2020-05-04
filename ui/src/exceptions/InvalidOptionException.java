@@ -1,5 +1,9 @@
 package exceptions;
 
+/**
+ * InvalidOptionException is thrown when the option chosen inside an OptionedMenu is either
+ * out of bounds or just not valid.
+ */
 public class InvalidOptionException extends Exception {
     private final String EXCEPTION_MESSAGE = "The option you have chosen is not valid.";
 

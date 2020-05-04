@@ -12,6 +12,10 @@ public class ConsoleUserInterface implements Runnable {
     public ConsoleUserInterface() {
     }
 
+    /**
+     * Runs the console user interface.
+     * Creates a main menu and runs it until a QuitOnFinishException is caught.
+     */
     @Override
     public void run() {
         boolean quit = false;
@@ -31,16 +35,12 @@ public class ConsoleUserInterface implements Runnable {
         } while (!quit);
     }
 
+    /**
+     * Waits for user input after an operation is done on the system.
+     */
     private void pause() {
         System.out.println("\r\nPress ENTER to continue.");
         Scanner sc = new Scanner(System.in);
         sc.nextLine();
-    }
-
-    public static void printLine() {
-        for (int i = 0; i < Constants.MENU_WIDTH; i++) {
-            System.out.print("-");
-        }
-        System.out.print("\n");
     }
 }

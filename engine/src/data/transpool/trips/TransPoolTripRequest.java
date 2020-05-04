@@ -13,7 +13,6 @@ public class TransPoolTripRequest {
     private Time timeOfDeparture;
 
     private boolean isContinuous;
-    private boolean isMatched;
 
     public TransPoolTripRequest(String transpoolRider, String source, String destination, Time timeOfDeparture, boolean isContinuous) {
         this.ID = IDGenerator++;
@@ -22,11 +21,6 @@ public class TransPoolTripRequest {
         this.destination = destination;
         this.timeOfDeparture = timeOfDeparture;
         this.isContinuous = isContinuous;
-        this.isMatched = false;
-    }
-
-    public boolean isMatched() {
-        return isMatched;
     }
 
     public TransPoolRider getTranspoolRider() {
@@ -57,6 +51,7 @@ public class TransPoolTripRequest {
     public String toString() {
         String requestString = "";
         requestString += "------TransPool Trip Request:------\n";
+        requestString += "Request ID: " + ID + "\n";
         requestString += "Name of requester: " + transpoolRider + "\n";
         requestString += "Stop source: " + source + "\n";
         requestString += "Stop destination: " + destination + "\n";

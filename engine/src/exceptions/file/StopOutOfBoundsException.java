@@ -1,6 +1,6 @@
 package exceptions.file;
 
-public class StopOutOfBoundsException extends TransPoolFileDataException {
+public class StopOutOfBoundsException extends TransPoolDataFileException {
     private String message;
 
     public StopOutOfBoundsException(String stopName) {

@@ -1,6 +1,6 @@
 package exceptions.file;
 
-public class StopNameDuplicationException extends TransPoolFileDataException {
+public class StopNameDuplicationException extends TransPoolDataFileException {
     private String message;
 
     public StopNameDuplicationException(String stopName) {

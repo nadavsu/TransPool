@@ -5,7 +5,7 @@ import data.transpool.map.Map;
 import data.transpool.map.Path;
 import data.transpool.trips.TransPoolTrip;
 import exceptions.file.PathDoesNotExistException;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 import exceptions.time.InvalidTimeException;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 public class TransPoolTrips {
     private List<TransPoolTrip> transpoolTrips = new ArrayList<>();
 
-    public TransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolFileDataException, InvalidTimeException {
+    public TransPoolTrips(PlannedTrips JAXBTransPoolTrips) throws TransPoolDataFileException, InvalidTimeException {
         List<data.jaxb.TransPoolTrip> JAXBTrips = JAXBTransPoolTrips.getTransPoolTrip();
         for (data.jaxb.TransPoolTrip JAXBTrip : JAXBTrips) {
             addTransPoolTrip(new TransPoolTrip(JAXBTrip));

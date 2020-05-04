@@ -8,6 +8,10 @@ import exceptions.file.PathDoesNotExistException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Contains a list of strings containing the stop names in the route.
+ * Contains a list of used paths in the string.
+ */
 public class Route {
     private List<String> route = new ArrayList<>();
     private List<Path> usedPaths = new ArrayList<>();

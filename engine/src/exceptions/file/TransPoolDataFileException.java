@@ -2,10 +2,10 @@ package exceptions.file;
 
 import java.io.IOException;
 
-public class TransPoolFileDataException extends Exception {
+public class TransPoolDataFileException extends Exception {
     private final String EXCEPTION_MESSAGE = "Data in the file is invalid!";
 
-    public TransPoolFileDataException() {
+    public TransPoolDataFileException() {
 
     }
 

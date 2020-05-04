@@ -1,6 +1,6 @@
 package exceptions.file;
 
-public class PathDoesNotExistException extends TransPoolFileDataException {
+public class PathDoesNotExistException extends TransPoolDataFileException {
     private String message;
 
     public PathDoesNotExistException(String source, String destination) {

@@ -15,7 +15,7 @@ public abstract class Menu {
 
      /**
      * Runs the current menu's operations such as getting data from the data.transpool.user or entering another menu.
-     * Includes data.transpool.user input validations
+     * Includes user input validations
      * In an OptionedMenu - this function will call the run function of the chosen submenu. All optioned menus
      *                      have the same run function.
      * In an UnoptionedMenu - each menu will have a different run function.

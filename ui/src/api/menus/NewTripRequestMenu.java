@@ -8,6 +8,10 @@ import exceptions.time.InvalidTimeException;
 
 import java.util.InputMismatchException;
 
+/**
+ * A Menu for creating a new trip request.
+ * Gets data from the user and sends it to the engine.
+ */
 public class NewTripRequestMenu extends InputMenu {
     private TripEngine engine;
     public NewTripRequestMenu(String title) {
@@ -16,6 +20,11 @@ public class NewTripRequestMenu extends InputMenu {
     }
 
 
+    /**
+     * Gets required data from the user for creating a new trip request.
+     * Validates the data (as raw data) and sends it to the engine.
+     * @throws TransPoolFileNotLoadedException if no file is loaded.
+     */
     @Override
     public void run() throws TransPoolFileNotLoadedException {
         if (!engine.isFileLoaded()) {

@@ -12,6 +12,11 @@ public class QuitMenu extends InputMenu {
         super(title);
     }
 
+
+    /**
+     * Gets input from the user whether he wants to really quit or not
+     * @throws QuitOnFinishException - If the user wants to quit.
+     */
     @Override
     public void run() throws QuitOnFinishException {
         String userInput;

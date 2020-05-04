@@ -1,6 +1,6 @@
 package exceptions.file;
 
-public class StopCoordinatesDuplicationException extends TransPoolFileDataException {
+public class StopCoordinatesDuplicationException extends TransPoolDataFileException {
     private String message;
 
     public StopCoordinatesDuplicationException(int x, int y) {

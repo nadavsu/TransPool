@@ -18,6 +18,7 @@ import java.util.Scanner;
 public abstract class OptionedMenu extends Menu {
     protected List<Menu> options;
     protected MenuTitle title;
+    protected int chosenOption;
 
     OptionedMenu(String menuName) {
         super(menuName);
@@ -31,11 +32,11 @@ public abstract class OptionedMenu extends Menu {
     @Override
     public void run() throws QuitOnFinishException, TransPoolFileNotLoadedException {
         show();
-        int chosenOption = getOptionFromUser();
+        getOptionFromUser();
         options.get(chosenOption).run();
     }
 
-    public int getOptionFromUser() throws IndexOutOfBoundsException {
+    public void getOptionFromUser() throws IndexOutOfBoundsException {
         int userIntegerInput = 1;
         boolean isValidInput;
         Scanner in = new Scanner(System.in);
@@ -55,7 +56,7 @@ public abstract class OptionedMenu extends Menu {
             }
 
         } while (!isValidInput);
-        return userIntegerInput - 1;
+        chosenOption = userIntegerInput - 1;
     }
 
     private void validateOptionInput(int userInput) throws InvalidOptionException {

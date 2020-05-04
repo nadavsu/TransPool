@@ -2,6 +2,9 @@ package data.transpool.map;
 
 import java.util.Objects;
 
+/**
+ * A path connecting two stops (source and destination).
+ */
 public class Path {
     private String source;
     private String destination;
@@ -10,6 +13,10 @@ public class Path {
     private double fuelConsumption;
     private int maxSpeed;
 
+    /**
+     * Constructor for creating a new path from the generated JAXB classes.
+     * @param JAXBPath - the generated JAXB path.
+     */
     public Path(data.jaxb.Path JAXBPath) {
         this.source = JAXBPath.getFrom().trim();
         this.destination = JAXBPath.getTo().trim();
@@ -28,6 +35,10 @@ public class Path {
         this.maxSpeed = other.maxSpeed;
     }
 
+    /**
+     * Swaps the direction of a path only if it's a 2-way path. Used by the TransPoolPaths data structure.
+     * @throws RuntimeException - Thrown if somehow the user managed to try to swap a one way path.
+     */
     public void swapDirection() throws RuntimeException {
         if (isOneWay) {
             System.out.println("Aw. Tried to swap the direction of a one way path :(");

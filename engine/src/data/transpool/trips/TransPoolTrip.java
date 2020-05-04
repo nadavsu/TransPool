@@ -4,7 +4,7 @@ import data.transpool.map.Path;
 import data.transpool.structures.Route;
 import data.transpool.user.TransPoolDriver;
 import exceptions.TransPoolRunTimeException;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 import exceptions.time.InvalidTimeException;
 
 import java.util.*;
@@ -24,7 +24,7 @@ public class TransPoolTrip {
 
     private List<RiderStatus> allRiderStatuses = new ArrayList<>();
 
-    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException, TransPoolFileDataException {
+    public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws InvalidTimeException, TransPoolDataFileException {
         this.ID = IDGenerator++;
         this.transpoolDriver = new TransPoolDriver(JAXBTransPoolTrip.getOwner());
         this.passengerCapacity = JAXBTransPoolTrip.getCapacity();

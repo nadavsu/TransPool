@@ -2,7 +2,7 @@ package api.menus;
 
 import api.FileEngine;
 import exceptions.UnsupportedFileException;
-import exceptions.file.TransPoolFileDataException;
+import exceptions.file.TransPoolDataFileException;
 import exceptions.time.InvalidTimeException;
 
 import javax.xml.bind.JAXBException;
@@ -17,7 +17,7 @@ public class LoadFileMenu extends InputMenu {
     }
 
     /**
-     * Gets the String of file address of the file to load from the data.transpool.user sends it to the engine.
+     * Gets the String of file address of the file to load from the user sends it to the engine.
      */
     @Override
     public void run() {
@@ -37,13 +37,18 @@ public class LoadFileMenu extends InputMenu {
                 System.out.println("File loaded successfully!");
 
                 isValidInput = true;
-            } catch (IOException | JAXBException | TransPoolFileDataException | InvalidTimeException e) {
+            } catch (IOException | JAXBException | TransPoolDataFileException | InvalidTimeException e) {
                 System.out.println(e.getMessage());
                 isValidInput = false;
             }
         } while (!isValidInput);
     }
 
+    /**
+     * Validates the type of the file to be XML.
+     * @param fileName - the name of the file
+     * @throws UnsupportedFileException if the file is not a .XML file.
+     */
     private void validateFileType(String fileName) throws UnsupportedFileException {
         int dotIndex = fileName.lastIndexOf('.');
         if (dotIndex == -1) {

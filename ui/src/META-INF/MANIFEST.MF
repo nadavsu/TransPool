@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: api.ConsoleUserInterface
+Class-Path: engine.jar
+

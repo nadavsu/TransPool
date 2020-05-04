@@ -1,13 +1,18 @@
 package api;
 
-import exceptions.QuitOnFinishException;
-import api.menus.*;
-import exceptions.TransPoolFileNotLoadedException;
-import exceptions.TransPoolRunTimeException;
+import exception.QuitOnFinishException;
+import api.menu.*;
+import exception.TransPoolFileNotLoadedException;
+import exception.TransPoolRunTimeException;
 
 import java.util.Scanner;
 
 public class ConsoleUserInterface implements Runnable {
+
+    public static void main(String[] args) {
+        ConsoleUserInterface consoleUserInterface = new ConsoleUserInterface();
+        consoleUserInterface.run();
+    }
 
     public ConsoleUserInterface() {
     }

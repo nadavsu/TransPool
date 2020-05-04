@@ -2,12 +2,11 @@ package data.transpool;
 
 import data.jaxb.TransPool;
 import data.transpool.map.Map;
-import data.transpool.structures.TransPoolTripRequests;
-import data.transpool.structures.TransPoolTrips;
-import data.transpool.trips.MatchedTransPoolTripRequest;
-import data.transpool.trips.TransPoolTripRequest;
-import exceptions.file.TransPoolDataException;
-import exceptions.time.InvalidTimeException;
+import data.transpool.structure.TransPoolTripRequests;
+import data.transpool.structure.TransPoolTrips;
+import data.transpool.trip.MatchedTransPoolTripRequest;
+import data.transpool.trip.TransPoolTripRequest;
+import exception.file.TransPoolDataException;
 
 import java.util.ArrayList;
 import java.util.List;

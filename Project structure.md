@@ -25,7 +25,7 @@
 
 # System
 
-- contains the exceptions (and constants?) relies on the engine.
+- contains the exception (and constants?) relies on the engine.
 
 
 

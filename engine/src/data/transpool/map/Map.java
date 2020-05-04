@@ -2,12 +2,12 @@ package data.transpool.map;
 
 import data.jaxb.MapDescriptor;
 import data.jaxb.Stop;
-import data.transpool.structures.TransPoolPaths;
-import data.transpool.structures.TransPoolStops;
-import exceptions.file.MapDimensionsException;
-import exceptions.file.StopCoordinatesDuplicationException;
-import exceptions.file.StopOutOfBoundsException;
-import exceptions.file.TransPoolDataException;
+import data.transpool.structure.TransPoolPaths;
+import data.transpool.structure.TransPoolStops;
+import exception.file.MapDimensionsException;
+import exception.file.StopCoordinatesDuplicationException;
+import exception.file.StopOutOfBoundsException;
+import exception.file.TransPoolDataException;
 
 import java.util.List;
 

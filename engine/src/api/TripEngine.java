@@ -2,10 +2,10 @@ package api;
 
 import data.transpool.TransPoolData;
 import data.transpool.map.Map;
-import data.transpool.trips.Time;
-import data.transpool.trips.TransPoolTripRequest;
-import exceptions.file.StopNotFoundException;
-import exceptions.time.InvalidTimeException;
+import data.transpool.trip.Time;
+import data.transpool.trip.TransPoolTripRequest;
+import exception.file.StopNotFoundException;
+import exception.time.InvalidTimeException;
 
 /**
  * An engine for working on a specific trip, or creating a new trip request.

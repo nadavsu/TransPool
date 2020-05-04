@@ -1,11 +1,10 @@
 package api;
 
 import data.transpool.TransPoolData;
-import data.transpool.structures.TransPoolTripRequests;
-import data.transpool.structures.TransPoolTrips;
-import data.transpool.trips.MatchedTransPoolTripRequest;
-import data.transpool.trips.TransPoolTripRequest;
-import data.transpool.user.TransPoolDriver;
+import data.transpool.structure.TransPoolTripRequests;
+import data.transpool.structure.TransPoolTrips;
+import data.transpool.trip.MatchedTransPoolTripRequest;
+import data.transpool.trip.TransPoolTripRequest;
 
 import java.util.List;
 import java.util.stream.Collectors;

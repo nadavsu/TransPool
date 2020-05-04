@@ -1,11 +1,11 @@
 package api;
 
 import data.transpool.TransPoolData;
-import data.transpool.trips.MatchedTransPoolTripRequest;
-import data.transpool.trips.PossibleMatch;
-import data.transpool.trips.TransPoolTrip;
-import data.transpool.trips.TransPoolTripRequest;
-import exceptions.NoMatchesFoundException;
+import data.transpool.trip.MatchedTransPoolTripRequest;
+import data.transpool.trip.PossibleMatch;
+import data.transpool.trip.TransPoolTrip;
+import data.transpool.trip.TransPoolTripRequest;
+import exception.NoMatchesFoundException;
 
 import java.util.ArrayList;
 import java.util.List;

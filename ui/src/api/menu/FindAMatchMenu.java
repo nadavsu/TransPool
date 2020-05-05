@@ -7,6 +7,7 @@ import exception.NoOptionsToShowException;
 import exception.TransPoolFileNotLoadedException;
 
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -41,8 +42,6 @@ public class FindAMatchMenu extends OptionedMenu {
         //Finding the possible matches by the chosen TP trip's ID.
         try {
             engine.findPossibleMatches(allRequests.get(chosenOption).getID(), maxMatches);
-
-            //Creating a ChooseAMatchMenu menu to show the possible list of matches.
             OptionedMenu chooseAMatchMenu = new ChooseAMatchMenu("Here is a list of possible matches for your ride", engine);
             chooseAMatchMenu.run();
         } catch (NoMatchesFoundException e) {
@@ -54,15 +53,25 @@ public class FindAMatchMenu extends OptionedMenu {
     }
 
     private int getMaxMatches() {
-        int maxMatches;
+        int maxMatches = 0;
+        boolean isValid;
         Scanner sc = new Scanner(System.in);
         do {
-            System.out.print("Enter the maximum matches to find: ");
-            maxMatches = sc.nextInt();
-            if (maxMatches <= 0) {
-                System.out.println("The maximum number of matches needs to be bigger than 0.");
+            try {
+                System.out.print("Enter the maximum matches to find: ");
+                maxMatches = sc.nextInt();
+                if (maxMatches < 1) {
+                    System.out.println("The number must be bigger than 0");
+                    isValid = false;
+                } else {
+                    isValid = true;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("You must enter a number.");
+                sc.nextLine();
+                isValid = false;
             }
-        } while (maxMatches < 1);
+        } while (!isValid);
         return maxMatches;
     }
 

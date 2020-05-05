@@ -86,7 +86,7 @@ public class PossibleMatch {
 
     @Override
     public String toString() {
-        return "+-----------------TransPool Trip-----------------+"
+        return "+-----------------TransPool Trip-----------------+\n"
                 + "TransPool Trip ID:                       " + transpoolTripID + "\n"
                 + "Driver name:                             " + transpoolDriver + "\n"
                 + "Estimated time of arrival:               " + estimatedTimeOfArrival + "\n"

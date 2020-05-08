@@ -2,9 +2,10 @@
 
 ### Running TransPool
 
-- In order to start the application, double click on the file TransPool.bat found in the folder of this readme file.
+- In order to start the application, run `java -jar ui.jar` from the terminal/cmd while in the location of the `ui.jar` file.
 - Before using the application, a TransPool data file must be loaded to the system. The application will not let you do any other operations before that.
 - To upload a TransPool data file, choose 1 in the main menu, then copy the **full** **path** of the file you would like to upload into the application and press ENTER. Make sure that the file type is `.xml`
+- Example XML files can be found in the resources directory.
 - After the step above is done, you can start using the TransPool application freely, just follow the instructions in the console.
 
 
@@ -16,9 +17,7 @@
 
 --
 ## Classes Description - Engine Module
-
-![engines](/Volumes/HDD/nadav/Documents/MTA/שנה ב׳/סמסטר ב׳/TransPool/TransPool files/readme/UML/Engines.png)
-
+![Engines](https://user-images.githubusercontent.com/53123142/81400485-e33de500-9135-11ea-9559-8a4dcffaf9ad.png)
 ###  `Engine` Class
 
 - The main engine of the program.
@@ -60,7 +59,7 @@
 
 ## Classes Description - UI Module
 
-![Package menu](/Users/nadavsuliman/Desktop/Package menu.png)
+![Package menu](https://user-images.githubusercontent.com/53123142/81400516-fa7cd280-9135-11ea-976a-edc12121014b.png)
 
 ### `Menu` Class
 

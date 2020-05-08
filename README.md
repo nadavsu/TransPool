@@ -1,5 +1,5 @@
 ![Title and slogan cropped](https://user-images.githubusercontent.com/53123142/81192618-24fa4e80-8fc3-11ea-9d8e-809b7ee11ac5.png)
-TransPool is a ride sharing application. With TransPool, it has never been easier finding someone to ride with for work. Whether you are fed up with public transportation and looking for a way to reduce your commute time or if you want to cover your automobile fees each month. TransPool is the application for you!
+TransPool, the ride sharing application. With TransPool, it has never been easier finding someone to ride with for work. Whether you are fed up with public transportation and looking for a way to reduce your commute time or if you want to cover your automobile fees each month. TransPool is the application for you!
 
 *Current version only supports console user interface. Next updates will include a desktop and web-application.
 

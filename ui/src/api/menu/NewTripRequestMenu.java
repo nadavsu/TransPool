@@ -31,7 +31,7 @@ public class NewTripRequestMenu extends InputMenu {
             throw new TransPoolFileNotLoadedException();
         }
 
-        showMenu();
+        show();
         String stopSource, stopDestination;
         String riderName;
         boolean isContinuous;

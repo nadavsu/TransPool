@@ -27,7 +27,7 @@ public abstract class Menu {
     /**
      * Prints to the console the menu in the proper format.
      */
-    public abstract void showMenu();
+    public abstract void show();
 
     public String getMenuName() {
         return menuName;

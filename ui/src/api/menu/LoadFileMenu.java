@@ -20,7 +20,7 @@ public class LoadFileMenu extends InputMenu {
      */
     @Override
     public void run() {
-        showMenu();
+        show();
         boolean isValidInput;
         String fileName;
 

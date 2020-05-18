@@ -24,7 +24,7 @@ public class ShowAllTripRequestsMenu extends InputMenu {
         }
 
         try {
-            showMenu();
+            show();
             List<String> allTransPoolTrips = engine.getAllTransPoolTripRequestsAsStrings();
             allTransPoolTrips.forEach(System.out::println);
         } catch (NullPointerException e) {

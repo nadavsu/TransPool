@@ -1,0 +1,11 @@
+@import "color_scheme.css"
+
+.root {
+    -fx-background-color: -body-color;
+}
+
+/*LOGO*/
+
+#GridPaneLogo {
+    -fx-background-color: -body-color;
+}

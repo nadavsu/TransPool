@@ -18,7 +18,6 @@
 	-fx-text-fill: -body-color;
 }
 
-
 .menu:hover {
 	-fx-background-color: -secondary-color;
 }

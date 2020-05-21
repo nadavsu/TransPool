@@ -29,5 +29,9 @@
     -fx-background-color: -primary-color;
 }
 
-/*BUTTON*/
+/*DATA FIELDS*/
 
+.data-field {
+	-jfx-focus-color: -primary-color;
+	-fx-focus-color: -primary-color;
+}

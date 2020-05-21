@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextField?>
@@ -9,29 +10,35 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MatchTripController">
    <children>
-      <VBox prefHeight="569.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox prefHeight="570.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane prefHeight="191.0" prefWidth="320.0">
+            <GridPane prefHeight="500.0" prefWidth="320.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.12127685546875" minWidth="10.0" prefWidth="37.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="230.0" minWidth="10.0" prefWidth="230.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="46.1329345703125" minWidth="10.0" prefWidth="28.38201904296875" />
                </columnConstraints>
                <rowConstraints>
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="39.73919677734375" minHeight="10.0" prefHeight="39.73919677734375" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="43.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="67.0140380859375" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="103.75117492675781" minHeight="10.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="160.0" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="217.0" minHeight="4.0" prefHeight="36.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="270.0" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="343.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="324.0" minHeight="0.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="452.0" minHeight="10.0" prefHeight="319.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXComboBox prefHeight="27.0" prefWidth="231.0" promptText="Ride ID" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXTextField text="Number of results to show" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXComboBox fx:id="comboBoxRideID" prefHeight="27.0" prefWidth="231.0" promptText="Ride ID" styleClass="data-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="comboBoxNumOfResults" styleClass="data-field" text="Number of results to show" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXListView fx:id="listViewReuslts" prefHeight="407.0" prefWidth="320.0" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                </children>
             </GridPane>
-            <JFXListView prefHeight="407.0" prefWidth="320.0" />
+            <AnchorPane prefHeight="70.0" prefWidth="320.0">
+               <children>
+                  <JFXButton fx:id="buttonMatchTrip" layoutX="47.0" layoutY="22.0" onAction="#createNewMatch" prefHeight="27.0" prefWidth="227.0" text="Match Trip" />
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
    </children>

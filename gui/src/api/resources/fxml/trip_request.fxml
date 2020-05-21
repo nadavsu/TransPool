@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="561.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="TransPoolTripRequestController">
    <children>
       <VBox id="VBoxTripRequest" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane alignment="CENTER" prefHeight="561.0" prefWidth="320.0">
+            <GridPane alignment="CENTER" prefHeight="500.0" prefWidth="320.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.12127685546875" minWidth="10.0" prefWidth="12.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="120.0" minWidth="10.0" prefWidth="31.0" />
@@ -27,41 +27,30 @@
                <rowConstraints>
                   <RowConstraints maxHeight="38.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="48.0" minHeight="7.0" prefHeight="39.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="67.0140380859375" minHeight="5.2488250732421875" prefHeight="28.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="35.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="348.0" minHeight="7.0" prefHeight="307.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="48.0" minHeight="7.0" prefHeight="24.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="67.0140380859375" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="348.0" minHeight="7.0" prefHeight="274.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="103.75117492675781" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="103.75117492675781" minHeight="0.0" prefHeight="22.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXComboBox id="CBSourceTripRequest" labelFloat="true" prefHeight="27.0" prefWidth="264.0" promptText="Source" GridPane.columnIndex="3" GridPane.rowIndex="3">
-                     <styleClass>
-                        <String fx:value="data_field" />
-                        <String fx:value="combo_box" />
-                     </styleClass>
-                  </JFXComboBox>
-                  <JFXTextField labelFloat="true" text="Name" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                     <styleClass>
-                        <String fx:value="data_field" />
-                        <String fx:value="text_field" />
-                     </styleClass>
-                  </JFXTextField>
-                  <JFXComboBox id="CBDestinationTripRequest" labelFloat="true" prefHeight="27.0" prefWidth="263.0" promptText="Destination" GridPane.columnIndex="3" GridPane.rowIndex="5">
-                     <styleClass>
-                        <String fx:value="combo_box" />
-                        <String fx:value="data_field" />
-                     </styleClass>
-                  </JFXComboBox>
-                  <JFXButton id="ButtonAddRequest" prefHeight="31.0" prefWidth="235.0" text="Add Request" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
-                  <ImageView fitHeight="105.0" fitWidth="23.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+                  <JFXComboBox id="CBSourceTripRequest" fx:id="comboBoxSource" labelFloat="true" prefHeight="27.0" prefWidth="264.0" promptText="Source" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="textFieldRiderName" labelFloat="true" styleClass="data-field" text="Name" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <JFXComboBox id="CBDestinationTripRequest" fx:id="comboBoxDestination" labelFloat="true" prefHeight="27.0" prefWidth="263.0" promptText="Destination" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                  <ImageView fitHeight="90.0" fitWidth="23.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="3" GridPane.valignment="CENTER">
                      <image>
                         <Image url="@../images/path.png" />
                      </image>
                   </ImageView>
                </children>
             </GridPane>
+            <AnchorPane prefHeight="70.0" prefWidth="320.0">
+               <children>
+                  <JFXButton id="ButtonAddRequest" fx:id="buttonAddRequest" layoutX="43.0" layoutY="20.0" onAction="#addNewTripRequest" prefHeight="27.0" prefWidth="227.0" text="Add Request" />
+               </children>
+            </AnchorPane>
          </children>
          <styleClass>
             <String fx:value="left_side_bar" />

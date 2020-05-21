@@ -4,27 +4,27 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 
-<MenuBar id="MenuBar" styleClass="menubar" stylesheets="@../css/menu_bar.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<MenuBar id="MenuBar" stylesheets="@../css/menu_bar.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <menus>
       <Menu mnemonicParsing="false" text="File">
          <items>
-            <MenuItem mnemonicParsing="false" text="Open..." />
-            <MenuItem mnemonicParsing="false" text="Close" />
+            <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#loadTransPoolFile" text="Open..." />
+            <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#quit" text="Close" />
          </items>
       </Menu>
       <Menu mnemonicParsing="false" text="View">
          <items>
             <Menu mnemonicParsing="false" text="Skin">
                <items>
-                  <MenuItem mnemonicParsing="false" text="Dark mode" />
-                  <MenuItem mnemonicParsing="false" text="Light mode" />
+                  <MenuItem fx:id="menuItemDarkMode" mnemonicParsing="false" onAction="#setDarkTheme" text="Dark mode" />
+                  <MenuItem fx:id="menuItemLightMode" mnemonicParsing="false" onAction="#setLightTheme" text="Light mode" />
                </items>
             </Menu>
          </items>
       </Menu>
       <Menu mnemonicParsing="false" text="Help">
          <items>
-            <MenuItem mnemonicParsing="false" text="About" />
+            <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#openReadMe" text="About" />
          </items>
       </Menu>
    </menus>

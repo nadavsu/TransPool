@@ -32,7 +32,7 @@ public class FindAMatchMenu extends OptionedMenu {
             throw new TransPoolFileNotLoadedException();
         }
 
-        List<TransPoolTripRequest> allRequests = new ArrayList<>(engine.getAllTransPoolTripRequests().getTranspoolTripRequests());
+        List<TransPoolTripRequest> allRequests = new ArrayList<>(engine.getAllTransPoolTripRequests());
         for (TransPoolTripRequest request : allRequests) {
             this.addOption(new Option(request.toString()));
         }

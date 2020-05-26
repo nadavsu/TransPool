@@ -1,6 +1,5 @@
 package api;
 
-import data.transpool.TransPoolData;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
@@ -37,7 +36,7 @@ public class MatchingEngine extends Engine {
      * @throws NoMatchesFoundException - If no match was found for the the trip request.
      */
     public void findPossibleMatches(int tripRequestID, int maximumMatches) throws NoMatchesFoundException {
-        tripRequestToMatch = TransPoolData.getAllTransPoolTripRequests().getTripRequestByID(tripRequestID);
+        tripRequestToMatch = data.getTripRequestByID(tripRequestID);
 
         Predicate<TransPoolTrip> containsSubRoutePredicate = transPoolTrip ->
                 transPoolTrip.containsSubRoute(tripRequestToMatch.getSource(), tripRequestToMatch.getDestination());
@@ -45,9 +44,8 @@ public class MatchingEngine extends Engine {
         Predicate<TransPoolTrip> timeMatchPredicate = transPoolTrip ->
                 transPoolTrip.getSchedule().getTime().equals(tripRequestToMatch.getTimeOfDeparture());
 
-        possibleMatches = TransPoolData
+        possibleMatches = data
                 .getAllTransPoolTrips()
-                .getTranspoolTrips()
                 .stream()
                 .filter(t -> t.getPassengerCapacity() > 0)
                 .filter(containsSubRoutePredicate)
@@ -69,7 +67,7 @@ public class MatchingEngine extends Engine {
     public void createNewMatch(int indexOfPossibleMatchesList) {
         chosenTransPoolTripToMatch = possibleMatches.get(indexOfPossibleMatchesList);
         MatchedTransPoolTripRequest theMatchedRequest = new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTripToMatch);
-        TransPoolData.addMatch(theMatchedRequest);
+        data.addMatch(theMatchedRequest);
 
         updateTransPoolDataAfterMatch(theMatchedRequest);
     }
@@ -81,7 +79,7 @@ public class MatchingEngine extends Engine {
      */
     private void updateTransPoolDataAfterMatch(MatchedTransPoolTripRequest theMatchedRequest) {
         chosenTransPoolTripToMatch.getPossibleTransPoolTrip().updateAfterMatch(theMatchedRequest);
-        TransPoolData.allTransPoolTripRequests.deleteTripRequest(tripRequestToMatch);
+        data.deleteTripRequest(tripRequestToMatch);
     }
 
     /**

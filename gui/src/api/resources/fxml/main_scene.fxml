@@ -12,11 +12,11 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="VBoxMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="body" stylesheets="@../css/main_body.css" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1">
+<VBox id="VBoxMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="body" stylesheets="@../css/main_body.css" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.TransPoolController">
    <children>
       <HBox id="HBoxMain" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0" styleClass="body">
          <children>
-            <VBox maxWidth="320.0" minHeight="230.0" minWidth="200.0" prefHeight="692.0" prefWidth="320.0" styleClass="left_side_bar" HBox.hgrow="NEVER">
+            <VBox maxWidth="320.0" minHeight="230.0" minWidth="200.0" prefHeight="700.0" prefWidth="320.0" styleClass="left_side_bar" HBox.hgrow="NEVER">
                <children>
                   <fx:include fx:id="MenuBar" source="menu_bar.fxml" /> 
                   <GridPane id="GridPaneLogo" styleClass="left_side_bar">

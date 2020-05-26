@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MatchTripController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.MatchTripController">
    <children>
       <VBox prefHeight="570.0" prefWidth="320.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -31,7 +31,7 @@
                <children>
                   <JFXComboBox fx:id="comboBoxRideID" prefHeight="27.0" prefWidth="231.0" promptText="Ride ID" styleClass="data-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <JFXTextField fx:id="comboBoxNumOfResults" styleClass="data-field" text="Number of results to show" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                  <JFXListView fx:id="listViewReuslts" prefHeight="407.0" prefWidth="320.0" GridPane.columnSpan="3" GridPane.rowIndex="5" />
+                  <JFXListView fx:id="listViewResults" prefHeight="407.0" prefWidth="320.0" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                </children>
             </GridPane>
             <AnchorPane prefHeight="70.0" prefWidth="320.0">

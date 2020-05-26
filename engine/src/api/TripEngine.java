@@ -28,13 +28,13 @@ public class TripEngine extends Engine {
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               int hour, int min, boolean isContinuous) throws InvalidTimeException,
                                                 StopNotFoundException {
-        if (!Map.getAllStops().containsName(source)) {
+        if (!Map.containsStop(source)) {
             throw new StopNotFoundException(source);
         }
-        if (!Map.getAllStops().containsName(destination)) {
+        if (!Map.containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
-        TransPoolData.addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination,
+        data.addTransPoolTripRequest(new TransPoolTripRequest(riderName, source, destination,
                         new Time(hour, min), isContinuous));
     }
 }

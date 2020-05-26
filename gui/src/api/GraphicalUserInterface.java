@@ -1,5 +1,8 @@
 package api;
 
+import api.controller.TransPoolController;
+import api.resources.ResourcesConstants;
+import data.transpool.TransPoolData;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -9,20 +12,38 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.net.URL;
+
 public class GraphicalUserInterface extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("TransPool");
-        primaryStage.getIcons().add(new Image("api/resources/images/stage_icon.png"));
+        primaryStage.getIcons().add(new Image(ResourcesConstants.STAGE_ICON_LOCATION));
 
-        Parent load = FXMLLoader.load(getClass().getResource("resources/fxml/splash_screen.fxml"));
-        Scene splashScreenScene = new Scene(load, 1080, 720);
+        FXMLLoader splashScreenLoader = new FXMLLoader();
+        FXMLLoader mainLoader = new FXMLLoader();
+        URL splashScreenFXML = getClass().getResource(ResourcesConstants.SPLASH_SCREEN_FXML_LOCATION);
+        URL mainFXML = getClass().getResource(ResourcesConstants.MAIN_SCENE_FXML_LOCATION);
+
+        //Loading the splash screen
+        splashScreenLoader.setLocation(splashScreenFXML);
+        Parent splashScreenRoot = splashScreenLoader.load();
+        Scene splashScreenScene = new Scene(splashScreenRoot, 1080, 720);
         primaryStage.setScene(splashScreenScene);
         primaryStage.show();
 
-        load = FXMLLoader.load(getClass().getResource("resources/fxml/main_scene.fxml"));
-        Scene mainScene = new Scene(load, 1080, 720);
+        //Loading the main FXML scene
+        mainLoader.setLocation(mainFXML);
+        Parent mainRoot = mainLoader.load();
+        Scene mainScene = new Scene(mainRoot, 1080, 720);
 
+        //Setting up the controller
+        TransPoolController transPoolController = mainLoader.getController();
+        //Engine engine = new Engine(transPoolController);
+        transPoolController.setPrimaryStage(primaryStage);
+        //transPoolController.setEngine(engine);
+
+        //Pause transition for the splash screen. When pause is finished the scene is switched to the main scene.
         PauseTransition splashScreenPause = new PauseTransition(Duration.millis(2300));
         splashScreenPause.setOnFinished(event -> primaryStage.setScene(mainScene));
         splashScreenPause.play();

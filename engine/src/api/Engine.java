@@ -1,9 +1,9 @@
 package api;
 
+import api.controller.TransPoolController;
 import data.transpool.TransPoolData;
-import data.transpool.structure.TransPoolTripRequests;
-import data.transpool.structure.TransPoolTrips;
 import data.transpool.trip.MatchedTransPoolTripRequest;
+import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 
 import java.util.List;
@@ -16,19 +16,21 @@ import java.util.stream.Collectors;
 public class Engine {
 
     protected static TransPoolData data;
+    private TransPoolController controller;
 
-    public Engine() { }
+    public Engine() {
+    }
 
     public TransPoolData getData() {
         return data;
     }
 
-    public TransPoolTrips getAllTransPoolTrips() {
-        return TransPoolData.getAllTransPoolTrips();
+    public List<TransPoolTrip> getAllTransPoolTrips() {
+        return data.getAllTransPoolTrips();
     }
 
-    public TransPoolTripRequests getAllTransPoolTripRequests() {
-        return TransPoolData.getAllTransPoolTripRequests();
+    public List<TransPoolTripRequest> getAllTransPoolTripRequests() {
+        return data.getAllTransPoolTripRequests();
     }
 
 
@@ -41,15 +43,14 @@ public class Engine {
      *       this function and use dynamic casting to print each trip.
      */
     public List<String> getAllTransPoolTripRequestsAsStrings() {
-        List<String> matchedAndUmatchedTransPoolTripRequests = TransPoolData
+        List<String> matchedAndUmatchedTransPoolTripRequests = data
                 .getAllTransPoolTripRequests()
-                .getTranspoolTripRequests()
                 .stream()
                 .map(TransPoolTripRequest::toString)
                 .collect(Collectors.toList());
 
         matchedAndUmatchedTransPoolTripRequests
-                .addAll(TransPoolData
+                .addAll(data
                 .getAllMatchedTrips()
                 .stream()
                 .map(MatchedTransPoolTripRequest::toString)

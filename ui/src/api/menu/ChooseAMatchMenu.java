@@ -26,7 +26,7 @@ public class ChooseAMatchMenu extends OptionedMenu {
 
     @Override
     public void run() {
-        showMenu();
+        show();
         getOptionFromUser();
         System.out.println("Attempting to match...");
         engine.createNewMatch(chosenOption);
@@ -34,7 +34,7 @@ public class ChooseAMatchMenu extends OptionedMenu {
     }
 
     @Override
-    public void showMenu() {
+    public void show() {
         System.out.println(menuName);
         System.out.println(this);
     }

@@ -1,4 +1,4 @@
-package data.transpool.structure;
+package data.transpool.trip;
 
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.Map;
@@ -32,7 +32,7 @@ public class Route {
      */
     private void initUsedPaths() throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
-            Path foundPath =  Map.getAllPaths().getPathBySourceAndDestination(route.get(i), route.get(i + 1));
+            Path foundPath = Map.getPathBySourceAndDestination(route.get(i), route.get(i + 1));
             if (foundPath == null) {
                 throw new PathDoesNotExistException(route.get(i), route.get(i + 1));
             }

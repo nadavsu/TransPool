@@ -20,7 +20,7 @@ public class LoadFileMenu extends InputMenu {
      */
     @Override
     public void run() {
-        showMenu();
+        show();
         boolean isValidInput;
         String fileName;
 
@@ -31,7 +31,7 @@ public class LoadFileMenu extends InputMenu {
 
                 System.out.println("Loading " + fileName + " to system...");
                 engine = new FileEngine(fileName);
-                engine.loadFile();
+                engine.loadFile(fileName);
 
                 System.out.println("File loaded successfully!");
 

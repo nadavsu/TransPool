@@ -32,10 +32,16 @@ public class FindAMatchMenu extends OptionedMenu {
             throw new TransPoolFileNotLoadedException();
         }
 
-        //Getting the trip requests as options in the options list.
-        List<TransPoolTripRequest> allRequests = new ArrayList<>(engine.getAllTransPoolTripRequests().getTranspoolTripRequests());
-        createOptions(allRequests);
-        showMenu();
+        List<TransPoolTripRequest> allRequests = new ArrayList<>(engine.getAllTransPoolTripRequests());
+        for (TransPoolTripRequest request : allRequests) {
+            this.addOption(new Option(request.toString()));
+        }
+
+        if (options.isEmpty()) {
+            throw new NoOptionsToShowException();
+        }
+
+        show();
         getOptionFromUser();
         int maxMatches = getMaxMatches();
 
@@ -73,16 +79,6 @@ public class FindAMatchMenu extends OptionedMenu {
             }
         } while (!isValid);
         return maxMatches;
-    }
-
-    private void createOptions(List<TransPoolTripRequest> allRequests) throws NoOptionsToShowException {
-        for (TransPoolTripRequest request : allRequests) {
-            this.addOption(new Option(request.toString()));
-        }
-
-        if (options.isEmpty()) {
-            throw new NoOptionsToShowException();
-        }
     }
 
 }

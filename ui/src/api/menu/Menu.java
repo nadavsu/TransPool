@@ -1,15 +1,17 @@
 package api.menu;
 
+import api.Engine;
+import api.TransPoolEngine;
 import exception.QuitOnFinishException;
 import exception.TransPoolFileNotLoadedException;
 
 public abstract class Menu {
-
     protected String menuName;
-
+    protected Engine engine;
     public Menu(String menuName)
     {
         this.menuName = menuName;
+        engine = new TransPoolEngine()
     }
 
      /**
@@ -27,7 +29,7 @@ public abstract class Menu {
     /**
      * Prints to the console the menu in the proper format.
      */
-    public abstract void showMenu();
+    public abstract void show();
 
     public String getMenuName() {
         return menuName;

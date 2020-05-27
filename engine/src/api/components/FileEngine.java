@@ -1,5 +1,6 @@
-package api;
+package api.components;
 
+import api.controller.MenuBarController;
 import data.jaxb.TransPool;
 import data.transpool.TransPoolData;
 import exception.file.TransPoolFileNotFoundException;
@@ -13,12 +14,13 @@ import java.io.File;
 /**
  * This engine handles the TransPool data file.
  */
-public class FileEngine extends Engine {
+public class FileEngine {
 
     private String fileDirectory;
+    private MenuBarController controller;
 
-    public FileEngine(String fileDirectory) {
-        this.fileDirectory = fileDirectory;
+    public FileEngine(MenuBarController controller) {
+        this.controller = controller;
     }
 
     /**
@@ -29,11 +31,8 @@ public class FileEngine extends Engine {
      * @throws TransPoolFileNotFoundException - If the file at file address was not found.
      * @throws TransPoolDataException - If there's a problem with the TransPool data file.
      */
-    public void loadFile() throws JAXBException, TransPoolFileNotFoundException,
+    public TransPoolData loadData(File file) throws JAXBException, TransPoolFileNotFoundException,
             TransPoolDataException {
-
-        File file = new File(fileDirectory);
-
         if (!file.exists()) {
             throw new TransPoolFileNotFoundException();
         }
@@ -42,6 +41,6 @@ public class FileEngine extends Engine {
 
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(file);
-        data = new TransPoolData(JAXBData);
+        return new TransPoolData(JAXBData);
     }
 }

@@ -14,14 +14,14 @@ public class Option extends Menu {
      */
     @Override
     public void run() {
-        showMenu();
+        show();
     }
 
     /**
      * Prints the menu name to the console.
      */
     @Override
-    public void showMenu() {
+    public void show() {
         System.out.println(menuName);
     }
 }

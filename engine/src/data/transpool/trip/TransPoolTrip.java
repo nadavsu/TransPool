@@ -1,7 +1,6 @@
 package data.transpool.trip;
 
 import data.transpool.map.Path;
-import data.transpool.structure.Route;
 import data.transpool.user.TransPoolDriver;
 import exception.TransPoolRunTimeException;
 import exception.file.TransPoolDataException;

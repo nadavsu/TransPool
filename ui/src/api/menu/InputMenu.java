@@ -21,10 +21,10 @@ public abstract class InputMenu extends Menu {
     }
 
     /**
-     * @see Menu#showMenu()
+     * @see Menu#show()
      */
     @Override
-    public void showMenu() {
+    public void show() {
         title.show();
     }
 

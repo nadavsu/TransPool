@@ -30,7 +30,7 @@ public abstract class OptionedMenu extends Menu {
      */
     @Override
     public void run() throws TransPoolFileNotLoadedException {
-        showMenu();
+        show();
         getOptionFromUser();
         options.get(chosenOption).run();
     }
@@ -65,10 +65,10 @@ public abstract class OptionedMenu extends Menu {
     }
 
     /**
-     * @see Menu#showMenu()
+     * @see Menu#show()
      */
     @Override
-    public void showMenu() {
+    public void show() {
         title.show();
         System.out.println(this);
     }

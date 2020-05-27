@@ -43,6 +43,7 @@ public class TransPoolData {
 
     /**
      * Finds a TransPoolTrip by ID.
+     *
      * @param ID - The ID to search for
      * @return the TransPoolTrip with the matched ID if found, null otherwise.
      */
@@ -55,12 +56,14 @@ public class TransPoolData {
     }
 
     //------------------------------------------------------------------------------------------
+
     /**
      * Finds a trip request by given trip request ID by iterating over all trip requests.
+     *
      * @param ID - The ID of the desired request.
      * @return -
      * @throws NullPointerException - If TP trip request was not found.
-     * TODO: Create a TransPoolTripRequestNotFoundException and throw it here?
+     *                              TODO: Create a TransPoolTripRequestNotFoundException and throw it here?
      */
     public TransPoolTripRequest getTripRequestByID(int ID) throws NullPointerException {
         return allTransPoolTripRequests
@@ -74,10 +77,10 @@ public class TransPoolData {
         allTransPoolTripRequests.remove(requestToDelete);
     }
 
-    //todo maybe this static.
     public void addTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest) {
         allTransPoolTripRequests.add(transpoolTripRequest);
     }
+
     //------------------------------------------------------------------------------------------
     public Map getMap() {
         return map;
@@ -97,11 +100,18 @@ public class TransPoolData {
         return allTransPoolTrips;
     }
 
+    //------------------------------------------------------------------------------------------
     public List<MatchedTransPoolTripRequest> getAllMatchedTrips() {
         return allMatchedTrips;
     }
 
     public void addMatch(MatchedTransPoolTripRequest matchedTransPoolTripRequest) {
+        //Adding the match
         allMatchedTrips.add(matchedTransPoolTripRequest);
+
+        //Updating the data and deleting the request.
+        TransPoolTrip trip = getTransPoolTripByID(matchedTransPoolTripRequest.getTranspoolTripID());
+        trip.updateAfterMatch(matchedTransPoolTripRequest);
+        deleteTripRequest(getTripRequestByID(matchedTransPoolTripRequest.getRequestID()));
     }
 }

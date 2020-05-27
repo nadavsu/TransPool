@@ -1,20 +1,20 @@
 package api.controller;
 
 import api.Engine;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.stage.Stage;
 
 /**
     The main controller of the application.
  */
+
 public class TransPoolController {
     private MatchTripController matchTripController;
     private MenuBarController menuBarController;
     private TransPoolTripOfferController tripOfferController;
     private TransPoolTripRequestController tripRequestController;
 
-    private Engine engine;
-    private Stage primaryStage;
+    private Engine transpoolEngine;
+    private Stage  primaryStage;
 
     public TransPoolController() {
         this.matchTripController = new MatchTripController();
@@ -28,7 +28,7 @@ public class TransPoolController {
     }
 
     public void setEngine(Engine engine) {
-        this.engine = engine;
+        transpoolEngine = engine;
     }
 
     public MatchTripController getMatchTripController() {

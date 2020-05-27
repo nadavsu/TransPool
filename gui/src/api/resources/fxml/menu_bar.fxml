@@ -8,7 +8,7 @@
    <menus>
       <Menu mnemonicParsing="false" text="File">
          <items>
-            <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#loadTransPoolFile" text="Open..." />
+            <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#openMenuItemAction" text="Open..." />
             <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#quit" text="Close" />
          </items>
       </Menu>
@@ -24,7 +24,7 @@
       </Menu>
       <Menu mnemonicParsing="false" text="Help">
          <items>
-            <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#openReadMe" text="About" />
+            <MenuItem fx:id="menuItemAbout" mnemonicParsing="false" onAction="#helpMenuItemActionEvent" text="About" />
          </items>
       </Menu>
    </menus>

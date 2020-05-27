@@ -1,5 +1,7 @@
-package api;
+package api.components;
 
+import api.controller.MatchTripController;
+import data.transpool.TransPoolData;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
@@ -15,14 +17,15 @@ import java.util.stream.Collectors;
  * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match
  * and the chosen TP trip to match.
  */
-public class MatchingEngine extends Engine {
+public class MatchingEngine {
     private TransPoolTripRequest tripRequestToMatch;
     private List<PossibleMatch> possibleMatches;
-    private PossibleMatch chosenTransPoolTripToMatch;
 
-    public MatchingEngine() {
+    private MatchTripController controller;
+
+    public MatchingEngine(MatchTripController controller) {
         possibleMatches = new ArrayList<>();
-
+        this.controller = controller;
     }
 
     /**
@@ -33,9 +36,10 @@ public class MatchingEngine extends Engine {
      *      - Filters all the trips that don't have anymore capacity for passengers.
      * @param tripRequestID - The ID of the trip request to match.
      * @param maximumMatches - The maximum number of matches you want to show.
+     * @param data - the data to search for matches.
      * @throws NoMatchesFoundException - If no match was found for the the trip request.
      */
-    public void findPossibleMatches(int tripRequestID, int maximumMatches) throws NoMatchesFoundException {
+    public List<PossibleMatch> findPossibleMatches(TransPoolData data, int tripRequestID, int maximumMatches) throws NoMatchesFoundException {
         tripRequestToMatch = data.getTripRequestByID(tripRequestID);
 
         Predicate<TransPoolTrip> containsSubRoutePredicate = transPoolTrip ->
@@ -57,30 +61,20 @@ public class MatchingEngine extends Engine {
         if (possibleMatches.isEmpty()) {
             throw new NoMatchesFoundException();
         }
+        return possibleMatches;
     }
 
     /**
-     * Creates a new match after a possible match was chosen.
+     * Creates and adds a new match to data after a possible match was chosen.
      * Updates TransPoolData after a match was made.
-     * @param indexOfPossibleMatchesList - The index of the chosen possible match in the possible matches list.
+     * @param chosenPossibleMatchIndex - The index of the chosen possible match in the possible matches list.
+     * @param data                     - The data to add to.
      */
-    public void createNewMatch(int indexOfPossibleMatchesList) {
-        chosenTransPoolTripToMatch = possibleMatches.get(indexOfPossibleMatchesList);
-        MatchedTransPoolTripRequest theMatchedRequest = new MatchedTransPoolTripRequest(tripRequestToMatch, chosenTransPoolTripToMatch);
-        data.addMatch(theMatchedRequest);
-
-        updateTransPoolDataAfterMatch(theMatchedRequest);
+    public void addNewMatch(TransPoolData data, int chosenPossibleMatchIndex) {
+        PossibleMatch chosenPossibleMatch = possibleMatches.get(chosenPossibleMatchIndex);
+        data.addMatch(new MatchedTransPoolTripRequest(tripRequestToMatch, chosenPossibleMatch));
     }
 
-    /**
-     * Updates the TransPool trip after the match
-     * Deletes the matched trip request.
-     * @param theMatchedRequest
-     */
-    private void updateTransPoolDataAfterMatch(MatchedTransPoolTripRequest theMatchedRequest) {
-        chosenTransPoolTripToMatch.getPossibleTransPoolTrip().updateAfterMatch(theMatchedRequest);
-        data.deleteTripRequest(tripRequestToMatch);
-    }
 
     /**
      * @return the list of all possible matches.

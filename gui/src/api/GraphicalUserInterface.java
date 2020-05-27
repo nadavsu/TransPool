@@ -1,8 +1,8 @@
 package api;
 
+import api.components.FileEngine;
 import api.controller.TransPoolController;
 import api.resources.ResourcesConstants;
-import data.transpool.TransPoolData;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -38,10 +38,10 @@ public class GraphicalUserInterface extends Application {
         Scene mainScene = new Scene(mainRoot, 1080, 720);
 
         //Setting up the controller
-        TransPoolController transPoolController = mainLoader.getController();
-        //Engine engine = new Engine(transPoolController);
-        transPoolController.setPrimaryStage(primaryStage);
-        //transPoolController.setEngine(engine);
+        TransPoolController transpoolController = mainLoader.getController();
+        TransPoolEngine engine = new TransPoolEngine(transpoolController);
+        transpoolController.setEngine(engine);
+        transpoolController.setPrimaryStage(primaryStage);
 
         //Pause transition for the splash screen. When pause is finished the scene is switched to the main scene.
         PauseTransition splashScreenPause = new PauseTransition(Duration.millis(2300));

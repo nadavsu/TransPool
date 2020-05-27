@@ -1,5 +1,4 @@
 package api.menu;
-import api.TripEngine;
 import exception.file.StopNotFoundException;
 import exception.TransPoolFileNotLoadedException;
 import exception.time.InvalidHoursException;
@@ -13,10 +12,9 @@ import java.util.InputMismatchException;
  * Gets data from the user and sends it to the engine.
  */
 public class NewTripRequestMenu extends InputMenu {
-    private TripEngine engine;
     public NewTripRequestMenu(String title) {
         super(title);
-        engine = new TripEngine();
+        engine = new TransPoolTripRequestEngine();
     }
 
 

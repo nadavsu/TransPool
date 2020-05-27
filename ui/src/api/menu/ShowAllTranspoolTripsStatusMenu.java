@@ -1,6 +1,5 @@
 package api.menu;
 
-import api.Engine;
 import exception.TransPoolFileNotLoadedException;
 
 public class ShowAllTranspoolTripsStatusMenu extends InputMenu {

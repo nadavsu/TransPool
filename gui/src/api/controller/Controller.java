@@ -1,7 +1,15 @@
 package api.controller;
 
-import api.Engine;
+import javafx.stage.Stage;
 
 public abstract class Controller {
-    Engine engine;
+    protected Stage primaryStage;
+
+    public void setPrimaryStage(Stage primaryStage) {
+        this.primaryStage = primaryStage;
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
+    }
 }

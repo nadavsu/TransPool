@@ -8,9 +8,15 @@ import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.file.TransPoolDataException;
 import javafx.beans.property.ListProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.util.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * The class containing the TransPool data structures.
@@ -18,15 +24,15 @@ import java.util.List;
 public class TransPoolData {
 
     private Map map;
-    private List<TransPoolTrip> allTransPoolTrips;
-    private List<TransPoolTripRequest> allTransPoolTripRequests;
-    private List<MatchedTransPoolTripRequest> allMatchedTrips;
+    private ObservableList<TransPoolTrip> allTransPoolTrips;
+    private ObservableList<TransPoolTripRequest> allTransPoolTripRequests;
+    private ObservableList<MatchedTransPoolTripRequest> allMatchedTrips;
 
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
-        allTransPoolTripRequests = new ArrayList<>();
-        allTransPoolTrips = new ArrayList<>();
-        allMatchedTrips = new ArrayList<>();
-        allMatchedTrips = new ArrayList<>();
+        allTransPoolTripRequests = FXCollections.observableArrayList();
+        allTransPoolTrips = FXCollections.observableArrayList();
+        allMatchedTrips = FXCollections.observableArrayList();
+        allMatchedTrips = FXCollections.observableArrayList();
         map = new Map(JAXBData.getMapDescriptor());
         initTransPoolTrips(JAXBData.getPlannedTrips());
     }
@@ -84,14 +90,14 @@ public class TransPoolData {
         return map;
     }
 
-    public List<TransPoolTripRequest> getAllTransPoolTripRequests() throws NullPointerException {
+    public ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests() throws NullPointerException {
         if (allTransPoolTripRequests == null) {
             throw new NullPointerException();
         }
         return allTransPoolTripRequests;
     }
 
-    public List<TransPoolTrip> getAllTransPoolTrips() throws NullPointerException {
+    public ObservableList<TransPoolTrip> getAllTransPoolTrips() throws NullPointerException {
         if (allTransPoolTrips == null) {
             throw new NullPointerException();
         }
@@ -99,7 +105,7 @@ public class TransPoolData {
     }
 
     //------------------------------------------------------------------------------------------
-    public List<MatchedTransPoolTripRequest> getAllMatchedTrips() {
+    public ObservableList<MatchedTransPoolTripRequest> getAllMatchedTrips() {
         return allMatchedTrips;
     }
 
@@ -112,4 +118,8 @@ public class TransPoolData {
         trip.updateAfterMatch(matchedTransPoolTripRequest);
         deleteTripRequest(getTripRequestByID(matchedTransPoolTripRequest.getRequestID()));
     }
+
+/*    public static Callback<TransPoolTrip, Observable[]> extractor() {
+        return (TransPoolTrip t) -> new Observable[]{t.lastNameProperty(), t.firstNameProperty(), t.birthdayProperty(), t.ageBinding()};
+    }*/
 }

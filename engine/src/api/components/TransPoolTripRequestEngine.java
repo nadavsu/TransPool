@@ -8,9 +8,12 @@ import data.transpool.trip.Time;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.file.StopNotFoundException;
 import exception.time.InvalidTimeException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Observable;
 import java.util.stream.Collectors;
 
 public class TransPoolTripRequestEngine {
@@ -39,24 +42,24 @@ public class TransPoolTripRequestEngine {
         return new TransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
     }
 
-    public List<String> getAllTransPoolTripRequestsAsStrings(TransPoolData data) {
-        List<String> matchedAndUnmatchedTransPoolTripRequests = data
+    public ObservableList<String> getAllTransPoolTripRequestsAsStrings(TransPoolData data) {
+        ObservableList<String> matchedAndUnmatchedTransPoolTripRequests = data
                 .getAllTransPoolTripRequests()
                 .stream()
                 .map(TransPoolTripRequest::toString)
-                .collect(Collectors.toList());
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
 
         matchedAndUnmatchedTransPoolTripRequests
                 .addAll(data
                         .getAllMatchedTrips()
                         .stream()
                         .map(MatchedTransPoolTripRequest::toString)
-                        .collect(Collectors.toList()));
+                        .collect(Collectors.toCollection(FXCollections::observableArrayList)));
 
         return matchedAndUnmatchedTransPoolTripRequests;
     }
 
-    public List<TransPoolTripRequest> getAllTransPoolTripRequests(TransPoolData data) {
+    public ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests(TransPoolData data) {
         return data.getAllTransPoolTripRequests();
     }
 }

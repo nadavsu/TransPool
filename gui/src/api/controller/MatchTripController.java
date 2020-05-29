@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
-public class MatchTripController implements FormController {
+public class MatchTripController implements Clearable {
 
     private TransPoolController transPoolController;
 
@@ -39,7 +39,7 @@ public class MatchTripController implements FormController {
     }
 
     @Override
-    public void clearForm() {
+    public void clear() {
         comboBoxNumOfResults.setText("0");
         listViewResults.getItems().clear();
     }

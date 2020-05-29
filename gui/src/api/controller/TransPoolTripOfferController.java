@@ -12,9 +12,9 @@ import javafx.fxml.FXML;
 
 import java.time.LocalTime;
 
-public class TransPoolTripOfferController implements FormController {
+public class TransPoolTripOfferController implements Clearable {
 
-    private TransPoolController transPoolController;
+    private TransPoolController transpoolController;
 
     @FXML private JFXTextField textFieldDriverName;
     @FXML private JFXTimePicker timeFieldDepatureTime;
@@ -32,8 +32,8 @@ public class TransPoolTripOfferController implements FormController {
         fileLoaded = new SimpleBooleanProperty(false);
     }
 
-    public void setTransPoolController(TransPoolController transPoolController) {
-        this.transPoolController = transPoolController;
+    public void setTranspoolController(TransPoolController transpoolController) {
+        this.transpoolController = transpoolController;
     }
 
     @FXML
@@ -49,7 +49,7 @@ public class TransPoolTripOfferController implements FormController {
     }
 
     @Override
-    public void clearForm() {
+    public void clear() {
         timeFieldDepatureTime.setValue(LocalTime.now());
         textFieldDay.setText("0");
         textFieldDriverName.setText("");

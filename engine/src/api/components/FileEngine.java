@@ -16,9 +16,6 @@ import java.io.File;
  */
 public class FileEngine {
 
-    private String fileDirectory;
-
-
     /**
      * Loads the TransPool data file to the system.
      * Deserializes the XML file and unmarshalls it to the generated JAXB classes.

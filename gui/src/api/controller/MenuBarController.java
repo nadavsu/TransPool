@@ -17,7 +17,7 @@ public class MenuBarController {
     private final static String DARK_COLOR_SCHEME = "api/resources/css/scheme/color_scheme_dark.css";
     private final static String LIGHT_COLOR_SCHEME = "api/resources/css/scheme/color_scheme_light.css";
 
-    private TransPoolController transPoolController;
+    private TransPoolController transpoolController;
 
     @FXML private MenuItem menuItemOpen;
     @FXML private MenuItem menuItemClose;
@@ -30,13 +30,13 @@ public class MenuBarController {
 
     }
 
-    public void setTransPoolController(TransPoolController transPoolController) {
-        this.transPoolController = transPoolController;
+    public void setTransPoolController(TransPoolController transpoolController) {
+        this.transpoolController = transpoolController;
     }
 
     @FXML
-    public void openMenuItemAction(ActionEvent event) throws TransPoolDataException, JAXBException, TransPoolFileNotFoundException {
-        transPoolController.loadFile();
+    public void openMenuItemAction(ActionEvent event) {
+        transpoolController.loadFile();
     }
 
     @FXML
@@ -46,30 +46,29 @@ public class MenuBarController {
 
     @FXML
     public void quitMenuItemActionEvent(ActionEvent event) {
-        transPoolController.quit();
+        transpoolController.quit();
     }
 
     @FXML
     public void darkThemeMenuItemActionEvent(ActionEvent event) {
-        transPoolController.setColorScheme(DARK_COLOR_SCHEME);
+        transpoolController.setColorScheme(DARK_COLOR_SCHEME);
     }
 
     @FXML
     public void lightThemeMenuItemActionEvent(ActionEvent event) {
-        transPoolController.setColorScheme(LIGHT_COLOR_SCHEME);
+        transpoolController.setColorScheme(LIGHT_COLOR_SCHEME);
     }
 
     public void loadFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load TransPool data file");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML File", "*.xml"));
-        File selectedFile = fileChooser.showOpenDialog(transPoolController.getPrimaryStage());
+        File selectedFile = fileChooser.showOpenDialog(transpoolController.getPrimaryStage());
         if (selectedFile == null) {
             return;
         }
         try {
-            transPoolController.getEngine().loadFile(selectedFile);
-            transPoolController.setFileLoaded(true);
+            transpoolController.getEngine().loadFile(selectedFile);
         } catch (JAXBException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Internal Error");
@@ -85,12 +84,12 @@ public class MenuBarController {
 
     //todo maybe move this to the engine.
     public void setColorScheme(String colorSchemeFileLocation) {
-        transPoolController
+        transpoolController
                 .getPrimaryStage()
                 .getScene()
                 .getStylesheets()
                 .clear();
-        transPoolController
+        transpoolController
                 .getPrimaryStage()
                 .getScene()
                 .getStylesheets()

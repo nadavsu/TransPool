@@ -14,6 +14,9 @@ import javafx.stage.Stage;
  */
 public class TransPoolController {
 
+    private Stage primaryStage;
+    private Engine engine;
+
     @FXML private MatchTripController matchTripComponentController;
     @FXML private MenuBarController menuBarComponentController;
     @FXML private TransPoolTripOfferController tripOfferComponentController;
@@ -25,9 +28,6 @@ public class TransPoolController {
     @FXML private AnchorPane tripOfferComponent;
     @FXML private AnchorPane tripRequestComponent;
     @FXML private VBox dataBarComponent;
-
-    private Engine transpoolEngine;
-    private Stage  primaryStage;
 
     private BooleanProperty fileLoaded;
 
@@ -42,9 +42,10 @@ public class TransPoolController {
                 && tripOfferComponentController != null
                 && tripRequestComponentController != null) {
             matchTripComponentController.setTransPoolController(this);
-            tripOfferComponentController.setTransPoolController(this);
+            tripOfferComponentController.setTranspoolController(this);
             tripRequestComponentController.setTransPoolController(this);
             menuBarComponentController.setTransPoolController(this);
+            dataBarComponentController.setTransPoolController(this);
         }
 
         fileLoaded.bindBidirectional(matchTripComponentController.fileLoadedProperty());
@@ -57,7 +58,8 @@ public class TransPoolController {
     }
 
     public void setEngine(Engine engine) {
-        transpoolEngine = engine;
+        this.engine = engine;
+        fileLoaded.bind(this.engine.fileLoadedProperty());
     }
 
     public Stage getPrimaryStage() {
@@ -65,7 +67,7 @@ public class TransPoolController {
     }
 
     public Engine getEngine() {
-        return transpoolEngine;
+        return engine;
     }
 
 
@@ -87,7 +89,9 @@ public class TransPoolController {
 
     public void loadFile() {
         menuBarComponentController.loadFile();
+        dataBarComponentController.update();
     }
+
 
     public void setColorScheme(String colorSchemeFileLocation) {
         menuBarComponentController.setColorScheme(colorSchemeFileLocation);
@@ -105,7 +109,7 @@ public class TransPoolController {
 
     //---------------------------------------------------------------------------------------------//
 
-    public void clearForm(FormController form) {
-        form.clearForm();
+    public void clearForm(Clearable form) {
+        form.clear();
     }
 }

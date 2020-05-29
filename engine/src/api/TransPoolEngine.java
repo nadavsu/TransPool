@@ -13,6 +13,9 @@ import exception.NoMatchesFoundException;
 import exception.file.StopNotFoundException;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
@@ -22,7 +25,7 @@ import java.util.List;
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
-    private boolean isLoaded;
+    private BooleanProperty isLoaded;
 
     private FileEngine fileEngine;
     private MatchingEngine matchingEngine;
@@ -37,35 +40,35 @@ public class TransPoolEngine implements Engine {
         this.matchingEngine = new MatchingEngine();
         this.transPoolTripEngine = new TransPoolTripEngine();
         this.transPoolTripRequestEngine = new TransPoolTripRequestEngine();
-        this.isLoaded = false;
+        this.isLoaded = new SimpleBooleanProperty(false);
     }
 
     @Override
     public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException {
         data = fileEngine.loadData(file);
-        isLoaded = true;
+        isLoaded.set(true);
     }
 
     @Override
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
-                                              StopNotFoundException {
+            StopNotFoundException {
         TransPoolTripRequest request = transPoolTripRequestEngine.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
         data.addTransPoolTripRequest(request);
     }
 
     @Override
-    public List<String> getAllTransPoolTripRequestsAsStrings() {
+    public ObservableList<String> getAllTransPoolTripRequestsAsStrings() {
         return transPoolTripRequestEngine.getAllTransPoolTripRequestsAsStrings(data);
     }
 
     @Override
-    public List<TransPoolTripRequest> getAllTransPoolTripRequests() {
+    public ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests() {
         return transPoolTripRequestEngine.getAllTransPoolTripRequests(data);
     }
 
     @Override
-    public List<TransPoolTrip> getAllTransPoolTrips() {
+    public ObservableList<TransPoolTrip> getAllTransPoolTrips() {
         return transPoolTripEngine.getAllTransPoolTrips(data);
     }
 
@@ -87,5 +90,15 @@ public class TransPoolEngine implements Engine {
     @Override
     public TransPoolData getData() {
         return data;
+    }
+
+    @Override
+    public BooleanProperty fileLoadedProperty() {
+        return isLoaded;
+    }
+
+    @Override
+    public ObservableList<String> getAllTransPoolTripsAsStrings() {
+        return transPoolTripEngine.getAllTransPoolTripsAsStrings(data);
     }
 }

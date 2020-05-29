@@ -8,6 +8,9 @@ import exception.NoMatchesFoundException;
 import exception.file.StopNotFoundException;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
@@ -22,11 +25,11 @@ public interface Engine {
                                        LocalTime time, boolean isArrivalTime, boolean isContinuous)
             throws StopNotFoundException;
 
-    List<String> getAllTransPoolTripRequestsAsStrings();
+    ObservableList<String> getAllTransPoolTripRequestsAsStrings();
 
-    List<TransPoolTripRequest> getAllTransPoolTripRequests();
+    ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests();
 
-    List<TransPoolTrip> getAllTransPoolTrips();
+    ObservableList<TransPoolTrip> getAllTransPoolTrips();
 
     void findPossibleMatches(int tripRequestID, int maximumMatches) throws NoMatchesFoundException;
 
@@ -35,4 +38,8 @@ public interface Engine {
     void addNewMatch(int indexOfPossibleMatchesList);
 
     TransPoolData getData();
+
+    BooleanProperty fileLoadedProperty();
+
+    ObservableList<String> getAllTransPoolTripsAsStrings();
 }

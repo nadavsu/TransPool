@@ -10,7 +10,7 @@ import javafx.scene.control.Alert;
 
 import java.time.LocalTime;
 
-public class TransPoolTripRequestController implements FormController {
+public class TransPoolTripRequestController implements Clearable {
 
     private TransPoolController transPoolController;
 
@@ -62,7 +62,7 @@ public class TransPoolTripRequestController implements FormController {
     }
 
     @Override
-    public void clearForm() {
+    public void clear() {
         timeFieldTime.setValue(LocalTime.now());
         radioButtonDepartureTime.setSelected(true);
         textFieldDestination.setText("");

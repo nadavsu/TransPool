@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import com.jfoenix.controls.JFXTimePicker?>
 <?import java.lang.String?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -30,25 +32,38 @@
                   <RowConstraints maxHeight="48.0" minHeight="7.0" prefHeight="24.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="67.0140380859375" minHeight="0.0" prefHeight="28.0" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="41.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="27.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="348.0" minHeight="7.0" prefHeight="274.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="103.75117492675781" minHeight="0.0" prefHeight="33.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="154.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="348.0" minHeight="7.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="250.0" minHeight="10.0" prefHeight="32.96185302734375" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="242.03814697265625" minHeight="0.0" prefHeight="28.504364013671875" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="236.49563598632812" minHeight="10.0" prefHeight="236.49563598632812" vgrow="SOMETIMES" />
                   <RowConstraints maxHeight="103.75117492675781" minHeight="0.0" prefHeight="22.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXComboBox id="CBSourceTripRequest" fx:id="comboBoxSource" labelFloat="true" prefHeight="27.0" prefWidth="264.0" promptText="Source" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                  <JFXTextField fx:id="textFieldRiderName" labelFloat="true" styleClass="data-field" text="Name" GridPane.columnIndex="3" GridPane.rowIndex="1" />
-                  <JFXComboBox id="CBDestinationTripRequest" fx:id="comboBoxDestination" labelFloat="true" prefHeight="27.0" prefWidth="263.0" promptText="Destination" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="5" />
-                  <ImageView fitHeight="90.0" fitWidth="23.0" pickOnBounds="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.rowSpan="3" GridPane.valignment="CENTER">
+                  <JFXTextField fx:id="textFieldRiderName" labelFloat="true" promptText="Name" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                  <ImageView fitHeight="90.0" fitWidth="23.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.rowSpan="3" GridPane.valignment="CENTER">
                      <image>
                         <Image url="@../images/path.png" />
                      </image>
                   </ImageView>
+                  <JFXTimePicker fx:id="timeFieldTime" defaultColor="#0399ff" prefHeight="27.0" prefWidth="256.0" promptText="Time" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="9">
+                     <children>
+                        <JFXRadioButton fx:id="radioButtonArrivalTime" layoutY="42.0" selectedColor="#0399ff" text="Arrival time" unSelectedColor="#0399ff">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="arrival_departure" />
+                           </toggleGroup>
+                        </JFXRadioButton>
+                        <JFXRadioButton fx:id="radioButtonDepartureTime" layoutY="14.0" selected="true" selectedColor="#0399ff" text="Departure time" toggleGroup="$arrival_departure" unSelectedColor="#0399ff" />
+                     </children>
+                  </AnchorPane>
+                  <JFXTextField fx:id="textFieldSource" prefHeight="27.0" prefWidth="264.0" promptText="Source" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="textFieldDestination" prefHeight="27.0" prefWidth="264.0" promptText="Destination" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="5" />
                </children>
             </GridPane>
             <AnchorPane prefHeight="70.0" prefWidth="320.0">
                <children>
-                  <JFXButton id="ButtonAddRequest" fx:id="buttonAddRequest" layoutX="43.0" layoutY="20.0" onAction="#addNewTripRequest" prefHeight="27.0" prefWidth="227.0" text="Add Request" />
+                  <JFXButton id="ButtonAddRequest" fx:id="buttonAddRequest" layoutX="43.0" layoutY="20.0" onAction="#newTripRequestButtonAction" prefHeight="27.0" prefWidth="227.0" text="Add Request" />
                </children>
             </AnchorPane>
          </children>

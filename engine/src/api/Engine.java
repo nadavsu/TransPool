@@ -1,5 +1,6 @@
 package api;
 
+import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
@@ -7,10 +8,10 @@ import exception.NoMatchesFoundException;
 import exception.file.StopNotFoundException;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
-import exception.time.InvalidTimeException;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface Engine {
@@ -18,8 +19,8 @@ public interface Engine {
     void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException;
 
     void createNewTransPoolTripRequest(String riderName, String source, String destination,
-                                       int hour, int min, boolean isContinuous)
-            throws InvalidTimeException, StopNotFoundException;
+                                       LocalTime time, boolean isArrivalTime, boolean isContinuous)
+            throws StopNotFoundException;
 
     List<String> getAllTransPoolTripRequestsAsStrings();
 
@@ -32,4 +33,6 @@ public interface Engine {
     List<PossibleMatch> getPossibleMatches();
 
     void addNewMatch(int indexOfPossibleMatchesList);
+
+    TransPoolData getData();
 }

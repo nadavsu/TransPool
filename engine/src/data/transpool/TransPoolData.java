@@ -7,6 +7,7 @@ import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.file.TransPoolDataException;
+import javafx.beans.property.ListProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +22,11 @@ public class TransPoolData {
     private List<TransPoolTripRequest> allTransPoolTripRequests;
     private List<MatchedTransPoolTripRequest> allMatchedTrips;
 
-    public static boolean isLoaded = false;
-
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
         allTransPoolTripRequests = new ArrayList<>();
         allTransPoolTrips = new ArrayList<>();
         allMatchedTrips = new ArrayList<>();
         allMatchedTrips = new ArrayList<>();
-        isLoaded = true;
         map = new Map(JAXBData.getMapDescriptor());
         initTransPoolTrips(JAXBData.getPlannedTrips());
     }

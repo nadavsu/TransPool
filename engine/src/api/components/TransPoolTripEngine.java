@@ -7,12 +7,6 @@ import data.transpool.trip.TransPoolTrip;
 import java.util.List;
 
 public class TransPoolTripEngine {
-    private TransPoolTripOfferController controller;
-
-    public TransPoolTripEngine(TransPoolTripOfferController controller) {
-        this.controller = controller;
-    }
-
     public void createNewTransPoolTripOffer() {
 
     }

@@ -21,11 +21,8 @@ public class MatchingEngine {
     private TransPoolTripRequest tripRequestToMatch;
     private List<PossibleMatch> possibleMatches;
 
-    private MatchTripController controller;
-
-    public MatchingEngine(MatchTripController controller) {
+    public MatchingEngine() {
         possibleMatches = new ArrayList<>();
-        this.controller = controller;
     }
 
     /**

@@ -30,7 +30,7 @@
                </rowConstraints>
                <children>
                   <JFXComboBox fx:id="comboBoxRideID" prefHeight="27.0" prefWidth="231.0" promptText="Ride ID" styleClass="data-field" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXTextField fx:id="comboBoxNumOfResults" styleClass="data-field" text="Number of results to show" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <JFXTextField fx:id="comboBoxNumOfResults" promptText="Number of results to show" styleClass="data-field" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                   <JFXListView fx:id="listViewResults" prefHeight="407.0" prefWidth="320.0" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                </children>
             </GridPane>

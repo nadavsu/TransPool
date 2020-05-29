@@ -3,21 +3,27 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.ToggleGroup?>
 
-<MenuBar id="MenuBar" stylesheets="@../css/menu_bar.css" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.MenuBarController">
+<MenuBar id="MenuBar" stylesheets="@../css/menu_bar.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.MenuBarController">
    <menus>
       <Menu mnemonicParsing="false" text="File">
          <items>
             <MenuItem fx:id="menuItemOpen" mnemonicParsing="false" onAction="#openMenuItemAction" text="Open..." />
-            <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#quit" text="Close" />
+            <MenuItem fx:id="menuItemClose" mnemonicParsing="false" onAction="#quitMenuItemActionEvent" text="Close" />
          </items>
       </Menu>
       <Menu mnemonicParsing="false" text="View">
          <items>
             <Menu mnemonicParsing="false" text="Skin">
                <items>
-                  <MenuItem fx:id="menuItemDarkMode" mnemonicParsing="false" onAction="#setDarkTheme" text="Dark mode" />
-                  <MenuItem fx:id="menuItemLightMode" mnemonicParsing="false" onAction="#setLightTheme" text="Light mode" />
+                  <RadioMenuItem fx:id="menuItemLightMode" mnemonicParsing="false" onAction="#lightThemeMenuItemActionEvent" selected="true" text="Light Mode">
+                     <toggleGroup>
+                        <ToggleGroup fx:id="light_dark" />
+                     </toggleGroup>
+                  </RadioMenuItem>
+                  <RadioMenuItem fx:id="menuItemDarkMode" mnemonicParsing="false" onAction="#darkThemeMenuItemActionEvent" text="Dark Mode" toggleGroup="$light_dark" />
                </items>
             </Menu>
          </items>

@@ -39,14 +39,14 @@
                   <RowConstraints maxHeight="140.0" minHeight="10.0" prefHeight="140.0" vgrow="SOMETIMES" />
                </rowConstraints>
                <children>
-                  <JFXTextField fx:id="textFieldDriverName" styleClass="data-field" text="Name" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+                  <JFXTextField fx:id="textFieldDriverName" promptText="Name" styleClass="data-field" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
                   <JFXTimePicker fx:id="timeFieldDepatureTime" defaultColor="#0399ff" prefHeight="27.0" prefWidth="299.0" promptText="Departure Time" styleClass="data-field" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="3" />
-                  <JFXTextField fx:id="textFieldDay" styleClass="data-field" text="Day" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
-                  <JFXComboBox fx:id="textFieldRecurrences" prefHeight="27.0" prefWidth="297.0" promptText="Recurrences" styleClass="data-field" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
+                  <JFXTextField fx:id="textFieldDay" promptText="Day" styleClass="data-field" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+                  <JFXComboBox fx:id="comboBoxRecurrences" prefHeight="27.0" prefWidth="297.0" promptText="Recurrences" styleClass="data-field" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="7" />
                   <JFXComboBox fx:id="comboBoxRiderCapacity" prefHeight="27.0" prefWidth="103.0" promptText="Rider Cap." styleClass="data-field" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="9" GridPane.valignment="CENTER" />
-                  <JFXTextField fx:id="textFieldStopToAdd" styleClass="data-field" text="Add route stop" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" />
+                  <JFXTextField fx:id="textFieldStopToAdd" promptText="Add route stop" styleClass="data-field" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="11" />
                   <JFXListView fx:id="listViewRoute" styleClass="data-field" GridPane.columnSpan="4" GridPane.rowIndex="13" />
-                  <JFXTextField fx:id="textFieldPPK" prefHeight="27.0" prefWidth="103.0" styleClass="data-field" text="PPK" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
+                  <JFXTextField fx:id="textFieldPPK"  prefHeight="27.0" prefWidth="103.0" styleClass="data-field" promptText="PPK" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="9" />
                </children>
             </GridPane>
             <AnchorPane prefHeight="70.0" prefWidth="320.0">

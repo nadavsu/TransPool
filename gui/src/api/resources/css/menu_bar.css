@@ -1,7 +1,5 @@
 /*MENU BAR CSS*/
 
-@import "color_scheme.css";
-
 .menu-bar {
     -fx-background-color: -body-color;
 }

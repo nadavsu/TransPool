@@ -17,11 +17,7 @@ import java.io.File;
 public class FileEngine {
 
     private String fileDirectory;
-    private MenuBarController controller;
 
-    public FileEngine(MenuBarController controller) {
-        this.controller = controller;
-    }
 
     /**
      * Loads the TransPool data file to the system.

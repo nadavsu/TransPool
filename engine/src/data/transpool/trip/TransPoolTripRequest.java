@@ -2,6 +2,7 @@ package data.transpool.trip;
 
 import data.transpool.user.TransPoolRider;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class TransPoolTripRequest {
@@ -10,16 +11,17 @@ public class TransPoolTripRequest {
     private TransPoolRider transpoolRider;
     private String source;
     private String destination;
-    private Time timeOfDeparture;
-
+    private LocalTime time;
+    private boolean isArrivalTime;
     private boolean isContinuous;
 
-    public TransPoolTripRequest(String transpoolRider, String source, String destination, Time timeOfDeparture, boolean isContinuous) {
+    public TransPoolTripRequest(String transpoolRider, String source, String destination, LocalTime time, boolean isArrivalTime, boolean isContinuous) {
         this.ID = IDGenerator++;
         this.transpoolRider = new TransPoolRider(transpoolRider);
         this.source = source;
         this.destination = destination;
-        this.timeOfDeparture = timeOfDeparture;
+        this.time = time;
+        this.isArrivalTime = isArrivalTime;
         this.isContinuous = isContinuous;
     }
 
@@ -35,8 +37,8 @@ public class TransPoolTripRequest {
         return destination;
     }
 
-    public Time getTimeOfDeparture() {
-        return timeOfDeparture;
+    public LocalTime getTimeOfDeparture() {
+        return time;
     }
 
     public boolean isContinuous() {
@@ -55,7 +57,8 @@ public class TransPoolTripRequest {
         requestString += "Name of requester:                " + transpoolRider + "\n";
         requestString += "Stop source:                      " + source + "\n";
         requestString += "Stop destination:                 " + destination + "\n";
-        requestString += "Time of departure:                " + timeOfDeparture + "\n";
+        requestString += "Time:                             " + time + "\n";
+        requestString += "Time of arrival?                  " + isArrivalTime;
 
         return requestString;
     }

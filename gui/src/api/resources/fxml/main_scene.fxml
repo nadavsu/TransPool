@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
@@ -12,13 +13,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="VBoxMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="body" stylesheets="@../css/main_body.css" xmlns="http://javafx.com/javafx/8.0.241" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.TransPoolController">
+<VBox id="VBoxMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="body" stylesheets="@../css/scheme/color_scheme_light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.TransPoolController">
    <children>
       <HBox id="HBoxMain" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0" styleClass="body">
          <children>
             <VBox maxWidth="320.0" minHeight="230.0" minWidth="200.0" prefHeight="700.0" prefWidth="320.0" styleClass="left_side_bar" HBox.hgrow="NEVER">
                <children>
-                  <fx:include fx:id="MenuBar" source="menu_bar.fxml" /> 
+                  <fx:include fx:id="menuBarComponent" source="menu_bar.fxml" />
                   <GridPane id="GridPaneLogo" styleClass="left_side_bar">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.5486068725586" minWidth="10.0" prefWidth="68.26393127441406" />
@@ -47,17 +48,17 @@
                      <tabs>
                         <Tab id="TabRequestTrip" closable="false" text="Request Trip">
 							<content>
-								<fx:include fx:id="TripRequestTab" source="trip_request.fxml" />
+								<fx:include fx:id="tripRequestComponent" source="trip_request.fxml" />
 							</content>
 						</Tab>
 						<Tab id="TabOfferTrip" text="Offer Trip">
                           <content>
-								<fx:include fx:id="TripOfferTab" source="trip_offer.fxml" />
+								<fx:include fx:id="tripOfferComponent" source="trip_offer.fxml" />
                           </content>
                         </Tab>
                         <Tab id="TabMatch" text="Match">
                           <content>
-                            <fx:include fx:id="MatchTab" source="trip_match.fxml" />
+                            <fx:include fx:id="matchTripComponent" source="trip_match.fxml" />
                           </content>
                         </Tab>
                      </tabs>
@@ -73,23 +74,7 @@
                   </ImageView>
                </content>
             </ScrollPane>
-            <GridPane minHeight="230.0" minWidth="210.0" prefHeight="320.0" prefWidth="210.0" HBox.hgrow="NEVER">
-               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="167.92266845703125" minWidth="10.0" prefWidth="167.92266845703125" />
-                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="76.675048828125" minWidth="10.0" prefWidth="21.07733154296875" />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints maxHeight="152.791015625" minHeight="0.0" prefHeight="41.671884536743164" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="435.0" minHeight="10.0" prefHeight="30.916404724121094" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="581.1953430175781" minHeight="0.0" prefHeight="24.752342224121094" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="621.0" minHeight="10.0" prefHeight="203.65936279296875" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="621.0" minHeight="10.0" prefHeight="22.53399658203125" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="621.0" minHeight="10.0" prefHeight="37.119140625" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="621.0" minHeight="10.0" prefHeight="21.453521728515625" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="621.0" minHeight="10.0" prefHeight="242.54647827148438" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="621.0" minHeight="10.0" prefHeight="85.75973510742188" vgrow="SOMETIMES" />
-               </rowConstraints>
-            </GridPane>
+             <fx:include fx:id="dataBarComponent" source="data_bar.fxml" />
          </children>
       </HBox>
    </children>

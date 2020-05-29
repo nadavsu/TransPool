@@ -1,26 +1,55 @@
 package api.controller;
 
 import api.Engine;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.fxml.FXML;
+import javafx.scene.control.MenuBar;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 /**
     The main controller of the application.
  */
-
 public class TransPoolController {
-    private MatchTripController matchTripController;
-    private MenuBarController menuBarController;
-    private TransPoolTripOfferController tripOfferController;
-    private TransPoolTripRequestController tripRequestController;
+
+    @FXML private MatchTripController matchTripComponentController;
+    @FXML private MenuBarController menuBarComponentController;
+    @FXML private TransPoolTripOfferController tripOfferComponentController;
+    @FXML private TransPoolTripRequestController tripRequestComponentController;
+    @FXML private DataBarController dataBarComponentController;
+
+    @FXML private MenuBar menuBarComponent;
+    @FXML private AnchorPane matchTripComponent;
+    @FXML private AnchorPane tripOfferComponent;
+    @FXML private AnchorPane tripRequestComponent;
+    @FXML private VBox dataBarComponent;
 
     private Engine transpoolEngine;
     private Stage  primaryStage;
 
+    private BooleanProperty fileLoaded;
+
     public TransPoolController() {
-        this.matchTripController = new MatchTripController();
-        this.menuBarController = new MenuBarController();
-        this.tripOfferController = new TransPoolTripOfferController();
-        this.tripRequestController = new TransPoolTripRequestController();
+        fileLoaded = new SimpleBooleanProperty(false);
+    }
+
+    @FXML
+    public void initialize() {
+        if (matchTripComponentController != null
+                && menuBarComponentController != null
+                && tripOfferComponentController != null
+                && tripRequestComponentController != null) {
+            matchTripComponentController.setTransPoolController(this);
+            tripOfferComponentController.setTransPoolController(this);
+            tripRequestComponentController.setTransPoolController(this);
+            menuBarComponentController.setTransPoolController(this);
+        }
+
+        fileLoaded.bindBidirectional(matchTripComponentController.fileLoadedProperty());
+        fileLoaded.bindBidirectional(tripOfferComponentController.fileLoadedProperty());
+        fileLoaded.bindBidirectional(tripRequestComponentController.fileLoadedProperty());
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -31,19 +60,52 @@ public class TransPoolController {
         transpoolEngine = engine;
     }
 
-    public MatchTripController getMatchTripController() {
-        return matchTripController;
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
-    public MenuBarController getMenuBarController() {
-        return menuBarController;
+    public Engine getEngine() {
+        return transpoolEngine;
     }
 
-    public TransPoolTripOfferController getTripOfferController() {
-        return tripOfferController;
+
+    //---------------------------------------------------------------------------------------------//
+
+    public boolean isFileLoaded() {
+        return fileLoaded.get();
     }
 
-    public TransPoolTripRequestController getTripRequestController() {
-        return tripRequestController;
+    public void setFileLoaded(boolean value) {
+        fileLoaded.set(value);
+    }
+
+    public BooleanProperty fileLoadedProperty() {
+        return fileLoaded;
+    }
+
+    //---------------------------------------------------------------------------------------------//
+
+    public void loadFile() {
+        menuBarComponentController.loadFile();
+    }
+
+    public void setColorScheme(String colorSchemeFileLocation) {
+        menuBarComponentController.setColorScheme(colorSchemeFileLocation);
+    }
+
+    public void quit() {
+        menuBarComponentController.quit();
+    }
+
+    //---------------------------------------------------------------------------------------------//
+
+    public void addNewTripRequest() {
+        tripRequestComponentController.addNewTripRequest();
+    }
+
+    //---------------------------------------------------------------------------------------------//
+
+    public void clearForm(FormController form) {
+        form.clearForm();
     }
 }

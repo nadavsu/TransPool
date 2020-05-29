@@ -37,9 +37,9 @@ public class GraphicalUserInterface extends Application {
         Parent mainRoot = mainLoader.load();
         Scene mainScene = new Scene(mainRoot, 1080, 720);
 
-        //Setting up the controller
+        //Setting up the controller & engine
         TransPoolController transpoolController = mainLoader.getController();
-        TransPoolEngine engine = new TransPoolEngine(transpoolController);
+        Engine engine = new TransPoolEngine(transpoolController);
         transpoolController.setEngine(engine);
         transpoolController.setPrimaryStage(primaryStage);
 

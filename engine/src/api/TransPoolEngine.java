@@ -13,15 +13,16 @@ import exception.NoMatchesFoundException;
 import exception.file.StopNotFoundException;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
-import exception.time.InvalidTimeException;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.time.LocalTime;
 import java.util.List;
 
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
+    private boolean isLoaded;
 
     private FileEngine fileEngine;
     private MatchingEngine matchingEngine;
@@ -29,22 +30,27 @@ public class TransPoolEngine implements Engine {
     private TransPoolTripRequestEngine transPoolTripRequestEngine;
 
     private TransPoolController controller;
+
     public TransPoolEngine(TransPoolController controller) {
         this.controller = controller;
-        this.fileEngine = new FileEngine(controller.getMenuBarController());
-        this.matchingEngine = new MatchingEngine(controller.getMatchTripController());
-        this.transPoolTripEngine = new TransPoolTripEngine(controller.getTripOfferController());
-        this.transPoolTripRequestEngine = new TransPoolTripRequestEngine(controller.getTripRequestController());
+        this.fileEngine = new FileEngine();
+        this.matchingEngine = new MatchingEngine();
+        this.transPoolTripEngine = new TransPoolTripEngine();
+        this.transPoolTripRequestEngine = new TransPoolTripRequestEngine();
+        this.isLoaded = false;
     }
 
     @Override
     public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException {
         data = fileEngine.loadData(file);
+        isLoaded = true;
     }
 
     @Override
-    public void createNewTransPoolTripRequest(String riderName, String source, String destination, int hour, int min, boolean isContinuous) throws InvalidTimeException, StopNotFoundException {
-        TransPoolTripRequest request = transPoolTripRequestEngine.createNewTransPoolTripRequest(riderName, source, destination, hour, min, isContinuous);
+    public void createNewTransPoolTripRequest(String riderName, String source, String destination,
+                                              LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
+                                              StopNotFoundException {
+        TransPoolTripRequest request = transPoolTripRequestEngine.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
         data.addTransPoolTripRequest(request);
     }
 
@@ -76,5 +82,10 @@ public class TransPoolEngine implements Engine {
     @Override
     public void addNewMatch(int chosenPossibleMatchIndex) {
         matchingEngine.addNewMatch(data, chosenPossibleMatchIndex);
+    }
+
+    @Override
+    public TransPoolData getData() {
+        return data;
     }
 }

@@ -106,9 +106,8 @@ public class TransPoolTrip {
 
     @Override
     public String toString() {
-        String transpoolTripString = "";
-
-        transpoolTripString += "+-----------------TransPool Trip-----------------+\n";
+        return transpoolDriver + " " + ID;
+/*        String transpoolTripString = "";
         transpoolTripString += "TransPool trip ID:          " + ID + "\n";
         transpoolTripString += "Driver name:                " + transpoolDriver + "\n";
         transpoolTripString += "Passenger capacity:         " + passengerCapacity + "\n";
@@ -118,9 +117,8 @@ public class TransPoolTrip {
         transpoolTripString += "Average fuel consumption:   " + averageFuelConsumption + "\n";
         transpoolTripString += "Price per kilometer:        " + PPK + "\n";
         transpoolTripString += "Total trip price:           " + tripPrice + "\n";
-        transpoolTripString += "Rider details:              " + allRiderStatuses + "\n";
+        transpoolTripString += "Rider details:              " + allRiderStatuses + "\n";*/
 
-        return transpoolTripString;
     }
 
     @Override

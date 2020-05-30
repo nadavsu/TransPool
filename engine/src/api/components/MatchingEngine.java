@@ -1,6 +1,5 @@
 package api.components;
 
-import api.controller.MatchTripController;
 import data.transpool.TransPoolData;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.PossibleMatch;

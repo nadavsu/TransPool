@@ -1,6 +1,5 @@
 package api.components;
 
-import api.controller.MenuBarController;
 import data.jaxb.TransPool;
 import data.transpool.TransPoolData;
 import exception.file.TransPoolFileNotFoundException;

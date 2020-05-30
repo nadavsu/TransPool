@@ -1,6 +1,12 @@
-package api.controller;
+package api.components.main;
 
 import api.Engine;
+import api.components.trips.bar.Clearable;
+import api.components.data.bar.DataBarController;
+import api.components.menu.bar.MenuBarController;
+import api.components.trips.bar.match.MatchTripController;
+import api.components.trips.bar.offer.TransPoolTripOfferController;
+import api.components.trips.bar.request.TransPoolTripRequestController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
@@ -89,7 +95,7 @@ public class TransPoolController {
 
     public void loadFile() {
         menuBarComponentController.loadFile();
-        dataBarComponentController.update();
+        dataBarComponentController.updateData();
     }
 
 

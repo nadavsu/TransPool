@@ -1,5 +1,6 @@
-package api.controller;
+package api.components.menu.bar;
 
+import api.components.main.TransPoolController;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
 import javafx.event.ActionEvent;
@@ -14,8 +15,8 @@ import java.io.File;
 
 public class MenuBarController {
 
-    private final static String DARK_COLOR_SCHEME = "api/resources/css/scheme/color_scheme_dark.css";
-    private final static String LIGHT_COLOR_SCHEME = "api/resources/css/scheme/color_scheme_light.css";
+    private final static String DARK_COLOR_SCHEME = "api/components/main/scheme/color_scheme_dark.css";
+    private final static String LIGHT_COLOR_SCHEME = "api/components/main/scheme/color_scheme_light.css";
 
     private TransPoolController transpoolController;
 

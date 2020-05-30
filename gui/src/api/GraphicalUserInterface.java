@@ -1,8 +1,6 @@
 package api;
 
-import api.components.FileEngine;
-import api.controller.TransPoolController;
-import api.resources.ResourcesConstants;
+import api.components.main.TransPoolController;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,12 +16,12 @@ public class GraphicalUserInterface extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("TransPool");
-        primaryStage.getIcons().add(new Image(ResourcesConstants.STAGE_ICON_LOCATION));
+        primaryStage.getIcons().add(new Image(Constants.STAGE_ICON_LOCATION));
 
         FXMLLoader splashScreenLoader = new FXMLLoader();
         FXMLLoader mainLoader = new FXMLLoader();
-        URL splashScreenFXML = getClass().getResource(ResourcesConstants.SPLASH_SCREEN_FXML_LOCATION);
-        URL mainFXML = getClass().getResource(ResourcesConstants.MAIN_SCENE_FXML_LOCATION);
+        URL splashScreenFXML = getClass().getResource(Constants.SPLASH_SCREEN_FXML_LOCATION);
+        URL mainFXML = getClass().getResource(Constants.MAIN_SCENE_FXML_LOCATION);
 
         //Loading the splash screen
         splashScreenLoader.setLocation(splashScreenFXML);

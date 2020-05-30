@@ -1,5 +1,7 @@
-package api.controller;
+package api.components.trips.bar.request;
 
+import api.components.main.TransPoolController;
+import api.components.trips.bar.Clearable;
 import com.jfoenix.controls.*;
 import exception.file.StopNotFoundException;
 import javafx.beans.property.BooleanProperty;
@@ -40,11 +42,11 @@ public class TransPoolTripRequestController implements Clearable {
     }
 
     @FXML
-    void newTripRequestButtonAction(ActionEvent event) {
+    public void newTripRequestButtonAction(ActionEvent event) {
         transPoolController.addNewTripRequest();
     }
 
-    void addNewTripRequest() {
+    public void addNewTripRequest() {
         String source = textFieldSource.getText();
         String destination = textFieldDestination.getText();
         String riderName = textFieldRiderName.getText();

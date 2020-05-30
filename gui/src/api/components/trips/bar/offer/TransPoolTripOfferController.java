@@ -1,5 +1,7 @@
-package api.controller;
+package api.components.trips.bar.offer;
 
+import api.components.main.TransPoolController;
+import api.components.trips.bar.Clearable;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;

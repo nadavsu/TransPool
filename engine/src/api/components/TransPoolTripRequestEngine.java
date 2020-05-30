@@ -1,10 +1,8 @@
 package api.components;
 
-import api.controller.TransPoolTripRequestController;
 import data.transpool.TransPoolData;
 import data.transpool.map.Map;
 import data.transpool.trip.MatchedTransPoolTripRequest;
-import data.transpool.trip.Time;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.file.StopNotFoundException;
 import exception.time.InvalidTimeException;
@@ -12,8 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
-import java.util.List;
-import java.util.Observable;
 import java.util.stream.Collectors;
 
 public class TransPoolTripRequestEngine {

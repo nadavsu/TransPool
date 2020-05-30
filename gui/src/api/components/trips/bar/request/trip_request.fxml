@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.TransPoolTripRequestController">
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="570.0" prefWidth="320.0" styleClass="left-body" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.components.trips.bar.request.TransPoolTripRequestController">
    <children>
       <VBox id="VBoxTripRequest" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -43,7 +43,7 @@
                   <JFXTextField fx:id="textFieldRiderName" labelFloat="true" promptText="Name" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="1" />
                   <ImageView fitHeight="90.0" fitWidth="23.0" pickOnBounds="true" GridPane.columnIndex="4" GridPane.halignment="LEFT" GridPane.rowIndex="3" GridPane.rowSpan="3" GridPane.valignment="CENTER">
                      <image>
-                        <Image url="@../images/path.png" />
+                        <Image url="@../../../../resources/images/path.png" />
                      </image>
                   </ImageView>
                   <JFXTimePicker fx:id="timeFieldTime" defaultColor="#0399ff" prefHeight="27.0" prefWidth="256.0" promptText="Time" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="7" />

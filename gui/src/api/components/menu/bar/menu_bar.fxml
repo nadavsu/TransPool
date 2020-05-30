@@ -6,7 +6,7 @@
 <?import javafx.scene.control.RadioMenuItem?>
 <?import javafx.scene.control.ToggleGroup?>
 
-<MenuBar id="MenuBar" stylesheets="@../css/menu_bar.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.MenuBarController">
+<MenuBar id="MenuBar" stylesheets="@menu_bar.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.components.menu.bar.MenuBarController">
    <menus>
       <Menu mnemonicParsing="false" text="File">
          <items>

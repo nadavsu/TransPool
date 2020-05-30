@@ -2,7 +2,6 @@
 
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import java.lang.String?>
-<?import java.net.URL?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.image.Image?>
@@ -13,13 +12,13 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="VBoxMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="body" stylesheets="@../css/scheme/color_scheme_light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.controller.TransPoolController">
+<VBox id="VBoxMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" styleClass="body" stylesheets="@scheme/color_scheme_light.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.components.main.TransPoolController">
    <children>
       <HBox id="HBoxMain" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="720.0" prefWidth="1080.0" styleClass="body">
          <children>
             <VBox maxWidth="320.0" minHeight="230.0" minWidth="200.0" prefHeight="700.0" prefWidth="320.0" styleClass="left_side_bar" HBox.hgrow="NEVER">
                <children>
-                  <fx:include fx:id="menuBarComponent" source="menu_bar.fxml" />
+                  <fx:include fx:id="menuBarComponent" source="../menu/bar/menu_bar.fxml" />
                   <GridPane id="GridPaneLogo" styleClass="left_side_bar">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.5486068725586" minWidth="10.0" prefWidth="68.26393127441406" />
@@ -34,7 +33,7 @@
                      <children>
                         <ImageView id="Logo" fitHeight="89.0" fitWidth="319.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <image>
-                              <Image url="@../images/in_app_logo.png" />
+                              <Image url="@../../resources/images/in_app_logo.png" />
                            </image>
                            <styleClass>
                               <String fx:value="image" />
@@ -44,21 +43,21 @@
                         </ImageView>
                      </children>
                   </GridPane>
-                  <JFXTabPane id="TPMainMenu" prefHeight="601.0" prefWidth="320.0" stylesheets="@../css/left_tab_pane.css" tabClosingPolicy="UNAVAILABLE">
+                  <JFXTabPane id="TPMainMenu" prefHeight="601.0" prefWidth="320.0" stylesheets="@../trips/bar/tab_pane.css" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
                         <Tab id="TabRequestTrip" closable="false" text="Request Trip">
 							<content>
-								<fx:include fx:id="tripRequestComponent" source="trip_request.fxml" />
+								<fx:include fx:id="tripRequestComponent" source="../trips/bar/request/trip_request.fxml" />
 							</content>
 						</Tab>
 						<Tab id="TabOfferTrip" text="Offer Trip">
                           <content>
-								<fx:include fx:id="tripOfferComponent" source="trip_offer.fxml" />
+								<fx:include fx:id="tripOfferComponent" source="../trips/bar/offer/trip_offer.fxml" />
                           </content>
                         </Tab>
                         <Tab id="TabMatch" text="Match">
                           <content>
-                            <fx:include fx:id="matchTripComponent" source="trip_match.fxml" />
+                            <fx:include fx:id="matchTripComponent" source="../trips/bar/match/trip_match.fxml" />
                           </content>
                         </Tab>
                      </tabs>
@@ -69,12 +68,12 @@
                <content>
                   <ImageView fitHeight="700.0" fitWidth="727.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/sample_map.png" />
+                        <Image url="@../../resources/images/sample_map.png" />
                      </image>
                   </ImageView>
                </content>
             </ScrollPane>
-             <fx:include fx:id="dataBarComponent" source="data_bar.fxml" />
+             <fx:include fx:id="dataBarComponent" source="../data/bar/data_bar.fxml" />
          </children>
       </HBox>
    </children>

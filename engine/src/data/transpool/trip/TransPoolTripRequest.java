@@ -52,13 +52,12 @@ public class TransPoolTripRequest {
     @Override
     public String toString() {
         String requestString = "";
-        requestString += "+--------------TransPool Trip Request------------+\n";
-        requestString += "Request ID:                       " + ID + "\n";
-        requestString += "Name of requester:                " + transpoolRider + "\n";
-        requestString += "Stop source:                      " + source + "\n";
-        requestString += "Stop destination:                 " + destination + "\n";
-        requestString += "Time:                             " + time + "\n";
-        requestString += "Time of arrival?                  " + isArrivalTime;
+        requestString += "Request ID:        " + ID + "\n";
+        requestString += "Name of requester: " + transpoolRider + "\n";
+        requestString += "Stop source:       " + source + "\n";
+        requestString += "Stop destination:  " + destination + "\n";
+        requestString += "Time:              " + time + "\n";
+        requestString += "Time of arrival?   " + isArrivalTime;
 
         return requestString;
     }

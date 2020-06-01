@@ -1,6 +1,6 @@
 package api;
 
-import api.components.main.TransPoolController;
+import api.components.TransPoolController;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

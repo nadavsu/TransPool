@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="320.0" minWidth="210.0" prefHeight="720.0" prefWidth="210.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="api.components.data.bar.DataBarController">
    <children>
-      <JFXTabPane minHeight="320.0" minWidth="210.0" prefHeight="728.0" prefWidth="210.0" stylesheets="@../../trips/bar/tab_pane.css">
+      <JFXTabPane minHeight="320.0" minWidth="210.0" prefHeight="682.0" prefWidth="210.0" stylesheets="@../../trips/bar/tab_pane.css">
          <tabs>
             <Tab closable="false" text="Requests">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXListView fx:id="listViewTripRequests" prefHeight="125.0" prefWidth="210.0" />
+                        <ScrollPane prefHeight="720.0">
+                           <content>
+                              <FlowPane fx:id="flowPaneTripRequests" prefHeight="650.0" prefWidth="210.0" />
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
               </content>
@@ -23,12 +29,21 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <JFXListView fx:id="listViewTripOffers" prefHeight="695.0" prefWidth="210.0" />
+                        <ScrollPane prefHeight="720.0" prefWidth="220.0">
+                           <content>
+                              <FlowPane fx:id="flowPaneTripOffers" prefHeight="692.0" prefWidth="210.0" />
+                           </content>
+                        </ScrollPane>
                      </children>
                   </AnchorPane>
               </content>
             </Tab>
          </tabs>
       </JFXTabPane>
+      <AnchorPane prefHeight="35.0" prefWidth="200.0">
+         <children>
+            <Label fx:id="labelTaskProgress" layoutX="13.0" layoutY="10.0" prefHeight="17.0" prefWidth="186.0" textAlignment="CENTER" />
+         </children>
+      </AnchorPane>
    </children>
 </VBox>

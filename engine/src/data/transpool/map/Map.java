@@ -103,7 +103,7 @@ public class Map {
                 .orElse(null);
     }
 
-    public static boolean containsStop(String name) {
+    public boolean containsStop(String name) {
         return allStops.containsKey(name);
     }
 

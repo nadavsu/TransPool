@@ -1,8 +1,10 @@
 package api.components.menu.bar;
 
-import api.components.main.TransPoolController;
+import api.components.TransPoolController;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -12,6 +14,7 @@ import javafx.stage.FileChooser;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.util.concurrent.ExecutionException;
 
 public class MenuBarController {
 
@@ -26,13 +29,19 @@ public class MenuBarController {
     @FXML private RadioMenuItem menuItemDarkMode;
     @FXML private RadioMenuItem menuItemLightMode;
 
-    @FXML
-    public void initialize() {
+    private BooleanProperty fileLoaded;
 
+    public MenuBarController() {
+        fileLoaded = new SimpleBooleanProperty();
     }
 
     public void setTransPoolController(TransPoolController transpoolController) {
         this.transpoolController = transpoolController;
+    }
+
+    @FXML
+    public void initialize() {
+
     }
 
     @FXML
@@ -60,6 +69,18 @@ public class MenuBarController {
         transpoolController.setColorScheme(LIGHT_COLOR_SCHEME);
     }
 
+    public boolean isFileLoaded() {
+        return fileLoaded.get();
+    }
+
+    public BooleanProperty fileLoadedProperty() {
+        return fileLoaded;
+    }
+
+    public void setFileLoaded(boolean fileLoaded) {
+        this.fileLoaded.set(fileLoaded);
+    }
+
     public void loadFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load TransPool data file");
@@ -80,6 +101,8 @@ public class MenuBarController {
             errorAlert.setHeaderText("Data error.");
             errorAlert.setContentText(e.getMessage());
             errorAlert.showAndWait();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
         }
     }
 

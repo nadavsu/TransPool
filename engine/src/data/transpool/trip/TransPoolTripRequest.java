@@ -1,6 +1,8 @@
 package data.transpool.trip;
 
+import data.transpool.map.Map;
 import data.transpool.user.TransPoolRider;
+import exception.file.StopNotFoundException;
 
 import java.time.LocalTime;
 import java.util.Objects;
@@ -15,7 +17,13 @@ public class TransPoolTripRequest {
     private boolean isArrivalTime;
     private boolean isContinuous;
 
-    public TransPoolTripRequest(String transpoolRider, String source, String destination, LocalTime time, boolean isArrivalTime, boolean isContinuous) {
+    public TransPoolTripRequest(Map map, String transpoolRider, String source, String destination, LocalTime time, boolean isArrivalTime, boolean isContinuous) throws StopNotFoundException {
+        if (!map.containsStop(source)) {
+            throw new StopNotFoundException(source);
+        }
+        if (!map.containsStop(destination)) {
+            throw new StopNotFoundException(destination);
+        }
         this.ID = IDGenerator++;
         this.transpoolRider = new TransPoolRider(transpoolRider);
         this.source = source;

@@ -1,5 +1,7 @@
 package api;
 
+import api.components.UICardAdapter;
+import api.components.cards.request.TripRequestData;
 import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
@@ -16,12 +18,13 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public interface Engine {
 
-    void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException;
+    void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException;
 
-    void createNewTransPoolTripRequest(String riderName, String source, String destination,
+    void createNewTransPoolTripRequest(UICardAdapter<TripRequestData> adapter, String riderName, String source, String destination,
                                        LocalTime time, boolean isArrivalTime, boolean isContinuous)
             throws StopNotFoundException;
 

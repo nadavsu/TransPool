@@ -25,17 +25,10 @@ public class TransPoolTripRequestEngine {
      * @throws InvalidTimeException - If time is not valid.
      * @throws StopNotFoundException - If the desired destination or source do not exist.
      */
-    public TransPoolTripRequest createNewTransPoolTripRequest(String riderName, String source, String destination,
+    public TransPoolTripRequest createNewTransPoolTripRequest(Map map, String riderName, String source, String destination,
                                                               LocalTime time, boolean isArrivalTime, boolean isContinuous)
                                                               throws StopNotFoundException {
-        if (!Map.containsStop(source)) {
-            throw new StopNotFoundException(source);
-        }
-        if (!Map.containsStop(destination)) {
-            throw new StopNotFoundException(destination);
-        }
-
-        return new TransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
+        return new TransPoolTripRequest(map, riderName, source, destination, time, isArrivalTime, isContinuous);
     }
 
     public ObservableList<String> getAllTransPoolTripRequestsAsStrings(TransPoolData data) {

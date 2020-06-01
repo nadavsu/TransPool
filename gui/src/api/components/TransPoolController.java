@@ -1,4 +1,4 @@
-package api.components.main;
+package api.components;
 
 import api.Engine;
 import api.components.trips.bar.Clearable;
@@ -9,11 +9,16 @@ import api.components.trips.bar.offer.TransPoolTripOfferController;
 import api.components.trips.bar.request.TransPoolTripRequestController;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
 
 /**
     The main controller of the application.
@@ -36,9 +41,11 @@ public class TransPoolController {
     @FXML private VBox dataBarComponent;
 
     private BooleanProperty fileLoaded;
+    private StringProperty currentTaskProgress;
 
     public TransPoolController() {
         fileLoaded = new SimpleBooleanProperty(false);
+        currentTaskProgress = new SimpleStringProperty("");
     }
 
     @FXML
@@ -57,6 +64,8 @@ public class TransPoolController {
         fileLoaded.bindBidirectional(matchTripComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(tripOfferComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(tripRequestComponentController.fileLoadedProperty());
+        fileLoaded.bindBidirectional(menuBarComponentController.fileLoadedProperty());
+        currentTaskProgress.bindBidirectional(dataBarComponentController.currentTaskProgressProperty());
     }
 
     public void setPrimaryStage(Stage primaryStage) {
@@ -95,7 +104,6 @@ public class TransPoolController {
 
     public void loadFile() {
         menuBarComponentController.loadFile();
-        dataBarComponentController.updateData();
     }
 
 
@@ -117,5 +125,13 @@ public class TransPoolController {
 
     public void clearForm(Clearable form) {
         form.clear();
+    }
+
+    public void bindTaskToUI(Task currentRunningTask) {
+        dataBarComponentController.bindTaskToUI(currentRunningTask);
+    }
+
+    public void addTripRequestCard(Node card) {
+        dataBarComponentController.addTripRequestCard(card);
     }
 }

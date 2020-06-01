@@ -1,7 +1,7 @@
 package api.components.trips.bar.match;
 
 import api.components.trips.bar.Clearable;
-import api.components.main.TransPoolController;
+import api.components.TransPoolController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
@@ -23,7 +23,7 @@ public class MatchTripController implements Clearable {
     private BooleanProperty fileLoaded;
 
     public MatchTripController() {
-        fileLoaded = new SimpleBooleanProperty(false);
+        fileLoaded = new SimpleBooleanProperty();
     }
 
     public void setTransPoolController(TransPoolController transPoolController) {

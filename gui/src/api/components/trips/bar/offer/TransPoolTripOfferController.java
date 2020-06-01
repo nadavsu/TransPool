@@ -1,6 +1,6 @@
 package api.components.trips.bar.offer;
 
-import api.components.main.TransPoolController;
+import api.components.TransPoolController;
 import api.components.trips.bar.Clearable;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -31,7 +31,7 @@ public class TransPoolTripOfferController implements Clearable {
     private BooleanProperty fileLoaded;
 
     public TransPoolTripOfferController() {
-        fileLoaded = new SimpleBooleanProperty(false);
+        fileLoaded = new SimpleBooleanProperty();
     }
 
     public void setTranspoolController(TransPoolController transpoolController) {

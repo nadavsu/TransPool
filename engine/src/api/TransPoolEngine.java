@@ -1,10 +1,9 @@
 package api;
 
-import api.components.FileEngine;
-import api.components.MatchingEngine;
-import api.components.TransPoolTripEngine;
-import api.components.TransPoolTripRequestEngine;
-import api.components.main.TransPoolController;
+import api.components.*;
+import api.components.cards.request.BasicTripRequestData;
+import api.components.cards.request.TripRequestData;
+import api.task.LoadFileTask;
 import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
@@ -16,27 +15,29 @@ import exception.file.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
     private BooleanProperty isLoaded;
 
-    private FileEngine fileEngine;
+    private Task currentRunningTask;
+
     private MatchingEngine matchingEngine;
     private TransPoolTripEngine transPoolTripEngine;
     private TransPoolTripRequestEngine transPoolTripRequestEngine;
 
-    private TransPoolController controller;
+    private TransPoolController transpoolController;
 
-    public TransPoolEngine(TransPoolController controller) {
-        this.controller = controller;
-        this.fileEngine = new FileEngine();
+    public TransPoolEngine(TransPoolController transpoolController) {
+        this.transpoolController = transpoolController;
         this.matchingEngine = new MatchingEngine();
         this.transPoolTripEngine = new TransPoolTripEngine();
         this.transPoolTripRequestEngine = new TransPoolTripRequestEngine();
@@ -44,17 +45,25 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException {
-        data = fileEngine.loadData(file);
+    public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException {
+        currentRunningTask = new LoadFileTask(file);
+        transpoolController.bindTaskToUI(currentRunningTask);
+        //TODO: handle exceptions.
+        new Thread(currentRunningTask).start();
+
+        data = (TransPoolData) currentRunningTask.get();
         isLoaded.set(true);
     }
 
     @Override
-    public void createNewTransPoolTripRequest(String riderName, String source, String destination,
+    public void createNewTransPoolTripRequest(UICardAdapter<TripRequestData> adapter, String riderName, String source, String destination,
                                               LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
             StopNotFoundException {
-        TransPoolTripRequest request = transPoolTripRequestEngine.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
+        //Todo: you stopped here. you need to create a task inside create a new UI adapter which will createCard()
+        TransPoolTripRequest request = new TransPoolTripRequest(data.getMap(), riderName, source, destination, time, isArrivalTime, isContinuous);
         data.addTransPoolTripRequest(request);
+        TripRequestData tripRequestData = new BasicTripRequestData(request.getID(), riderName, source, destination, time, isArrivalTime, isContinuous);
+        adapter.addCard(tripRequestData);
     }
 
     @Override

@@ -1,63 +1,125 @@
 package data.transpool.trip;
 
+import data.transpool.map.Map;
 import data.transpool.user.TransPoolRider;
+import exception.file.StopNotFoundException;
+import javafx.beans.property.*;
 
+import java.time.LocalTime;
 import java.util.Objects;
 
 public class TransPoolTripRequest {
     private static int IDGenerator = 20000;
-    private int ID;
-    private TransPoolRider transpoolRider;
-    private String source;
-    private String destination;
-    private Time timeOfDeparture;
+    protected IntegerProperty requestID;
+    protected ObjectProperty<TransPoolRider> transpoolRider;
+    protected StringProperty sourceStop;
+    protected StringProperty destinationStop;
+    protected BooleanProperty isTimeOfArrival;
+    protected SimpleObjectProperty<LocalTime> requestTime;
+    protected SimpleBooleanProperty isContinuous;
 
-    private boolean isContinuous;
-
-    public TransPoolTripRequest(String transpoolRider, String source, String destination, Time timeOfDeparture, boolean isContinuous) {
-        this.ID = IDGenerator++;
-        this.transpoolRider = new TransPoolRider(transpoolRider);
-        this.source = source;
-        this.destination = destination;
-        this.timeOfDeparture = timeOfDeparture;
-        this.isContinuous = isContinuous;
+    public TransPoolTripRequest(String riderName, String sourceStop, String destinationStop,
+                                LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) throws StopNotFoundException {
+        this.requestID = new SimpleIntegerProperty(IDGenerator++);
+        this.transpoolRider = new SimpleObjectProperty<>(new TransPoolRider(riderName));
+        this.sourceStop = new SimpleStringProperty(sourceStop);
+        this.destinationStop = new SimpleStringProperty(destinationStop);
+        this.isTimeOfArrival = new SimpleBooleanProperty(isTimeOfArrival);
+        this.requestTime = new SimpleObjectProperty<>(requestTime);
+        this.isContinuous = new SimpleBooleanProperty(isContinuous);
     }
 
-    public TransPoolRider getTranspoolRider() {
-        return (TransPoolRider) transpoolRider;
+    public int getRequestID() {
+        return requestID.get();
     }
 
-    public String getSource() {
-        return source;
+    public IntegerProperty requestIDProperty() {
+        return requestID;
     }
 
-    public String getDestination() {
-        return destination;
+    public void setRequestID(int requestID) {
+        this.requestID.set(requestID);
     }
 
-    public Time getTimeOfDeparture() {
-        return timeOfDeparture;
+    public TransPoolRider getTransPoolRider() {
+        return transpoolRider.get();
     }
 
-    public boolean isContinuous() {
+    public ObjectProperty<TransPoolRider> transpoolRiderProperty() {
+        return transpoolRider;
+    }
+
+    public void setTranspoolRider(TransPoolRider transpoolRider) {
+        this.transpoolRider.set(transpoolRider);
+    }
+
+    public String getSourceStop() {
+        return sourceStop.get();
+    }
+
+    public StringProperty sourceStopProperty() {
+        return sourceStop;
+    }
+
+    public void setSourceStop(String sourceStop) {
+        this.sourceStop.set(sourceStop);
+    }
+
+    public String getDestinationStop() {
+        return destinationStop.get();
+    }
+
+    public StringProperty destinationStopProperty() {
+        return destinationStop;
+    }
+
+    public void setDestinationStop(String destinationStop) {
+        this.destinationStop.set(destinationStop);
+    }
+
+    public boolean isIsTimeOfArrival() {
+        return isTimeOfArrival.get();
+    }
+
+    public BooleanProperty isTimeOfArrivalProperty() {
+        return isTimeOfArrival;
+    }
+
+    public void setIsTimeOfArrival(boolean isTimeOfArrival) {
+        this.isTimeOfArrival.set(isTimeOfArrival);
+    }
+
+    public LocalTime getRequestTime() {
+        return requestTime.get();
+    }
+
+    public SimpleObjectProperty<LocalTime> requestTimeProperty() {
+        return requestTime;
+    }
+
+    public void setRequestTime(LocalTime requestTime) {
+        this.requestTime.set(requestTime);
+    }
+
+    public boolean isIsContinuous() {
+        return isContinuous.get();
+    }
+
+    public SimpleBooleanProperty isContinuousProperty() {
         return isContinuous;
     }
 
-    public int getID() {
-        return ID;
+    public void setIsContinuous(boolean isContinuous) {
+        this.isContinuous.set(isContinuous);
+    }
+
+    public TransPoolRider getTranspoolRider() {
+        return transpoolRider.get();
     }
 
     @Override
     public String toString() {
-        String requestString = "";
-        requestString += "+--------------TransPool Trip Request------------+\n";
-        requestString += "Request ID:                       " + ID + "\n";
-        requestString += "Name of requester:                " + transpoolRider + "\n";
-        requestString += "Stop source:                      " + source + "\n";
-        requestString += "Stop destination:                 " + destination + "\n";
-        requestString += "Time of departure:                " + timeOfDeparture + "\n";
-
-        return requestString;
+        return transpoolRider.get().getUsername() + " - " + transpoolRider.get().getID();
     }
 
     @Override
@@ -65,11 +127,11 @@ public class TransPoolTripRequest {
         if (this == o) return true;
         if (!(o instanceof TransPoolTripRequest)) return false;
         TransPoolTripRequest that = (TransPoolTripRequest) o;
-        return ID == that.ID;
+        return requestID.get() == that.requestID.get();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID);
+        return Objects.hash(requestID.get());
     }
 }

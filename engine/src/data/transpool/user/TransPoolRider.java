@@ -6,6 +6,6 @@ public class TransPoolRider extends TransPoolUserAccount {
 
     public TransPoolRider(String username) {
         super(username);
-        this.ID = IDGenerator++;
+        setID(IDGenerator++);
     }
 }

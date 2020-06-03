@@ -6,19 +6,23 @@ import data.transpool.map.Path;
 import exception.TransPoolRunTimeException;
 import exception.file.StopNotFoundException;
 import exception.file.PathDoesNotExistException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Contains a list of strings containing the stop names in the route.
  * Contains a list of used paths in the string.
  */
 public class Route {
-    private List<String> route = new ArrayList<>();
+    private ObservableList<String> route;
     private List<Path> usedPaths = new ArrayList<>();
 
     public Route(TransPoolTrip JAXBTransPoolTrip) throws PathDoesNotExistException {
+        route = FXCollections.observableArrayList();
         String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
         for (String str : routeArray) {
             route.add(str.trim());
@@ -90,7 +94,7 @@ public class Route {
         return -1;
 }
 
-    public List<String> getRoute() {
+    public ObservableList<String> getRoute() {
         return route;
     }
 

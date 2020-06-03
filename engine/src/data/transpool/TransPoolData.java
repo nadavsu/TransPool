@@ -7,8 +7,9 @@ import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.file.TransPoolDataException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -17,18 +18,15 @@ import java.util.List;
 public class TransPoolData {
 
     private Map map;
-    private List<TransPoolTrip> allTransPoolTrips;
-    private List<TransPoolTripRequest> allTransPoolTripRequests;
-    private List<MatchedTransPoolTripRequest> allMatchedTrips;
-
-    public static boolean isLoaded = false;
+    private ObservableList<TransPoolTrip> allTransPoolTrips;
+    private ObservableList<TransPoolTripRequest> allTransPoolTripRequests;
+    private ObservableList<MatchedTransPoolTripRequest> allMatchedTrips;
 
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
-        allTransPoolTripRequests = new ArrayList<>();
-        allTransPoolTrips = new ArrayList<>();
-        allMatchedTrips = new ArrayList<>();
-        allMatchedTrips = new ArrayList<>();
-        isLoaded = true;
+        allTransPoolTripRequests = FXCollections.observableArrayList();
+        allTransPoolTrips = FXCollections.observableArrayList();
+        allMatchedTrips = FXCollections.observableArrayList();
+        allMatchedTrips = FXCollections.observableArrayList();
         map = new Map(JAXBData.getMapDescriptor());
         initTransPoolTrips(JAXBData.getPlannedTrips());
     }
@@ -50,7 +48,7 @@ public class TransPoolData {
     public TransPoolTrip getTransPoolTripByID(int ID) {
         return allTransPoolTrips
                 .stream()
-                .filter(t -> t.getID() == ID)
+                .filter(t -> t.getOfferID() == ID)
                 .findFirst()
                 .orElse(null);
     }
@@ -65,12 +63,12 @@ public class TransPoolData {
      * @throws NullPointerException - If TP trip request was not found.
      *                              TODO: Create a TransPoolTripRequestNotFoundException and throw it here?
      */
-    public TransPoolTripRequest getTripRequestByID(int ID) throws NullPointerException {
+    public TransPoolTripRequest getTripRequestByID(int ID) {
         return allTransPoolTripRequests
                 .stream()
-                .filter(t -> t.getID() == ID)
+                .filter(t -> t.getRequestID() == ID)
                 .findFirst()
-                .orElseThrow(NullPointerException::new);
+                .orElse(null);
     }
 
     public void deleteTripRequest(TransPoolTripRequest requestToDelete) {
@@ -86,14 +84,14 @@ public class TransPoolData {
         return map;
     }
 
-    public List<TransPoolTripRequest> getAllTransPoolTripRequests() throws NullPointerException {
+    public ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests() throws NullPointerException {
         if (allTransPoolTripRequests == null) {
             throw new NullPointerException();
         }
         return allTransPoolTripRequests;
     }
 
-    public List<TransPoolTrip> getAllTransPoolTrips() throws NullPointerException {
+    public ObservableList<TransPoolTrip> getAllTransPoolTrips() throws NullPointerException {
         if (allTransPoolTrips == null) {
             throw new NullPointerException();
         }
@@ -101,7 +99,7 @@ public class TransPoolData {
     }
 
     //------------------------------------------------------------------------------------------
-    public List<MatchedTransPoolTripRequest> getAllMatchedTrips() {
+    public ObservableList<MatchedTransPoolTripRequest> getAllMatchedTrips() {
         return allMatchedTrips;
     }
 
@@ -114,4 +112,8 @@ public class TransPoolData {
         trip.updateAfterMatch(matchedTransPoolTripRequest);
         deleteTripRequest(getTripRequestByID(matchedTransPoolTripRequest.getRequestID()));
     }
+
+/*    public static Callback<TransPoolTrip, Observable[]> extractor() {
+        return (TransPoolTrip t) -> new Observable[]{t.lastNameProperty(), t.firstNameProperty(), t.birthdayProperty(), t.ageBinding()};
+    }*/
 }

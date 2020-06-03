@@ -1,10 +1,7 @@
 package api;
 
-import api.components.FileEngine;
-import api.components.MatchingEngine;
-import api.components.TransPoolTripEngine;
-import api.components.TransPoolTripRequestEngine;
-import api.controller.TransPoolController;
+import api.components.*;
+import api.task.LoadFileTask;
 import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
@@ -13,68 +10,118 @@ import exception.NoMatchesFoundException;
 import exception.file.StopNotFoundException;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
-import exception.time.InvalidTimeException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.concurrent.ExecutionException;
 
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
+    private BooleanProperty isLoaded;
 
-    private FileEngine fileEngine;
+    private Task currentRunningTask;
+
     private MatchingEngine matchingEngine;
     private TransPoolTripEngine transPoolTripEngine;
     private TransPoolTripRequestEngine transPoolTripRequestEngine;
 
-    private TransPoolController controller;
-    public TransPoolEngine(TransPoolController controller) {
-        this.controller = controller;
-        this.fileEngine = new FileEngine(controller.getMenuBarController());
-        this.matchingEngine = new MatchingEngine(controller.getMatchTripController());
-        this.transPoolTripEngine = new TransPoolTripEngine(controller.getTripOfferController());
-        this.transPoolTripRequestEngine = new TransPoolTripRequestEngine(controller.getTripRequestController());
+    private TransPoolController transpoolController;
+
+    public TransPoolEngine(TransPoolController transpoolController) {
+        this.transpoolController = transpoolController;
+        this.matchingEngine = new MatchingEngine();
+        this.transPoolTripEngine = new TransPoolTripEngine();
+        this.transPoolTripRequestEngine = new TransPoolTripRequestEngine();
+
+        this.isLoaded = new SimpleBooleanProperty(false);
     }
 
     @Override
-    public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException {
-        data = fileEngine.loadData(file);
+    public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException {
+        currentRunningTask = new LoadFileTask(file);
+        transpoolController.bindTaskToUI(currentRunningTask);
+
+        //TODO: handle exceptions.
+        new Thread(currentRunningTask).start();
+        data = (TransPoolData) currentRunningTask.get();
+        transpoolController.bindUIToData(data);
+
+        isLoaded.set(true);
     }
 
     @Override
-    public void createNewTransPoolTripRequest(String riderName, String source, String destination, int hour, int min, boolean isContinuous) throws InvalidTimeException, StopNotFoundException {
-        TransPoolTripRequest request = transPoolTripRequestEngine.createNewTransPoolTripRequest(riderName, source, destination, hour, min, isContinuous);
+    public void createNewTransPoolTripRequest(String riderName, String source, String destination,
+                                              LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
+            StopNotFoundException {
+        if (!data.getMap().containsStop(source)) {
+            throw new StopNotFoundException(source);
+        }
+        if (!data.getMap().containsStop(destination)) {
+            throw new StopNotFoundException(destination);
+        }
+        TransPoolTripRequest request = new TransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
         data.addTransPoolTripRequest(request);
+
     }
 
     @Override
-    public List<String> getAllTransPoolTripRequestsAsStrings() {
+    public ObservableList<String> getAllTransPoolTripRequestsAsStrings() {
         return transPoolTripRequestEngine.getAllTransPoolTripRequestsAsStrings(data);
     }
 
     @Override
-    public List<TransPoolTripRequest> getAllTransPoolTripRequests() {
+    public ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests() {
         return transPoolTripRequestEngine.getAllTransPoolTripRequests(data);
     }
 
     @Override
-    public List<TransPoolTrip> getAllTransPoolTrips() {
+    public ObservableList<TransPoolTrip> getAllTransPoolTrips() {
         return transPoolTripEngine.getAllTransPoolTrips(data);
     }
 
     @Override
-    public void findPossibleMatches(int tripRequestID, int maximumMatches) throws NoMatchesFoundException {
-        matchingEngine.findPossibleMatches(data, tripRequestID, maximumMatches);
+    public void findPossibleMatches(TransPoolTripRequest request, int maximumMatches) throws NoMatchesFoundException {
+        matchingEngine.findPossibleMatches(data, request, maximumMatches);
     }
 
     @Override
-    public List<PossibleMatch> getPossibleMatches() {
+    public ObservableList<PossibleMatch> getPossibleMatches() {
         return matchingEngine.getPossibleMatches();
     }
 
     @Override
-    public void addNewMatch(int chosenPossibleMatchIndex) {
-        matchingEngine.addNewMatch(data, chosenPossibleMatchIndex);
+    public void clearPossibleMatches() {
+        matchingEngine.clearPossibleMatches();
+    }
+
+    @Override
+    public void addNewMatch(PossibleMatch chosenPossibleMatch) {
+        matchingEngine.addNewMatch(data, chosenPossibleMatch);
+    }
+
+    @Override
+    public TransPoolData getData() {
+        return data;
+    }
+
+    @Override
+    public ObservableList<String> getAllTransPoolTripsAsStrings() {
+        return transPoolTripEngine.getAllTransPoolTripsAsStrings(data);
+    }
+
+    @Override
+    public BooleanProperty fileLoadedProperty() {
+        return isLoaded;
+    }
+
+    @Override
+    public BooleanProperty foundMatchesProperty() {
+        return matchingEngine.foundMatchesProperty();
     }
 }

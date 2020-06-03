@@ -1,5 +1,6 @@
 package api;
 
+import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
@@ -7,29 +8,41 @@ import exception.NoMatchesFoundException;
 import exception.file.StopNotFoundException;
 import exception.file.TransPoolDataException;
 import exception.file.TransPoolFileNotFoundException;
-import exception.time.InvalidTimeException;
+import javafx.beans.property.BooleanProperty;
+import javafx.collections.ObservableList;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
-import java.util.List;
+import java.time.LocalTime;
+import java.util.concurrent.ExecutionException;
 
 public interface Engine {
 
-    void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException;
+    void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException;
 
     void createNewTransPoolTripRequest(String riderName, String source, String destination,
-                                       int hour, int min, boolean isContinuous)
-            throws InvalidTimeException, StopNotFoundException;
+                                       LocalTime time, boolean isArrivalTime, boolean isContinuous)
+            throws StopNotFoundException;
 
-    List<String> getAllTransPoolTripRequestsAsStrings();
+    ObservableList<String> getAllTransPoolTripRequestsAsStrings();
 
-    List<TransPoolTripRequest> getAllTransPoolTripRequests();
+    ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests();
 
-    List<TransPoolTrip> getAllTransPoolTrips();
+    ObservableList<TransPoolTrip> getAllTransPoolTrips();
 
-    void findPossibleMatches(int tripRequestID, int maximumMatches) throws NoMatchesFoundException;
+    void findPossibleMatches(TransPoolTripRequest request, int maximumMatches) throws NoMatchesFoundException;
 
-    List<PossibleMatch> getPossibleMatches();
+    void clearPossibleMatches();
 
-    void addNewMatch(int indexOfPossibleMatchesList);
+    ObservableList<PossibleMatch> getPossibleMatches();
+
+    void addNewMatch(PossibleMatch PossibleMatches);
+
+    TransPoolData getData();
+
+    ObservableList<String> getAllTransPoolTripsAsStrings();
+
+    BooleanProperty fileLoadedProperty();
+
+    BooleanProperty foundMatchesProperty();
 }

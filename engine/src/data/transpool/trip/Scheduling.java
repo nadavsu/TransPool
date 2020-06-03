@@ -1,40 +1,71 @@
 package data.transpool.trip;
 
 import exception.time.InvalidTimeException;
+import javafx.beans.property.*;
+
+import javax.xml.bind.JAXB;
+import java.time.LocalTime;
 
 public class Scheduling {
-    public enum Day {
-        SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY
-    }
+    private IntegerProperty day;
+    private StringProperty recurrences;
+    private ObjectProperty<LocalTime> time;
 
-    public enum Recurrences {
-        DAILY, BIDAILY, WEEKLY, MONTHLY
-    }
+    public Scheduling(data.jaxb.Scheduling JAXBScheduling) {
+        day = new SimpleIntegerProperty();
+        recurrences = new SimpleStringProperty();
+        time = new SimpleObjectProperty<>(LocalTime.of(JAXBScheduling.getHourStart(), 0));
 
-    private int day;
-    private Recurrences recurrences;
-    private Time time;
-
-    public Scheduling(data.jaxb.Scheduling JAXBScheduling) throws InvalidTimeException {
-        day = 0;
-        recurrences = Recurrences.DAILY;
-        time = new Time(JAXBScheduling.getHourStart(), 0);
+        setDay(JAXBScheduling.getDayStart());
+        setRecurrences(JAXBScheduling.getRecurrences());
     }
 
     public int getDay() {
+        return day.get();
+    }
+
+    public IntegerProperty dayProperty() {
         return day;
     }
 
-    public Recurrences getRecurrences() {
+    public void setDay(Integer day) {
+        if (day == null || day == 0) {
+            this.day.setValue(1);
+        } else {
+            this.day.set(day);
+        }
+    }
+
+    public String getRecurrences() {
+        return recurrences.get();
+    }
+
+    public StringProperty recurrencesProperty() {
         return recurrences;
     }
 
-    public Time getTime() {
+    public void setRecurrences(String recurrences) {
+        if (recurrences == null || recurrences.equals("")) {
+            this.recurrences.set("One time");
+        } else {
+            this.recurrences.set(recurrences);
+        }
+    }
+
+    public LocalTime getTime() {
+        return time.get();
+    }
+
+    public ObjectProperty<LocalTime> timeProperty() {
         return time;
+    }
+
+    public void setTime(LocalTime time) {
+        this.time.set(time);
     }
 
     @Override
     public String toString() {
-        return recurrences + " at days " + day + " at time " + time;
+        return recurrences + " on day " + day + " at time " + time;
     }
 }

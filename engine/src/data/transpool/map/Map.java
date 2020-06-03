@@ -2,10 +2,13 @@ package data.transpool.map;
 
 import data.jaxb.MapDescriptor;
 import exception.file.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Observable;
 import java.util.function.Predicate;
 
 /**
@@ -21,8 +24,8 @@ public class Map {
     private int length;
     private MapMatrix mapMatrix;
 
-    private static java.util.Map<String, Stop> allStops = new HashMap<>();
-    private static List<Path> allPaths = new ArrayList<>();
+    private static java.util.Map<String, Stop> allStops;
+    private static List<Path> allPaths;
 
     /**
      * Constructor for creating a map out of the JAXB generated classes.
@@ -30,6 +33,8 @@ public class Map {
      * @throws TransPoolDataException - Thrown if there's a problem with the data inside the TP data file.
      */
     public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
+        allStops = new HashMap<>();
+        allPaths = new ArrayList<>();
         setWidth(JAXBMap.getMapBoundries().getWidth());
         setLength(JAXBMap.getMapBoundries().getLength());
 
@@ -103,7 +108,7 @@ public class Map {
                 .orElse(null);
     }
 
-    public static boolean containsStop(String name) {
+    public boolean containsStop(String name) {
         return allStops.containsKey(name);
     }
 

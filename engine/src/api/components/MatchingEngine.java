@@ -1,15 +1,22 @@
 package api.components;
 
-import api.controller.MatchTripController;
+import api.task.FindPossibleMatchesTask;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import data.transpool.TransPoolData;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.NoMatchesFoundException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -19,13 +26,12 @@ import java.util.stream.Collectors;
  */
 public class MatchingEngine {
     private TransPoolTripRequest tripRequestToMatch;
-    private List<PossibleMatch> possibleMatches;
+    private ObservableList<PossibleMatch> possibleMatches;
+    private BooleanProperty foundMatches;
 
-    private MatchTripController controller;
-
-    public MatchingEngine(MatchTripController controller) {
-        possibleMatches = new ArrayList<>();
-        this.controller = controller;
+    public MatchingEngine() {
+        possibleMatches = FXCollections.observableArrayList();
+        foundMatches = new SimpleBooleanProperty(false);
     }
 
     /**
@@ -34,21 +40,25 @@ public class MatchingEngine {
      *      - Contains sub-route predicate: Checks if the TransPool trip contains a sub-route of the request's source
      *        and destination.
      *      - Filters all the trips that don't have anymore capacity for passengers.
-     * @param tripRequestID - The ID of the trip request to match.
+     * @param tripRequestToMatch- The ID of the trip request to match.
      * @param maximumMatches - The maximum number of matches you want to show.
      * @param data - the data to search for matches.
      * @throws NoMatchesFoundException - If no match was found for the the trip request.
+     * @return true if found at least one match is found.
      */
-    public List<PossibleMatch> findPossibleMatches(TransPoolData data, int tripRequestID, int maximumMatches) throws NoMatchesFoundException {
-        tripRequestToMatch = data.getTripRequestByID(tripRequestID);
+    public void findPossibleMatches(TransPoolData data, TransPoolTripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException {
 
+        Task findPossibleMatchesTask = new FindPossibleMatchesTask(data, tripRequestToMatch, maximumMatches);
+
+        this.tripRequestToMatch = tripRequestToMatch;
         Predicate<TransPoolTrip> containsSubRoutePredicate = transPoolTrip ->
-                transPoolTrip.containsSubRoute(tripRequestToMatch.getSource(), tripRequestToMatch.getDestination());
+                transPoolTrip.containsSubRoute(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
+
 
         Predicate<TransPoolTrip> timeMatchPredicate = transPoolTrip ->
-                transPoolTrip.getSchedule().getTime().equals(tripRequestToMatch.getTimeOfDeparture());
+                transPoolTrip.getSchedule().getTime().equals(tripRequestToMatch.getRequestTime());
 
-        possibleMatches = data
+        data
                 .getAllTransPoolTrips()
                 .stream()
                 .filter(t -> t.getPassengerCapacity() > 0)
@@ -56,22 +66,21 @@ public class MatchingEngine {
                 .filter(timeMatchPredicate)
                 .limit(maximumMatches)
                 .map(transpoolTrip -> new PossibleMatch(tripRequestToMatch, transpoolTrip))
-                .collect(Collectors.toList());
+                .forEach(match -> possibleMatches.add(match));
 
+        foundMatches.set(!possibleMatches.isEmpty());
         if (possibleMatches.isEmpty()) {
             throw new NoMatchesFoundException();
         }
-        return possibleMatches;
     }
 
     /**
      * Creates and adds a new match to data after a possible match was chosen.
      * Updates TransPoolData after a match was made.
-     * @param chosenPossibleMatchIndex - The index of the chosen possible match in the possible matches list.
-     * @param data                     - The data to add to.
+     * @param chosenPossibleMatch - The chosen possible match in the possible matches list.
+     * @param data                - The data to add to.
      */
-    public void addNewMatch(TransPoolData data, int chosenPossibleMatchIndex) {
-        PossibleMatch chosenPossibleMatch = possibleMatches.get(chosenPossibleMatchIndex);
+    public void addNewMatch(TransPoolData data, PossibleMatch chosenPossibleMatch) {
         data.addMatch(new MatchedTransPoolTripRequest(tripRequestToMatch, chosenPossibleMatch));
     }
 
@@ -79,7 +88,16 @@ public class MatchingEngine {
     /**
      * @return the list of all possible matches.
      */
-    public List<PossibleMatch> getPossibleMatches() {
+    public ObservableList<PossibleMatch> getPossibleMatches() {
         return possibleMatches;
+    }
+
+    public void clearPossibleMatches() {
+        possibleMatches.clear();
+        foundMatches.set(false);
+    }
+
+    public BooleanProperty foundMatchesProperty() {
+        return foundMatches;
     }
 }

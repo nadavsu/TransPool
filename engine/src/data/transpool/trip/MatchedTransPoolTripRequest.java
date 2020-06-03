@@ -3,6 +3,8 @@ package data.transpool.trip;
 import data.transpool.user.TransPoolDriver;
 import data.transpool.user.TransPoolRider;
 
+import java.time.LocalTime;
+
 public class MatchedTransPoolTripRequest {
     private int requestID;
     private TransPoolRider transpoolRider;
@@ -13,13 +15,13 @@ public class MatchedTransPoolTripRequest {
     private TransPoolDriver transpoolDriverName;
     private int tripPrice;
     private double personalFuelConsumption;
-    private Time expectedTimeOfArrival;
+    private LocalTime expectedTimeOfArrival;
 
     public MatchedTransPoolTripRequest(TransPoolTripRequest transpoolTripRequest, PossibleMatch matchedTrip) {
-        this.requestID = transpoolTripRequest.getID();
+        this.requestID = transpoolTripRequest.getRequestID();
         this.transpoolRider = transpoolTripRequest.getTranspoolRider();
-        this.source = transpoolTripRequest.getSource();
-        this.destination = transpoolTripRequest.getDestination();
+        this.source = transpoolTripRequest.getSourceStop();
+        this.destination = transpoolTripRequest.getDestinationStop();
         this.tripPrice = matchedTrip.getTripPrice();
         this.expectedTimeOfArrival = matchedTrip.getEstimatedTimeOfArrival();
         this.personalFuelConsumption = matchedTrip.getAverageFuelConsumption();
@@ -60,7 +62,7 @@ public class MatchedTransPoolTripRequest {
         return personalFuelConsumption;
     }
 
-    public Time getExpectedTimeOfArrival() {
+    public LocalTime getExpectedTimeOfArrival() {
         return expectedTimeOfArrival;
     }
 

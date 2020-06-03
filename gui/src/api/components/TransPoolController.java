@@ -1,19 +1,20 @@
 package api.components;
 
 import api.Engine;
-import api.components.trips.bar.Clearable;
 import api.components.data.bar.DataBarController;
+import api.components.trips.bar.Clearable;
 import api.components.menu.bar.MenuBarController;
 import api.components.trips.bar.match.MatchTripController;
 import api.components.trips.bar.offer.TransPoolTripOfferController;
 import api.components.trips.bar.request.TransPoolTripRequestController;
+import data.transpool.TransPoolData;
+import data.transpool.trip.PossibleMatch;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
@@ -116,12 +117,22 @@ public class TransPoolController {
     }
 
     //---------------------------------------------------------------------------------------------//
+    public void addNewTripOffer() {
+        tripOfferComponentController.addNewTripOffer();
+    }
+
+
+    //---------------------------------------------------------------------------------------------//
 
     public void addNewTripRequest() {
         tripRequestComponentController.addNewTripRequest();
     }
 
     //---------------------------------------------------------------------------------------------//
+
+    public void searchForMatches() {
+        matchTripComponentController.searchForMatches();
+    }
 
     public void clearForm(Clearable form) {
         form.clear();
@@ -131,7 +142,17 @@ public class TransPoolController {
         dataBarComponentController.bindTaskToUI(currentRunningTask);
     }
 
-    public void addTripRequestCard(Node card) {
-        dataBarComponentController.addTripRequestCard(card);
+    public void bindUIToData(TransPoolData data) {
+        dataBarComponentController.bindUIToData(data);
+        matchTripComponentController.bindUIToData(data);
+        tripOfferComponentController.bindDataToUI(data);
     }
+
+    public void createNewMatch() {
+        matchTripComponentController.createNewMatch();
+    }
+
+/*    public void addTripRequestCard(Node card) {
+        dataBarComponentController.addTripRequestCard(card);
+    }*/
 }

@@ -6,6 +6,7 @@ public class TransPoolDriver extends TransPoolUserAccount {
 
     public TransPoolDriver(String username) {
         super(username);
-        this.ID = IDGenerator++;
+        this.setID(IDGenerator);
+        IDGenerator++;
     }
 }

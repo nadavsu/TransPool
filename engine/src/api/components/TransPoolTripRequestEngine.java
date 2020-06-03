@@ -28,7 +28,7 @@ public class TransPoolTripRequestEngine {
     public TransPoolTripRequest createNewTransPoolTripRequest(Map map, String riderName, String source, String destination,
                                                               LocalTime time, boolean isArrivalTime, boolean isContinuous)
                                                               throws StopNotFoundException {
-        return new TransPoolTripRequest(map, riderName, source, destination, time, isArrivalTime, isContinuous);
+        return new TransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
     }
 
     public ObservableList<String> getAllTransPoolTripRequestsAsStrings(TransPoolData data) {

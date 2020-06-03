@@ -1,6 +1,8 @@
 package api.components;
 
 import data.transpool.TransPoolData;
+import data.transpool.map.Map;
+import data.transpool.map.Stop;
 import data.transpool.trip.TransPoolTrip;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +10,7 @@ import javafx.collections.ObservableList;
 import java.util.stream.Collectors;
 
 public class TransPoolTripEngine {
+
     public void createNewTransPoolTripOffer() {
 
     }

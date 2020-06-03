@@ -1,9 +1,13 @@
 package data.transpool.trip;
 
+import data.transpool.TransPoolData;
 import data.transpool.map.Path;
 import data.transpool.user.TransPoolDriver;
 import exception.TransPoolRunTimeException;
 import exception.file.TransPoolDataException;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.util.*;
 
@@ -12,26 +16,35 @@ import java.util.*;
  */
 public class TransPoolTrip {
     private static int IDGenerator = 10000;
-    private int ID;
-    private TransPoolDriver transpoolDriver;
-    private int passengerCapacity;
-    private Route route;
-    private int PPK;
-    private Scheduling schedule;
 
-    private int tripDurationInMinutes;
-    private int tripPrice;
-    private double averageFuelConsumption;
+    private IntegerProperty offerID;
+    private ObjectProperty<TransPoolDriver> transpoolDriver;
+    private IntegerProperty passengerCapacity;
+    private ObjectProperty<Route> route;
+    private IntegerProperty PPK;
+    private ObjectProperty<Scheduling> schedule;
+    private IntegerProperty rating;
 
-    private List<RiderStatus> allRiderStatuses = new ArrayList<>();
+    private IntegerProperty tripDurationInMinutes;
+    private IntegerProperty tripPrice;
+    private DoubleProperty averageFuelConsumption;
+
+    private ObservableList<RiderStatus> allRiderStatuses;
 
     public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
-        this.ID = IDGenerator++;
-        this.transpoolDriver = new TransPoolDriver(JAXBTransPoolTrip.getOwner());
-        this.passengerCapacity = JAXBTransPoolTrip.getCapacity();
-        this.PPK = JAXBTransPoolTrip.getPPK();
-        this.schedule = new Scheduling(JAXBTransPoolTrip.getScheduling());
-        this.route = new Route(JAXBTransPoolTrip);
+        this.offerID = new SimpleIntegerProperty(IDGenerator++);
+        this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(JAXBTransPoolTrip.getOwner()));
+        this.passengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
+        this.PPK = new SimpleIntegerProperty(JAXBTransPoolTrip.getPPK());
+        this.schedule = new SimpleObjectProperty<>(new Scheduling(JAXBTransPoolTrip.getScheduling()));
+        this.route = new SimpleObjectProperty<>(new Route(JAXBTransPoolTrip));
+        this.rating = new SimpleIntegerProperty(0);
+
+        this.tripDurationInMinutes = new SimpleIntegerProperty(0);
+        this.tripPrice = new SimpleIntegerProperty(0);
+        this.averageFuelConsumption = new SimpleDoubleProperty(0);
+
+        this.allRiderStatuses = FXCollections.observableArrayList();
 
         calculatePriceOfRoute();
         calculateTripDuration();
@@ -39,32 +52,38 @@ public class TransPoolTrip {
     }
 
     private void calculatePriceOfRoute() {
-        tripPrice = route.
-                getUsedPaths()
+        tripPrice.set(route
+                .get()
+                .getUsedPaths()
                 .stream()
-                .mapToInt(p -> p.getLength() * PPK)
-                .sum();
+                .mapToInt(p -> p.getLength() * PPK.get())
+                .sum()
+        );
     }
 
     private void calculateTripDuration() {
-        tripDurationInMinutes = route.
-                getUsedPaths()
+        tripDurationInMinutes.set(route
+                .get()
+                .getUsedPaths()
                 .stream()
                 .mapToInt(Path::getPathTime)
-                .sum();
+                .sum()
+        );
     }
 
     private void calculateAverageFuelConsumption() {
-        averageFuelConsumption = route
+        averageFuelConsumption.set(route
+                .get()
                 .getUsedPaths()
                 .stream()
                 .mapToDouble(Path::getFuelConsumption)
                 .average()
-                .orElse(0);
+                .orElse(0)
+        );
     }
 
     public boolean containsSubRoute(String source, String destination) {
-        return route.containsSubRoute(source, destination);
+        return route.get().containsSubRoute(source, destination);
     }
 
     /**
@@ -73,52 +92,140 @@ public class TransPoolTrip {
      * @param matchedRequest - the mathed request.
      */
     public void updateAfterMatch(MatchedTransPoolTripRequest matchedRequest) {
-        if (passengerCapacity == 0) {
+        if (passengerCapacity.get() == 0) {
             throw new TransPoolRunTimeException();
         }
-        passengerCapacity--;
+        passengerCapacity.set(passengerCapacity.get() - 1);
         allRiderStatuses.add(new RiderStatus(matchedRequest));
     }
 
-    public TransPoolDriver getOwner() {
+    public int getOfferID() {
+        return offerID.get();
+    }
+
+    public IntegerProperty offerIDProperty() {
+        return offerID;
+    }
+
+    public TransPoolDriver getTranspoolDriver() {
+        return transpoolDriver.get();
+    }
+
+    public ObjectProperty<TransPoolDriver> transpoolDriverProperty() {
         return transpoolDriver;
     }
 
+    public void setTranspoolDriver(TransPoolDriver transpoolDriver) {
+        this.transpoolDriver.set(transpoolDriver);
+    }
+
     public int getPassengerCapacity() {
+        return passengerCapacity.get();
+    }
+
+    public IntegerProperty passengerCapacityProperty() {
         return passengerCapacity;
     }
 
+    public void setPassengerCapacity(int passengerCapacity) {
+        this.passengerCapacity.set(passengerCapacity);
+    }
+
     public Route getRoute() {
+        return route.get();
+    }
+
+    public ObjectProperty<Route> routeProperty() {
         return route;
     }
 
+    public void setRoute(Route route) {
+        this.route.set(route);
+    }
+
     public int getPPK() {
+        return PPK.get();
+    }
+
+    public IntegerProperty PPKProperty() {
         return PPK;
     }
 
+    public void setPPK(int PPK) {
+        this.PPK.set(PPK);
+    }
+
     public Scheduling getSchedule() {
+        return schedule.get();
+    }
+
+    public ObjectProperty<Scheduling> scheduleProperty() {
         return schedule;
     }
 
-    public int getID() {
-        return ID;
+    public void setSchedule(Scheduling schedule) {
+        this.schedule.set(schedule);
+    }
+
+    public int getTripDurationInMinutes() {
+        return tripDurationInMinutes.get();
+    }
+
+    public IntegerProperty tripDurationInMinutesProperty() {
+        return tripDurationInMinutes;
+    }
+
+    public void setTripDurationInMinutes(int tripDurationInMinutes) {
+        this.tripDurationInMinutes.set(tripDurationInMinutes);
+    }
+
+    public int getTripPrice() {
+        return tripPrice.get();
+    }
+
+    public IntegerProperty tripPriceProperty() {
+        return tripPrice;
+    }
+
+    public void setTripPrice(int tripPrice) {
+        this.tripPrice.set(tripPrice);
+    }
+
+    public double getAverageFuelConsumption() {
+        return averageFuelConsumption.get();
+    }
+
+    public DoubleProperty averageFuelConsumptionProperty() {
+        return averageFuelConsumption;
+    }
+
+    public void setAverageFuelConsumption(double averageFuelConsumption) {
+        this.averageFuelConsumption.set(averageFuelConsumption);
+    }
+
+    public int getRating() {
+        return rating.get();
+    }
+
+    public IntegerProperty ratingProperty() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating.set(rating);
+    }
+
+    public ObservableList<RiderStatus> getAllRiderStatuses() {
+        return allRiderStatuses;
+    }
+
+    public void setAllRiderStatuses(ObservableList<RiderStatus> allRiderStatuses) {
+        this.allRiderStatuses = allRiderStatuses;
     }
 
     @Override
     public String toString() {
-        return transpoolDriver + " " + ID;
-/*        String transpoolTripString = "";
-        transpoolTripString += "TransPool trip ID:          " + ID + "\n";
-        transpoolTripString += "Driver name:                " + transpoolDriver + "\n";
-        transpoolTripString += "Passenger capacity:         " + passengerCapacity + "\n";
-        transpoolTripString += "Route:                      " + route + "\n";
-        transpoolTripString += "Schedule:                   " + schedule + "\n";
-        transpoolTripString += "Trip duration (in minutes): " + tripDurationInMinutes + "\n";
-        transpoolTripString += "Average fuel consumption:   " + averageFuelConsumption + "\n";
-        transpoolTripString += "Price per kilometer:        " + PPK + "\n";
-        transpoolTripString += "Total trip price:           " + tripPrice + "\n";
-        transpoolTripString += "Rider details:              " + allRiderStatuses + "\n";*/
-
+        return transpoolDriver.get() + " - " + offerID.get();
     }
 
     @Override
@@ -126,19 +233,19 @@ public class TransPoolTrip {
         if (this == o) return true;
         if (!(o instanceof TransPoolTrip)) return false;
         TransPoolTrip that = (TransPoolTrip) o;
-        return ID == that.ID;
+        return offerID.get() == that.offerID.get();
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID);
+        return Objects.hash(offerID.get());
     }
 
     /**
      * The status of the matched requests.
      * Contains ID, source and destination.
      */
-    private class RiderStatus {
+    public static class RiderStatus {
         private int riderID;
         private String source;
         private String destination;

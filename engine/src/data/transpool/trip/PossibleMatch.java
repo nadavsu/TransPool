@@ -3,6 +3,7 @@ package data.transpool.trip;
 import data.transpool.map.Path;
 import data.transpool.user.TransPoolDriver;
 
+import java.time.LocalTime;
 import java.util.List;
 
 public class PossibleMatch {
@@ -10,16 +11,17 @@ public class PossibleMatch {
     private int transpoolTripID;
     private TransPoolDriver transpoolDriver;
     private int tripPrice;
-    private Time estimatedTimeOfArrival;
+    private LocalTime estimatedTimeOfArrival;
     private double averageFuelConsumption;
 
     private TransPoolTrip possibleTransPoolTrip;
 
     public PossibleMatch(TransPoolTripRequest transpoolTripRequest, TransPoolTrip possibleTransPoolTrip) {
         this.possibleTransPoolTrip = possibleTransPoolTrip;
-        this.transpoolTripID = possibleTransPoolTrip.getID();
-        this.transpoolDriver = possibleTransPoolTrip.getOwner();
-        this.estimatedTimeOfArrival = new Time(possibleTransPoolTrip.getSchedule().getTime());
+        this.transpoolTripID = possibleTransPoolTrip.getOfferID();
+        this.transpoolDriver = possibleTransPoolTrip.getTranspoolDriver();
+        this.estimatedTimeOfArrival = LocalTime.of(possibleTransPoolTrip.getSchedule().getTime().getHour(),
+                possibleTransPoolTrip.getSchedule().getTime().getMinute());
 
         calculateTripPrice(transpoolTripRequest, possibleTransPoolTrip);
         calculateEstimatedTimeOfArrival(transpoolTripRequest, possibleTransPoolTrip);
@@ -29,7 +31,7 @@ public class PossibleMatch {
     private void calculateTripPrice(TransPoolTripRequest transpoolTripRequest, TransPoolTrip possibleTransPoolTrip) {
         List<Path> subRoutePath = possibleTransPoolTrip
                 .getRoute()
-                .getSubRouteAsPathList(transpoolTripRequest.getSource(), transpoolTripRequest.getDestination());
+                .getSubRouteAsPathList(transpoolTripRequest.getSourceStop(), transpoolTripRequest.getDestinationStop());
 
         tripPrice = subRoutePath
                 .stream()
@@ -40,7 +42,7 @@ public class PossibleMatch {
     private void calculateAverageFuelConsumption(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) {
         List<Path> subRoutePath = matchedTrip
                 .getRoute()
-                .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
+                .getSubRouteAsPathList(transpoolTripRequest.getSourceStop(),transpoolTripRequest.getDestinationStop());
 
         averageFuelConsumption = subRoutePath
                 .stream()
@@ -51,13 +53,13 @@ public class PossibleMatch {
     private void calculateEstimatedTimeOfArrival(TransPoolTripRequest transpoolTripRequest, TransPoolTrip matchedTrip) {
         List<Path> subRoutePath = matchedTrip
                 .getRoute()
-                .getSubRouteAsPathList(transpoolTripRequest.getSource(),transpoolTripRequest.getDestination());
+                .getSubRouteAsPathList(transpoolTripRequest.getSourceStop(),transpoolTripRequest.getDestinationStop());
 
         int minutesToAdd = subRoutePath
                 .stream()
                 .mapToInt(Path::getPathTime)
                 .sum();
-        estimatedTimeOfArrival.addMinutes(minutesToAdd);
+        estimatedTimeOfArrival = estimatedTimeOfArrival.plusMinutes(minutesToAdd);
     }
 
     public int getTranspoolTripID() {
@@ -72,7 +74,7 @@ public class PossibleMatch {
         return tripPrice;
     }
 
-    public Time getEstimatedTimeOfArrival() {
+    public LocalTime getEstimatedTimeOfArrival() {
         return estimatedTimeOfArrival;
     }
 

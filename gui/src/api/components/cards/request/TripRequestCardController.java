@@ -1,11 +1,16 @@
 package api.components.cards.request;
+import api.Constants;
+import data.transpool.trip.TransPoolTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.layout.AnchorPane;
 
-import java.time.LocalTime;
+import java.io.IOException;
 
-public class TripRequestCardController extends BasicTripRequestData {
+public class TripRequestCardController extends ListCell<TransPoolTripRequest> {
 
     @FXML private Label labelRiderName;
     @FXML private Label labelRequestID;
@@ -13,24 +18,42 @@ public class TripRequestCardController extends BasicTripRequestData {
     @FXML private Label labelRequestDestination;
     @FXML private Label labelArrivalDeparture;
     @FXML private Label labelTime;
+    @FXML private AnchorPane anchorPaneTripRequestCardBody;
 
-    public TripRequestCardController() {
-        super(-1, "", "", "", LocalTime.MIDNIGHT, false, false);
-    }
+    private FXMLLoader loader;
 
-    @FXML
-    public void initialize() {
-        labelRiderName.textProperty().bind(riderName);
-        labelRequestID.textProperty().bind(requestID.asString());
-        labelRequestSource.textProperty().bind(Bindings.concat("Gets on at ", sourceStop));
-        labelRequestDestination.textProperty().bind(Bindings.concat("Gets off at ", destinationStop));
-        labelTime.textProperty().bind(requestTime.asString());
-        labelArrivalDeparture.textProperty().bind(
-                Bindings
-                        .when(isTimeOfArrival)
-                        .then("Requested time of arrival ")
-                        .otherwise("Requested time of departure ")
-        );
+    @Override
+    protected void updateItem(TransPoolTripRequest request, boolean empty) {
+        super.updateItem(request, empty);
+
+        if (empty || request == null) {
+            setText(null);
+            setGraphic(null);
+        } else {
+            if (loader == null) {
+                loader = new FXMLLoader(Constants.TRIP_REQUEST_CARD_RESOURCE);
+                loader.setController(this);
+                try {
+                    loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            labelRequestID.textProperty().bind(request.requestIDProperty().asString());
+            labelRiderName.textProperty().bind(request.getTranspoolRider().usernameProperty());
+            labelRequestSource.textProperty().bind(Bindings.concat("Gets on at ", request.sourceStopProperty()));
+            labelRequestDestination.textProperty().bind(Bindings.concat("Gets off at ", request.destinationStopProperty()));
+            labelTime.textProperty().bind(request.requestTimeProperty().asString());
+            labelArrivalDeparture.textProperty().bind(
+                    Bindings
+                            .when(request.isTimeOfArrivalProperty())
+                            .then("Requested time of arrival ")
+                            .otherwise("Requested time of departure ")
+            );
+
+            setText(null);
+            setGraphic(anchorPaneTripRequestCardBody);
+        }
     }
 }
 

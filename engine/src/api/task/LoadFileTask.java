@@ -15,13 +15,12 @@ import java.io.File;
 public class LoadFileTask extends Task<TransPoolData> {
 
     private File fileToLoad;
-
     public LoadFileTask(File fileToLoad) {
         this.fileToLoad = fileToLoad;
     }
 
     @Override
-    protected TransPoolData call() throws TransPoolFileNotFoundException, JAXBException, TransPoolDataException {
+    protected TransPoolData call() throws TransPoolFileNotFoundException, JAXBException, TransPoolDataException, InterruptedException {
         if (!fileToLoad.exists()) {
             throw new TransPoolFileNotFoundException();
         }
@@ -34,10 +33,6 @@ public class LoadFileTask extends Task<TransPoolData> {
 
         updateMessage("Parsing...");
         TransPoolData data = new TransPoolData(JAXBData);
-
-        Task<Boolean> loadUITask = new LoadUITask(data.getAllTransPoolTrips());
-        new Thread(loadUITask).start();
-        //Platform.runLater(A function that updates the GUI with the cards);
 
         updateMessage("File loaded successfully!");
         return data;

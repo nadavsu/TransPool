@@ -7,16 +7,10 @@ import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.file.TransPoolDataException;
-import javafx.beans.property.ListProperty;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.util.Callback;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * The class containing the TransPool data structures.
@@ -54,7 +48,7 @@ public class TransPoolData {
     public TransPoolTrip getTransPoolTripByID(int ID) {
         return allTransPoolTrips
                 .stream()
-                .filter(t -> t.getID() == ID)
+                .filter(t -> t.getOfferID() == ID)
                 .findFirst()
                 .orElse(null);
     }
@@ -69,12 +63,12 @@ public class TransPoolData {
      * @throws NullPointerException - If TP trip request was not found.
      *                              TODO: Create a TransPoolTripRequestNotFoundException and throw it here?
      */
-    public TransPoolTripRequest getTripRequestByID(int ID) throws NullPointerException {
+    public TransPoolTripRequest getTripRequestByID(int ID) {
         return allTransPoolTripRequests
                 .stream()
-                .filter(t -> t.getID() == ID)
+                .filter(t -> t.getRequestID() == ID)
                 .findFirst()
-                .orElseThrow(NullPointerException::new);
+                .orElse(null);
     }
 
     public void deleteTripRequest(TransPoolTripRequest requestToDelete) {

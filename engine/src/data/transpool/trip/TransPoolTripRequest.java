@@ -1,8 +1,7 @@
 package data.transpool.trip;
 
-import data.transpool.map.Map;
 import data.transpool.user.TransPoolRider;
-import exception.file.StopNotFoundException;
+import exception.data.StopNotFoundException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;

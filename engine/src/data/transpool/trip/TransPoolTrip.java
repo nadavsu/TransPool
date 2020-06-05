@@ -1,14 +1,14 @@
 package data.transpool.trip;
 
-import data.transpool.TransPoolData;
 import data.transpool.map.Path;
 import data.transpool.user.TransPoolDriver;
 import exception.TransPoolRunTimeException;
-import exception.file.TransPoolDataException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalTime;
 import java.util.*;
 
 /**
@@ -31,6 +31,24 @@ public class TransPoolTrip {
 
     private ObservableList<RiderStatus> allRiderStatuses;
 
+    public TransPoolTrip(String driverName, LocalTime departureTime, int dayStart, String recurrences, int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
+        this.offerID = new SimpleIntegerProperty(IDGenerator++);
+        this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(driverName));
+        this.passengerCapacity = new SimpleIntegerProperty(riderCapacity);
+        this.route = new SimpleObjectProperty<>(new Route(route));
+        this.PPK = new SimpleIntegerProperty(PPK);
+        this.schedule = new SimpleObjectProperty<>(new Scheduling(dayStart, departureTime, recurrences));
+        this.rating = new SimpleIntegerProperty(0);
+
+        this.tripPrice = new SimpleIntegerProperty();
+        this.tripDurationInMinutes = new SimpleIntegerProperty();
+        this.averageFuelConsumption = new SimpleDoubleProperty();
+
+        this.allRiderStatuses = FXCollections.observableArrayList();
+
+        initializeTripData();
+    }
+
     public TransPoolTrip(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(JAXBTransPoolTrip.getOwner()));
@@ -46,6 +64,10 @@ public class TransPoolTrip {
 
         this.allRiderStatuses = FXCollections.observableArrayList();
 
+        initializeTripData();
+    }
+
+    private void initializeTripData() {
         calculatePriceOfRoute();
         calculateTripDuration();
         calculateAverageFuelConsumption();

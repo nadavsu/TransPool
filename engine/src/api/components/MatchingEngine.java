@@ -1,7 +1,6 @@
 package api.components;
 
 import api.task.FindPossibleMatchesTask;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import data.transpool.TransPoolData;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.PossibleMatch;
@@ -14,11 +13,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observable;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match
@@ -56,7 +51,7 @@ public class MatchingEngine {
 
 
         Predicate<TransPoolTrip> timeMatchPredicate = transPoolTrip ->
-                transPoolTrip.getSchedule().getTime().equals(tripRequestToMatch.getRequestTime());
+                transPoolTrip.getSchedule().getDepartureTime().equals(tripRequestToMatch.getRequestTime());
 
         data
                 .getAllTransPoolTrips()

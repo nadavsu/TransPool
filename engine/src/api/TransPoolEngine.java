@@ -7,9 +7,9 @@ import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.NoMatchesFoundException;
-import exception.file.StopNotFoundException;
-import exception.file.TransPoolDataException;
-import exception.file.TransPoolFileNotFoundException;
+import exception.data.StopNotFoundException;
+import exception.data.TransPoolDataException;
+import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.ObservableList;
@@ -68,6 +68,13 @@ public class TransPoolEngine implements Engine {
         TransPoolTripRequest request = new TransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
         data.addTransPoolTripRequest(request);
 
+    }
+
+    @Override
+    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
+                                   int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
+        //Todo: create a new trip request via a task or a thread.
+        data.addTransPoolTrip(new TransPoolTrip(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
     }
 
     @Override

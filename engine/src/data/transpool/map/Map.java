@@ -1,14 +1,11 @@
 package data.transpool.map;
 
 import data.jaxb.MapDescriptor;
-import exception.file.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
+import exception.data.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Observable;
 import java.util.function.Predicate;
 
 /**

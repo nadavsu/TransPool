@@ -20,8 +20,8 @@ public class PossibleMatch {
         this.possibleTransPoolTrip = possibleTransPoolTrip;
         this.transpoolTripID = possibleTransPoolTrip.getOfferID();
         this.transpoolDriver = possibleTransPoolTrip.getTranspoolDriver();
-        this.estimatedTimeOfArrival = LocalTime.of(possibleTransPoolTrip.getSchedule().getTime().getHour(),
-                possibleTransPoolTrip.getSchedule().getTime().getMinute());
+        this.estimatedTimeOfArrival = LocalTime.of(possibleTransPoolTrip.getSchedule().getDepartureTime().getHour(),
+                possibleTransPoolTrip.getSchedule().getDepartureTime().getMinute());
 
         calculateTripPrice(transpoolTripRequest, possibleTransPoolTrip);
         calculateEstimatedTimeOfArrival(transpoolTripRequest, possibleTransPoolTrip);

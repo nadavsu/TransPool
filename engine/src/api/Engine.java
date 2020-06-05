@@ -5,9 +5,10 @@ import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
 import exception.NoMatchesFoundException;
-import exception.file.StopNotFoundException;
-import exception.file.TransPoolDataException;
-import exception.file.TransPoolFileNotFoundException;
+import exception.data.PathDoesNotExistException;
+import exception.data.StopNotFoundException;
+import exception.data.TransPoolDataException;
+import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 
@@ -29,6 +30,9 @@ public interface Engine {
     ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests();
 
     ObservableList<TransPoolTrip> getAllTransPoolTrips();
+
+    void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
+                            int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
 
     void findPossibleMatches(TransPoolTripRequest request, int maximumMatches) throws NoMatchesFoundException;
 

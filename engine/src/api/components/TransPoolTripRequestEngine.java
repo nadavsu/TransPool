@@ -4,7 +4,7 @@ import data.transpool.TransPoolData;
 import data.transpool.map.Map;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.TransPoolTripRequest;
-import exception.file.StopNotFoundException;
+import exception.data.StopNotFoundException;
 import exception.time.InvalidTimeException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

@@ -1,38 +1,46 @@
 package data.transpool.trip;
 
-import exception.time.InvalidTimeException;
 import javafx.beans.property.*;
 
-import javax.xml.bind.JAXB;
 import java.time.LocalTime;
 
 public class Scheduling {
-    private IntegerProperty day;
+
+    private IntegerProperty dayStart;
     private StringProperty recurrences;
-    private ObjectProperty<LocalTime> time;
+    private ObjectProperty<LocalTime> departureTime;
+
+    public Scheduling(int dayStart, LocalTime departureTime, String recurrences) {
+        this.departureTime = new SimpleObjectProperty<>(departureTime);
+        this.dayStart = new SimpleIntegerProperty();
+        this.recurrences = new SimpleStringProperty();
+
+        setDayStart(dayStart);
+        setRecurrences(recurrences);
+    }
 
     public Scheduling(data.jaxb.Scheduling JAXBScheduling) {
-        day = new SimpleIntegerProperty();
+        dayStart = new SimpleIntegerProperty();
         recurrences = new SimpleStringProperty();
-        time = new SimpleObjectProperty<>(LocalTime.of(JAXBScheduling.getHourStart(), 0));
+        departureTime = new SimpleObjectProperty<>(LocalTime.of(JAXBScheduling.getHourStart(), 0));
 
-        setDay(JAXBScheduling.getDayStart());
+        setDayStart(JAXBScheduling.getDayStart());
         setRecurrences(JAXBScheduling.getRecurrences());
     }
 
-    public int getDay() {
-        return day.get();
+    public int getDayStart() {
+        return dayStart.get();
     }
 
-    public IntegerProperty dayProperty() {
-        return day;
+    public IntegerProperty dayStartProperty() {
+        return dayStart;
     }
 
-    public void setDay(Integer day) {
-        if (day == null || day == 0) {
-            this.day.setValue(1);
+    public void setDayStart(Integer dayStart) {
+        if (dayStart == null || dayStart == 0) {
+            this.dayStart.setValue(1);
         } else {
-            this.day.set(day);
+            this.dayStart.set(dayStart);
         }
     }
 
@@ -52,20 +60,20 @@ public class Scheduling {
         }
     }
 
-    public LocalTime getTime() {
-        return time.get();
+    public LocalTime getDepartureTime() {
+        return departureTime.get();
     }
 
-    public ObjectProperty<LocalTime> timeProperty() {
-        return time;
+    public ObjectProperty<LocalTime> departureTimeProperty() {
+        return departureTime;
     }
 
-    public void setTime(LocalTime time) {
-        this.time.set(time);
+    public void setDepartureTime(LocalTime departureTime) {
+        this.departureTime.set(departureTime);
     }
 
     @Override
     public String toString() {
-        return recurrences + " on day " + day + " at time " + time;
+        return recurrences + " on day " + dayStart + " at time " + departureTime;
     }
 }

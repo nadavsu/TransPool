@@ -43,21 +43,21 @@
                         </ImageView>
                      </children>
                   </GridPane>
-                  <JFXTabPane id="TPMainMenu" prefHeight="601.0" prefWidth="320.0" stylesheets="@../trips/bar/tab_pane.css" tabClosingPolicy="UNAVAILABLE">
+                  <JFXTabPane id="TPMainMenu" prefHeight="601.0" prefWidth="320.0" stylesheets="@../form/style/tab_pane.css" tabClosingPolicy="UNAVAILABLE">
                      <tabs>
                         <Tab id="TabRequestTrip" closable="false" text="Request Trip">
 							<content>
-								<fx:include fx:id="tripRequestComponent" source="../trips/bar/request/trip_request.fxml" />
+								<fx:include fx:id="tripRequestComponent" source="../form/request/trip_request.fxml" />
 							</content>
 						</Tab>
 						<Tab id="TabOfferTrip" text="Offer Trip">
                           <content>
-								<fx:include fx:id="tripOfferComponent" source="../trips/bar/offer/trip_offer.fxml" />
+								<fx:include fx:id="tripOfferComponent" source="../form/offer/trip_offer.fxml" />
                           </content>
                         </Tab>
                         <Tab id="TabMatch" text="Match">
                           <content>
-                            <fx:include fx:id="matchTripComponent" source="../trips/bar/match/trip_match.fxml" />
+                            <fx:include fx:id="matchTripComponent" source="../form/match/trip_match.fxml" />
                           </content>
                         </Tab>
                      </tabs>

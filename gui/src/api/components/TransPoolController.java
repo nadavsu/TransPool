@@ -2,23 +2,30 @@ package api.components;
 
 import api.Engine;
 import api.components.data.bar.DataBarController;
-import api.components.trips.bar.Clearable;
+import api.components.form.Form;
 import api.components.menu.bar.MenuBarController;
-import api.components.trips.bar.match.MatchTripController;
-import api.components.trips.bar.offer.TransPoolTripOfferController;
-import api.components.trips.bar.request.TransPoolTripRequestController;
+import api.components.form.match.MatchTripFormController;
+import api.components.form.offer.TripOfferFormController;
+import api.components.form.request.TripRequestFormController;
+import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
+import data.transpool.trip.TransPoolTripRequest;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.MenuBar;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import java.time.LocalTime;
 
 
 /**
@@ -29,10 +36,10 @@ public class TransPoolController {
     private Stage primaryStage;
     private Engine engine;
 
-    @FXML private MatchTripController matchTripComponentController;
+    @FXML private MatchTripFormController matchTripComponentController;
     @FXML private MenuBarController menuBarComponentController;
-    @FXML private TransPoolTripOfferController tripOfferComponentController;
-    @FXML private TransPoolTripRequestController tripRequestComponentController;
+    @FXML private TripOfferFormController tripOfferComponentController;
+    @FXML private TripRequestFormController tripRequestComponentController;
     @FXML private DataBarController dataBarComponentController;
 
     @FXML private MenuBar menuBarComponent;
@@ -56,16 +63,16 @@ public class TransPoolController {
                 && tripOfferComponentController != null
                 && tripRequestComponentController != null) {
             matchTripComponentController.setTransPoolController(this);
-            tripOfferComponentController.setTranspoolController(this);
+            tripOfferComponentController.setTransPoolController(this);
             tripRequestComponentController.setTransPoolController(this);
             menuBarComponentController.setTransPoolController(this);
             dataBarComponentController.setTransPoolController(this);
         }
 
+        fileLoaded.bindBidirectional(menuBarComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(matchTripComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(tripOfferComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(tripRequestComponentController.fileLoadedProperty());
-        fileLoaded.bindBidirectional(menuBarComponentController.fileLoadedProperty());
         currentTaskProgress.bindBidirectional(dataBarComponentController.currentTaskProgressProperty());
     }
 
@@ -76,6 +83,33 @@ public class TransPoolController {
     public void setEngine(Engine engine) {
         this.engine = engine;
         fileLoaded.bind(this.engine.fileLoadedProperty());
+    }
+
+    public void createNewTransPoolTripRequest(String riderName, String source, String destination,
+                                  LocalTime time, boolean isArrivalTime, boolean isContinuous){
+        try {
+            engine.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
+        } catch (TransPoolDataException e) {
+            showAlert(e);
+        }
+    }
+
+    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
+                                   int riderCapacity, int PPK, ObservableList<String> addedStops) {
+        try {
+            engine.createNewTripOffer(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, addedStops);
+        } catch (TransPoolDataException e) {
+            showAlert(e);
+        }
+
+    }
+
+    public void addNewMatch(PossibleMatch tripOffer) {
+        engine.addNewMatch(tripOffer);
+    }
+
+    public void findPossibleMatches(TransPoolTripRequest requestToMatch, int numOfResults) {
+        engine.findPossibleMatches(requestToMatch, numOfResults);
     }
 
     public Stage getPrimaryStage() {
@@ -117,25 +151,22 @@ public class TransPoolController {
     }
 
     //---------------------------------------------------------------------------------------------//
-    public void addNewTripOffer() {
-        tripOfferComponentController.addNewTripOffer();
-    }
 
-
-    //---------------------------------------------------------------------------------------------//
-
-    public void addNewTripRequest() {
-        tripRequestComponentController.addNewTripRequest();
-    }
-
-    //---------------------------------------------------------------------------------------------//
-
-    public void searchForMatches() {
-        matchTripComponentController.searchForMatches();
-    }
-
-    public void clearForm(Clearable form) {
+    public void clearForm(Form form) {
         form.clear();
+    }
+
+    public void submitForm(Form form) {
+        try {
+            if (form.allRequiredFieldsFilled()) {
+                form.submit();
+                form.clear();
+            } else {
+                throw new RequiredFieldEmptyException();
+            }
+        } catch(RequiredFieldEmptyException e) {
+            showAlert(e);
+        }
     }
 
     public void bindTaskToUI(Task currentRunningTask) {
@@ -148,11 +179,9 @@ public class TransPoolController {
         tripOfferComponentController.bindDataToUI(data);
     }
 
-    public void createNewMatch() {
-        matchTripComponentController.createNewMatch();
+    public void showAlert(Exception e) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+        errorAlert.setHeaderText(null);
+        errorAlert.showAndWait();
     }
-
-/*    public void addTripRequestCard(Node card) {
-        dataBarComponentController.addTripRequestCard(card);
-    }*/
 }

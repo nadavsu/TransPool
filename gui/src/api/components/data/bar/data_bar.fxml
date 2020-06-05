@@ -37,7 +37,7 @@
             </Tab>
          </tabs>
          <stylesheets>
-            <URL value="@../../trips/bar/tab_pane.css" />
+            <URL value="@../../form/style/tab_pane.css" />
             <URL value="@data_bar_style.css" />
          </stylesheets>
       </JFXTabPane>

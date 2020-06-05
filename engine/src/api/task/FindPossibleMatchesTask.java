@@ -4,13 +4,10 @@ import data.transpool.TransPoolData;
 import data.transpool.trip.PossibleMatch;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
-import exception.NoMatchesFoundException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
-import java.util.List;
-import java.util.Observable;
 import java.util.function.Predicate;
 
 public class FindPossibleMatchesTask extends Task<ObservableList<PossibleMatch>> {
@@ -33,7 +30,7 @@ public class FindPossibleMatchesTask extends Task<ObservableList<PossibleMatch>>
                 transPoolTrip.containsSubRoute(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
 
         Predicate<TransPoolTrip> timeMatchPredicate = transPoolTrip ->
-                transPoolTrip.getSchedule().getTime().equals(tripRequestToMatch.getRequestTime());
+                transPoolTrip.getSchedule().getDepartureTime().equals(tripRequestToMatch.getRequestTime());
 
         data
                 .getAllTransPoolTrips()

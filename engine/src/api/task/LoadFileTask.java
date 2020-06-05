@@ -2,9 +2,8 @@ package api.task;
 
 import data.jaxb.TransPool;
 import data.transpool.TransPoolData;
-import exception.file.TransPoolDataException;
-import exception.file.TransPoolFileNotFoundException;
-import javafx.application.Platform;
+import exception.data.TransPoolDataException;
+import exception.data.TransPoolFileNotFoundException;
 import javafx.concurrent.Task;
 
 import javax.xml.bind.JAXBContext;

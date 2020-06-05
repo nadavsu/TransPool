@@ -1,8 +1,8 @@
 package api.components.data.bar;
 
 import api.components.TransPoolController;
-import api.components.cards.offer.TripOfferCardController;
-import api.components.cards.request.TripRequestCardController;
+import api.components.card.offer.TripOfferCardController;
+import api.components.card.request.TripRequestCardController;
 import data.transpool.TransPoolData;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;

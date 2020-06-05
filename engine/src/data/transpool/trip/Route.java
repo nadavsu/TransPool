@@ -3,15 +3,15 @@ package data.transpool.trip;
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.Map;
 import data.transpool.map.Path;
+import exception.data.InvalidRouteException;
 import exception.TransPoolRunTimeException;
-import exception.file.StopNotFoundException;
-import exception.file.PathDoesNotExistException;
+import exception.data.StopNotFoundException;
+import exception.data.PathDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 /**
  * Contains a list of strings containing the stop names in the route.
@@ -20,6 +20,15 @@ import java.util.Observable;
 public class Route {
     private ObservableList<String> route;
     private List<Path> usedPaths = new ArrayList<>();
+
+
+    public Route(ObservableList<String> route) throws PathDoesNotExistException, InvalidRouteException {
+        if (route.size() < 2) {
+            throw new InvalidRouteException();
+        }
+        this.route = FXCollections.observableArrayList(route);
+        initUsedPaths();
+    }
 
     public Route(TransPoolTrip JAXBTransPoolTrip) throws PathDoesNotExistException {
         route = FXCollections.observableArrayList();

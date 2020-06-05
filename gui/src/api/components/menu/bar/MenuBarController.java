@@ -1,19 +1,22 @@
 package api.components.menu.bar;
 
 import api.components.TransPoolController;
-import exception.file.TransPoolDataException;
-import exception.file.TransPoolFileNotFoundException;
+import com.jfoenix.controls.JFXButton;
+import exception.data.TransPoolDataException;
+import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioMenuItem;
 import javafx.stage.FileChooser;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 public class MenuBarController {
@@ -92,14 +95,10 @@ public class MenuBarController {
         try {
             transpoolController.getEngine().loadFile(selectedFile);
         } catch (JAXBException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Internal Error");
-            errorAlert.setContentText("There was an error loading the file (JAXB error).");
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "There was an error loading the file (JAXB error).");
             errorAlert.showAndWait();
         } catch (TransPoolFileNotFoundException | TransPoolDataException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setHeaderText("Data error.");
-            errorAlert.setContentText(e.getMessage());
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
             errorAlert.showAndWait();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
@@ -123,7 +122,12 @@ public class MenuBarController {
     }
 
     public void quit() {
-        System.exit(0);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to quit?");
+        alert.setHeaderText(null);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK){
+            System.exit(0);
+        }
     }
 }
 

@@ -6,7 +6,7 @@ import data.transpool.map.Map;
 import data.transpool.trip.MatchedTransPoolTripRequest;
 import data.transpool.trip.TransPoolTrip;
 import data.transpool.trip.TransPoolTripRequest;
-import exception.file.TransPoolDataException;
+import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -61,7 +61,7 @@ public class TransPoolData {
      * @param ID - The ID of the desired request.
      * @return -
      * @throws NullPointerException - If TP trip request was not found.
-     *                              TODO: Create a TransPoolTripRequestNotFoundException and throw it here?
+     *
      */
     public TransPoolTripRequest getTripRequestByID(int ID) {
         return allTransPoolTripRequests
@@ -111,6 +111,10 @@ public class TransPoolData {
         TransPoolTrip trip = getTransPoolTripByID(matchedTransPoolTripRequest.getTranspoolTripID());
         trip.updateAfterMatch(matchedTransPoolTripRequest);
         deleteTripRequest(getTripRequestByID(matchedTransPoolTripRequest.getRequestID()));
+    }
+
+    public void addTransPoolTrip(TransPoolTrip transPoolTrip) {
+        allTransPoolTrips.add(transPoolTrip);
     }
 
 /*    public static Callback<TransPoolTrip, Observable[]> extractor() {

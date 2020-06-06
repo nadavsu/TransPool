@@ -9,4 +9,9 @@ public class TransPoolDriver extends TransPoolUserAccount {
         this.setID(IDGenerator);
         IDGenerator++;
     }
+
+    public TransPoolDriver(TransPoolDriver other) {
+        super(other.username.get());
+        this.setID(other.getID());
+    }
 }

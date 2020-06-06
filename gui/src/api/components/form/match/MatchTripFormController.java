@@ -1,16 +1,15 @@
 package api.components.form.match;
 
-import api.components.TransPoolController;
 import api.components.form.FormController;
 import api.exception.RequiredFieldEmptyException;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
-import com.jfoenix.validation.RequiredFieldValidator;
 import data.transpool.TransPoolData;
-import data.transpool.trip.PossibleMatch;
-import data.transpool.trip.TransPoolTripRequest;
+import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.request.BasicTripRequest;
+import data.transpool.trip.request.TripRequest;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -18,7 +17,7 @@ import javafx.fxml.FXML;
 
 public class MatchTripFormController extends FormController {
 
-    @FXML private JFXComboBox<TransPoolTripRequest> comboBoxRideID;
+    @FXML private JFXComboBox<BasicTripRequest> comboBoxRideID;
     @FXML private JFXTextField textFieldNumOfResultsToFind;
     @FXML private JFXListView<PossibleMatch> listViewResults;
     @FXML private JFXButton buttonMatchTrip;
@@ -57,7 +56,7 @@ public class MatchTripFormController extends FormController {
 
     @Override
     public void submit() {
-        transpoolController.addNewMatch(listViewResults.getSelectionModel().getSelectedItem());
+        transpoolController.createNewMatch(listViewResults.getSelectionModel().getSelectedItem());
     }
 
     @Override
@@ -81,14 +80,14 @@ public class MatchTripFormController extends FormController {
     }
 
     @Override
-    public boolean allRequiredFieldsFilled() {
+    public boolean isValid() {
         return textFieldNumOfResultsToFind.validate()
                 && comboBoxRideID.validate();
     }
     private void searchForMatches() {
         try {
-            if (allRequiredFieldsFilled()) {
-                TransPoolTripRequest requestToMatch = comboBoxRideID.getValue();
+            if (isValid()) {
+                TripRequest requestToMatch = (TripRequest) comboBoxRideID.getValue();
                 int numOfResults = Integer.parseInt(textFieldNumOfResultsToFind.getText());
                 transpoolController.findPossibleMatches(requestToMatch, numOfResults);
             } else {
@@ -105,7 +104,7 @@ public class MatchTripFormController extends FormController {
 
     public void bindUIToData(TransPoolData data) {
         foundResults.bind(transpoolController.getEngine().foundMatchesProperty());
-        comboBoxRideID.setItems(data.getAllTransPoolTripRequests());
+        comboBoxRideID.setItems(data.getAllTripRequests());
         listViewResults.setItems(transpoolController.getEngine().getPossibleMatches());
     }
 }

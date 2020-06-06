@@ -1,11 +1,13 @@
 package api;
 
 import data.transpool.TransPoolData;
-import data.transpool.trip.PossibleMatch;
-import data.transpool.trip.TransPoolTrip;
-import data.transpool.trip.TransPoolTripRequest;
+import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.TripOfferData;
+import data.transpool.trip.request.BasicTripRequest;
+import data.transpool.trip.request.TripRequest;
+import data.transpool.trip.request.TripRequestData;
 import exception.NoMatchesFoundException;
-import exception.data.PathDoesNotExistException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
 import exception.data.TransPoolFileNotFoundException;
@@ -25,16 +27,14 @@ public interface Engine {
                                        LocalTime time, boolean isArrivalTime, boolean isContinuous)
             throws StopNotFoundException;
 
-    ObservableList<String> getAllTransPoolTripRequestsAsStrings();
+    ObservableList<BasicTripRequest> getAllTripRequests();
 
-    ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests();
-
-    ObservableList<TransPoolTrip> getAllTransPoolTrips();
+    ObservableList<TripOffer> getAllTripOffers();
 
     void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                             int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
 
-    void findPossibleMatches(TransPoolTripRequest request, int maximumMatches) throws NoMatchesFoundException;
+    void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException;
 
     void clearPossibleMatches();
 
@@ -43,8 +43,6 @@ public interface Engine {
     void addNewMatch(PossibleMatch PossibleMatches);
 
     TransPoolData getData();
-
-    ObservableList<String> getAllTransPoolTripsAsStrings();
 
     BooleanProperty fileLoadedProperty();
 

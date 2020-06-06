@@ -1,12 +1,11 @@
 package data.transpool.trip.request;
 
-import data.transpool.trip.TripRequestData;
 import data.transpool.user.TransPoolRider;
 import javafx.beans.property.*;
 
-import java.time.LocalTime;
+import java.util.Objects;
 
-public abstract class BasicTripRequestData implements TripRequestData {
+public abstract class BasicTripRequestData implements BasicTripRequest {
 
     private static int IDGenerator = 20000;
     protected IntegerProperty requestID;
@@ -21,73 +20,86 @@ public abstract class BasicTripRequestData implements TripRequestData {
         this.destinationStop = new SimpleStringProperty(destinationStop);
     }
 
-    @Override
-    public String getRiderName() {
-        return null;
-    }
-
-    @Override
-    public void setRiderName(String riderName) {
-
+    public BasicTripRequestData(TripRequest other) {
+        this.requestID = new SimpleIntegerProperty(other.getRequestID());
+        this.transpoolRider = new SimpleObjectProperty<>(new TransPoolRider(other.getTransPoolRider()));
+        this.sourceStop = new SimpleStringProperty(other.getSourceStop());
+        this.destinationStop = new SimpleStringProperty(other.getDestinationStop());
     }
 
     @Override
     public int getRequestID() {
-        return 0;
+        return this.requestID.get();
     }
 
     @Override
-    public void setRequestID(int requestID) {
-
+    public TransPoolRider getTransPoolRider() {
+        return transpoolRider.get();
     }
+
+    @Override
+    public void setTransPoolRider(TransPoolRider transpoolRider) {
+        this.transpoolRider.set(transpoolRider);
+    }
+
 
     @Override
     public String getSourceStop() {
-        return null;
+        return this.sourceStop.get();
     }
 
     @Override
     public void setSourceStop(String sourceStop) {
-
+        this.sourceStop.set(sourceStop);
     }
 
     @Override
     public String getDestinationStop() {
-        return null;
+        return this.destinationStop.get();
     }
 
     @Override
     public void setDestinationStop(String destinatinStop) {
-
+        this.destinationStop.set(destinatinStop);
     }
 
     @Override
-    public boolean isTimeOfArrival() {
-        return false;
+    public ObjectProperty<TransPoolRider> transpoolRiderProperty() {
+        return transpoolRider;
     }
 
     @Override
-    public void setTimeOfArrival(boolean value) {
-
+    public IntegerProperty requestIDProperty() {
+        return requestID;
     }
 
     @Override
-    public LocalTime getRequestTime() {
-        return null;
+    public StringProperty sourceStopProperty() {
+        return sourceStop;
     }
 
     @Override
-    public void setRequestTime(LocalTime requestTime) {
-
+    public StringProperty destinationStopProperty() {
+        return destinationStop;
     }
 
     @Override
-    public boolean isContinuous() {
-        return false;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BasicTripRequestData)) return false;
+        BasicTripRequestData that = (BasicTripRequestData) o;
+        return requestID.equals(that.requestID);
     }
 
     @Override
-    public void setContinuous(boolean value) {
+    public int hashCode() {
+        return Objects.hash(requestID);
+    }
 
+    @Override
+    public String toString() {
+        return "Rider " + requestID.get()
+                + " gets on at " + sourceStop.get()
+                + " and gets off at " + destinationStop.get();
     }
 }

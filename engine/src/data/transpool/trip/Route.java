@@ -9,6 +9,7 @@ import exception.data.StopNotFoundException;
 import exception.data.PathDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,24 +20,34 @@ import java.util.List;
  */
 public class Route {
     private ObservableList<String> route;
-    private List<Path> usedPaths = new ArrayList<>();
+    private List<Path> usedPaths;
 
 
     public Route(ObservableList<String> route) throws PathDoesNotExistException, InvalidRouteException {
         if (route.size() < 2) {
             throw new InvalidRouteException();
         }
+        this.usedPaths = new ArrayList<>();
         this.route = FXCollections.observableArrayList(route);
+
         initUsedPaths();
     }
 
     public Route(TransPoolTrip JAXBTransPoolTrip) throws PathDoesNotExistException {
-        route = FXCollections.observableArrayList();
+        this.route = FXCollections.observableArrayList();
+        this.usedPaths = new ArrayList<>();
+
         String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
         for (String str : routeArray) {
             route.add(str.trim());
         }
+
         initUsedPaths();
+    }
+
+    public Route(Route other) {
+        this.route = FXCollections.observableArrayList(other.getRoute());
+        this.usedPaths  = new ArrayList<>(other.getUsedPaths());
     }
 
     /**
@@ -61,13 +72,26 @@ public class Route {
      * @throws TransPoolRunTimeException - This function is only used internally with existing sources and destinations.
      *                                     Should not throw a runtime exception.
      */
-    public List<Path> getSubRouteAsPathList(String source, String destination) {
-        int sourceIndex = getIndexByStopName(source);
-        int destinationIndex = getIndexByStopName(destination);
+    public static List<Path> asPathList(Route route, String source, String destination) {
+        int sourceIndex = route.getIndexByStopName(source);
+        int destinationIndex = route.getIndexByStopName(destination);
         if (sourceIndex < 0 || destinationIndex < 0) {
             throw new TransPoolRunTimeException();
         }
-        return new ArrayList<>(usedPaths.subList(sourceIndex, destinationIndex));
+        return new ArrayList<>(route.usedPaths.subList(sourceIndex, destinationIndex));
+    }
+
+    public Route subRoute(String sourceStopName, String destinationStopName) {
+        try {
+            int sourceIndex = getIndexByStopName(sourceStopName);
+            int destinationIndex = getIndexByStopName(destinationStopName);
+            if (sourceIndex < 0 || destinationIndex < 0) {
+                throw new TransPoolRunTimeException();
+            }
+            return new Route(FXCollections.observableArrayList(route.subList(sourceIndex, destinationIndex + 1)));
+        } catch (PathDoesNotExistException | InvalidRouteException ignored) {
+            return null;
+        }
     }
 
     /**
@@ -75,7 +99,6 @@ public class Route {
      * @param source - The name of the source stop of the route.
      * @param destination - The name of the destination stop of the route.
      * @return true of there is such a route from source to destination;
-     * @throws StopNotFoundException - if one of the names of the stops was not found in the map.
      */
     public boolean containsSubRoute(String source, String destination) {
         int sourceIndex = getIndexByStopName(source);
@@ -109,6 +132,14 @@ public class Route {
 
     public List<Path> getUsedPaths() {
         return usedPaths;
+    }
+
+    public String getFirstStopName() {
+        return route.get(0);
+    }
+
+    public String getLastStopName() {
+        return route.get(route.size() - 1);
     }
 
     @Override

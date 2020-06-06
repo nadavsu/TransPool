@@ -8,11 +8,11 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane id="card-body" maxHeight="510.0" maxWidth="-Infinity" minHeight="310.0" minWidth="210.0" prefHeight="385.0" prefWidth="210.0" stylesheets="@card_style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane id="card-body" fx:id="anchorPaneCardBody" maxHeight="510.0" maxWidth="-Infinity" minHeight="310.0" minWidth="210.0" prefHeight="385.0" prefWidth="210.0" stylesheets="@../card_style.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fitHeight="100.0" fitWidth="200.0" layoutX="5.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" styleClass="image">
          <image>
-            <Image url="@../../resources/images/cards/match_icon.png" />
+            <Image url="@../../../resources/images/cards/match_icon.png" />
          </image>
       </ImageView>
       <GridPane layoutX="5.0" layoutY="106.0" prefHeight="75.0" prefWidth="200.0">
@@ -29,8 +29,8 @@
          <children>
             <Label fx:id="labelRiderName" prefHeight="40.0" prefWidth="200.0" styleClass="header" text="John Dow" GridPane.columnSpan="2" GridPane.rowSpan="2" />
             <Label fx:id="labelRequestID" prefHeight="13.0" prefWidth="91.0" styleClass="subtext" text="1400202" GridPane.rowIndex="3" />
-            <Label fx:id="labelMatchDriver" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Riding with Nadav Suliman" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-            <Label fx:id="labelOfferID" prefHeight="13.0" prefWidth="91.0" styleClass="subtext" text="1400202" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="labelDriverName" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Riding with Nadav Suliman" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+            <Label fx:id="labelTripOfferID" prefHeight="13.0" prefWidth="91.0" styleClass="subtext" text="1400202" GridPane.columnIndex="1" GridPane.rowIndex="3" />
          </children>
       </GridPane>
       <GridPane layoutX="5.0" layoutY="195.0" prefHeight="100.0" prefWidth="200.0">
@@ -40,13 +40,13 @@
          <rowConstraints>
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="21.0" minHeight="9.0" prefHeight="9.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="labelMatchedSource" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Gets on at Rabin Square" GridPane.valignment="TOP" />
-            <Label fx:id="labelMatchedDestination" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Gets off at Park Hayarkon" GridPane.rowIndex="1" GridPane.valignment="TOP" />
-            <Label fx:id="labelMatchedETA" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Expected to arrive by" wrapText="true" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="TOP" />
+            <Label fx:id="labelRequestSource" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Gets on at Rabin Square" GridPane.valignment="TOP" />
+            <Label fx:id="labelRequestDestination" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Gets off at Park Hayarkon" GridPane.rowIndex="1" GridPane.valignment="TOP" />
+            <Label fx:id="labelExpectedTimeOfArrival" alignment="TOP_LEFT" prefHeight="40.0" prefWidth="200.0" styleClass="normal-text" text="Expected to arrive by" wrapText="true" GridPane.rowIndex="2" GridPane.rowSpan="2" GridPane.valignment="TOP" />
          </children>
       </GridPane>
       <GridPane layoutX="5.0" layoutY="295.0" prefHeight="89.0" prefWidth="200.0">
@@ -59,8 +59,8 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label id="price" prefHeight="25.0" prefWidth="200.0" text="Trip price:" GridPane.valignment="TOP" />
-            <Label prefHeight="55.0" prefWidth="210.0" text="By travelling with Nadav Suliman you have saved 30 litres of fuel!" wrapText="true" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="TOP" />
+            <Label id="price" fx:id="labelTripPrice" prefHeight="25.0" prefWidth="200.0" text="Trip price:" GridPane.valignment="TOP" />
+            <Label fx:id="labelPersonalFuelConsumption" prefHeight="55.0" prefWidth="210.0" text="By travelling with Nadav Suliman you have saved 30 litres of fuel!" wrapText="true" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.valignment="TOP" />
          </children>
       </GridPane>
    </children>

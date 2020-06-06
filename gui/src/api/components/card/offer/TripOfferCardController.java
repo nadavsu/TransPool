@@ -3,17 +3,18 @@ package api.components.card.offer;
 import api.Constants;
 import api.components.card.CardController;
 import com.jfoenix.controls.JFXListView;
-import data.transpool.trip.TransPoolTrip;
+import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.TripOfferData;
+import data.transpool.trip.request.BasicTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class TripOfferCardController extends CardController<TransPoolTrip> {
+public class TripOfferCardController extends CardController<TripOffer> {
 
     @FXML private Label labelDriverName;
     @FXML private Label labelDriverRating;
@@ -23,12 +24,12 @@ public class TripOfferCardController extends CardController<TransPoolTrip> {
     @FXML private Label labelTripDuration;
     @FXML private Label labelFuelConsumption;
     @FXML private Label labelPPK;
-    @FXML private JFXListView<TransPoolTrip.RiderStatus> listViewRiderDetails;
+    @FXML private JFXListView<BasicTripRequest> listViewRiderDetails;
     @FXML private Label labelPassengerCapacity;
     @FXML private AnchorPane anchorPaneTripOfferCardBody;
 
     @Override
-    protected void updateItem(TransPoolTrip tripOffer, boolean empty) {
+    protected void updateItem(TripOffer tripOffer, boolean empty) {
         super.updateItem(tripOffer, empty);
 
         if (empty || tripOffer == null) {
@@ -53,12 +54,12 @@ public class TripOfferCardController extends CardController<TransPoolTrip> {
     }
 
     @Override
-    protected void initializeValues(TransPoolTrip tripOffer) {
-        labelDriverName.textProperty().bind(tripOffer.transpoolDriverProperty().get().usernameProperty());
+    protected void initializeValues(TripOffer tripOffer) {
+        labelDriverName.textProperty().bind(tripOffer.getTransPoolDriver().usernameProperty());
         labelOfferID.textProperty().bind(tripOffer.offerIDProperty().asString());
 
         listViewStops.setItems(tripOffer.getRoute().getRoute());
-        listViewRiderDetails.setItems(tripOffer.getAllRiderStatuses());
+        listViewRiderDetails.setItems(tripOffer.getAllMatchedRequestsData());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
                 "There are ", tripOffer.passengerCapacityProperty(), " spaces left on this ride."));
@@ -69,9 +70,9 @@ public class TripOfferCardController extends CardController<TransPoolTrip> {
         labelPPK.textProperty().bind(Bindings.concat(
                 "Price per kilometer: ", tripOffer.PPKProperty()));
         labelSchedule.textProperty().bind(Bindings.concat(
-                "Departs ", tripOffer.getSchedule().getRecurrences().toString(),
-                " on day ", tripOffer.getSchedule().getDayStart(),
-                " at ", tripOffer.getSchedule().getDepartureTime().toString()));
+                "Departs ", tripOffer.getScheduling().getRecurrences().toString(),
+                " on day ", tripOffer.getScheduling().getDayStart(),
+                " at ", tripOffer.getScheduling().getDepartureTime().toString()));
         labelDriverRating.textProperty().bind(Bindings
                 .when(tripOffer.ratingProperty().isEqualTo(0))
                 .then("No rating yet.")

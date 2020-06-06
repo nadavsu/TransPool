@@ -144,7 +144,7 @@ public class TripOfferFormController extends FormController {
     }
 
     @Override
-    public boolean allRequiredFieldsFilled() {
+    public boolean isValid() {
         return textFieldPPK.validate()
                 && textFieldDriverName.validate()
                 && timeFieldDepatureTime.validate();
@@ -156,6 +156,7 @@ public class TripOfferFormController extends FormController {
                 .getAllStops()
                 .forEach((name, stop) -> allStops.add(name));
         comboBoxStopToAdd.setItems(allStops);
+        FXCollections.sort(allStops, String::compareToIgnoreCase);
     }
 
     public BooleanProperty fileLoadedProperty() {

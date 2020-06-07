@@ -16,6 +16,6 @@ public class FeedbackEngine {
     public FeedbackEngine(TransPoolData data, int feedbackerID) {
         this.data = data;
         this.feedbacker = data.getMatchedTripRequest(feedbackerID);
-        this.matchedRequestDrivers = FXCollections.observableArrayList(feedbacker.getTransPoolDriverNames());
+        //this.matchedRequestDrivers = FXCollections.observableArrayList(feedbacker.getTransPoolDriverNames());
     }
 }

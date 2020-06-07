@@ -20,7 +20,7 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
 
     private Map map;
     private ObservableList<TripOffer> allTripOffers;
-    private ObservableList<BasicTripRequest> allTripRequests;
+    private ObservableList<TripRequest> allTripRequests;
     private ObservableList<MatchedTripRequest> allMatchedTripRequests;
 
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
@@ -47,7 +47,7 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
      *
      */
     @Override
-    public BasicTripRequest getTripRequest(int ID) {
+    public TripRequest getTripRequest(int ID) {
         return allTripRequests
                 .stream()
                 .filter(t -> t.getRequestID() == ID)
@@ -56,7 +56,7 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
     }
 
     @Override
-    public void deleteTripRequest(BasicTripRequest requestToDelete) {
+    public void deleteTripRequest(TripRequest requestToDelete) {
         allTripRequests.remove(requestToDelete);
     }
 
@@ -67,14 +67,14 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
 
     @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
-        allTripRequests.add(matchedTripRequest);
+        allMatchedTripRequests.add(matchedTripRequest);
         TripOffer trip = getTripOffer(matchedTripRequest.getTripOfferID());
         trip.updateAfterMatch(matchedTripRequest);
         deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
     }
 
     @Override
-    public ObservableList<BasicTripRequest> getAllTripRequests() throws NullPointerException {
+    public ObservableList<TripRequest> getAllTripRequests() throws NullPointerException {
         if (allTripRequests == null) {
             throw new NullPointerException();
         }
@@ -83,12 +83,7 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
 
     @Override
     public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
-        ObservableList<MatchedTripRequest> matchedTripRequestList = FXCollections.observableArrayList();
-        allTripRequests
-                .stream()
-                .filter(basicTripRequest -> basicTripRequest instanceof MatchedTripRequest)
-                .forEach(basicTripRequest -> matchedTripRequestList.add((MatchedTripRequest)basicTripRequest));
-        return matchedTripRequestList;
+        return allMatchedTripRequests;
     }
 
     /**

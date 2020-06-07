@@ -3,11 +3,9 @@ package api.components.data.bar;
 import api.components.TransPoolController;
 import api.components.card.match.MatchedTripCardController;
 import api.components.card.offer.TripOfferCardController;
-import api.components.card.request.BasicTripRequestCardController;
 import api.components.card.request.TripRequestCardController;
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.offer.TripOfferData;
 import data.transpool.trip.request.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -21,9 +19,9 @@ public class DataBarController {
     private TransPoolController transPoolController;
 
     @FXML private Label labelTaskProgress;
-    @FXML private ListView<BasicTripRequest> listViewTripRequests;
+    @FXML private ListView<TripRequest> listViewTripRequests;
     @FXML private ListView<TripOffer> listViewTripOffers;
-    @FXML private ListView<BasicTripRequest> listViewMatchedTrips;
+    @FXML private ListView<MatchedTripRequest> listViewMatchedTrips;
 
     private StringProperty currentTaskProgress;
     //private ObservableList<TripRequest> tripRequests;
@@ -59,8 +57,9 @@ public class DataBarController {
         listViewTripOffers.setItems(data.getAllTripOffers());
         listViewTripOffers.setCellFactory(offerListView -> new TripOfferCardController());
         listViewTripRequests.setItems(data.getAllTripRequests());
-        listViewTripRequests.setCellFactory(requestListView -> new MatchedTripCardController());
-        //todo the same for matched trips.
+        listViewTripRequests.setCellFactory(requestListView -> new TripRequestCardController());
+        listViewMatchedTrips.setItems(data.getAllMatchedTripRequests());
+        listViewMatchedTrips.setCellFactory(listViewMatchedTrips -> new MatchedTripCardController());
     }
 
 }

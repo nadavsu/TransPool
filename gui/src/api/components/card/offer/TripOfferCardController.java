@@ -2,15 +2,20 @@ package api.components.card.offer;
 
 import api.Constants;
 import api.components.card.CardController;
+import api.components.feedback.FeedbackController;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
+import data.transpool.trip.offer.Feedback;
 import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.offer.TripOfferData;
 import data.transpool.trip.request.BasicTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -26,7 +31,9 @@ public class TripOfferCardController extends CardController<TripOffer> {
     @FXML private Label labelPPK;
     @FXML private JFXListView<BasicTripRequest> listViewRiderDetails;
     @FXML private Label labelPassengerCapacity;
+    @FXML private JFXListView<Feedback> listViewFeedbacks;
     @FXML private AnchorPane anchorPaneTripOfferCardBody;
+
 
     @Override
     protected void updateItem(TripOffer tripOffer, boolean empty) {
@@ -74,9 +81,8 @@ public class TripOfferCardController extends CardController<TripOffer> {
                 " on day ", tripOffer.getScheduling().getDayStart(),
                 " at ", tripOffer.getScheduling().getDepartureTime().toString()));
         labelDriverRating.textProperty().bind(Bindings
-                .when(tripOffer.ratingProperty().isEqualTo(0))
+                .when(tripOffer.averageRatingProperty().isEqualTo(0))
                 .then("No rating yet.")
-                .otherwise(tripOffer.ratingProperty().asString()));
+                .otherwise(tripOffer.averageRatingProperty().asString()));
     }
-
 }

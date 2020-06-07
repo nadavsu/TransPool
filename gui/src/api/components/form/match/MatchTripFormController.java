@@ -17,7 +17,7 @@ import javafx.fxml.FXML;
 
 public class MatchTripFormController extends FormController {
 
-    @FXML private JFXComboBox<BasicTripRequest> comboBoxRideID;
+    @FXML private JFXComboBox<TripRequest> comboBoxRideID;
     @FXML private JFXTextField textFieldNumOfResultsToFind;
     @FXML private JFXListView<PossibleMatch> listViewResults;
     @FXML private JFXButton buttonMatchTrip;

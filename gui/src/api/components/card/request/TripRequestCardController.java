@@ -14,32 +14,49 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class TripRequestCardController extends BasicTripRequestCardController<TripRequest> {
+public class TripRequestCardController extends CardController<TripRequest> {
 
+    @FXML private Label labelRiderName;
+    @FXML private Label labelRequestID;
+    @FXML private Label labelRequestSource;
+    @FXML private Label labelRequestDestination;
     @FXML private Label labelArrivalDeparture;
     @FXML private Label labelTime;
+    @FXML private AnchorPane anchorPaneCardBody;
 
     @Override
-    public void loadController() {
-        loader = new FXMLLoader(Constants.TRIP_REQUEST_CARD_RESOURCE);
-        loader.setController(this);
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
+    protected void updateItem(TripRequest request, boolean empty) {
+        super.updateItem(request, empty);
+        if (empty || request == null) {
+            setText(null);
+            setGraphic(null);
+        } else {
+            if (loader == null) {
+                loader = new FXMLLoader(Constants.TRIP_REQUEST_CARD_RESOURCE);
+                loader.setController(this);
+                try {
+                    loader.load();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            initializeValues(request);
+
+            setText(null);
+            setGraphic(anchorPaneCardBody);
         }
     }
 
     @Override
-    public void initializeValues(BasicTripRequest request) {
+    public void initializeValues(TripRequest request) {
         labelRequestID.textProperty().bind(request.requestIDProperty().asString());
         labelRiderName.textProperty().bind(request.getTransPoolRider().usernameProperty());
         labelRequestSource.textProperty().bind(Bindings.concat("Gets on at ", request.sourceStopProperty()));
         labelRequestDestination.textProperty().bind(Bindings.concat("Gets off at ", request.destinationStopProperty()));
-        labelTime.textProperty().bind(((TripRequest) request).requestTimeProperty().asString());
+        labelTime.textProperty().bind(request.requestTimeProperty().asString());
         labelArrivalDeparture.textProperty().bind(
                 Bindings
-                        .when(((TripRequest) request).isTimeOfArrivalProperty())
+                        .when(request.isTimeOfArrivalProperty())
                         .then("Requested time of arrival ")
                         .otherwise("Requested time of departure ")
         );

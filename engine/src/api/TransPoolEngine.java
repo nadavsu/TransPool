@@ -88,7 +88,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public ObservableList<BasicTripRequest> getAllTripRequests() {
+    public ObservableList<TripRequest> getAllTripRequests() {
         return data.getAllTripRequests();
     }
 

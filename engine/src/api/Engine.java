@@ -27,7 +27,7 @@ public interface Engine {
                                        LocalTime time, boolean isArrivalTime, boolean isContinuous)
             throws StopNotFoundException;
 
-    ObservableList<BasicTripRequest> getAllTripRequests();
+    ObservableList<TripRequest> getAllTripRequests();
 
     ObservableList<TripOffer> getAllTripOffers();
 

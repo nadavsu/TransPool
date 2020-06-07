@@ -1,11 +1,8 @@
 package data.transpool.trip.offer;
 
-import data.transpool.map.Path;
-import data.transpool.trip.Scheduling;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.Route;
-import data.transpool.trip.request.BasicTripRequestData;
 import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
@@ -21,15 +18,17 @@ import java.util.*;
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private IntegerProperty passengerCapacity;
-    private IntegerProperty rating;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
+    private IntegerProperty averageRating;
+    private ObservableList<Feedback> allFeedbacks;
 
     public TripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         super(driverName, departureTime, dayStart, recurrences, PPK);
         this.passengerCapacity = new SimpleIntegerProperty(passengerCapacity);
         this.route = new SimpleObjectProperty<>(new Route(route));
-        this.rating = new SimpleIntegerProperty(0);
         this.allMatchedRequestsData = FXCollections.observableArrayList();
+        this.averageRating = new SimpleIntegerProperty(0);
+        this.allFeedbacks = FXCollections.observableArrayList();
         initialize();
     }
 
@@ -37,8 +36,9 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         super(JAXBTransPoolTrip);
         this.passengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
         this.route = new SimpleObjectProperty<>(new Route(JAXBTransPoolTrip));
-        this.rating = new SimpleIntegerProperty(0);
         this.allMatchedRequestsData = FXCollections.observableArrayList();
+        this.averageRating = new SimpleIntegerProperty(0);
+        this.allFeedbacks = FXCollections.observableArrayList();
         initialize();
     }
 
@@ -51,13 +51,18 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
 
     @Override
-    public int getDriverRating() {
-        return rating.get();
+    public ObservableList<Feedback> getFeedbacks() {
+        return allFeedbacks;
     }
 
     @Override
-    public void setDriverRating(int rating) {
-        this.rating.set(rating);
+    public int getAverageRating() {
+        return averageRating.get();
+    }
+
+    @Override
+    public IntegerProperty averageRatingProperty() {
+        return averageRating;
     }
 
     @Override
@@ -97,11 +102,6 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         }
         passengerCapacity.set(passengerCapacity.get() - 1);
         allMatchedRequestsData.add(matchedRequest);
-    }
-
-    @Override
-    public IntegerProperty ratingProperty() {
-        return rating;
     }
 
     @Override

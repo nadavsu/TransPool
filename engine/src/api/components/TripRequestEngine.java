@@ -7,15 +7,15 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public interface TripRequestEngine {
-    BasicTripRequest getTripRequest(int ID);
+    TripRequest getTripRequest(int ID);
 
-    void deleteTripRequest(BasicTripRequest requestToDelete);
+    void deleteTripRequest(TripRequest requestToDelete);
 
     void addTripRequest(TripRequest tripRequest);
 
     void addMatchedRequest(MatchedTripRequest matchedTripRequest);
 
-    ObservableList<BasicTripRequest> getAllTripRequests();
+    ObservableList<TripRequest> getAllTripRequests();
 
     ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
 }

@@ -7,9 +7,9 @@ import javafx.collections.ObservableList;
 
 
 public interface TripOffer extends BasicTripOffer {
-    int getDriverRating();
-    void setDriverRating(int rating);
-    IntegerProperty ratingProperty();
+    ObservableList<Feedback> getFeedbacks();
+    int getAverageRating();
+    IntegerProperty averageRatingProperty();
 
 
     int getPassengerCapacity();

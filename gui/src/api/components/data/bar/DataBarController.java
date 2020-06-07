@@ -1,15 +1,14 @@
 package api.components.data.bar;
 
 import api.components.TransPoolController;
+import api.components.card.match.MatchedTripCardController;
 import api.components.card.offer.TripOfferCardController;
 import api.components.card.request.TripRequestCardController;
 import data.transpool.TransPoolData;
-import data.transpool.trip.TransPoolTrip;
-import data.transpool.trip.TransPoolTripRequest;
+import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.request.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -20,16 +19,17 @@ public class DataBarController {
     private TransPoolController transPoolController;
 
     @FXML private Label labelTaskProgress;
-    @FXML private ListView<TransPoolTripRequest> listViewTripRequests;
-    @FXML private ListView<TransPoolTrip> listViewTripOffers;
+    @FXML private ListView<TripRequest> listViewTripRequests;
+    @FXML private ListView<TripOffer> listViewTripOffers;
+    @FXML private ListView<MatchedTripRequest> listViewMatchedTrips;
 
     private StringProperty currentTaskProgress;
-    private ObservableList<TransPoolTripRequest> tripRequests;
+    //private ObservableList<TripRequest> tripRequests;
 
 
     public DataBarController() {
         currentTaskProgress = new SimpleStringProperty();
-        tripRequests = FXCollections.observableArrayList();
+        //tripRequests = FXCollections.observableArrayList();
     }
 
     public void setTransPoolController(TransPoolController transPoolController) {
@@ -52,12 +52,14 @@ public class DataBarController {
         currentTaskProgress.bind(theTask.messageProperty());
     }
 
+    //Todo: should be transPoolController.getAllTripOffers() which tells the engine to get all trip offers?
     public void bindUIToData(TransPoolData data) {
-        listViewTripOffers.setItems(data.getAllTransPoolTrips());
-        listViewTripRequests.setItems(data.getAllTransPoolTripRequests());
-        listViewTripRequests.setCellFactory(requestListView -> new TripRequestCardController());
-        listViewTripOffers.setItems(transPoolController.getEngine().getAllTransPoolTrips());
+        listViewTripOffers.setItems(data.getAllTripOffers());
         listViewTripOffers.setCellFactory(offerListView -> new TripOfferCardController());
+        listViewTripRequests.setItems(data.getAllTripRequests());
+        listViewTripRequests.setCellFactory(requestListView -> new TripRequestCardController());
+        listViewMatchedTrips.setItems(data.getAllMatchedTripRequests());
+        listViewMatchedTrips.setCellFactory(listViewMatchedTrips -> new MatchedTripCardController());
     }
 
 }

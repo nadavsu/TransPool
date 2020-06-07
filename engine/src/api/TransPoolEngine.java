@@ -3,15 +3,17 @@ package api;
 import api.components.*;
 import api.task.LoadFileTask;
 import data.transpool.TransPoolData;
-import data.transpool.trip.PossibleMatch;
-import data.transpool.trip.TransPoolTrip;
-import data.transpool.trip.TransPoolTripRequest;
+import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.TripOfferData;
+import data.transpool.trip.request.*;
 import exception.NoMatchesFoundException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
 import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
@@ -19,6 +21,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 public class TransPoolEngine implements Engine {
 
@@ -28,16 +31,13 @@ public class TransPoolEngine implements Engine {
     private Task currentRunningTask;
 
     private MatchingEngine matchingEngine;
-    private TransPoolTripEngine transPoolTripEngine;
-    private TransPoolTripRequestEngine transPoolTripRequestEngine;
+    private FeedbackEngine feedbackEngine;
 
     private TransPoolController transpoolController;
 
     public TransPoolEngine(TransPoolController transpoolController) {
         this.transpoolController = transpoolController;
         this.matchingEngine = new MatchingEngine();
-        this.transPoolTripEngine = new TransPoolTripEngine();
-        this.transPoolTripRequestEngine = new TransPoolTripRequestEngine();
 
         this.isLoaded = new SimpleBooleanProperty(false);
     }
@@ -65,8 +65,8 @@ public class TransPoolEngine implements Engine {
         if (!data.getMap().containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
-        TransPoolTripRequest request = new TransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
-        data.addTransPoolTripRequest(request);
+        TripRequest request = new TripRequestData(riderName, source, destination, time, isArrivalTime, isContinuous);
+        data.addTripRequest(request);
 
     }
 
@@ -74,27 +74,28 @@ public class TransPoolEngine implements Engine {
     public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         //Todo: create a new trip request via a task or a thread.
-        data.addTransPoolTrip(new TransPoolTrip(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
+        data.addTripOffer(new TripOfferData(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
     }
 
     @Override
-    public ObservableList<String> getAllTransPoolTripRequestsAsStrings() {
-        return transPoolTripRequestEngine.getAllTransPoolTripRequestsAsStrings(data);
+    public void addNewMatch(PossibleMatch chosenPossibleMatch) {
+        matchingEngine.addNewMatch(data, chosenPossibleMatch);
     }
 
     @Override
-    public ObservableList<TransPoolTripRequest> getAllTransPoolTripRequests() {
-        return transPoolTripRequestEngine.getAllTransPoolTripRequests(data);
-    }
-
-    @Override
-    public ObservableList<TransPoolTrip> getAllTransPoolTrips() {
-        return transPoolTripEngine.getAllTransPoolTrips(data);
-    }
-
-    @Override
-    public void findPossibleMatches(TransPoolTripRequest request, int maximumMatches) throws NoMatchesFoundException {
+    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException {
+        //Todo: Currently running from the JAT, get it off the JAT.
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
+    }
+
+    @Override
+    public ObservableList<TripRequest> getAllTripRequests() {
+        return data.getAllTripRequests();
+    }
+
+    @Override
+    public ObservableList<TripOffer> getAllTripOffers() {
+        return data.getAllTripOffers();
     }
 
     @Override
@@ -108,8 +109,22 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void addNewMatch(PossibleMatch chosenPossibleMatch) {
-        matchingEngine.addNewMatch(data, chosenPossibleMatch);
+    public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
+        return data.getAllMatchedTripRequests();
+    }
+
+    @Override
+    public ObservableList<Integer> getAllMatchedTripRequestIDs() {
+        ObservableList<Integer> matchedTripsIDs = FXCollections.observableArrayList();
+        data
+                .getAllMatchedTripRequests()
+                .forEach(match -> matchedTripsIDs.add(match.getRequestID()));
+        return matchedTripsIDs;
+    }
+
+    @Override
+    public void initiateFeedbackEngine(int riderID) {
+        feedbackEngine = new FeedbackEngine(data, riderID);
     }
 
     @Override
@@ -117,10 +132,6 @@ public class TransPoolEngine implements Engine {
         return data;
     }
 
-    @Override
-    public ObservableList<String> getAllTransPoolTripsAsStrings() {
-        return transPoolTripEngine.getAllTransPoolTripsAsStrings(data);
-    }
 
     @Override
     public BooleanProperty fileLoadedProperty() {

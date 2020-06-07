@@ -93,7 +93,7 @@ public class TripRequestFormController extends FormController {
     }
 
     @Override
-    public boolean allRequiredFieldsFilled() {
+    public boolean isValid() {
         return timeFieldTime.validate()
                 && textFieldRiderName.validate()
                 && textFieldDestination.validate()

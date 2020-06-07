@@ -3,14 +3,16 @@ package api.components;
 import api.Engine;
 import api.components.data.bar.DataBarController;
 import api.components.form.Form;
+import api.components.form.feedback.FeedbackFormController;
 import api.components.menu.bar.MenuBarController;
 import api.components.form.match.MatchTripFormController;
 import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
-import data.transpool.trip.PossibleMatch;
-import data.transpool.trip.TransPoolTripRequest;
+import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.request.TripRequest;
+import data.transpool.trip.request.TripRequestData;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -41,6 +43,7 @@ public class TransPoolController {
     @FXML private TripOfferFormController tripOfferComponentController;
     @FXML private TripRequestFormController tripRequestComponentController;
     @FXML private DataBarController dataBarComponentController;
+    @FXML private FeedbackFormController feedbackComponentController;
 
     @FXML private MenuBar menuBarComponent;
     @FXML private AnchorPane matchTripComponent;
@@ -67,6 +70,7 @@ public class TransPoolController {
             tripRequestComponentController.setTransPoolController(this);
             menuBarComponentController.setTransPoolController(this);
             dataBarComponentController.setTransPoolController(this);
+            feedbackComponentController.setTransPoolController(this);
         }
 
         fileLoaded.bindBidirectional(menuBarComponentController.fileLoadedProperty());
@@ -104,11 +108,11 @@ public class TransPoolController {
 
     }
 
-    public void addNewMatch(PossibleMatch tripOffer) {
+    public void createNewMatch(PossibleMatch tripOffer) {
         engine.addNewMatch(tripOffer);
     }
 
-    public void findPossibleMatches(TransPoolTripRequest requestToMatch, int numOfResults) {
+    public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {
         engine.findPossibleMatches(requestToMatch, numOfResults);
     }
 
@@ -158,7 +162,7 @@ public class TransPoolController {
 
     public void submitForm(Form form) {
         try {
-            if (form.allRequiredFieldsFilled()) {
+            if (form.isValid()) {
                 form.submit();
                 form.clear();
             } else {
@@ -177,11 +181,20 @@ public class TransPoolController {
         dataBarComponentController.bindUIToData(data);
         matchTripComponentController.bindUIToData(data);
         tripOfferComponentController.bindDataToUI(data);
+        feedbackComponentController.bindUIToData(data);
     }
 
     public void showAlert(Exception e) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
         errorAlert.setHeaderText(null);
         errorAlert.showAndWait();
+    }
+
+    public ObservableList<Integer> getAllMatchedTripRequestIDs() {
+        return engine.getAllMatchedTripRequestIDs();
+    }
+
+    public void initiateFeedbackEngine(int riderID) {
+        engine.initiateFeedbackEngine(riderID);
     }
 }

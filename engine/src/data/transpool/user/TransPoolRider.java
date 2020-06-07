@@ -8,4 +8,9 @@ public class TransPoolRider extends TransPoolUserAccount {
         super(username);
         setID(IDGenerator++);
     }
+
+    public TransPoolRider(TransPoolRider other) {
+        super(other.getUsername());
+        setID(other.getID());
+    }
 }

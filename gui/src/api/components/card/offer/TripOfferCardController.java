@@ -2,18 +2,20 @@ package api.components.card.offer;
 
 import api.Constants;
 import api.components.card.CardController;
+import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
-import data.transpool.trip.TransPoolTrip;
+import data.transpool.user.Feedback;
+import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.request.BasicTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class TripOfferCardController extends CardController<TransPoolTrip> {
+public class TripOfferCardController extends CardController<TripOffer> {
 
     @FXML private Label labelDriverName;
     @FXML private Label labelDriverRating;
@@ -23,42 +25,30 @@ public class TripOfferCardController extends CardController<TransPoolTrip> {
     @FXML private Label labelTripDuration;
     @FXML private Label labelFuelConsumption;
     @FXML private Label labelPPK;
-    @FXML private JFXListView<TransPoolTrip.RiderStatus> listViewRiderDetails;
+    @FXML private JFXListView<BasicTripRequest> listViewRiderDetails;
     @FXML private Label labelPassengerCapacity;
-    @FXML private AnchorPane anchorPaneTripOfferCardBody;
+    @FXML private JFXListView<Feedback> listViewFeedbacks;
+    @FXML private AnchorPane anchorPaneCardBody;
 
-    @Override
-    protected void updateItem(TransPoolTrip tripOffer, boolean empty) {
-        super.updateItem(tripOffer, empty);
-
-        if (empty || tripOffer == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            if (loader == null) {
-                loader = new FXMLLoader(Constants.TRIP_OFFER_CARD_RESOURCE);
-                loader.setController(this);
-                try {
-                    loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            initializeValues(tripOffer);
-
-            setText(null);
-            setGraphic(anchorPaneTripOfferCardBody);
+    public void loadCard() {
+        loader = new FXMLLoader(Constants.TRIP_OFFER_CARD_RESOURCE);
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     @Override
-    protected void initializeValues(TransPoolTrip tripOffer) {
-        labelDriverName.textProperty().bind(tripOffer.transpoolDriverProperty().get().usernameProperty());
+    protected void initializeValues(TripOffer tripOffer) {
+        labelDriverName.textProperty().bind(tripOffer.getTransPoolDriver().usernameProperty());
         labelOfferID.textProperty().bind(tripOffer.offerIDProperty().asString());
 
         listViewStops.setItems(tripOffer.getRoute().getRoute());
-        listViewRiderDetails.setItems(tripOffer.getAllRiderStatuses());
+        listViewRiderDetails.setItems(tripOffer.getAllMatchedRequestsData());
+        listViewFeedbacks.setItems(tripOffer.getTransPoolDriver().getAllFeedbacks());
+        listViewFeedbacks.setCellFactory((listViewFeedbacks) -> new FeedbackCardController());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
                 "There are ", tripOffer.passengerCapacityProperty(), " spaces left on this ride."));
@@ -69,13 +59,13 @@ public class TripOfferCardController extends CardController<TransPoolTrip> {
         labelPPK.textProperty().bind(Bindings.concat(
                 "Price per kilometer: ", tripOffer.PPKProperty()));
         labelSchedule.textProperty().bind(Bindings.concat(
-                "Departs ", tripOffer.getSchedule().getRecurrences().toString(),
-                " on day ", tripOffer.getSchedule().getDayStart(),
-                " at ", tripOffer.getSchedule().getDepartureTime().toString()));
+                "Departs ", tripOffer.getScheduling().getRecurrences(),
+                " on day ", tripOffer.getScheduling().getDayStart(),
+                " at ", tripOffer.getScheduling().getDepartureTime().toString()));
         labelDriverRating.textProperty().bind(Bindings
-                .when(tripOffer.ratingProperty().isEqualTo(0))
+                .when(tripOffer.getTransPoolDriver().averageRatingProperty().isEqualTo(0))
                 .then("No rating yet.")
-                .otherwise(tripOffer.ratingProperty().asString()));
-    }
+                .otherwise(tripOffer.getTransPoolDriver().averageRatingProperty().asString()));
 
+    }
 }

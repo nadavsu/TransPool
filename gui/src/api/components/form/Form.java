@@ -1,10 +1,10 @@
 package api.components.form;
 
-import exception.data.TransPoolDataException;
+import data.transpool.TransPoolData;
 
 public interface Form {
     void clear();
     void setValidations();
-    boolean allRequiredFieldsFilled();
+    boolean isValid();
     void submit();
 }

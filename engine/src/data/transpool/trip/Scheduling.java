@@ -28,6 +28,15 @@ public class Scheduling {
         setRecurrences(JAXBScheduling.getRecurrences());
     }
 
+    public Scheduling(Scheduling other) {
+        dayStart = new SimpleIntegerProperty(other.getDayStart());
+        recurrences = new SimpleStringProperty(other.getRecurrences());
+        departureTime = new SimpleObjectProperty<>(LocalTime.of(
+                other.getDepartureTime().getHour(),
+                other.getDepartureTime().getMinute()
+        ));
+    }
+
     public int getDayStart() {
         return dayStart.get();
     }

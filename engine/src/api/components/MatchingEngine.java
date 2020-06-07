@@ -1,17 +1,15 @@
 package api.components;
 
-import api.task.FindPossibleMatchesTask;
 import data.transpool.TransPoolData;
-import data.transpool.trip.MatchedTransPoolTripRequest;
-import data.transpool.trip.PossibleMatch;
-import data.transpool.trip.TransPoolTrip;
-import data.transpool.trip.TransPoolTripRequest;
+import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.request.MatchedTripRequest;
+import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.request.TripRequest;
 import exception.NoMatchesFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 import java.util.function.Predicate;
 
@@ -20,7 +18,7 @@ import java.util.function.Predicate;
  * and the chosen TP trip to match.
  */
 public class MatchingEngine {
-    private TransPoolTripRequest tripRequestToMatch;
+    private TripRequest tripRequestToMatch;
     private ObservableList<PossibleMatch> possibleMatches;
     private BooleanProperty foundMatches;
 
@@ -41,32 +39,34 @@ public class MatchingEngine {
      * @throws NoMatchesFoundException - If no match was found for the the trip request.
      * @return true if found at least one match is found.
      */
-    public void findPossibleMatches(TransPoolData data, TransPoolTripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException {
-
-        Task findPossibleMatchesTask = new FindPossibleMatchesTask(data, tripRequestToMatch, maximumMatches);
+    public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException {
 
         this.tripRequestToMatch = tripRequestToMatch;
-        Predicate<TransPoolTrip> containsSubRoutePredicate = transPoolTrip ->
-                transPoolTrip.containsSubRoute(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
+
+        Predicate<TripOffer> containsSubRoutePredicate = tripOffer ->
+                tripOffer.containsSubRoute(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
 
 
-        Predicate<TransPoolTrip> timeMatchPredicate = transPoolTrip ->
-                transPoolTrip.getSchedule().getDepartureTime().equals(tripRequestToMatch.getRequestTime());
+        Predicate<TripOffer> timeMatchPredicate = tripOffer ->
+                tripOffer.getScheduling().getDepartureTime().equals(tripRequestToMatch.getRequestTime());
 
         data
-                .getAllTransPoolTrips()
+                .getAllTripOffers()
                 .stream()
                 .filter(t -> t.getPassengerCapacity() > 0)
                 .filter(containsSubRoutePredicate)
                 .filter(timeMatchPredicate)
                 .limit(maximumMatches)
-                .map(transpoolTrip -> new PossibleMatch(tripRequestToMatch, transpoolTrip))
+                .map(tripOffer -> new PossibleMatch(tripRequestToMatch.getSourceStop(),
+                        tripRequestToMatch.getDestinationStop(),
+                        tripOffer))
                 .forEach(match -> possibleMatches.add(match));
 
         foundMatches.set(!possibleMatches.isEmpty());
         if (possibleMatches.isEmpty()) {
             throw new NoMatchesFoundException();
         }
+        //todo: check what happens when there is no match found. check out this exception.
     }
 
     /**
@@ -76,7 +76,7 @@ public class MatchingEngine {
      * @param data                - The data to add to.
      */
     public void addNewMatch(TransPoolData data, PossibleMatch chosenPossibleMatch) {
-        data.addMatch(new MatchedTransPoolTripRequest(tripRequestToMatch, chosenPossibleMatch));
+        data.addMatchedRequest(new MatchedTripRequest(tripRequestToMatch, chosenPossibleMatch));
     }
 
 

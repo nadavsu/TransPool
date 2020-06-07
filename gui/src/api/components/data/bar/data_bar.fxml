@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Label?>
@@ -32,7 +33,10 @@
             </Tab>
             <Tab text="Matches">
               <content>
-                <AnchorPane minHeight="230.0" minWidth="230.0" prefHeight="180.0" prefWidth="230.0" />
+                <AnchorPane minHeight="230.0" minWidth="230.0" prefHeight="180.0" prefWidth="230.0">
+                     <children>
+                        <JFXListView fx:id="listViewMatchedTrips" layoutX="8.0" prefHeight="682.0" prefWidth="230.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children></AnchorPane>
               </content>
             </Tab>
          </tabs>

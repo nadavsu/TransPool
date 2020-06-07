@@ -5,6 +5,7 @@ import data.transpool.trip.offer.PossibleMatch;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.offer.TripOfferData;
 import data.transpool.trip.request.BasicTripRequest;
+import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
 import data.transpool.trip.request.TripRequestData;
 import exception.NoMatchesFoundException;
@@ -42,9 +43,15 @@ public interface Engine {
 
     void addNewMatch(PossibleMatch PossibleMatches);
 
+    ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
+
+    ObservableList<Integer> getAllMatchedTripRequestIDs();
+
     TransPoolData getData();
 
     BooleanProperty fileLoadedProperty();
 
     BooleanProperty foundMatchesProperty();
+
+    void initiateFeedbackEngine(int riderID);
 }

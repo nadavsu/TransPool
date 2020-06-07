@@ -11,11 +11,11 @@ public class Constants {
     public static final String OFFER_CARD_FXML_LOCATION = "components/card/offer/offer_card.fxml";
     public static final String MATCHED_LIST_CELL_FXML_LOCATION = "components/card/match/matched_card.fxml";
 
-    public static final String FEEDBACK_FXML_LOCATION = "components/feedback/feedback.fxml";
+    public static final String FEEDBACK_LIST_CELL_FXML_LOCATION = "components/card/feedback/feedback_card.fxml";
 
     public static final URL TRIP_REQUEST_CARD_RESOURCE = Constants.class.getResource(Constants.REQUEST_CARD_FXML_LOCATION);
     public static final URL TRIP_OFFER_CARD_RESOURCE = Constants.class.getResource(Constants.OFFER_CARD_FXML_LOCATION);
     public static final URL MATCHED_TRIP_CARD_RESOURCE = Constants.class.getResource(Constants.MATCHED_LIST_CELL_FXML_LOCATION);
 
-    public static final URL FEEDBACK_WINDOW_RESOURCE = Constants.class.getResource(Constants.FEEDBACK_FXML_LOCATION);
+    public static final URL FEEDBACK_CARD_RESOURCE = Constants.class.getResource(Constants.FEEDBACK_LIST_CELL_FXML_LOCATION);
 }

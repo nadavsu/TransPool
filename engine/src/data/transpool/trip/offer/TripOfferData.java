@@ -3,6 +3,7 @@ package data.transpool.trip.offer;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.Route;
+import data.transpool.user.Feedback;
 import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
@@ -19,16 +20,12 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
-    private IntegerProperty averageRating;
-    private ObservableList<Feedback> allFeedbacks;
 
     public TripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         super(driverName, departureTime, dayStart, recurrences, PPK);
         this.passengerCapacity = new SimpleIntegerProperty(passengerCapacity);
         this.route = new SimpleObjectProperty<>(new Route(route));
         this.allMatchedRequestsData = FXCollections.observableArrayList();
-        this.averageRating = new SimpleIntegerProperty(0);
-        this.allFeedbacks = FXCollections.observableArrayList();
         initialize();
     }
 
@@ -37,8 +34,6 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         this.passengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
         this.route = new SimpleObjectProperty<>(new Route(JAXBTransPoolTrip));
         this.allMatchedRequestsData = FXCollections.observableArrayList();
-        this.averageRating = new SimpleIntegerProperty(0);
-        this.allFeedbacks = FXCollections.observableArrayList();
         initialize();
     }
 
@@ -49,8 +44,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         this.averageFuelConsumption.set(calculateAverageFuelConsumption(getRoute()));
     }
 
-
-    @Override
+/*    @Override
     public ObservableList<Feedback> getFeedbacks() {
         return allFeedbacks;
     }
@@ -63,7 +57,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     @Override
     public IntegerProperty averageRatingProperty() {
         return averageRating;
-    }
+    }*/
 
     @Override
     public int getPassengerCapacity() {

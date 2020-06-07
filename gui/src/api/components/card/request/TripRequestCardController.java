@@ -22,28 +22,15 @@ public class TripRequestCardController extends CardController<TripRequest> {
     @FXML private Label labelRequestDestination;
     @FXML private Label labelArrivalDeparture;
     @FXML private Label labelTime;
-    @FXML private AnchorPane anchorPaneCardBody;
 
     @Override
-    protected void updateItem(TripRequest request, boolean empty) {
-        super.updateItem(request, empty);
-        if (empty || request == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            if (loader == null) {
-                loader = new FXMLLoader(Constants.TRIP_REQUEST_CARD_RESOURCE);
-                loader.setController(this);
-                try {
-                    loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            initializeValues(request);
-
-            setText(null);
-            setGraphic(anchorPaneCardBody);
+    protected void loadCard() {
+        loader = new FXMLLoader(Constants.TRIP_REQUEST_CARD_RESOURCE);
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -13,7 +13,6 @@ import java.io.IOException;
 
 public class MatchedTripCardController extends CardController<MatchedTripRequest> {
 
-
     @FXML private Label labelRiderName;
     @FXML private Label labelRequestID;
     @FXML private Label labelRequestSource;
@@ -24,29 +23,6 @@ public class MatchedTripCardController extends CardController<MatchedTripRequest
     @FXML private Label labelPersonalFuelConsumption;
     @FXML private Label labelExpectedTimeOfArrival;
     @FXML private AnchorPane anchorPaneCardBody;
-
-    @Override
-    protected void updateItem(MatchedTripRequest request, boolean empty) {
-        super.updateItem(request, empty);
-        if (empty || request == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            if (loader == null) {
-                loader = new FXMLLoader(Constants.MATCHED_TRIP_CARD_RESOURCE);
-                loader.setController(this);
-                try {
-                    loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            initializeValues(request);
-
-            setText(null);
-            setGraphic(anchorPaneCardBody);
-        }
-    }
 
     @Override
     protected void initializeValues(MatchedTripRequest request) {
@@ -64,5 +40,16 @@ public class MatchedTripCardController extends CardController<MatchedTripRequest
                 , " litres of fuel!"));
         labelExpectedTimeOfArrival.textProperty().bind(Bindings.concat(
                 "Expected to arrive by ", request.getExpectedTimeOfArrival()));
+    }
+
+    @Override
+    protected void loadCard() {
+        loader = new FXMLLoader(Constants.MATCHED_TRIP_CARD_RESOURCE);
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

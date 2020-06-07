@@ -1,16 +1,16 @@
-package data.transpool.trip.offer;
+package data.transpool.user;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 
 public class Feedback {
+    private IntegerProperty feedbackerID;
     private StringProperty feedbackerName;
     private IntegerProperty rating;
     private StringProperty comment;
 
-    public Feedback(int rating, String comment) {
+    public Feedback(int feedbackerID, String feedbackName, int rating, String comment) {
+        this.feedbackerID = new SimpleIntegerProperty(feedbackerID);
+        this.feedbackerName = new SimpleStringProperty(feedbackName);
         this.rating = new SimpleIntegerProperty(rating);
         this.comment = new SimpleStringProperty(comment);
     }
@@ -51,8 +51,22 @@ public class Feedback {
         this.feedbackerName.set(feedbackerName);
     }
 
+    public int getFeedbackerID() {
+        return feedbackerID.get();
+    }
+
+    public IntegerProperty feedbackerIDProperty() {
+        return feedbackerID;
+    }
+
+    public void setFeedbackerID(int feedbackerID) {
+        this.feedbackerID.set(feedbackerID);
+    }
+
     @Override
     public String toString() {
-        return "a";
+        return getFeedbackerName() + "\n"
+                + "Rating: " + getRating() + "\n"
+                + "Comment: " + getComment();
     }
 }

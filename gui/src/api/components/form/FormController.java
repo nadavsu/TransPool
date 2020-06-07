@@ -15,7 +15,6 @@ public abstract class FormController implements Form {
     public void setTransPoolController(TransPoolController transpoolController) {
         this.transpoolController = transpoolController;
     }
-
     public void initialize() {
         setValidations();
     }

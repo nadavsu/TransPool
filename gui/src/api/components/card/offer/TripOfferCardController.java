@@ -2,20 +2,16 @@ package api.components.card.offer;
 
 import api.Constants;
 import api.components.card.CardController;
-import api.components.feedback.FeedbackController;
-import com.jfoenix.controls.JFXButton;
+import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
-import data.transpool.trip.offer.Feedback;
+import data.transpool.user.Feedback;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -32,31 +28,15 @@ public class TripOfferCardController extends CardController<TripOffer> {
     @FXML private JFXListView<BasicTripRequest> listViewRiderDetails;
     @FXML private Label labelPassengerCapacity;
     @FXML private JFXListView<Feedback> listViewFeedbacks;
-    @FXML private AnchorPane anchorPaneTripOfferCardBody;
+    @FXML private AnchorPane anchorPaneCardBody;
 
-
-    @Override
-    protected void updateItem(TripOffer tripOffer, boolean empty) {
-        super.updateItem(tripOffer, empty);
-
-        if (empty || tripOffer == null) {
-            setText(null);
-            setGraphic(null);
-        } else {
-            if (loader == null) {
-                loader = new FXMLLoader(Constants.TRIP_OFFER_CARD_RESOURCE);
-                loader.setController(this);
-                try {
-                    loader.load();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            initializeValues(tripOffer);
-
-            setText(null);
-            setGraphic(anchorPaneTripOfferCardBody);
+    public void loadCard() {
+        loader = new FXMLLoader(Constants.TRIP_OFFER_CARD_RESOURCE);
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -67,6 +47,8 @@ public class TripOfferCardController extends CardController<TripOffer> {
 
         listViewStops.setItems(tripOffer.getRoute().getRoute());
         listViewRiderDetails.setItems(tripOffer.getAllMatchedRequestsData());
+        listViewFeedbacks.setItems(tripOffer.getTransPoolDriver().getAllFeedbacks());
+        listViewFeedbacks.setCellFactory((listViewFeedbacks) -> new FeedbackCardController());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
                 "There are ", tripOffer.passengerCapacityProperty(), " spaces left on this ride."));
@@ -77,12 +59,13 @@ public class TripOfferCardController extends CardController<TripOffer> {
         labelPPK.textProperty().bind(Bindings.concat(
                 "Price per kilometer: ", tripOffer.PPKProperty()));
         labelSchedule.textProperty().bind(Bindings.concat(
-                "Departs ", tripOffer.getScheduling().getRecurrences().toString(),
+                "Departs ", tripOffer.getScheduling().getRecurrences(),
                 " on day ", tripOffer.getScheduling().getDayStart(),
                 " at ", tripOffer.getScheduling().getDepartureTime().toString()));
         labelDriverRating.textProperty().bind(Bindings
-                .when(tripOffer.averageRatingProperty().isEqualTo(0))
+                .when(tripOffer.getTransPoolDriver().averageRatingProperty().isEqualTo(0))
                 .then("No rating yet.")
-                .otherwise(tripOffer.averageRatingProperty().asString()));
+                .otherwise(tripOffer.getTransPoolDriver().averageRatingProperty().asString()));
+
     }
 }

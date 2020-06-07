@@ -6,15 +6,14 @@ import data.transpool.TransPoolData;
 import data.transpool.trip.offer.PossibleMatch;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.offer.TripOfferData;
-import data.transpool.trip.request.BasicTripRequest;
-import data.transpool.trip.request.TripRequest;
-import data.transpool.trip.request.TripRequestData;
+import data.transpool.trip.request.*;
 import exception.NoMatchesFoundException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
 import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
@@ -22,6 +21,7 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 public class TransPoolEngine implements Engine {
 
@@ -31,6 +31,7 @@ public class TransPoolEngine implements Engine {
     private Task currentRunningTask;
 
     private MatchingEngine matchingEngine;
+    private FeedbackEngine feedbackEngine;
 
     private TransPoolController transpoolController;
 
@@ -105,6 +106,25 @@ public class TransPoolEngine implements Engine {
     @Override
     public void clearPossibleMatches() {
         matchingEngine.clearPossibleMatches();
+    }
+
+    @Override
+    public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
+        return data.getAllMatchedTripRequests();
+    }
+
+    @Override
+    public ObservableList<Integer> getAllMatchedTripRequestIDs() {
+        ObservableList<Integer> matchedTripsIDs = FXCollections.observableArrayList();
+        data
+                .getAllMatchedTripRequests()
+                .forEach(match -> matchedTripsIDs.add(match.getRequestID()));
+        return matchedTripsIDs;
+    }
+
+    @Override
+    public void initiateFeedbackEngine(int riderID) {
+        feedbackEngine = new FeedbackEngine(data, riderID);
     }
 
     @Override

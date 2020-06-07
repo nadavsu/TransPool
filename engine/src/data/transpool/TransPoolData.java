@@ -86,6 +86,14 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
         return allMatchedTripRequests;
     }
 
+    public MatchedTripRequest getMatchedTripRequest(int riderID) {
+        return allMatchedTripRequests
+                .stream()
+                .filter(match -> match.getRequestID() == riderID)
+                .findAny()
+                .orElse(null);
+    }
+
     /**
      * Finds a TransPoolTrip by ID.
      *

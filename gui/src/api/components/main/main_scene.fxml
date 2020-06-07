@@ -60,6 +60,11 @@
                             <fx:include fx:id="matchTripComponent" source="../form/match/trip_match.fxml" />
                           </content>
                         </Tab>
+                        <Tab text="Feedback" >
+                         <content>
+                             <fx:include fx:id="feedbackComponent" source="../form/feedback/feedback_form.fxml" />
+                         </content>
+                     </Tab>
                      </tabs>
                   </JFXTabPane>
                </children>

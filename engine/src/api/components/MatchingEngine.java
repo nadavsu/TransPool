@@ -1,6 +1,8 @@
 package api.components;
 
+import api.TransPoolEngine;
 import data.transpool.TransPoolData;
+import data.transpool.map.Stop;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.offer.PossibleMatch;
@@ -11,6 +13,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -43,7 +47,13 @@ public class MatchingEngine {
 
         this.tripRequestToMatch = tripRequestToMatch;
 
-        Predicate<TripOffer> containsSubRoutePredicate = tripOffer ->
+
+        ArrayList<List<Stop>> allPossibleRoutes = data.getAllPossibleRoutes()
+
+
+
+
+/*        Predicate<TripOffer> containsSubRoutePredicate = tripOffer ->
                 tripOffer.containsSubRoute(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
 
 
@@ -65,8 +75,7 @@ public class MatchingEngine {
         foundMatches.set(!possibleMatches.isEmpty());
         if (possibleMatches.isEmpty()) {
             throw new NoMatchesFoundException();
-        }
-        //todo: check what happens when there is no match found. check out this exception.
+        }*/
     }
 
     /**

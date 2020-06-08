@@ -87,7 +87,7 @@ public class MatchTripFormController extends FormController {
     private void searchForMatches() {
         try {
             if (isValid()) {
-                TripRequest requestToMatch = (TripRequest) comboBoxRideID.getValue();
+                TripRequest requestToMatch = comboBoxRideID.getValue();
                 int numOfResults = Integer.parseInt(textFieldNumOfResultsToFind.getText());
                 transpoolController.findPossibleMatches(requestToMatch, numOfResults);
             } else {

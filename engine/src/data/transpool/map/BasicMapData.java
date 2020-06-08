@@ -12,24 +12,24 @@ import java.util.function.Predicate;
  * The map.
  * Contains a list of stops, a list of paths, and a matrix containing the stops' positions on the map.
  */
-public class Map {
+public abstract class BasicMapData implements BasicMap {
 
     private final static int MIN_MAP_SIZE = 6;
     private final static int MAX_MAP_SIZE = 100;
 
-    private int width;
-    private int length;
-    private MapMatrix mapMatrix;
+    protected int width;
+    protected int length;
+    protected MapMatrix mapMatrix;
 
-    private static java.util.Map<String, Stop> allStops;
-    private static List<Path> allPaths;
+    protected static java.util.Map<String, Stop> allStops;
+    protected static List<Path> allPaths;
 
     /**
      * Constructor for creating a map out of the JAXB generated classes.
      * @param JAXBMap - JAXB Generated map.
      * @throws TransPoolDataException - Thrown if there's a problem with the data inside the TP data file.
      */
-    public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
+    public BasicMapData(MapDescriptor JAXBMap) throws TransPoolDataException {
         allStops = new HashMap<>();
         allPaths = new ArrayList<>();
         setWidth(JAXBMap.getMapBoundries().getWidth());
@@ -67,17 +67,9 @@ public class Map {
     private void initAllPaths(MapDescriptor JAXBMap) throws PathDuplicationException, PathDoesNotExistException {
         List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
         for (data.jaxb.Path JAXBPath : JAXBPathList) {
-            Path transpoolPath = new Path(JAXBPath);
-            String source = JAXBPath.getFrom();
-            String destination = JAXBPath.getTo();
-            if (!allStops.containsKey(source)) {
-                throw new PathDoesNotExistException(source, destination);
-            }
-            if (!allStops.containsKey(destination)) {
-                throw new PathDoesNotExistException(source, destination);
-            }
+            Path transpoolPath = new Path(allStops, JAXBPath);
             if (allPaths.contains(transpoolPath)) {
-                throw new PathDuplicationException(source, destination);
+                throw new PathDuplicationException(transpoolPath.getSourceName(), transpoolPath.getDestinationName());
             }
             if (!JAXBPath.isOneWay()) {
                 Path swappedPath = new Path(transpoolPath);
@@ -96,17 +88,13 @@ public class Map {
      */
     public static Path getPathBySourceAndDestination(String source, String destination) {
         Predicate<Path> sourceDestinationMatchPredicate = p ->
-                p.getDestination().equals(destination) && p.getSource().equals(source);
+                p.getDestinationName().equals(destination) && p.getSourceName().equals(source);
 
         return allPaths
                 .stream()
                 .filter(sourceDestinationMatchPredicate)
                 .findFirst()
                 .orElse(null);
-    }
-
-    public boolean containsStop(String name) {
-        return allStops.containsKey(name);
     }
 
     private void setWidth(int width) throws MapDimensionsException {
@@ -123,31 +111,62 @@ public class Map {
         this.length = length;
     }
 
-    public int getWidth() {
+    @Override
+    public int getMapLength() {
+        return length;
+    }
+
+    @Override
+    public int getMapWidth() {
         return width;
     }
 
-    public int getLength() {
-        return length;
+    @Override
+    public boolean containsStop(String stopName) {
+        return allStops.containsKey(stopName);
+    }
+
+    @Override
+    public Stop getStop(String stopName) { return allStops.get(stopName);
+    }
+
+    @Override
+    public List<Stop> getAllStopsAsList() {
+        List<Stop> stopsList = new ArrayList<>();
+        allStops
+                .forEach((string, stop) -> stopsList.add(stop));
+        return stopsList;
+    }
+
+    @Override
+    public java.util.Map<String, Stop> getAllStops() {
+        return allStops;
+    }
+
+    @Override
+    public List<Path> getAllPaths() {
+        return allPaths;
+    }
+
+    @Override
+    public boolean containsPath(String source, String destination) {
+        for (Path path : allPaths) {
+            if (path.getSourceName().equals(source) && path.getDestinationName().equals(destination)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public MapMatrix getMapMatrix() {
         return mapMatrix;
     }
 
-    public java.util.Map<String, Stop> getAllStops() {
-        return allStops;
-    }
-
-    public List<Path> getAllPaths() {
-        return allPaths;
-    }
-
     /**
      * 2 Dimensional array of strings containing the name of the stop in each coordinate.
      */
     public class MapMatrix {
-        private String[][] mapMatrix = new String[Map.MAX_MAP_SIZE][Map.MAX_MAP_SIZE];
+        private String[][] mapMatrix = new String[BasicMapData.MAX_MAP_SIZE][BasicMapData.MAX_MAP_SIZE];
 
         public MapMatrix(MapDescriptor JAXBMap) throws StopOutOfBoundsException, StopCoordinatesDuplicationException {
             List<data.jaxb.Stop> JAXBStopsList = JAXBMap.getStops().getStop();

@@ -21,14 +21,11 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
 
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
     private BooleanProperty isLoaded;
-
-    private Task currentRunningTask;
 
     private MatchingEngine matchingEngine;
     private FeedbackEngine feedbackEngine;
@@ -44,12 +41,12 @@ public class TransPoolEngine implements Engine {
 
     @Override
     public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException {
-        currentRunningTask = new LoadFileTask(file);
-        transpoolController.bindTaskToUI(currentRunningTask);
+        Task loadFileTask = new LoadFileTask(file);
+        transpoolController.bindTaskToUI(loadFileTask);
 
         //TODO: handle exceptions.
-        new Thread(currentRunningTask).start();
-        data = (TransPoolData) currentRunningTask.get();
+        new Thread(loadFileTask).start();
+        data = (TransPoolData) loadFileTask.get();
         transpoolController.bindUIToData(data);
 
         isLoaded.set(true);
@@ -73,19 +70,17 @@ public class TransPoolEngine implements Engine {
     @Override
     public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
-        //Todo: create a new trip request via a task or a thread.
         data.addTripOffer(new TripOfferData(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
+    }
+
+    @Override
+    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException {
+        matchingEngine.findPossibleMatches(data, request, maximumMatches);
     }
 
     @Override
     public void addNewMatch(PossibleMatch chosenPossibleMatch) {
         matchingEngine.addNewMatch(data, chosenPossibleMatch);
-    }
-
-    @Override
-    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException {
-        //Todo: Currently running from the JAT, get it off the JAT.
-        matchingEngine.findPossibleMatches(data, request, maximumMatches);
     }
 
     @Override

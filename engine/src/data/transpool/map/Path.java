@@ -1,13 +1,16 @@
 package data.transpool.map;
 
+import exception.data.PathDoesNotExistException;
+
+//TODO: check if this works
 import java.util.Objects;
 
 /**
  * A path connecting two stops (source and destination).
  */
 public class Path {
-    private String source;
-    private String destination;
+    private Stop source;
+    private Stop destination;
     private boolean isOneWay;
     private int length;
     private double fuelConsumption;
@@ -17,9 +20,17 @@ public class Path {
      * Constructor for creating a new path from the generated JAXB classes.
      * @param JAXBPath - the generated JAXB path.
      */
-    public Path(data.jaxb.Path JAXBPath) {
-        this.source = JAXBPath.getFrom().trim();
-        this.destination = JAXBPath.getTo().trim();
+    public Path(java.util.Map<String, Stop> allStops, data.jaxb.Path JAXBPath) throws PathDoesNotExistException {
+        String source = JAXBPath.getFrom();
+        String destination = JAXBPath.getTo();
+        if (!allStops.containsKey(source)) {
+            throw new PathDoesNotExistException(source, destination);
+        }
+        if (!allStops.containsKey(destination)) {
+            throw new PathDoesNotExistException(source, destination);
+        }
+        this.source = allStops.get(source);
+        this.destination = allStops.get(destination);
         this.isOneWay = JAXBPath.isOneWay();
         this.length = JAXBPath.getLength();
         this.fuelConsumption = JAXBPath.getFuelConsumption();
@@ -44,17 +55,25 @@ public class Path {
             System.out.println("Aw. Tried to swap the direction of a one way path :(");
             throw new RuntimeException();
         }
-        String temp;
+        Stop temp;
         temp = source;
         source = destination;
         destination = temp;
     }
 
-    public String getSource() {
+    public String getSourceName() {
+        return source.getName();
+    }
+
+    public String getDestinationName() {
+        return destination.getName();
+    }
+
+    public Stop getSourceStop() {
         return source;
     }
 
-    public String getDestination() {
+    public Stop getDestinationStop() {
         return destination;
     }
 

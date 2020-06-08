@@ -13,6 +13,7 @@ import data.transpool.TransPoolData;
 import data.transpool.trip.offer.PossibleMatch;
 import data.transpool.trip.request.TripRequest;
 import data.transpool.trip.request.TripRequestData;
+import exception.NoMatchesFoundException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -113,7 +114,11 @@ public class TransPoolController {
     }
 
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {
-        engine.findPossibleMatches(requestToMatch, numOfResults);
+        try {
+            engine.findPossibleMatches(requestToMatch, numOfResults);
+        } catch (NoMatchesFoundException e) {
+            showAlert(e);
+        }
     }
 
     public Stage getPrimaryStage() {

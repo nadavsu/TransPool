@@ -4,9 +4,8 @@ import api.components.TripOfferEngine;
 import api.components.TripRequestEngine;
 import data.jaxb.PlannedTrips;
 import data.jaxb.TransPool;
-import data.transpool.map.Map;
+import data.transpool.map.*;
 import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.offer.TripOfferData;
 import data.transpool.trip.request.TripRequest;
@@ -14,11 +13,13 @@ import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class TransPoolData implements TripRequestEngine, TripOfferEngine {
+public class TransPoolData implements TripRequestEngine, TripOfferEngine, MapGraph {
 
-    private Map map;
+    private MapGraph map;
     private ObservableList<TripOffer> allTripOffers;
     private ObservableList<TripRequest> allTripRequests;
     private ObservableList<MatchedTripRequest> allMatchedTripRequests;
@@ -27,7 +28,7 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
         allTripRequests = FXCollections.observableArrayList();
         allTripOffers = FXCollections.observableArrayList();
         allMatchedTripRequests = FXCollections.observableArrayList();
-        map = new Map(JAXBData.getMapDescriptor());
+        map = new MapGraphData(JAXBData.getMapDescriptor());
         initAllTripOffers(JAXBData.getPlannedTrips());
     }
 
@@ -122,7 +123,66 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine {
         return allTripOffers;
     }
 
-    public Map getMap() {
+    //----------------------------------------------------------------------------------------------------------------//
+
+    @Override
+    public int getMapWidth() {
+        return map.getMapWidth();
+    }
+
+    @Override
+    public int getMapLength() {
+        return map.getMapLength();
+    }
+
+    @Override
+    public boolean containsStop(String stopName) {
+        return map.containsStop(stopName);
+    }
+
+    @Override
+    public Map<String, Stop> getAllStops() {
+        return map.getAllStops();
+    }
+
+    @Override
+    public List<Stop> getAllStopsAsList() {
+        return map.getAllStopsAsList();
+    }
+
+    @Override
+    public Stop getStop(String stopName) {
+        return map.getStop(stopName);
+    }
+
+    @Override
+    public List<Path> getAllPaths() {
+        return map.getAllPaths();
+    }
+
+    @Override
+    public boolean containsPath(String source, String destination) {
+        return map.containsPath(source, destination);
+    }
+
+    //----------------------------------------------------------------------------------------------------------------//
+
+    @Override
+    public void newConnection(Path path) {
+        //map.newConnection(path);
+    }
+
+    @Override
+    public ArrayList<List<Stop>> getAllPossibleRoutes(Stop source, Stop destination) {
+        return map.getAllPossibleRoutes(source, destination);
+    }
+
+    @Override
+    public ArrayList<List<Stop>> getGraph() {
+        return map.getGraph();
+    }
+
+    public MapGraph getMap() {
         return map;
     }
 }

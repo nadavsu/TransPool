@@ -1,15 +1,13 @@
 package data.transpool.trip;
 
 import data.jaxb.TransPoolTrip;
-import data.transpool.map.Map;
+import data.transpool.map.BasicMapData;
 import data.transpool.map.Path;
 import exception.data.InvalidRouteException;
 import exception.TransPoolRunTimeException;
-import exception.data.StopNotFoundException;
 import exception.data.PathDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.omg.CORBA.DynAnyPackage.Invalid;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +54,7 @@ public class Route {
      */
     private void initUsedPaths() throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
-            Path foundPath = Map.getPathBySourceAndDestination(route.get(i), route.get(i + 1));
+            Path foundPath = BasicMapData.getPathBySourceAndDestination(route.get(i), route.get(i + 1));
             if (foundPath == null) {
                 throw new PathDoesNotExistException(route.get(i), route.get(i + 1));
             }

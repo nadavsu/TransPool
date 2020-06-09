@@ -1,21 +1,25 @@
 package api.components;
 
-import api.TransPoolEngine;
 import data.transpool.TransPoolData;
-import data.transpool.map.Stop;
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
+import data.transpool.map.util.TripOfferGraph;
+import data.transpool.map.util.WeightedGraph;
+import data.transpool.trip.Route;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.offer.PossibleMatch;
 import data.transpool.trip.request.TripRequest;
 import exception.NoMatchesFoundException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
 
 /**
  * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match
@@ -43,14 +47,42 @@ public class MatchingEngine {
      * @throws NoMatchesFoundException - If no match was found for the the trip request.
      * @return true if found at least one match is found.
      */
-    public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException {
-
+    public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException, TransPoolDataException {
         this.tripRequestToMatch = tripRequestToMatch;
 
+        WeightedGraph<Stop, Path, TripOffer> tripOfferGraph = new TripOfferGraph(data);
+        try {
+            tripOfferGraph.getAllPossibleRoutes(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        List<List<Stop>> allPossibleRoutes
+                = data.getAllPossibleRoutes(tripRequestToMatch.getSourceStop(), tripRequestToMatch.getDestinationStop());
 
-        ArrayList<List<Stop>> allPossibleRoutes = data.getAllPossibleRoutes()
 
 
+
+        
+        /*
+        i need to go through the possible routes
+        for each route,
+        i need to go through the used paths list
+        check if there's a trip offer that goes from the source to the destination at the right departure time
+        (if we're talking about time of arrival then we go from the end to the beginning)
+         */
+/*        for (int i = 0; i < allPossibleRoutes.size(); i++) {
+            List<Path> currentRoutePathList = allPossibleRoutes.get(i).getUsedPaths();
+            List<TripOffer> offersForCurrentRoute = new ArrayList<>();
+            LocalTime currentPathDeparture = tripRequestToMatch.getRequestTime();
+            for (Path path : currentRoutePathList) {
+                offersForCurrentRoute.add(data.getAllTripOffers()
+                        .stream()
+                        .filter(tripOffer -> !tripOffer.containsSubRoute(path.getSourceName(), path.getDestinationName()))
+                        .filter(tripOffer -> !tripOffer.getDepartureTimeAtStop(path.getSourceStop()).equals(currentPathDeparture))
+                        .findFirst()
+                        .orElse(null));
+            }
+        }*/
 
 
 /*        Predicate<TripOffer> containsSubRoutePredicate = tripOffer ->

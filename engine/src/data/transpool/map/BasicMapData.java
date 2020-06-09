@@ -1,6 +1,8 @@
 package data.transpool.map;
 
 import data.jaxb.MapDescriptor;
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
 import exception.data.*;
 
 import java.util.ArrayList;
@@ -97,6 +99,30 @@ public abstract class BasicMapData implements BasicMap {
                 .orElse(null);
     }
 
+    @Override
+    public Path getPath(Stop source, Stop destination) {
+        Predicate<Path> sourceDestinationMatchPredicate = p ->
+                p.getDestinationStop().equals(destination) && p.getSourceStop().equals(source);
+
+        return allPaths
+                .stream()
+                .filter(sourceDestinationMatchPredicate)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public Path getPath(String source, String destination) {
+        Predicate<Path> sourceDestinationMatchPredicate = p ->
+                p.getDestinationStop().getName().equals(destination) && p.getSourceStop().getName().equals(source);
+
+        return allPaths
+                .stream()
+                .filter(sourceDestinationMatchPredicate)
+                .findFirst()
+                .orElse(null);
+    }
+
     private void setWidth(int width) throws MapDimensionsException {
         if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
             throw new MapDimensionsException();
@@ -136,6 +162,11 @@ public abstract class BasicMapData implements BasicMap {
         allStops
                 .forEach((string, stop) -> stopsList.add(stop));
         return stopsList;
+    }
+
+    @Override
+    public int getNumberOfStops() {
+        return allStops.size();
     }
 
     @Override

@@ -1,5 +1,9 @@
 package data.transpool.map;
 
-public interface MapGraph extends Graph<Path, Stop>, BasicMap {
+import data.transpool.map.util.Graph;
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
+
+public interface MapGraph extends BasicMap, Graph<Stop, Path> {
 
 }

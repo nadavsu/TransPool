@@ -1,9 +1,11 @@
 package data.transpool.trip.offer;
 
+import data.transpool.map.BasicMap;
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.Route;
-import data.transpool.user.Feedback;
 import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
@@ -20,44 +22,46 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
+    private Map<Stop, LocalTime> timeTable;
 
-    public TripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
+    public TripOfferData(BasicMap map, String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         super(driverName, departureTime, dayStart, recurrences, PPK);
+        this.timeTable = new HashMap<>();
         this.passengerCapacity = new SimpleIntegerProperty(passengerCapacity);
-        this.route = new SimpleObjectProperty<>(new Route(route));
+        this.route = new SimpleObjectProperty<>(new Route(route, map));
         this.allMatchedRequestsData = FXCollections.observableArrayList();
         initialize();
     }
 
-    public TripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
+    public TripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip, BasicMap map) throws TransPoolDataException {
         super(JAXBTransPoolTrip);
+        this.timeTable = new HashMap<>();
         this.passengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
-        this.route = new SimpleObjectProperty<>(new Route(JAXBTransPoolTrip));
+        this.route = new SimpleObjectProperty<>(new Route(JAXBTransPoolTrip, map));
         this.allMatchedRequestsData = FXCollections.observableArrayList();
         initialize();
     }
 
     @Override
     public void initialize() {
-        this.tripPrice.set(calculatePriceOfRoute(getRoute(), getPPK()));
-        this.tripDurationInMinutes.set(calculateTripDuration(getRoute()));
-        this.averageFuelConsumption.set(calculateAverageFuelConsumption(getRoute()));
+        this.tripPrice.set(getRoute().calculatePriceOfRoute(PPK.get()));
+        this.tripDurationInMinutes.set(getRoute().calculateTripDuration());
+        this.averageFuelConsumption.set(getRoute().calculateAverageFuelConsumption());
+        initializeTimeTable();
     }
 
-/*    @Override
-    public ObservableList<Feedback> getFeedbacks() {
-        return allFeedbacks;
-    }
+    private void initializeTimeTable() {
+        int i;
+        LocalTime timeAtStop = getScheduling().getDepartureTime();
+        for (i = 0; i < route.get().getLength() - 1; i++) {
+            Stop currentStop = route.get().getStop(i);
 
-    @Override
-    public int getAverageRating() {
-        return averageRating.get();
+            timeTable.put(currentStop, timeAtStop);
+            int pathTime = route.get().getPath(i).getPathTime();
+            timeAtStop = timeAtStop.plusMinutes(pathTime);
+        }
+        timeTable.put(route.get().getStop(i), timeAtStop);
     }
-
-    @Override
-    public IntegerProperty averageRatingProperty() {
-        return averageRating;
-    }*/
 
     @Override
     public int getPassengerCapacity() {
@@ -96,6 +100,11 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         }
         passengerCapacity.set(passengerCapacity.get() - 1);
         allMatchedRequestsData.add(matchedRequest);
+    }
+
+    @Override
+    public LocalTime getDepartureTimeAtStop(Stop stop) {
+        return timeTable.get(stop);
     }
 
     @Override

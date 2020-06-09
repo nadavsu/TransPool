@@ -1,5 +1,6 @@
 package data.transpool.trip.request;
 
+import data.transpool.map.component.Stop;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
@@ -11,7 +12,7 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     private SimpleObjectProperty<LocalTime> requestTime;
     private SimpleBooleanProperty isContinuous;
 
-    public TripRequestData(String riderName, String sourceStop, String destinationStop,
+    public TripRequestData(String riderName, Stop sourceStop, Stop destinationStop,
                            LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) {
         super(riderName, sourceStop, destinationStop);
         this.isTimeOfArrival = new SimpleBooleanProperty(isTimeOfArrival);

@@ -36,9 +36,6 @@ public interface BasicTripOffer {
     double getAverageFuelConsumption();
     DoubleProperty averageFuelConsumptionProperty();
 
-    int calculatePriceOfRoute(Route route, int PPK);
-    double calculateAverageFuelConsumption(Route route);
-    int calculateTripDuration(Route route);
     void initialize();
 
 

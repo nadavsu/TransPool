@@ -1,57 +1,90 @@
 package data.transpool.trip;
 
 import data.jaxb.TransPoolTrip;
-import data.transpool.map.BasicMapData;
-import data.transpool.map.Path;
+import data.transpool.map.BasicMap;
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
 import exception.data.InvalidRouteException;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Contains a list of strings containing the stop names in the route.
  * Contains a list of used paths in the string.
  */
 public class Route {
-    private ObservableList<String> route;
+    private ObservableList<Stop> stops;
     private List<Path> usedPaths;
 
 
-    public Route(ObservableList<String> route) throws PathDoesNotExistException, InvalidRouteException {
-        if (route.size() < 2) {
+    public Route(ObservableList<String> stopNamesList, BasicMap map) throws PathDoesNotExistException, InvalidRouteException {
+        if (stopNamesList.size() < 2) {
             throw new InvalidRouteException();
         }
         this.usedPaths = new ArrayList<>();
-        this.route = FXCollections.observableArrayList(route);
-
-        initUsedPaths();
+        this.stops = FXCollections.observableArrayList();
+        initStopsList(stopNamesList, map.getAllStops());
+        initUsedPaths(map);
     }
 
-    public Route(TransPoolTrip JAXBTransPoolTrip) throws PathDoesNotExistException {
-        this.route = FXCollections.observableArrayList();
-        this.usedPaths = new ArrayList<>();
-
-        String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
-        for (String str : routeArray) {
-            route.add(str.trim());
+    public Route(List<Stop> stopList, BasicMap map) throws InvalidRouteException, PathDoesNotExistException{
+        if (stopList.size() < 2) {
+            throw new InvalidRouteException();
         }
-
-        initUsedPaths();
+        this.usedPaths = new ArrayList<>();
+        this.stops = FXCollections.observableArrayList(stopList);
+        initUsedPaths(map);
     }
 
     public Route(Route other) {
-        this.route = FXCollections.observableArrayList(other.getRoute());
+        this.stops = FXCollections.observableArrayList(other.getStops());
         this.usedPaths  = new ArrayList<>(other.getUsedPaths());
+    }
+
+    public Route(TransPoolTrip JAXBTransPoolTrip, BasicMap map) throws PathDoesNotExistException {
+        this.stops = FXCollections.observableArrayList();
+        this.usedPaths = new ArrayList<>();
+
+        String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
+        List<String> stopNamesList = Arrays.asList(routeArray);
+        initStopsList(stopNamesList, map.getAllStops());
+        initUsedPaths(map);
+    }
+
+    private void initStopsList(List<String> stopNamesList, Map<String, Stop> allStops) {
+        for (String str : stopNamesList) {
+            stops.add(new Stop(allStops.get(str)));
+        }
     }
 
     /**
      * Keeps a copy of all used paths in the route.
      * @throws PathDoesNotExistException - If the path does not exist.
      */
+    private void initUsedPaths(BasicMap map) throws PathDoesNotExistException {
+        for (int i = 0; i < stops.size() - 1; i++) {
+            Path foundPath = map.getPath(stops.get(i), stops.get(i + 1));
+            if (foundPath == null) {
+                throw new PathDoesNotExistException(stops.get(i), stops.get(i + 1));
+            }
+            usedPaths.add(new Path(foundPath));
+        }
+    }
+
+/*    private void initUsedPaths(List<Stop> stopsList, BasicMap map) {
+        for (int i = 0; i < stopsList.size() - 1; i++) {
+            Path foundPath = map.getPath(stopsList.get(i), stopsList.get(i + 1));
+            if (foundPath == null) {
+                throw new PathDoesNotExistException(stopsList.get(i), stopsList.get(i + 1));
+            }
+            usedPaths.add(new Path(foundPath));
+        }
+    }*/
+/*
     private void initUsedPaths() throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
             Path foundPath = BasicMapData.getPathBySourceAndDestination(route.get(i), route.get(i + 1));
@@ -60,16 +93,60 @@ public class Route {
             }
             usedPaths.add(new Path(foundPath));
         }
+    }*/
+/*
+    private void initUsedStops(List<Stop> stopList) {
+        stopList.forEach(stop -> {
+            route.add(stop.getName());
+        });
+    }*/
+
+    public int calculatePriceOfRoute(int PPK) {
+        return this
+                .getUsedPaths()
+                .stream()
+                .mapToInt(p -> p.getLength() * PPK)
+                .sum();
+    }
+
+    public int calculateTripDuration() {
+        return this
+                .getUsedPaths()
+                .stream()
+                .mapToInt(Path::getPathTime)
+                .sum();
+    }
+
+    public double calculateAverageFuelConsumption() {
+        return this
+                .getUsedPaths()
+                .stream()
+                .mapToDouble(Path::getFuelConsumption)
+                .average()
+                .orElse(0);
+    }
+
+    public int getLength() {
+        return stops.size();
+    }
+
+    public Stop getStop(int i) {
+        return stops.get(i);
+    }
+
+    public Path getPath(int i) {
+        return usedPaths.get(i);
     }
 
     /**
      * Gets the sub-route of the source and destination names and returns it as a path list.
-     * @param source - The source of the sub-route.
-     * @param destination - The destination of the sub-route.
+     * @param  - The source of the sub-route.
+     * @param  - The destination of the sub-route.
      * @return List of used paths.
      * @throws TransPoolRunTimeException - This function is only used internally with existing sources and destinations.
      *                                     Should not throw a runtime exception.
      */
+/*
     public static List<Path> asPathList(Route route, String source, String destination) {
         int sourceIndex = route.getIndexByStopName(source);
         int destinationIndex = route.getIndexByStopName(destination);
@@ -78,18 +155,16 @@ public class Route {
         }
         return new ArrayList<>(route.usedPaths.subList(sourceIndex, destinationIndex));
     }
+*/
 
     public Route subRoute(String sourceStopName, String destinationStopName) {
-        try {
-            int sourceIndex = getIndexByStopName(sourceStopName);
-            int destinationIndex = getIndexByStopName(destinationStopName);
-            if (sourceIndex < 0 || destinationIndex < 0) {
-                throw new TransPoolRunTimeException();
-            }
-            return new Route(FXCollections.observableArrayList(route.subList(sourceIndex, destinationIndex + 1)));
-        } catch (PathDoesNotExistException | InvalidRouteException ignored) {
-            return null;
+        int sourceIndex = getIndexByStopName(sourceStopName);
+        int destinationIndex = getIndexByStopName(destinationStopName);
+        if (sourceIndex < 0 || destinationIndex < 0) {
+            throw new TransPoolRunTimeException();
         }
+        //return new Route(FXCollections.observableArrayList(stops.subList(sourceIndex, destinationIndex + 1)));
+        return new Route(this);
     }
 
     /**
@@ -106,49 +181,40 @@ public class Route {
 
     }
 
-
-    public int getNumberOfStops() {
-        return route.size();
-    }
-
-    public String getStopNameByIndex(int stopIndex) {
-        return route.get(stopIndex);
-    }
-
     public int getIndexByStopName(String stopName) {
-        for (int i = 0; i < route.size(); i++) {
-            if (route.get(i).equals(stopName)) {
+        for (int i = 0; i < stops.size(); i++) {
+            if (stops.get(i).getName().equals(stopName)) {
                 return i;
             }
         }
         return -1;
 }
 
-    public ObservableList<String> getRoute() {
-        return route;
+    public ObservableList<Stop> getStops() {
+        return stops;
     }
 
     public List<Path> getUsedPaths() {
         return usedPaths;
     }
 
-    public String getFirstStopName() {
-        return route.get(0);
+    public Stop getFirstStopName() {
+        return stops.get(0);
     }
 
-    public String getLastStopName() {
-        return route.get(route.size() - 1);
+    public Stop getLastStopName() {
+        return stops.get(stops.size() - 1);
     }
 
     @Override
     public String toString() {
         int i;
         StringBuilder routeString = new StringBuilder();
-        for (i = 0; i < route.size() - 1; i++) {
-            routeString.append(route.get(i));
+        for (i = 0; i < stops.size() - 1; i++) {
+            routeString.append(stops.get(i));
             routeString.append(" -> ");
         }
-        routeString.append(route.get(i));
+        routeString.append(stops.get(i));
         return routeString.toString();
     }
 }

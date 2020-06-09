@@ -5,6 +5,9 @@ import api.components.TripRequestEngine;
 import data.jaxb.PlannedTrips;
 import data.jaxb.TransPool;
 import data.transpool.map.*;
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
+import data.transpool.trip.Route;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.offer.TripOfferData;
@@ -35,7 +38,7 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine, MapGra
     private void initAllTripOffers(PlannedTrips JAXBTransPoolTrips) throws TransPoolDataException {
         List<data.jaxb.TransPoolTrip> JAXBTrips = JAXBTransPoolTrips.getTransPoolTrip();
         for (data.jaxb.TransPoolTrip JAXBTrip : JAXBTrips) {
-            allTripOffers.add(new TripOfferData(JAXBTrip));
+            allTripOffers.add(new TripOfferData(JAXBTrip, map));
         }
     }
 
@@ -156,6 +159,11 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine, MapGra
     }
 
     @Override
+    public int getNumberOfStops() {
+        return map.getNumberOfStops();
+    }
+
+    @Override
     public List<Path> getAllPaths() {
         return map.getAllPaths();
     }
@@ -165,20 +173,30 @@ public class TransPoolData implements TripRequestEngine, TripOfferEngine, MapGra
         return map.containsPath(source, destination);
     }
 
+    @Override
+    public Path getPath(Stop source, Stop destination) {
+        return map.getPath(source, destination);
+    }
+
+    @Override
+    public Path getPath(String source, String destination) {
+        return map.getPath(source, destination);
+    }
+
     //----------------------------------------------------------------------------------------------------------------//
 
     @Override
     public void newConnection(Path path) {
-        //map.newConnection(path);
+        //todo: this doesn't need to be here.
     }
 
     @Override
-    public ArrayList<List<Stop>> getAllPossibleRoutes(Stop source, Stop destination) {
+    public List<List<Stop>> getAllPossibleRoutes(Stop source, Stop destination) throws TransPoolDataException {
         return map.getAllPossibleRoutes(source, destination);
     }
 
     @Override
-    public ArrayList<List<Stop>> getGraph() {
+    public List<List<Stop>> getGraph() {
         return map.getGraph();
     }
 

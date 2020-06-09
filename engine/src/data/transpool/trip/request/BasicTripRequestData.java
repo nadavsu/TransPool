@@ -1,5 +1,6 @@
 package data.transpool.trip.request;
 
+import data.transpool.map.component.Stop;
 import data.transpool.user.TransPoolRider;
 import javafx.beans.property.*;
 
@@ -10,21 +11,21 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
     private static int IDGenerator = 20000;
     protected IntegerProperty requestID;
     protected ObjectProperty<TransPoolRider> transpoolRider;
-    protected StringProperty sourceStop;
-    protected StringProperty destinationStop;
+    protected ObjectProperty<Stop> sourceStop;
+    protected ObjectProperty<Stop> destinationStop;
 
-    public BasicTripRequestData(String riderName, String sourceStop, String destinationStop) {
+    public BasicTripRequestData(String riderName, Stop sourceStop, Stop destinationStop) {
         this.requestID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolRider = new SimpleObjectProperty<>(new TransPoolRider(riderName));
-        this.sourceStop = new SimpleStringProperty(sourceStop);
-        this.destinationStop = new SimpleStringProperty(destinationStop);
+        this.sourceStop = new SimpleObjectProperty<>(new Stop(sourceStop));
+        this.destinationStop = new SimpleObjectProperty<>(new Stop(destinationStop));
     }
 
     public BasicTripRequestData(TripRequest other) {
         this.requestID = new SimpleIntegerProperty(other.getRequestID());
         this.transpoolRider = new SimpleObjectProperty<>(new TransPoolRider(other.getTransPoolRider()));
-        this.sourceStop = new SimpleStringProperty(other.getSourceStop());
-        this.destinationStop = new SimpleStringProperty(other.getDestinationStop());
+        this.sourceStop = new SimpleObjectProperty<>(other.getSourceStop());
+        this.destinationStop = new SimpleObjectProperty<>(other.getDestinationStop());
     }
 
     @Override
@@ -44,23 +45,23 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
 
 
     @Override
-    public String getSourceStop() {
+    public Stop getSourceStop() {
         return this.sourceStop.get();
     }
 
     @Override
-    public void setSourceStop(String sourceStop) {
+    public void setSourceStop(Stop sourceStop) {
         this.sourceStop.set(sourceStop);
     }
 
     @Override
-    public String getDestinationStop() {
+    public Stop getDestinationStop() {
         return this.destinationStop.get();
     }
 
     @Override
-    public void setDestinationStop(String destinatinStop) {
-        this.destinationStop.set(destinatinStop);
+    public void setDestinationStop(Stop destinationStop) {
+        this.destinationStop.set(destinationStop);
     }
 
     @Override
@@ -74,12 +75,12 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
     }
 
     @Override
-    public StringProperty sourceStopProperty() {
+    public ObjectProperty<Stop> sourceStopProperty() {
         return sourceStop;
     }
 
     @Override
-    public StringProperty destinationStopProperty() {
+    public ObjectProperty<Stop> destinationStopProperty() {
         return destinationStop;
     }
 

@@ -116,7 +116,7 @@ public class TransPoolController {
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {
         try {
             engine.findPossibleMatches(requestToMatch, numOfResults);
-        } catch (NoMatchesFoundException e) {
+        } catch (NoMatchesFoundException | TransPoolDataException e) {
             showAlert(e);
         }
     }

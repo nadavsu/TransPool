@@ -1,12 +1,13 @@
 package data.transpool.trip.offer;
 
-import data.transpool.map.Path;
+import data.transpool.map.component.Stop;
 import data.transpool.trip.Route;
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
+import java.util.List;
 
 public abstract class BasicTripOfferData implements BasicTripOffer {
     private static int IDGenerator = 100000;
@@ -57,34 +58,6 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     @Override
     public IntegerProperty offerIDProperty() {
         return offerID;
-    }
-
-    @Override
-    public int calculatePriceOfRoute(Route route, int PPK) {
-        return route
-                .getUsedPaths()
-                .stream()
-                .mapToInt(p -> p.getLength() * PPK)
-                .sum();
-    }
-
-    @Override
-    public int calculateTripDuration(Route route) {
-        return route
-                .getUsedPaths()
-                .stream()
-                .mapToInt(Path::getPathTime)
-                .sum();
-    }
-
-    @Override
-    public double calculateAverageFuelConsumption(Route route) {
-        return route
-                .getUsedPaths()
-                .stream()
-                .mapToDouble(Path::getFuelConsumption)
-                .average()
-                .orElse(0);
     }
 
     @Override

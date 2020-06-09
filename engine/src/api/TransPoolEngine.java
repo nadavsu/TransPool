@@ -62,7 +62,8 @@ public class TransPoolEngine implements Engine {
         if (!data.getMap().containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
-        TripRequest request = new TripRequestData(riderName, source, destination, time, isArrivalTime, isContinuous);
+        //todo: you were just changing the stops in request from strings to stops.
+        TripRequest request = new TripRequestData(riderName, data.getStop(source), data.getStop(destination), time, isArrivalTime, isContinuous);
         data.addTripRequest(request);
 
     }
@@ -70,11 +71,12 @@ public class TransPoolEngine implements Engine {
     @Override
     public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
-        data.addTripOffer(new TripOfferData(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
+
+        data.addTripOffer(new TripOfferData(data.getMap(), driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
     }
 
     @Override
-    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException {
+    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException, TransPoolDataException {
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
     }
 

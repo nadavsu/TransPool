@@ -20,9 +20,9 @@ public class PossibleMatch extends BasicTripOfferData {
 
     @Override
     public void initialize() {
-        this.tripPrice.set(calculatePriceOfRoute(getRoute(), getPPK()));
-        this.tripDurationInMinutes.set(calculateTripDuration(getRoute()));
-        this.averageFuelConsumption.set(calculateAverageFuelConsumption(getRoute()));
+        this.tripPrice.set(getRoute().calculatePriceOfRoute(getPPK()));
+        this.tripDurationInMinutes.set(getRoute().calculateTripDuration());
+        this.averageFuelConsumption.set(getRoute().calculateAverageFuelConsumption());
         this.estimatedTimeOfArrival.set(getScheduling()
                 .getDepartureTime()
                 .plusMinutes(getTripDurationInMinutes()));

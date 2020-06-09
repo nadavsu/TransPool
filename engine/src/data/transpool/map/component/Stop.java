@@ -1,4 +1,7 @@
-package data.transpool.map;
+package data.transpool.map.component;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 import java.util.Objects;
 
@@ -7,14 +10,22 @@ public class Stop {
     private int ID;
     private int x;
     private int y;
-    private String name;
+    private StringProperty name;
 
     public Stop(data.jaxb.Stop JAXBStop) {
         this.ID = IDGenerator++;
         this.x = JAXBStop.getX();
         this.y = JAXBStop.getY();
-        this.name = JAXBStop.getName().trim();
+        this.name = new SimpleStringProperty(JAXBStop.getName().trim());
     }
+
+    public Stop(Stop other) {
+        this.ID = other.ID;
+        this.x = other.x;
+        this.y = other.y;
+        this.name = new SimpleStringProperty(other.getName());
+    }
+
 
     public int getID() {
         return ID;
@@ -29,12 +40,16 @@ public class Stop {
     }
 
     public String getName() {
+        return name.get();
+    }
+
+    public StringProperty nameProperty() {
         return name;
     }
 
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
 
     @Override
@@ -45,11 +60,11 @@ public class Stop {
         return ID == stop.ID &&
                 x == stop.x &&
                 y == stop.y &&
-                name.equals(stop.name);
+                getName().equals(stop.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(ID, x, y, name);
+        return Objects.hash(ID, x, y, getName());
     }
 }

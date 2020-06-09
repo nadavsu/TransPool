@@ -1,10 +1,13 @@
 package data.transpool.trip.offer;
 
+import data.transpool.map.component.Path;
+import data.transpool.map.component.Stop;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.user.Feedback;
 import javafx.beans.property.IntegerProperty;
 import javafx.collections.ObservableList;
+
+import java.time.LocalTime;
 
 
 public interface TripOffer extends BasicTripOffer {
@@ -23,4 +26,6 @@ public interface TripOffer extends BasicTripOffer {
 
     boolean containsSubRoute(String source, String destination);
     void updateAfterMatch(MatchedTripRequest matchedRequest);
+
+    LocalTime getDepartureTimeAtStop(Stop stopName);
 }

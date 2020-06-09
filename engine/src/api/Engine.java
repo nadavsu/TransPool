@@ -35,7 +35,7 @@ public interface Engine {
     void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                             int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
 
-    void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException;
+    void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException, TransPoolDataException;
 
     void clearPossibleMatches();
 

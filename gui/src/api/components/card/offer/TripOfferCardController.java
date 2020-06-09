@@ -4,6 +4,7 @@ import api.Constants;
 import api.components.card.CardController;
 import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
+import data.transpool.map.component.Stop;
 import data.transpool.user.Feedback;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
@@ -21,7 +22,7 @@ public class TripOfferCardController extends CardController<TripOffer> {
     @FXML private Label labelDriverRating;
     @FXML private Label labelOfferID;
     @FXML private Label labelSchedule;
-    @FXML private JFXListView<String> listViewStops;
+    @FXML private JFXListView<Stop> listViewStops;
     @FXML private Label labelTripDuration;
     @FXML private Label labelFuelConsumption;
     @FXML private Label labelPPK;
@@ -45,7 +46,7 @@ public class TripOfferCardController extends CardController<TripOffer> {
         labelDriverName.textProperty().bind(tripOffer.getTransPoolDriver().usernameProperty());
         labelOfferID.textProperty().bind(tripOffer.offerIDProperty().asString());
 
-        listViewStops.setItems(tripOffer.getRoute().getRoute());
+        listViewStops.setItems(tripOffer.getRoute().getStops());
         listViewRiderDetails.setItems(tripOffer.getAllMatchedRequestsData());
         listViewFeedbacks.setItems(tripOffer.getTransPoolDriver().getAllFeedbacks());
         listViewFeedbacks.setCellFactory((listViewFeedbacks) -> new FeedbackCardController());

@@ -1,8 +1,10 @@
-package data.transpool.map;
+package data.transpool.map.component;
 
 import exception.data.PathDoesNotExistException;
 
 //TODO: check if this works
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -59,6 +61,17 @@ public class Path {
         temp = source;
         source = destination;
         destination = temp;
+    }
+
+    public static List<Stop> asStopList(List<Path> pathList) {
+        int i;
+        List<Stop> stopsList = new ArrayList<>();
+
+        for (i = 0; i < pathList.size(); i++) {
+            stopsList.add(new Stop(pathList.get(i).source));
+        }
+        stopsList.add(new Stop(pathList.get(i - 1).destination));
+        return stopsList;
     }
 
     public String getSourceName() {

@@ -1,6 +1,7 @@
-package data.transpool.map;
+package data.transpool.map.usused;
 
-import data.transpool.map.util.Graph;
+import data.transpool.map.BasicMap;
+import data.transpool.util.Graph;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 

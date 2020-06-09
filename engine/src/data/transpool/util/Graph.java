@@ -1,4 +1,4 @@
-package data.transpool.map.util;
+package data.transpool.util;
 
 import exception.data.TransPoolDataException;
 

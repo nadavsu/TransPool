@@ -1,10 +1,9 @@
-package data.transpool.map.util;
+package data.transpool.map.trip.offer;
 
-import data.transpool.TransPoolData;
-import data.transpool.map.BasicMap;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.trip.offer.TripOffer;
+import data.transpool.util.WeightedGraph;
 import javafx.util.Pair;
 
 import java.util.ArrayList;
@@ -12,17 +11,17 @@ import java.util.List;
 
 public class TripOfferGraph implements WeightedGraph<Stop, Path, TripOffer> {
     private List<List<Pair<Stop, TripOffer>>> graph;
-    private List<Stop> allStops;
+    private int numOfStops;
 
-    public TripOfferGraph(TransPoolData data) {
+    public TripOfferGraph(int numOfStops, List<TripOffer> allTripOffers) {
         graph = new ArrayList<>();
-        allStops = data.getAllStopsAsList();
+        this.numOfStops = numOfStops;
 
-        for (int i = 0; i < data.getNumberOfStops(); i ++) {
+        for (int i = 0; i < numOfStops; i ++) {
             graph.add(new ArrayList<>());
         }
 
-        initGraph(data.getAllTripOffers());
+        initGraph(allTripOffers);
     }
 
     private void initGraph(List<TripOffer> allTripOffers) {
@@ -45,8 +44,8 @@ public class TripOfferGraph implements WeightedGraph<Stop, Path, TripOffer> {
     }
 
     @Override
-    public ArrayList<List<Pair<Stop, TripOffer>>> getAllPossibleRoutes(Stop source, Stop destination) throws Exception {
-        boolean[] beingVisited = new boolean[allStops.size()];
+    public ArrayList<List<Pair<Stop, TripOffer>>> getAllPossibleRoutes(Stop source, Stop destination) {
+        boolean[] beingVisited = new boolean[numOfStops];
 
         ArrayList<Pair<Stop, TripOffer>> currentRoute = new ArrayList<>();
         ArrayList<List<Pair<Stop, TripOffer>>> successfulPaths = new ArrayList<>();

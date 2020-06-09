@@ -3,9 +3,8 @@ package api.components;
 import data.transpool.TransPoolData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.map.util.TripOfferGraph;
-import data.transpool.map.util.WeightedGraph;
-import data.transpool.trip.Route;
+import data.transpool.map.trip.offer.TripOfferGraph;
+import data.transpool.util.WeightedGraph;
 import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.offer.PossibleMatch;
@@ -17,8 +16,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 /**

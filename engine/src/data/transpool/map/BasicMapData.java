@@ -14,7 +14,7 @@ import java.util.function.Predicate;
  * The map.
  * Contains a list of stops, a list of paths, and a matrix containing the stops' positions on the map.
  */
-public abstract class BasicMapData implements BasicMap {
+public class BasicMapData implements BasicMap {
 
     private final static int MIN_MAP_SIZE = 6;
     private final static int MAX_MAP_SIZE = 100;

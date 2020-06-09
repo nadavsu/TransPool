@@ -1,11 +1,7 @@
-package data.transpool.map.util;
+package data.transpool.map.usused;
 
 
-import data.transpool.map.component.Stop;
-import javafx.util.Pair;
-
-import java.util.ArrayList;
-import java.util.List;
+import data.transpool.util.WeightedGraph;
 
 public abstract class GraphData<V, E, D> implements WeightedGraph<V, E, D> {
 /*    private List<List<Pair<V, D>>> graph;

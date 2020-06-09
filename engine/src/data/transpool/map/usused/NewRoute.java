@@ -1,14 +1,4 @@
-package data.transpool.map.component;
-
-import data.jaxb.TransPoolTrip;
-import data.transpool.map.MapGraph;
-import javafx.collections.FXCollections;
-
-import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+package data.transpool.map.usused;
 
 public class NewRoute {
 /*    private List<Stop> route;

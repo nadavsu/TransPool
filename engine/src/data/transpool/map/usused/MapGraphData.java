@@ -1,11 +1,9 @@
-package data.transpool.map;
+package data.transpool.map.usused;
 
 import data.jaxb.MapDescriptor;
+import data.transpool.map.BasicMapData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.trip.Route;
-import exception.data.InvalidRouteException;
-import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
 
 import java.util.ArrayList;
@@ -48,6 +46,7 @@ public class MapGraphData extends BasicMapData implements MapGraph {
 
         return successfulPaths;
     }
+
 
     private void depthFirstTraversal(Stop currentStop, Stop destination, boolean[] beingVisited, List<Stop> currentRoute, List<List<Stop>> successfulRoutes) {
         beingVisited[currentStop.getID()] = true;

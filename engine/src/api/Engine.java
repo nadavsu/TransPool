@@ -1,13 +1,10 @@
 package api;
 
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.PossibleMatch;
-import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.offer.TripOfferData;
-import data.transpool.trip.request.BasicTripRequest;
+import data.transpool.trip.offer.data.PossibleMatch;
+import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import data.transpool.trip.request.TripRequestData;
 import exception.NoMatchesFoundException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;

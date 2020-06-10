@@ -22,6 +22,7 @@ public class TripRequestFormController extends FormController {
     @FXML private JFXTextField textFieldRiderName;
     @FXML private JFXTextField textFieldDestination;
     @FXML private JFXButton buttonAddRequest;
+    @FXML private JFXCheckBox checkBoxContinuousRide;
 
     private BooleanProperty fileLoaded;
 
@@ -59,7 +60,8 @@ public class TripRequestFormController extends FormController {
         String riderName = textFieldRiderName.getText();
         LocalTime time = timeFieldTime.getValue();
         boolean isArrivalTime = radioButtonArrivalTime.isSelected();
-        transpoolController.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, true);
+        boolean isContinuous = checkBoxContinuousRide.isSelected();
+        transpoolController.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
     }
 
     @Override

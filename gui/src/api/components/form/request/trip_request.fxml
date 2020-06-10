@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXCheckBox?>
 <?import com.jfoenix.controls.JFXRadioButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import com.jfoenix.controls.JFXTimePicker?>
@@ -55,6 +56,7 @@
                            </toggleGroup>
                         </JFXRadioButton>
                         <JFXRadioButton fx:id="radioButtonDepartureTime" layoutY="14.0" selected="true" selectedColor="#0399ff" text="Departure time" toggleGroup="$arrival_departure" unSelectedColor="#0399ff" />
+                        <JFXCheckBox fx:id="checkBoxContiuousRide" checkedColor="#0390ff" layoutY="73.0" styleClass="jfx-check-box" text="I want my ride to be continuous" unCheckedColor="#0399ff" />
                      </children>
                   </AnchorPane>
                   <JFXTextField fx:id="textFieldSource" prefHeight="27.0" prefWidth="264.0" promptText="Source" styleClass="data-field" GridPane.columnIndex="3" GridPane.rowIndex="3" />

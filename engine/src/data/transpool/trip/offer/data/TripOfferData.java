@@ -1,7 +1,6 @@
-package data.transpool.trip.offer;
+package data.transpool.trip.offer.data;
 
 import data.transpool.map.BasicMap;
-import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
@@ -20,6 +19,7 @@ import java.util.*;
  */
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
+    private ObjectProperty<Route> route;
     private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
     private Map<Stop, LocalTime> timeTable;
@@ -61,6 +61,21 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
             timeAtStop = timeAtStop.plusMinutes(pathTime);
         }
         timeTable.put(route.get().getStop(i), timeAtStop);
+    }
+
+    @Override
+    public Route getRoute() {
+        return route.get();
+    }
+
+    @Override
+    public void setRoute(Route route) {
+        this.route.set(route);
+    }
+
+    @Override
+    public ObjectProperty<Route> routeProperty() {
+        return route;
     }
 
     @Override

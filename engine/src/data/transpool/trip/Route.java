@@ -4,7 +4,6 @@ import data.jaxb.TransPoolTrip;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.trip.offer.TripOffer;
 import exception.data.InvalidRouteException;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
@@ -20,7 +19,6 @@ import java.util.*;
 public class Route {
     private ObservableList<Stop> stops;
     private List<Path> usedPaths;
-    private TripOffer tripOffer;
 
 
     public Route(ObservableList<String> stopNamesList, BasicMap map) throws PathDoesNotExistException, InvalidRouteException {

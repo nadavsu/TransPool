@@ -1,25 +1,28 @@
 package data.transpool;
 
+import api.components.TripOfferEngine;
 import api.components.TripRequestEngine;
 import data.jaxb.TransPool;
 import data.transpool.map.BasicMap;
 import data.transpool.map.BasicMapData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.map.trip.offer.TripOfferMap;
-import data.transpool.map.trip.offer.TripOfferMapData;
-import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.offer.matching.PossibleRoutesList;
+import data.transpool.trip.offer.graph.TripOfferMap;
+import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Pair;
 
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
-public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferMap {
+public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine {
 
     private BasicMap map;
     private TripOfferMap tripOffers;
@@ -30,7 +33,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferMap 
         this.allTripRequests = FXCollections.observableArrayList();
         this.allMatchedTripRequests = FXCollections.observableArrayList();
         this.map = new BasicMapData(JAXBData.getMapDescriptor());
-        this.tripOffers = new TripOfferMapData(map, JAXBData.getPlannedTrips().getTransPoolTrip());
+        this.tripOffers = new TripOfferMap(map, JAXBData.getPlannedTrips().getTransPoolTrip());
     }
 
     @Override
@@ -53,6 +56,15 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferMap 
         return allTripRequests
                 .stream()
                 .filter(t -> t.getRequestID() == ID)
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public MatchedTripRequest getMatchedTripRequest(int feedbackerID) {
+        return allMatchedTripRequests
+                .stream()
+                .filter(m -> m.getRequestID() == feedbackerID)
                 .findFirst()
                 .orElse(null);
     }
@@ -140,19 +152,26 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferMap 
         return map.getPath(source, destination);
     }
 
-    @Override
-    public List<List<Pair<Stop, TripOffer>>> getAllPossibleRoutes(Stop source, Stop destination) {
+    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
+
+        Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {
+            if (tripRequest.isTimeOfArrival()) {
+                return possibleRoute.getTimeOfArrival().equals(tripRequest.getRequestTime());
+            } else {
+                return possibleRoute.getTimeOfDeparture().equals(tripRequest.getRequestTime());
+            }
+        };
+
+        return tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop())
+                .stream()
+                .filter(timeMatchPredicate)
+                .filter(PossibleRoute::isContinuous)
+                .limit(maximumMatches)
+                .collect(Collectors.toCollection(PossibleRoutesList::new));
+    }
+
+    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination) {
         return tripOffers.getAllPossibleRoutes(source, destination);
-    }
-
-    @Override
-    public List<List<Pair<Stop, TripOffer>>> getGraph() {
-        return tripOffers.getGraph();
-    }
-
-    @Override
-    public void newConnection(Path E, TripOffer tripOffer) {
-
     }
 
     public BasicMap getMap() {

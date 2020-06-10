@@ -6,7 +6,7 @@ import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
 import data.transpool.map.component.Stop;
 import data.transpool.user.Feedback;
-import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;

@@ -1,16 +1,11 @@
 package api.components.card.request;
 import api.Constants;
 import api.components.card.CardController;
-import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.request.BasicTripRequest;
-import data.transpool.trip.request.BasicTripRequestData;
 import data.transpool.trip.request.TripRequest;
-import data.transpool.trip.request.TripRequestData;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 

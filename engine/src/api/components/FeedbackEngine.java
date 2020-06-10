@@ -1,10 +1,8 @@
 package api.components;
 
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.user.TransPoolDriver;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class FeedbackEngine {

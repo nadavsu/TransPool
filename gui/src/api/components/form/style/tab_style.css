@@ -21,8 +21,13 @@
 	-fx-unselected-color: -secondary-color;
 }
 
+.jfx-check-box {
+	-fx-checked-color: -primary-color;
+	-fx-unchecked-color: -primary-color;
+}
+
 .data-field {
-	-jfx-label-float: true;
+	-fx-label-float: true;
 }
 
 .error-label {

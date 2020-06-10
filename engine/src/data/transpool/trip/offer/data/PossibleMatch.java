@@ -1,4 +1,4 @@
-package data.transpool.trip.offer;
+package data.transpool.trip.offer.data;
 
 import data.transpool.trip.Route;
 import javafx.beans.property.ObjectProperty;
@@ -9,6 +9,7 @@ import java.time.LocalTime;
 public class PossibleMatch extends BasicTripOfferData {
 
     private ObjectProperty<LocalTime> estimatedTimeOfArrival;
+    private ObjectProperty<Route> route;
 
     public PossibleMatch(String sourceStop, String destinationStop, TripOffer possibleTripOffer) {
         super(possibleTripOffer);
@@ -26,6 +27,19 @@ public class PossibleMatch extends BasicTripOfferData {
         this.estimatedTimeOfArrival.set(getScheduling()
                 .getDepartureTime()
                 .plusMinutes(getTripDurationInMinutes()));
+    }
+
+
+    public Route getRoute() {
+        return route.get();
+    }
+
+    public void setRoute(Route route) {
+        this.route.set(route);
+    }
+
+    public ObjectProperty<Route> routeProperty() {
+        return route;
     }
 
     public LocalTime getEstimatedTimeOfArrival() {

@@ -1,6 +1,6 @@
 package api.components;
 
-import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.data.TripOffer;
 import javafx.collections.ObservableList;
 
 public interface TripOfferEngine {

@@ -5,7 +5,7 @@ import api.components.card.match.MatchedTripCardController;
 import api.components.card.offer.TripOfferCardController;
 import api.components.card.request.TripRequestCardController;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.*;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;

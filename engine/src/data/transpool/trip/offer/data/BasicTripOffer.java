@@ -1,4 +1,4 @@
-package data.transpool.trip.offer;
+package data.transpool.trip.offer.data;
 
 import data.transpool.trip.Route;
 import data.transpool.trip.Scheduling;
@@ -14,10 +14,6 @@ public interface BasicTripOffer {
     TransPoolDriver getTransPoolDriver();
     void setTransPoolDriver(TransPoolDriver transpoolDriver);
     ObjectProperty<TransPoolDriver> transpoolDriverProperty();
-
-    Route getRoute();
-    void setRoute(Route route);
-    ObjectProperty<Route> routeProperty();
 
     Scheduling getScheduling();
     void setScheduling(Scheduling schedule);

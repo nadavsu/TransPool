@@ -3,9 +3,9 @@ package api;
 import api.components.*;
 import api.task.LoadFileTask;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.PossibleMatch;
-import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.offer.TripOfferData;
+import data.transpool.trip.offer.data.PossibleMatch;
+import data.transpool.trip.offer.data.TripOffer;
+import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.request.*;
 import exception.NoMatchesFoundException;
 import exception.data.StopNotFoundException;
@@ -62,7 +62,6 @@ public class TransPoolEngine implements Engine {
         if (!data.getMap().containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
-        //todo: you were just changing the stops in request from strings to stops.
         TripRequest request = new TripRequestData(riderName, data.getStop(source), data.getStop(destination), time, isArrivalTime, isContinuous);
         data.addTripRequest(request);
 

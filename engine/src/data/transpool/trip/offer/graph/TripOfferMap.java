@@ -1,24 +1,23 @@
-package data.transpool.map.trip.offer;
+package data.transpool.trip.offer.graph;
 
+import api.components.TripOfferEngine;
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.BasicMap;
-import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.offer.TripOfferData;
-import data.transpool.util.WeightedGraph;
+import data.transpool.trip.offer.data.TripOffer;
+import data.transpool.trip.offer.data.TripOfferData;
+import data.transpool.trip.offer.matching.PossibleRoutesList;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.util.Pair;
 
 import java.util.List;
 
-public class TripOfferMapData implements TripOfferMap {
+public class TripOfferMap implements TripOfferEngine {
     private ObservableList<TripOffer> allTripOffers;
-    private WeightedGraph<Stop, Path, TripOffer> tripOfferGraph;
+    private TripOfferGraph tripOfferGraph;
 
-    public TripOfferMapData(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
+    public TripOfferMap(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
         this.allTripOffers = FXCollections.observableArrayList();
         initAllTripOffers(map, JAXBTripOffers);
 
@@ -43,12 +42,7 @@ public class TripOfferMapData implements TripOfferMap {
     @Override
     public void addTripOffer(TripOffer tripOffer) {
         allTripOffers.add(tripOffer);
-        tripOffer
-                .getRoute()
-                .getUsedPaths()
-                .forEach(path -> {
-                    newConnection(path, tripOffer);
-                });
+        tripOfferGraph.add(tripOffer);
     }
 
     @Override
@@ -58,18 +52,13 @@ public class TripOfferMapData implements TripOfferMap {
 
     //----------------------------------------------------------------------------------------------------------------//
 
-    @Override
-    public void newConnection(Path path, TripOffer tripOffer) {
-        tripOfferGraph.newConnection(path, tripOffer);
-    }
 
-    @Override
-    public List<List<Pair<Stop, TripOffer>>> getAllPossibleRoutes(Stop source, Stop destination) {
+    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination) {
         return tripOfferGraph.getAllPossibleRoutes(source, destination);
     }
 
-    @Override
-    public List<List<Pair<Stop, TripOffer>>> getGraph() {
-        return tripOfferGraph.getGraph();
+    public TripOfferGraph getTripOfferGraph() {
+        return tripOfferGraph;
     }
+
 }

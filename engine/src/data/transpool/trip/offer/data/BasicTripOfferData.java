@@ -1,13 +1,10 @@
-package data.transpool.trip.offer;
+package data.transpool.trip.offer.data;
 
-import data.transpool.map.component.Stop;
-import data.transpool.trip.Route;
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
-import java.util.List;
 
 public abstract class BasicTripOfferData implements BasicTripOffer {
     private static int IDGenerator = 100000;
@@ -17,7 +14,6 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     protected ObjectProperty<Scheduling> schedule;
 
     //Initialized at children
-    protected ObjectProperty<Route> route;
     protected IntegerProperty tripDurationInMinutes;
     protected IntegerProperty tripPrice;
     protected DoubleProperty averageFuelConsumption;
@@ -44,7 +40,7 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.averageFuelConsumption = new SimpleDoubleProperty();
     }
 
-    public BasicTripOfferData(TripOffer other) {
+    public BasicTripOfferData(BasicTripOffer other) {
         this.offerID = new SimpleIntegerProperty(other.getOfferID());
         this.transpoolDriver = new SimpleObjectProperty<>(other.getTransPoolDriver());
         this.PPK = new SimpleIntegerProperty(other.getPPK());
@@ -74,22 +70,6 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     public void setTransPoolDriver(TransPoolDriver transpoolDriver) {
         this.transpoolDriver.set(transpoolDriver);
     }
-
-    @Override
-    public Route getRoute() {
-        return route.get();
-    }
-
-    @Override
-    public void setRoute(Route route) {
-        this.route.set(route);
-    }
-
-    @Override
-    public ObjectProperty<Route> routeProperty() {
-        return route;
-    }
-
 
     @Override
     public int getPPK() {

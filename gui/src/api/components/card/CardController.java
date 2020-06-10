@@ -1,13 +1,9 @@
 package api.components.card;
 
-import api.Constants;
-import data.transpool.trip.offer.TripOffer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
-
-import java.io.IOException;
 
 public abstract class CardController<T> extends ListCell<T> {
     protected FXMLLoader loader;

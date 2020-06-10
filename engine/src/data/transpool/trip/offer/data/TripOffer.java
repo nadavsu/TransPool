@@ -1,10 +1,11 @@
-package data.transpool.trip.offer;
+package data.transpool.trip.offer.data;
 
-import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
+import data.transpool.trip.Route;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
@@ -16,6 +17,10 @@ public interface TripOffer extends BasicTripOffer {
     IntegerProperty averageRatingProperty();
     Feedback getFeedback(int index);*/
 
+
+    Route getRoute();
+    void setRoute(Route route);
+    ObjectProperty<Route> routeProperty();
 
     int getPassengerCapacity();
     void setPassengerCapacity(int passengerCaparcity);

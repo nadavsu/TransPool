@@ -1,7 +1,6 @@
 package data.transpool.trip.request;
 
-import data.transpool.trip.offer.BasicTripOffer;
-import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.offer.data.PossibleMatch;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
 

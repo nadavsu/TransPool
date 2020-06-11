@@ -32,8 +32,6 @@ public interface BasicTripOffer {
     double getAverageFuelConsumption();
     DoubleProperty averageFuelConsumptionProperty();
 
-    void initialize();
-
 
 
 

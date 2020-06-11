@@ -20,4 +20,19 @@ public class PossibleRoutesList extends ArrayList<PossibleRoute>{
 
     }
 
+    public PossibleRoute getCheapest() {
+        return null;
+    }
+
+    public PossibleRoute getFastest() {
+        return null;
+    }
+
+    public PossibleRoute getGreenest() {
+        return null;
+    }
+
+    public PossibleRoute getLeastChanges() {
+        return null;
+    }
 }

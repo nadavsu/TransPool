@@ -1,6 +1,7 @@
 package api.components;
 
 import data.transpool.TransPoolData;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.offer.data.PossibleMatch;
@@ -17,21 +18,21 @@ import javafx.collections.ObservableList;
  */
 public class MatchingEngine {
     private TripRequest tripRequestToMatch;
-    private ObservableList<PossibleMatch> possibleMatches;
+    private ObservableList<PossibleRoute> possibleRoutes;
     private BooleanProperty foundMatches;
 
     public MatchingEngine() {
-        possibleMatches = FXCollections.observableArrayList();
+        possibleRoutes = FXCollections.observableArrayList();
         foundMatches = new SimpleBooleanProperty(false);
     }
 
     public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException {
         this.tripRequestToMatch = tripRequestToMatch;
+        possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
 
-
-        PossibleRoutesList list = data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches);
-
-
+        if (!possibleRoutes.isEmpty()) {
+            foundMatches.set(true);
+        }
     }
 
     /**
@@ -48,12 +49,12 @@ public class MatchingEngine {
     /**
      * @return the list of all possible matches.
      */
-    public ObservableList<PossibleMatch> getPossibleMatches() {
-        return possibleMatches;
+    public ObservableList<PossibleRoute> getPossibleRoutes() {
+        return possibleRoutes;
     }
 
     public void clearPossibleMatches() {
-        possibleMatches.clear();
+        possibleRoutes.clear();
         foundMatches.set(false);
     }
 

@@ -42,7 +42,6 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         initialize();
     }
 
-    @Override
     public void initialize() {
         this.tripPrice.set(getRoute().calculatePriceOfRoute(PPK.get()));
         this.tripDurationInMinutes.set(getRoute().calculateTripDuration());

@@ -19,7 +19,6 @@ public class PossibleMatch extends BasicTripOfferData {
     }
 
 
-    @Override
     public void initialize() {
         this.tripPrice.set(getRoute().calculatePriceOfRoute(getPPK()));
         this.tripDurationInMinutes.set(getRoute().calculateTripDuration());

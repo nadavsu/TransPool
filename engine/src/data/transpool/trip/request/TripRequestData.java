@@ -1,6 +1,8 @@
 package data.transpool.trip.request;
 
 import data.transpool.map.component.Stop;
+import exception.data.InvalidDayStartException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
@@ -8,16 +10,19 @@ import java.util.Objects;
 
 public class TripRequestData extends BasicTripRequestData implements TripRequest {
 
-    private BooleanProperty isTimeOfArrival;
+    private IntegerProperty day;
     private SimpleObjectProperty<LocalTime> requestTime;
+    private BooleanProperty isTimeOfArrival;
     private SimpleBooleanProperty isContinuous;
 
-    public TripRequestData(String riderName, Stop sourceStop, Stop destinationStop,
-                           LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) {
+    public TripRequestData(String riderName, Stop sourceStop, Stop destinationStop, int day,
+                           LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) throws TransPoolDataException {
         super(riderName, sourceStop, destinationStop);
-        this.isTimeOfArrival = new SimpleBooleanProperty(isTimeOfArrival);
+        this.day = new SimpleIntegerProperty();
         this.requestTime = new SimpleObjectProperty<>(requestTime);
+        this.isTimeOfArrival = new SimpleBooleanProperty(isTimeOfArrival);
         this.isContinuous = new SimpleBooleanProperty(isContinuous);
+        setDay(day);
     }
 
 
@@ -27,28 +32,30 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     }
 
     @Override
-    public void setIsTimeOfArrival(boolean isTimeOfArrival) {
-        this.isTimeOfArrival.set(isTimeOfArrival);
-    }
-
-    @Override
     public LocalTime getRequestTime() {
         return requestTime.get();
     }
 
     @Override
-    public void setRequestTime(LocalTime requestTime) {
-        this.requestTime.set(requestTime);
+    public int getDay() {
+        return day.get();
+    }
+
+    @Override
+    public IntegerProperty dayProperty() {
+        return day;
+    }
+
+    private void setDay(int day) throws InvalidDayStartException {
+        if (day < 1) {
+            throw new InvalidDayStartException();
+        }
+        this.day.set(day);
     }
 
     @Override
     public boolean isContinuous() {
         return isContinuous.get();
-    }
-
-    @Override
-    public void setContinuous(boolean isContinuous) {
-        this.isContinuous.set(isContinuous);
     }
 
     @Override

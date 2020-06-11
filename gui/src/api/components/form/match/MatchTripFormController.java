@@ -8,6 +8,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.data.PossibleMatch;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.TripRequest;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -18,7 +19,7 @@ public class MatchTripFormController extends FormController {
 
     @FXML private JFXComboBox<TripRequest> comboBoxRideID;
     @FXML private JFXTextField textFieldNumOfResultsToFind;
-    @FXML private JFXListView<PossibleMatch> listViewResults;
+    @FXML private JFXListView<PossibleRoute> listViewResults;
     @FXML private JFXButton buttonMatchTrip;
     @FXML private JFXButton buttonSearchTrips;
     @FXML private JFXButton buttonClearTrips;
@@ -104,6 +105,6 @@ public class MatchTripFormController extends FormController {
     public void bindUIToData(TransPoolData data) {
         foundResults.bind(transpoolController.getEngine().foundMatchesProperty());
         comboBoxRideID.setItems(data.getAllTripRequests());
-        listViewResults.setItems(transpoolController.getEngine().getPossibleMatches());
+        listViewResults.setItems(transpoolController.getEngine().getPossibleRoutes());
     }
 }

@@ -162,10 +162,18 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
             }
         };
 
+        Predicate<PossibleRoute> continuousRidePredicate = possibleRoute ->
+                !tripRequest.isContinuous() || possibleRoute.isContinuous();
+
+
+        //If the time of arrival before is the time of departure, then add a multiple of the recurrences.
+        //If the recurrences are one-time - then don't.
+        //Todo: Add filter for capacity
+        //Todo: Fix time of arrival
         return tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop())
                 .stream()
                 .filter(timeMatchPredicate)
-                .filter(PossibleRoute::isContinuous)
+                .filter(continuousRidePredicate)
                 .limit(maximumMatches)
                 .collect(Collectors.toCollection(PossibleRoutesList::new));
     }

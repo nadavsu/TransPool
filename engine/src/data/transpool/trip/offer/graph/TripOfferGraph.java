@@ -6,6 +6,7 @@ import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.data.TripOffer;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class TripOfferGraph {
 
     public TripOfferGraph(int numOfStops, List<TripOffer> allTripOffers) {
         adjointList = new ArrayList<>();
-
         for (int i = 0; i < numOfStops; i ++) {
             adjointList.add(new ArrayList<>());
         }
@@ -50,9 +50,6 @@ public class TripOfferGraph {
                 .add(new SubTripOffer(path, tripOffer));
     }
 
-    /*  TODO: add isArrival and make it possible to get all possible routes using arrival time, meaning you'll have to
-        TODO: all the ways in reverse?
-     */
     public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination) {
         boolean[] beingVisited = new boolean[adjointList.size()];
 
@@ -75,11 +72,13 @@ public class TripOfferGraph {
             return;
         }
 
-        for (SubTripOffer offer : adjointList.get(currentStop.getID())) {
-            if (offer != null && !beingVisited[offer.getDestinationStop().getID()]) {
-                currentRoute.add(offer);
-                depthFirstTraversal(offer.getDestinationStop(), destination, beingVisited, currentRoute, possibleRoutes);
-                currentRoute.remove(offer);
+        for (SubTripOffer nextOffer : adjointList.get(currentStop.getID())) {
+            if (nextOffer != null && !beingVisited[nextOffer.getDestinationStop().getID()]) {
+                if (currentRoute.lastOffer().isBefore(nextOffer) || !nextOffer.getRecurrences().equals("One time")) {
+                    currentRoute.add(nextOffer);
+                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, beingVisited, currentRoute, possibleRoutes);
+                }
+                currentRoute.remove(nextOffer);
             }
         }
 

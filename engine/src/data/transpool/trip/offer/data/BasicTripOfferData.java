@@ -2,6 +2,7 @@ package data.transpool.trip.offer.data;
 
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
@@ -18,7 +19,7 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     protected IntegerProperty tripPrice;
     protected DoubleProperty averageFuelConsumption;
 
-    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK) {
+    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(driverName));
         this.PPK = new SimpleIntegerProperty(PPK);
@@ -29,7 +30,7 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.averageFuelConsumption = new SimpleDoubleProperty();
     }
 
-    public BasicTripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip) {
+    public BasicTripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(JAXBTransPoolTrip.getOwner()));
         this.PPK = new SimpleIntegerProperty(JAXBTransPoolTrip.getPPK());

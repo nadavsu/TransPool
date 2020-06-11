@@ -17,6 +17,7 @@ public class TripRequestCardController extends CardController<TripRequest> {
     @FXML private Label labelRequestDestination;
     @FXML private Label labelArrivalDeparture;
     @FXML private Label labelTime;
+    @FXML private Label labelDay;
 
     @Override
     protected void loadCard() {
@@ -36,6 +37,7 @@ public class TripRequestCardController extends CardController<TripRequest> {
         labelRequestSource.textProperty().bind(Bindings.concat("Gets on at ", request.sourceStopProperty()));
         labelRequestDestination.textProperty().bind(Bindings.concat("Gets off at ", request.destinationStopProperty()));
         labelTime.textProperty().bind(request.requestTimeProperty().asString());
+        labelDay.textProperty().bind(Bindings.concat("on day ", request.dayProperty()));
         labelArrivalDeparture.textProperty().bind(
                 Bindings
                         .when(request.isTimeOfArrivalProperty())

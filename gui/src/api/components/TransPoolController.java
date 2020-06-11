@@ -11,6 +11,7 @@ import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.data.PossibleMatch;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.TripRequest;
 import exception.NoMatchesFoundException;
 import exception.data.TransPoolDataException;
@@ -90,9 +91,9 @@ public class TransPoolController {
     }
 
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
-                                  LocalTime time, boolean isArrivalTime, boolean isContinuous){
+                                  int day, LocalTime time, boolean isArrivalTime, boolean isContinuous){
         try {
-            engine.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
+            engine.createNewTransPoolTripRequest(riderName, source, destination, day, time, isArrivalTime, isContinuous);
         } catch (TransPoolDataException e) {
             showAlert(e);
         }
@@ -108,8 +109,8 @@ public class TransPoolController {
 
     }
 
-    public void createNewMatch(PossibleMatch tripOffer) {
-        engine.addNewMatch(tripOffer);
+    public void createNewMatch(PossibleRoute tripOffer) {
+        //engine.addNewMatch(tripOffer);
     }
 
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {

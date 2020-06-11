@@ -1,5 +1,7 @@
 package data.transpool.trip;
 
+import exception.data.InvalidDayStartException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
@@ -10,7 +12,7 @@ public class Scheduling {
     private StringProperty recurrences;
     private ObjectProperty<LocalTime> departureTime;
 
-    public Scheduling(int dayStart, LocalTime departureTime, String recurrences) {
+    public Scheduling(int dayStart, LocalTime departureTime, String recurrences) throws TransPoolDataException {
         this.departureTime = new SimpleObjectProperty<>(departureTime);
         this.dayStart = new SimpleIntegerProperty();
         this.recurrences = new SimpleStringProperty();
@@ -19,7 +21,7 @@ public class Scheduling {
         setRecurrences(recurrences);
     }
 
-    public Scheduling(data.jaxb.Scheduling JAXBScheduling) {
+    public Scheduling(data.jaxb.Scheduling JAXBScheduling) throws TransPoolDataException {
         dayStart = new SimpleIntegerProperty();
         recurrences = new SimpleStringProperty();
         departureTime = new SimpleObjectProperty<>(LocalTime.of(JAXBScheduling.getHourStart(), 0));
@@ -45,9 +47,12 @@ public class Scheduling {
         return dayStart;
     }
 
-    public void setDayStart(Integer dayStart) {
-        if (dayStart == null || dayStart == 0) {
-            this.dayStart.setValue(1);
+    public void setDayStart(Integer dayStart) throws InvalidDayStartException {
+        if (dayStart == null) {
+            dayStart = 1;
+        }
+        if (dayStart < 1) {
+            throw new InvalidDayStartException();
         } else {
             this.dayStart.set(dayStart);
         }

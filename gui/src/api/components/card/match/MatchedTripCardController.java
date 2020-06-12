@@ -30,9 +30,9 @@ public class MatchedTripCardController extends CardController<MatchedTripRequest
         labelRiderName.textProperty().bind(request.getTransPoolRider().usernameProperty());
         labelRequestSource.textProperty().bind(Bindings.concat("Gets on at ", request.sourceStopProperty()));
         labelRequestDestination.textProperty().bind(Bindings.concat("Gets off at ", request.destinationStopProperty()));
-        labelTripOfferID.textProperty().bind(request.tripOfferIDProperty().asString());
-        labelDriverName.textProperty().bind(Bindings.concat(
-                "Riding with ", request.getTransPoolDriver().getUsername()));
+        //labelTripOfferID.textProperty().bind(request.tripOfferIDsProperty().asString());
+        //labelDriverName.textProperty().bind(Bindings.concat(
+        //        "Riding with ", request.getTransPoolDrivers().getUsername()));
         labelTripPrice.textProperty().bind(Bindings.concat(
                 "Trip price: ", request.getTripPrice()));
         labelPersonalFuelConsumption.textProperty().bind(Bindings.concat(

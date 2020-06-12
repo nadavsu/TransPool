@@ -3,7 +3,6 @@ package api;
 import api.components.*;
 import api.task.LoadFileTask;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.data.PossibleMatch;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
@@ -84,8 +83,8 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void addNewMatch(PossibleMatch chosenPossibleMatch) {
-        matchingEngine.addNewMatch(data, chosenPossibleMatch);
+    public void addNewMatch(PossibleRoute chosenPossibleRoute) {
+        matchingEngine.addNewMatch(data, chosenPossibleRoute);
     }
 
     @Override

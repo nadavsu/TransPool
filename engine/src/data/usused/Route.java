@@ -1,25 +1,29 @@
+/*
 package data.transpool.trip;
 
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
+import data.transpool.trip.offer.data.TripOffer;
 import exception.data.InvalidRouteException;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalTime;
 import java.util.*;
 
+*/
 /**
  * Contains a list of strings containing the stop names in the route.
  * Contains a list of used paths in the string.
- */
+ *//*
+
 public class Route {
     private ObservableList<Stop> stops;
     private List<Path> usedPaths;
-
 
     public Route(ObservableList<String> stopNamesList, BasicMap map) throws PathDoesNotExistException, InvalidRouteException {
         if (stopNamesList.size() < 2) {
@@ -61,10 +65,12 @@ public class Route {
         }
     }
 
-    /**
+    */
+/**
      * Keeps a copy of all used paths in the route.
      * @throws PathDoesNotExistException - If the path does not exist.
-     */
+     *//*
+
     private void initUsedPaths(BasicMap map) throws PathDoesNotExistException {
         for (int i = 0; i < stops.size() - 1; i++) {
             Path foundPath = map.getPath(stops.get(i), stops.get(i + 1));
@@ -75,6 +81,7 @@ public class Route {
         }
     }
 
+*/
 /*    private void initUsedPaths(List<Stop> stopsList, BasicMap map) {
         for (int i = 0; i < stopsList.size() - 1; i++) {
             Path foundPath = map.getPath(stopsList.get(i), stopsList.get(i + 1));
@@ -83,7 +90,9 @@ public class Route {
             }
             usedPaths.add(new Path(foundPath));
         }
-    }*/
+    }*//*
+
+*/
 /*
     private void initUsedPaths() throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
@@ -93,38 +102,16 @@ public class Route {
             }
             usedPaths.add(new Path(foundPath));
         }
-    }*/
+    }*//*
+
+*/
 /*
     private void initUsedStops(List<Stop> stopList) {
         stopList.forEach(stop -> {
             route.add(stop.getName());
         });
-    }*/
+    }*//*
 
-    public int calculatePriceOfRoute(int PPK) {
-        return this
-                .getUsedPaths()
-                .stream()
-                .mapToInt(p -> p.getLength() * PPK)
-                .sum();
-    }
-
-    public int calculateTripDuration() {
-        return this
-                .getUsedPaths()
-                .stream()
-                .mapToInt(Path::getPathTime)
-                .sum();
-    }
-
-    public double calculateAverageFuelConsumption() {
-        return this
-                .getUsedPaths()
-                .stream()
-                .mapToDouble(Path::getFuelConsumption)
-                .average()
-                .orElse(0);
-    }
 
     public int getLength() {
         return stops.size();
@@ -138,14 +125,17 @@ public class Route {
         return usedPaths.get(i);
     }
 
-    /**
+    */
+/**
      * Gets the sub-route of the source and destination names and returns it as a path list.
      * @param  - The source of the sub-route.
      * @param  - The destination of the sub-route.
      * @return List of used paths.
      * @throws TransPoolRunTimeException - This function is only used internally with existing sources and destinations.
      *                                     Should not throw a runtime exception.
-     */
+     *//*
+
+*/
 /*
     public static List<Path> asPathList(Route route, String source, String destination) {
         int sourceIndex = route.getIndexByStopName(source);
@@ -155,24 +145,17 @@ public class Route {
         }
         return new ArrayList<>(route.usedPaths.subList(sourceIndex, destinationIndex));
     }
-*/
+*//*
 
-    public Route subRoute(String sourceStopName, String destinationStopName) {
-        int sourceIndex = getIndexByStopName(sourceStopName);
-        int destinationIndex = getIndexByStopName(destinationStopName);
-        if (sourceIndex < 0 || destinationIndex < 0) {
-            throw new TransPoolRunTimeException();
-        }
-        //return new Route(FXCollections.observableArrayList(stops.subList(sourceIndex, destinationIndex + 1)));
-        return new Route(this);
-    }
 
-    /**
+    */
+/**
      *
      * @param source - The name of the source stop of the route.
      * @param destination - The name of the destination stop of the route.
      * @return true of there is such a route from source to destination;
-     */
+     *//*
+
     public boolean containsSubRoute(String source, String destination) {
         int sourceIndex = getIndexByStopName(source);
         int destinationIndex = getIndexByStopName(destination);
@@ -217,4 +200,4 @@ public class Route {
         routeString.append(stops.get(i));
         return routeString.toString();
     }
-}
+}*/

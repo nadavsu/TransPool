@@ -81,10 +81,10 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
 
     @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
-        allMatchedTripRequests.add(matchedTripRequest);
-        TripOffer trip = getTripOffer(matchedTripRequest.getTripOfferID());
-        trip.updateAfterMatch(matchedTripRequest);
-        deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
+        //allMatchedTripRequests.add(matchedTripRequest);
+        //TripOffer trip = getTripOffer(matchedTripRequest.getTripOfferIDs());
+        //trip.updateAfterMatch(matchedTripRequest);
+        //deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
     }
 
     @Override

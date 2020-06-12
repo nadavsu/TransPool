@@ -1,52 +1,44 @@
 package data.transpool.trip.request;
 
-import data.transpool.trip.offer.data.PossibleMatch;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
 
 public class MatchedTripRequest extends BasicTripRequestData {
 
-    private IntegerProperty tripOfferID;
-    private ObjectProperty<TransPoolDriver> transpoolDriver;
+    private ObservableList<Integer> tripOfferIDs;
+    private ObservableList<TransPoolDriver> transpoolDrivers;
     private IntegerProperty tripPrice;
     private DoubleProperty personalFuelConsumption;
     private ObjectProperty<LocalTime> expectedTimeOfArrival;
 
-    public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleMatch tripOfferToMatch) {
+    public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleRoute possibleRoute) {
         super(tripRequestToMatch);
-        this.tripPrice = new SimpleIntegerProperty(tripOfferToMatch.getPrice());
-        this.expectedTimeOfArrival = new SimpleObjectProperty<>(tripOfferToMatch.getEstimatedTimeOfArrival());
-        this.personalFuelConsumption = new SimpleDoubleProperty(tripOfferToMatch.getAverageFuelConsumption());
+        this.tripPrice = new SimpleIntegerProperty(possibleRoute.getTotalPrice());
+        this.expectedTimeOfArrival = new SimpleObjectProperty<>(possibleRoute.getTimeOfArrival());
+        this.personalFuelConsumption = new SimpleDoubleProperty(possibleRoute.getAverageFuelConsumption());
+        this.tripOfferIDs = FXCollections.observableArrayList();
+        this.transpoolDrivers = FXCollections.observableArrayList();
 
-        this.tripOfferID = new SimpleIntegerProperty(tripOfferToMatch.getOfferID());
-        this.transpoolDriver = tripOfferToMatch.transpoolDriverProperty();
+        possibleRoute.getRoute().forEach(subTripOffer -> {
+            tripOfferIDs.add(subTripOffer.getOfferID());
+            transpoolDrivers.add(subTripOffer.getTransPoolDriver());
+        });
     }
 
-    public int getTripOfferID() {
-        return tripOfferID.get();
+    public ObservableList<Integer> getTripOfferIDs() {
+        return tripOfferIDs;
     }
 
-    public IntegerProperty tripOfferIDProperty() {
-        return tripOfferID;
+
+    public ObservableList<TransPoolDriver> getTransPoolDrivers() {
+        return transpoolDrivers;
     }
 
-    public void setTripOfferID(int tripOfferID) {
-        this.tripOfferID.set(tripOfferID);
-    }
-
-    public TransPoolDriver getTransPoolDriver() {
-        return transpoolDriver.get();
-    }
-
-    public ObjectProperty<TransPoolDriver> transpoolDriverProperty() {
-        return transpoolDriver;
-    }
-
-    public void setTransPoolDriver(TransPoolDriver transpoolDriver) {
-        this.transpoolDriver.set(transpoolDriver);
-    }
 
     public int getTripPrice() {
         return tripPrice.get();

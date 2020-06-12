@@ -1,4 +1,4 @@
-package data.transpool.map.usused;
+package data.usused;
 
 
 public abstract class GraphData<V, E, D> implements WeightedGraph<V, E, D> {

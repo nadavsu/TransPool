@@ -1,6 +1,6 @@
+/*
 package data.transpool.trip.offer.data;
 
-import data.transpool.trip.Route;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -14,7 +14,7 @@ public class PossibleMatch extends BasicTripOfferData {
     public PossibleMatch(String sourceStop, String destinationStop, TripOffer possibleTripOffer) {
         super(possibleTripOffer);
         this.estimatedTimeOfArrival = new SimpleObjectProperty<>();
-        this.route = new SimpleObjectProperty<>(possibleTripOffer.getRoute().subRoute(sourceStop, destinationStop));
+        //this.route = new SimpleObjectProperty<>(possibleTripOffer.getRoute().subRoute(sourceStop, destinationStop));
         initialize();
     }
 
@@ -56,3 +56,4 @@ public class PossibleMatch extends BasicTripOfferData {
 
     }
 }
+*/

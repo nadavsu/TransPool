@@ -7,7 +7,6 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.data.PossibleMatch;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.TripRequest;
 import javafx.beans.property.BooleanProperty;

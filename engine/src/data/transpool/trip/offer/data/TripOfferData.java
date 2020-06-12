@@ -1,11 +1,13 @@
 package data.transpool.trip.offer.data;
 
 import data.transpool.map.BasicMap;
+import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
+import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.trip.Route;
 import exception.TransPoolRunTimeException;
+import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -13,68 +15,121 @@ import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Contains the data for a TransPool trip offered by TransPool drivers.
  */
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
-    private ObjectProperty<Route> route;
+    private List<SubTripOffer> route;       //rename to route.
+
     private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
     private Map<Stop, LocalTime> timeTable;
+    private List<Path> usedPaths;
 
     public TripOfferData(BasicMap map, String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         super(driverName, departureTime, dayStart, recurrences, PPK);
+        this.route = new ArrayList<>();
         this.timeTable = new HashMap<>();
+        this.usedPaths = new ArrayList<>();
         this.passengerCapacity = new SimpleIntegerProperty(passengerCapacity);
-        this.route = new SimpleObjectProperty<>(new Route(route, map));
         this.allMatchedRequestsData = FXCollections.observableArrayList();
-        initialize();
+
+        initializeUsedPaths(route, map);
+
+        this.tripPrice.set(calculatePriceOfRoute(this.PPK.get()));
+        this.tripDurationInMinutes.set(calculateTripDuration());
+        this.averageFuelConsumption.set(calculateAverageFuelConsumption());
+
+        //Order matters.
+        initializeTimeTable();
+        initializeSubTripOffers();
     }
 
     public TripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip, BasicMap map) throws TransPoolDataException {
         super(JAXBTransPoolTrip);
+        this.route = new ArrayList<>();
+        this.usedPaths = new ArrayList<>();
         this.timeTable = new HashMap<>();
         this.passengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
-        this.route = new SimpleObjectProperty<>(new Route(JAXBTransPoolTrip, map));
         this.allMatchedRequestsData = FXCollections.observableArrayList();
-        initialize();
+
+        String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
+        List<String> JAXBRoute = Arrays.asList(routeArray);
+        initializeUsedPaths(JAXBRoute, map);
+
+        this.tripPrice.set(calculatePriceOfRoute(this.PPK.get()));
+        this.tripDurationInMinutes.set(calculateTripDuration());
+        this.averageFuelConsumption.set(calculateAverageFuelConsumption());
+
+        //Order matters.
+        initializeTimeTable();
+        initializeSubTripOffers();
     }
 
-    public void initialize() {
-        this.tripPrice.set(getRoute().calculatePriceOfRoute(PPK.get()));
-        this.tripDurationInMinutes.set(getRoute().calculateTripDuration());
-        this.averageFuelConsumption.set(getRoute().calculateAverageFuelConsumption());
-        initializeTimeTable();
+    private void initializeSubTripOffers() {
+        usedPaths
+                .forEach(path -> {
+                    route.add(new SubTripOffer(path, this));
+                });
     }
 
     private void initializeTimeTable() {
-        int i;
         LocalTime timeAtStop = getScheduling().getDepartureTime();
-        for (i = 0; i < route.get().getLength() - 1; i++) {
-            Stop currentStop = route.get().getStop(i);
+        Path firstPath = usedPaths.get(0);
 
-            timeTable.put(currentStop, timeAtStop);
-            int pathTime = route.get().getPath(i).getPathTime();
-            timeAtStop = timeAtStop.plusMinutes(pathTime);
+        timeTable.put(firstPath.getSourceStop(), timeAtStop);
+        timeAtStop = timeAtStop.plusMinutes(firstPath.getPathTime());
+
+        for (Path path : usedPaths) {
+            timeTable.put(path.getDestinationStop(), timeAtStop);
+            timeAtStop = timeAtStop.plusMinutes(path.getPathTime());
         }
-        timeTable.put(route.get().getStop(i), timeAtStop);
+    }
+
+    private void initializeUsedPaths(List<String> route, BasicMap map) throws PathDoesNotExistException {
+        for (int i = 0; i < route.size() - 1; i++) {
+            Path foundPath = map.getPath(route.get(i).trim(), route.get(i + 1).trim());
+            if (foundPath == null) {
+                throw new PathDoesNotExistException(route.get(i).trim(), route.get(i + 1).trim());
+            }
+            usedPaths.add(new Path(foundPath));
+        }
+    }
+
+    private int calculatePriceOfRoute(int PPK) {
+        return this
+                .getUsedPaths()
+                .stream()
+                .mapToInt(p -> p.getLength() * PPK)
+                .sum();
+    }
+
+    private int calculateTripDuration() {
+        return this
+                .getUsedPaths()
+                .stream()
+                .mapToInt(Path::getPathTime)
+                .sum();
+    }
+
+    private double calculateAverageFuelConsumption() {
+        return this
+                .getUsedPaths()
+                .stream()
+                .mapToDouble(Path::getFuelConsumption)
+                .average()
+                .orElse(0);
     }
 
     @Override
-    public Route getRoute() {
-        return route.get();
-    }
-
-    @Override
-    public void setRoute(Route route) {
-        this.route.set(route);
-    }
-
-    @Override
-    public ObjectProperty<Route> routeProperty() {
-        return route;
+    public ObservableList<String> getRouteAsStopsList() {
+        ObservableList<String> stopNamesList = FXCollections.observableArrayList();
+        stopNamesList.add(route.get(0).getSourceStop().getName());
+        route.forEach(subTripOffer -> stopNamesList.add(subTripOffer.getDestinationStop().getName()));
+        return stopNamesList;
     }
 
     @Override
@@ -98,8 +153,18 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
-    public boolean containsSubRoute(String source, String destination) {
-        return route.get().containsSubRoute(source, destination);
+    public List<SubTripOffer> getRoute() {
+        return route;
+    }
+
+    @Override
+    public Map<Stop, LocalTime> getTimeTable() {
+        return timeTable;
+    }
+
+    @Override
+    public List<Path> getUsedPaths() {
+        return usedPaths;
     }
 
     /**

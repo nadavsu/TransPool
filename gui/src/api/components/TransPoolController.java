@@ -10,7 +10,6 @@ import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.data.PossibleMatch;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.TripRequest;
 import exception.NoMatchesFoundException;

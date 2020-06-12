@@ -1,7 +1,6 @@
 package api;
 
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.data.PossibleMatch;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.MatchedTripRequest;
@@ -40,7 +39,7 @@ public interface Engine {
 
     ObservableList<PossibleRoute> getPossibleRoutes();
 
-    void addNewMatch(PossibleMatch PossibleMatches);
+    void addNewMatch(PossibleRoute possibleRoute);
 
     ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
 

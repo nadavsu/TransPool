@@ -1,4 +1,4 @@
-package data.transpool.map.usused;
+package data.usused;
 
 import data.jaxb.MapDescriptor;
 import data.transpool.map.BasicMapData;

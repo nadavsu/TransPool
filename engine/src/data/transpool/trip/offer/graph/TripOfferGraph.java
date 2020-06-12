@@ -1,7 +1,7 @@
 package data.transpool.trip.offer.graph;
 
-import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
+import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.data.TripOffer;
@@ -35,22 +35,15 @@ public class TripOfferGraph {
     public void add(TripOffer tripOffer) {
         tripOffer
                 .getRoute()
-                .getUsedPaths()
-                .forEach(path -> {
-                    newConnection(path, tripOffer);
-                });
+                .forEach(this::newConnection);
     }
 
-    private void newConnection(Path path, TripOffer tripOffer) {
-        int sourceID = path
-                .getSourceStop()
-                .getID();
-        adjointList
-                .get(sourceID)
-                .add(new SubTripOffer(path, tripOffer));
+    private void newConnection(SubTripOffer subTripOffer) {
+        int sourceID = subTripOffer.getSourceStop().getID();
+        adjointList.get(sourceID).add(subTripOffer);
     }
 
-    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination) {
+    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, LocalTime departureTime, int day) {
         boolean[] beingVisited = new boolean[adjointList.size()];
 
         PossibleRoute currentRoute = new PossibleRoute();
@@ -61,8 +54,8 @@ public class TripOfferGraph {
         return possibleRoutes;
     }
 
-    private void depthFirstTraversal(Stop currentStop, Stop destination, boolean[] beingVisited,
-                                     PossibleRoute currentRoute,
+    private void depthFirstTraversal(Stop currentStop, Stop destination,
+                                     boolean[] beingVisited, PossibleRoute currentRoute,
                                      PossibleRoutesList possibleRoutes) {
         beingVisited[currentStop.getID()] = true;
 
@@ -74,14 +67,55 @@ public class TripOfferGraph {
 
         for (SubTripOffer nextOffer : adjointList.get(currentStop.getID())) {
             if (nextOffer != null && !beingVisited[nextOffer.getDestinationStop().getID()]) {
+                currentRoute.add(nextOffer);
                 if (currentRoute.lastOffer().isBefore(nextOffer) || !nextOffer.getRecurrences().equals("One time")) {
-                    currentRoute.add(nextOffer);
-                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, beingVisited, currentRoute, possibleRoutes);
+                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, beingVisited,
+                            currentRoute, possibleRoutes);
                 }
                 currentRoute.remove(nextOffer);
             }
         }
 
         beingVisited[currentStop.getID()] = false;
+    }
+
+
+/*
+    private void depthFirstTraversal(Stop currentStop, Stop destination,
+                                     boolean[] beingVisited, PossibleRoute currentRoute,
+                                     PossibleRoutesList possibleRoutes) {
+        beingVisited[currentStop.getID()] = true;
+
+        if (currentStop.equals(destination)) {
+            possibleRoutes.add(new PossibleRoute(currentRoute));
+            beingVisited[currentStop.getID()] = false;
+            return;
+        }
+
+        for (SubTripOffer nextOffer : adjointList.get(currentStop.getID())) {
+            if (nextOffer != null && !beingVisited[nextOffer.getDestinationStop().getID()]) {
+                currentRoute.add(nextOffer);
+                if (currentRoute.lastOffer().isBefore(nextOffer) || !nextOffer.getRecurrences().equals("One time")) {
+                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, beingVisited,
+                                        currentRoute, possibleRoutes);
+                }
+                currentRoute.remove(nextOffer);
+            }
+        }
+
+        beingVisited[currentStop.getID()] = false;
+    }
+*/
+
+    private boolean isBefore(LocalTime time1, int day1, LocalTime time2, int day2) {
+        //isBefore(departureTime, day, nextOffer.getTimeOfDepartureFromSource(), nextOffer.getDay())
+        if (day1 < day2) {
+            return true;
+        } else if (day1 == day2) {
+            return time1.isBefore(time2)
+                    || time1.equals(time2);
+        } else {
+            return false;
+        }
     }
 }

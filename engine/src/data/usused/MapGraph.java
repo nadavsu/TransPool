@@ -1,4 +1,4 @@
-package data.transpool.map.usused;
+package data.usused;
 
 import data.transpool.map.BasicMap;
 import data.transpool.util.Graph;

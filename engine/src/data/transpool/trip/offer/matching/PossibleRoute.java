@@ -50,15 +50,10 @@ public class PossibleRoute {
     }
 
     public SubTripOffer lastOffer() {
-        return this.route.get(length - 1);
+            return this.route.get(length - 1);
     }
 
-    //Only offers which are after the last offer, or if they're not one time (or both).
     public void add(SubTripOffer offer) {
-        if (offer.isBefore(lastOffer())) {
-            offer.setNextRecurrence();
-        }
-
         this.route.add(offer);
         this.length++;
 

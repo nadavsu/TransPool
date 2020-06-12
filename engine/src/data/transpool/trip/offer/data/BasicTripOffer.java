@@ -1,6 +1,5 @@
 package data.transpool.trip.offer.data;
 
-import data.transpool.trip.Route;
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.DoubleProperty;

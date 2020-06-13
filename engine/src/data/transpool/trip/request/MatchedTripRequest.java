@@ -1,6 +1,7 @@
 package data.transpool.trip.request;
 
 import data.transpool.time.TimeDay;
+import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
@@ -11,16 +12,22 @@ import java.time.LocalTime;
 
 public class MatchedTripRequest extends BasicTripRequestData {
 
+    private ObservableList<SubTripOffer> rideDetails;
     private ObservableList<Integer> tripOfferIDs;
     private ObservableList<TransPoolDriver> transpoolDrivers;
     private IntegerProperty tripPrice;
     private DoubleProperty personalFuelConsumption;
     private ObjectProperty<TimeDay> expectedTimeOfArrival;
+    private ObjectProperty<TimeDay> timeOfDeparture;
+    private BooleanProperty isArrival;
 
     public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleRoute possibleRoute) {
         super(tripRequestToMatch);
+        this.isArrival = new SimpleBooleanProperty(tripRequestToMatch.isTimeOfArrival());
+        this.rideDetails = FXCollections.observableArrayList(possibleRoute.getRoute());
         this.tripPrice = new SimpleIntegerProperty(possibleRoute.getTotalPrice());
         this.expectedTimeOfArrival = new SimpleObjectProperty<>(possibleRoute.getTimeOfArrival());
+        this.timeOfDeparture = new SimpleObjectProperty<>(possibleRoute.getTimeOfDeparture());
         this.personalFuelConsumption = new SimpleDoubleProperty(possibleRoute.getAverageFuelConsumption());
         this.tripOfferIDs = FXCollections.observableArrayList();
         this.transpoolDrivers = FXCollections.observableArrayList();
@@ -29,6 +36,22 @@ public class MatchedTripRequest extends BasicTripRequestData {
             tripOfferIDs.add(subTripOffer.getOfferID());
             transpoolDrivers.add(subTripOffer.getTransPoolDriver());
         });
+    }
+
+    public boolean isTimeOfArrival() {
+        return isArrival.get();
+    }
+
+    public BooleanProperty isArrivalProperty() {
+        return isArrival;
+    }
+
+    public ObservableList<SubTripOffer> getRideDetails() {
+        return rideDetails;
+    }
+
+    public ObservableList<TransPoolDriver> getTranspoolDrivers() {
+        return transpoolDrivers;
     }
 
     public ObservableList<Integer> getTripOfferIDs() {
@@ -49,9 +72,6 @@ public class MatchedTripRequest extends BasicTripRequestData {
         return tripPrice;
     }
 
-    public void setTripPrice(int tripPrice) {
-        this.tripPrice.set(tripPrice);
-    }
 
     public double getPersonalFuelConsumption() {
         return personalFuelConsumption.get();
@@ -59,10 +79,6 @@ public class MatchedTripRequest extends BasicTripRequestData {
 
     public DoubleProperty personalFuelConsumptionProperty() {
         return personalFuelConsumption;
-    }
-
-    public void setPersonalFuelConsumption(double personalFuelConsumption) {
-        this.personalFuelConsumption.set(personalFuelConsumption);
     }
 
     public TimeDay getExpectedTimeOfArrival() {
@@ -73,8 +89,12 @@ public class MatchedTripRequest extends BasicTripRequestData {
         return expectedTimeOfArrival;
     }
 
-    public void setExpectedTimeOfArrival(TimeDay expectedTimeOfArrival) {
-        this.expectedTimeOfArrival.set(expectedTimeOfArrival);
+    public TimeDay getTimeOfDeparture() {
+        return timeOfDeparture.get();
+    }
+
+    public ObjectProperty<TimeDay> timeOfDepartureProperty() {
+        return timeOfDeparture;
     }
 
     @Override

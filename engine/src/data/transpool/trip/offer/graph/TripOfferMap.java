@@ -7,6 +7,7 @@ import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
@@ -51,8 +52,19 @@ public class TripOfferMap implements TripOfferEngine {
         return allTripOffers;
     }
 
+    @Override
+    public void updateSubTripOffers(PossibleRoute chosenPossibleRoute) {
+        chosenPossibleRoute.getRoute().forEach(subTripOffer -> {
+            getSubTripOffer(subTripOffer.getOfferID(), subTripOffer.getSubTripOfferID())
+            .updateOnDay(subTripOffer.getDayStart());
+        });
+    }
+
     //----------------------------------------------------------------------------------------------------------------//
 
+    public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
+        return getTripOffer(tripOfferID).getSubTripOffer(subTripOfferID);
+    }
 
     public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, TimeDay departureTime) {
         return tripOfferGraph.getAllPossibleRoutes(source, destination, departureTime);

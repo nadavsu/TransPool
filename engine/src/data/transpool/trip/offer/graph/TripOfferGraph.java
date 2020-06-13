@@ -27,7 +27,6 @@ public class TripOfferGraph {
         for (int i = 0; i < numOfStops; i ++) {
             adjointList.add(new ArrayList<>());
         }
-
         allTripOffers.forEach(this::add);
     }
 

@@ -9,13 +9,11 @@ import data.transpool.trip.request.MatchedTripRequest;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.time.LocalTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Contains the data for a TransPool trip offered by TransPool drivers.
@@ -24,17 +22,15 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private List<SubTripOffer> route;
 
-    private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
     private Map<Stop, LocalTime> timeTable;
     private List<Path> usedPaths;
 
     public TripOfferData(BasicMap map, String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
-        super(driverName, departureTime, dayStart, recurrences, PPK);
+        super(driverName, departureTime, dayStart, recurrences, PPK, passengerCapacity);
         this.route = new ArrayList<>();
         this.timeTable = new HashMap<>();
         this.usedPaths = new ArrayList<>();
-        this.passengerCapacity = new SimpleIntegerProperty(passengerCapacity);
         this.allMatchedRequestsData = FXCollections.observableArrayList();
 
         initializeUsedPaths(route, map);
@@ -53,7 +49,6 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         this.route = new ArrayList<>();
         this.usedPaths = new ArrayList<>();
         this.timeTable = new HashMap<>();
-        this.passengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
         this.allMatchedRequestsData = FXCollections.observableArrayList();
 
         String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
@@ -70,10 +65,9 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     private void initializeSubTripOffers() {
-        usedPaths
-                .forEach(path -> {
-                    route.add(new SubTripOffer(path, this));
-                });
+        for (int i = 0; i < usedPaths.size(); i++) {
+            route.add(new SubTripOffer(i, usedPaths.get(i), this));
+        }
     }
 
     private void initializeTimeTable() {
@@ -124,22 +118,19 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
                 .orElse(0);
     }
 
+    public SubTripOffer getSubTripOffer(int ID) {
+        return route.stream()
+                .filter(subTripOffer -> subTripOffer.getSubTripOfferID() == ID)
+                .findFirst()
+                .orElse(null);
+    }
+
     @Override
     public ObservableList<String> getRouteAsStopsList() {
         ObservableList<String> stopNamesList = FXCollections.observableArrayList();
         stopNamesList.add(route.get(0).getSourceStop().getName());
         route.forEach(subTripOffer -> stopNamesList.add(subTripOffer.getDestinationStop().getName()));
         return stopNamesList;
-    }
-
-    @Override
-    public int getPassengerCapacity() {
-        return passengerCapacity.get();
-    }
-
-    @Override
-    public void setPassengerCapacity(int passengerCapacity) {
-        this.passengerCapacity.set(passengerCapacity);
     }
 
     @Override
@@ -174,21 +165,16 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
      */
     @Override
     public void updateAfterMatch(MatchedTripRequest matchedRequest) {
-        if (passengerCapacity.get() == 0) {
+        if (getMaxPassengerCapacity() == 0) {
             throw new TransPoolRunTimeException();
         }
-        passengerCapacity.set(passengerCapacity.get() - 1);
+        setMaxPassengerCapacity(getMaxPassengerCapacity() - 1);
         allMatchedRequestsData.add(matchedRequest);
     }
 
     @Override
     public LocalTime getDepartureTimeAtStop(Stop stop) {
         return timeTable.get(stop);
-    }
-
-    @Override
-    public IntegerProperty passengerCapacityProperty() {
-        return passengerCapacity;
     }
 
     @Override

@@ -4,7 +4,6 @@ import api.Constants;
 import api.components.card.CardController;
 import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
-import data.transpool.map.component.Stop;
 import data.transpool.user.Feedback;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
@@ -52,7 +51,7 @@ public class TripOfferCardController extends CardController<TripOffer> {
         listViewFeedbacks.setCellFactory((listViewFeedbacks) -> new FeedbackCardController());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
-                "There are ", tripOffer.passengerCapacityProperty(), " spaces left on this ride."));
+                "There are ", tripOffer.maxPassengerCapacityProperty(), " spaces left on this ride."));
         labelTripDuration.textProperty().bind(Bindings.concat(
                 "Trip is about ", tripOffer.tripDurationInMinutesProperty(), " minutes long."));
         labelFuelConsumption.textProperty().bind(Bindings.concat(

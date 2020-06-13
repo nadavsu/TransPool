@@ -83,8 +83,8 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void addNewMatch(PossibleRoute chosenPossibleRoute) {
-        matchingEngine.addNewMatch(data, chosenPossibleRoute);
+    public void addNewMatch(int possibleMatchIndex) {
+        matchingEngine.addNewMatch(data, possibleMatchIndex);
     }
 
     @Override
@@ -102,6 +102,10 @@ public class TransPoolEngine implements Engine {
         return matchingEngine.getPossibleRoutes();
     }
 
+    @Override
+    public ObservableList<String> getPossibleRoutesAsString() {
+        return matchingEngine.getPossibleRoutesAsString();
+    }
     @Override
     public void clearPossibleMatches() {
         matchingEngine.clearPossibleMatches();

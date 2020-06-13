@@ -108,8 +108,8 @@ public class TransPoolController {
 
     }
 
-    public void createNewMatch(PossibleRoute tripOffer) {
-        //engine.addNewMatch(tripOffer);
+    public void createNewMatch(int possibleMatchIndex) {
+        engine.addNewMatch(possibleMatchIndex);
     }
 
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {

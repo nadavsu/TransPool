@@ -162,15 +162,7 @@ public class PossibleRoute {
 
     @Override
     public String toString() {
-        return "Depart from " + route.get(0).getSourceStop() +
-                " with " + route.get(0).getTransPoolDriver() +
-                " at " + route.get(0).getTimeOfDepartureFromSource() +
-                " on day " + route.get(0).getDay() +
-                " and arrive at " + lastOffer().getDestinationStop() +
-                " at " + lastOffer().getTimeOfArrivalAtDestination() +
-                " on day " + lastOffer().getDay() +
-                " with " + lastOffer().getTransPoolDriver();
-/*        StringBuilder str = new StringBuilder();
+        StringBuilder str = new StringBuilder();
         for (SubTripOffer offer : route) {
             str.append(offer.toString());
             str.append("\n");
@@ -178,8 +170,7 @@ public class PossibleRoute {
         str.append("\nTRIP SUMMARY:\n");
         str.append("Total price: ").append(totalPrice).append("\n");
         str.append("Average fuel consumption: ").append(averageFuelConsumption).append("\n");
-        str.append("Time of departure: ").append(timeOfDeparture).append("\n");
         str.append("Time of arrival: ").append(timeOfArrival);
-        return str.toString();*/
+        return str.toString();
     }
 }

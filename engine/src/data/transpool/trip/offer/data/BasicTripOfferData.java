@@ -18,8 +18,9 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     protected IntegerProperty tripDurationInMinutes;
     protected IntegerProperty tripPrice;
     protected DoubleProperty averageFuelConsumption;
+    protected IntegerProperty maxPassengerCapacity;
 
-    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK) throws TransPoolDataException {
+    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK, int maxPassengerCapacity) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(driverName));
         this.PPK = new SimpleIntegerProperty(PPK);
@@ -28,6 +29,7 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
+        this.maxPassengerCapacity = new SimpleIntegerProperty(maxPassengerCapacity);
     }
 
     public BasicTripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
@@ -39,6 +41,7 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
+        this.maxPassengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
     }
 
     public BasicTripOfferData(BasicTripOffer other) {
@@ -136,5 +139,20 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     @Override
     public DoubleProperty averageFuelConsumptionProperty() {
         return averageFuelConsumption;
+    }
+
+    @Override
+    public int getMaxPassengerCapacity() {
+        return maxPassengerCapacity.get();
+    }
+
+    @Override
+    public void setMaxPassengerCapacity(int maxPassengerCapacity) {
+        this.maxPassengerCapacity.set(maxPassengerCapacity);
+    }
+
+    @Override
+    public IntegerProperty maxPassengerCapacityProperty() {
+        return maxPassengerCapacity;
     }
 }

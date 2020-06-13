@@ -8,6 +8,7 @@ import data.transpool.map.BasicMapData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
+import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.graph.TripOfferMap;
@@ -82,10 +83,8 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
 
     @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
-        //allMatchedTripRequests.add(matchedTripRequest);
-        //TripOffer trip = getTripOffer(matchedTripRequest.getTripOfferIDs());
-        //trip.updateAfterMatch(matchedTripRequest);
-        //deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
+        allMatchedTripRequests.add(matchedTripRequest);
+        deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
     }
 
     @Override
@@ -153,6 +152,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         return map.getPath(source, destination);
     }
 
+
     public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
 
         Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {
@@ -166,11 +166,8 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         Predicate<PossibleRoute> continuousRidePredicate = possibleRoute ->
                 !tripRequest.isContinuous() || possibleRoute.isContinuous();
 
-
-        //Todo: Add filter for capacity
-        //Todo: Fix time of arrival
-        PossibleRoutesList list = tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop(), tripRequest.getRequestTime());
-        return list.stream()
+        PossibleRoutesList possibleRoutes = tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop(), tripRequest.getRequestTime());
+        return possibleRoutes.stream()
                 .filter(timeMatchPredicate)
                 .filter(continuousRidePredicate)
                 .limit(maximumMatches)
@@ -184,5 +181,9 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
 
     public BasicMap getMap() {
         return map;
+    }
+
+    public void updateSubTripOffers(PossibleRoute chosenPossibleRoute) {
+        tripOffers.updateSubTripOffers(chosenPossibleRoute);
     }
 }

@@ -20,10 +20,6 @@ public interface TripOffer extends BasicTripOffer {
     IntegerProperty averageRatingProperty();
     Feedback getFeedback(int index);*/
 
-    int getPassengerCapacity();
-    void setPassengerCapacity(int passengerCaparcity);
-    IntegerProperty passengerCapacityProperty();
-
     ObservableList<BasicTripRequest> getAllMatchedRequestsData();
     void setAllMatchedRequestsData(ObservableList<BasicTripRequest> allMatchedRequestsData);
 
@@ -35,4 +31,6 @@ public interface TripOffer extends BasicTripOffer {
     void updateAfterMatch(MatchedTripRequest matchedRequest);
 
     LocalTime getDepartureTimeAtStop(Stop stop);
+
+    SubTripOffer getSubTripOffer(int subTripOfferID);
 }

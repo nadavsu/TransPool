@@ -6,17 +6,18 @@ import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.data.BasicTripOfferData;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
-import exception.data.InvalidDayStartException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
-
+//Todo: maybe remove TimeDay
 //A part of a trip offer.
 public class SubTripOffer extends BasicTripOfferData {
-    private SubTripOffer prevOccurrence;
-    private SubTripOffer nextOccurrence;
+
+    private int subTripOfferID;
 
     //Place
     private ObjectProperty<Stop> sourceStop;
@@ -27,15 +28,17 @@ public class SubTripOffer extends BasicTripOfferData {
     private ObjectProperty<TimeDay> timeOfArrivalAtDestination;
     private StringProperty recurrences;
 
+    //Holds dynamic data
+    private Map<Integer, Integer> dayToCapacityMap;
+
     //Dynamic data
-    private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> currentRequests;
 
-    //Constructor used for intitializing first occurrence
-    public SubTripOffer(Path path, TripOffer tripOffer) {
+    public SubTripOffer(int ID, Path path, TripOffer tripOffer) {
         super(tripOffer);
-//        this.nextOccurrence = null;
-//        this.prevOccurrence = null;
+        this.subTripOfferID = ID;
+        this.currentRequests = FXCollections.observableArrayList(tripOffer.getAllMatchedRequestsData());
+        this.dayToCapacityMap = new HashMap<>();
 
         this.sourceStop = new SimpleObjectProperty<>(path.getSourceStop());
         this.destinationStop = new SimpleObjectProperty<>(path.getDestinationStop());
@@ -53,15 +56,12 @@ public class SubTripOffer extends BasicTripOfferData {
         this.tripPrice = new SimpleIntegerProperty(path.getLength() * PPK.get());
         this.averageFuelConsumption = new SimpleDoubleProperty(path.getFuelConsumption());
         this.tripDurationInMinutes = new SimpleIntegerProperty(path.getPathTime());
-
-
-        this.currentRequests = FXCollections.observableArrayList(tripOffer.getAllMatchedRequestsData());
-        this.passengerCapacity = new SimpleIntegerProperty(tripOffer.getPassengerCapacity());
     }
 
     public SubTripOffer(SubTripOffer other) {
         super(other);
-
+        this.subTripOfferID = other.subTripOfferID;
+        this.dayToCapacityMap = new HashMap<>(other.getDayToCapacityMap());
         this.sourceStop = new SimpleObjectProperty<>(other.getSourceStop());
         this.destinationStop = new SimpleObjectProperty<>(other.getDestinationStop());
 
@@ -74,36 +74,24 @@ public class SubTripOffer extends BasicTripOfferData {
         this.tripDurationInMinutes = new SimpleIntegerProperty(other.getTripDurationInMinutes());
     }
 
-    public Stop getSourceStop() {
-        return sourceStop.get();
+    public int getSubTripOfferID() {
+        return subTripOfferID;
     }
 
-    public ObjectProperty<Stop> sourceStopProperty() {
-        return sourceStop;
+    public Stop getSourceStop() {
+        return sourceStop.get();
     }
 
     public Stop getDestinationStop() {
         return destinationStop.get();
     }
 
-    public ObjectProperty<Stop> destinationStopProperty() {
-        return destinationStop;
+    public int getPassengerCapacityOnDay(int day) {
+        return dayToCapacityMap.get(day);
     }
 
-    public int getPassengerCapacity() {
-        return passengerCapacity.get();
-    }
-
-    public IntegerProperty passengerCapacityProperty() {
-        return passengerCapacity;
-    }
-
-    public void setPassengerCapacity(int passengerCapacity) {
-        this.passengerCapacity.set(passengerCapacity);
-    }
-
-    public ObjectProperty<TimeDay> timeOfArrivalAtDestinationProperty() {
-        return timeOfArrivalAtDestination;
+    public void setPassengerCapacityOnDay(int day, int passengerCapacity) {
+        this.dayToCapacityMap.put(day, passengerCapacity);
     }
 
     public TimeDay getTimeOfArrivalAtDestination() {
@@ -114,16 +102,15 @@ public class SubTripOffer extends BasicTripOfferData {
         return timeOfDepartureFromSource.get();
     }
 
-    public ObjectProperty<TimeDay> timeOfDepartureFromSourceProperty() {
-        return timeOfDepartureFromSource;
-    }
-
     public ObservableList<BasicTripRequest> getCurrentRequests() {
         return currentRequests;
     }
 
+    public Map<Integer, Integer> getDayToCapacityMap() {
+        return dayToCapacityMap;
+    }
 
-    public int getDay() {
+    public int getDayStart() {
         return timeOfDepartureFromSource.get().getDay();
     }
 
@@ -131,69 +118,29 @@ public class SubTripOffer extends BasicTripOfferData {
         return schedule.get().getRecurrences();
     }
 
-    //---------------------
-
-    public SubTripOffer getPrevOccurrence() {
-        return prevOccurrence;
-    }
-
-    public void setPrevOccurrence(SubTripOffer prevOccurrence) {
-        this.prevOccurrence = prevOccurrence;
-    }
-
-    public SubTripOffer getNextOccurrence() {
-        return nextOccurrence;
-    }
-
-    public void setNextOccurrence(SubTripOffer nextOccurrence) {
-        this.nextOccurrence = nextOccurrence;
-    }
-
-    //--------------------
-
-    public boolean isBefore(SubTripOffer other) {
-        if (this.getDay() < other.getDay()) {
-            return true;
-        } else if (this.getDay() == other.getDay()){
-            return this.getTimeOfArrivalAtDestination().isBefore(other.getTimeOfDepartureFromSource())
-                    || this.getTimeOfArrivalAtDestination().equals(other.getTimeOfDepartureFromSource());
+    public void updateOnDay(int day) {
+        if (dayToCapacityMap.get(day) == null) {
+            dayToCapacityMap.put(day, getMaxPassengerCapacity() - 1);
         } else {
-            return false;
+            int currentCapacityOnDay = dayToCapacityMap.get(day);
+            dayToCapacityMap.put(day, currentCapacityOnDay - 1);
         }
     }
 
-/*
-    public SubTripOffer getOccurrenceAfter(TimeDay timeDay) {
+    public boolean getOccurrenceAfter(TimeDay timeDay) {
         if (this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
-            return this;
-        } else if (!this.recurrences.get().equals("OneTime")) {
-            if (this.getNextOccurrence() != null) {
-                return getNextOccurrence();
-            } else {
+            return dayToCapacityMap.get(getDayStart()) == null || dayToCapacityMap.get(getDayStart()) > 0 ;
 
-            }
-        } else {
-            return null;
-        }
-
-        while (getNextOccurrence() != null && !this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
-
-        }
-    }*/
-
-    /*public boolean getOccurrenceAfter(TimeDay timeDay) {
-        if (this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
-            return true;
         } else if (!this.recurrences.get().equals("OneTime")) {
             while (this.getTimeOfArrivalAtDestination().isBefore(timeDay)) {
                 this.getTimeOfArrivalAtDestination().setNextRecurrence(this.getRecurrences());
                 this.getTimeOfDepartureFromSource().setNextRecurrence(this.getRecurrences());
             }
-            return true;
+            return dayToCapacityMap.get(getTimeOfDepartureFromSource().getDay()) == null || dayToCapacityMap.get(getTimeOfDepartureFromSource().getDay()) > 0;
         } else {
             return false;
         }
-    }*/
+    }
 
     @Override
     public String toString() {
@@ -219,4 +166,34 @@ public class SubTripOffer extends BasicTripOfferData {
     public int hashCode() {
         return Objects.hash(sourceStop, destinationStop, schedule, timeOfArrivalAtDestination);
     }
+
+/*    public boolean isBefore(SubTripOffer other) {
+        if (this.getDayStart() < other.getDayStart()) {
+            return true;
+        } else if (this.getDayStart() == other.getDayStart()){
+            return this.getTimeOfArrivalAtDestination().isBefore(other.getTimeOfDepartureFromSource())
+                    || this.getTimeOfArrivalAtDestination().equals(other.getTimeOfDepartureFromSource());
+        } else {
+            return false;
+        }
+    }*/
+
+/*
+    public SubTripOffer getOccurrenceAfter(TimeDay timeDay) {
+        if (this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
+            return this;
+        } else if (!this.recurrences.get().equals("OneTime")) {
+            if (this.getNextOccurrence() != null) {
+                return getNextOccurrence();
+            } else {
+
+            }
+        } else {
+            return null;
+        }
+
+        while (getNextOccurrence() != null && !this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
+
+        }
+    }*/
 }

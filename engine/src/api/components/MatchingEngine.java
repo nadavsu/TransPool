@@ -11,6 +11,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.stream.Collectors;
+
 /**
  * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match
  * and the chosen TP trip to match.
@@ -34,8 +36,10 @@ public class MatchingEngine {
         }
     }
 
-    public void addNewMatch(TransPoolData data, PossibleRoute chosenPossibleRoute) {
+    public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) {
+        PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
         data.addMatchedRequest(new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute));
+        data.updateSubTripOffers(chosenPossibleRoute);
     }
 
 
@@ -53,5 +57,12 @@ public class MatchingEngine {
 
     public BooleanProperty foundMatchesProperty() {
         return foundMatches;
+    }
+
+    public ObservableList<String> getPossibleRoutesAsString() {
+        return possibleRoutes
+                .stream()
+                .map(PossibleRoute::toString)
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
     }
 }

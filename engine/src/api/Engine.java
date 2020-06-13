@@ -39,7 +39,7 @@ public interface Engine {
 
     ObservableList<PossibleRoute> getPossibleRoutes();
 
-    void addNewMatch(PossibleRoute possibleRoute);
+    void addNewMatch(int possibleMatchIndex);
 
     ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
 
@@ -52,4 +52,6 @@ public interface Engine {
     BooleanProperty foundMatchesProperty();
 
     void initiateFeedbackEngine(int riderID);
+
+    ObservableList<String> getPossibleRoutesAsString();
 }

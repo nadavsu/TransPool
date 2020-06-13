@@ -2,6 +2,8 @@ package api.components.card.match;
 
 import api.Constants;
 import api.components.card.CardController;
+import com.jfoenix.controls.JFXListView;
+import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -15,31 +17,28 @@ public class MatchedTripCardController extends CardController<MatchedTripRequest
 
     @FXML private Label labelRiderName;
     @FXML private Label labelRequestID;
-    @FXML private Label labelRequestSource;
-    @FXML private Label labelRequestDestination;
-    @FXML private Label labelTripOfferID;
-    @FXML private Label labelDriverName;
     @FXML private Label labelTripPrice;
     @FXML private Label labelPersonalFuelConsumption;
-    @FXML private Label labelExpectedTimeOfArrival;
+    @FXML private Label labelTime;
+    @FXML private JFXListView<SubTripOffer> listViewRideDetails;
     @FXML private AnchorPane anchorPaneCardBody;
 
     @Override
     protected void initializeValues(MatchedTripRequest request) {
+        listViewRideDetails.setItems(request.getRideDetails());
         labelRequestID.textProperty().bind(request.requestIDProperty().asString());
         labelRiderName.textProperty().bind(request.getTransPoolRider().usernameProperty());
-        labelRequestSource.textProperty().bind(Bindings.concat("Gets on at ", request.sourceStopProperty()));
-        labelRequestDestination.textProperty().bind(Bindings.concat("Gets off at ", request.destinationStopProperty()));
-        //labelTripOfferID.textProperty().bind(request.tripOfferIDsProperty().asString());
-        //labelDriverName.textProperty().bind(Bindings.concat(
-        //        "Riding with ", request.getTransPoolDrivers().getUsername()));
+
         labelTripPrice.textProperty().bind(Bindings.concat(
                 "Trip price: ", request.getTripPrice()));
         labelPersonalFuelConsumption.textProperty().bind(Bindings.concat(
                 "By travelling by TransPool, you have saved ", request.getPersonalFuelConsumption()
                 , " litres of fuel!"));
-        labelExpectedTimeOfArrival.textProperty().bind(Bindings.concat(
-                "Expected to arrive by ", request.getExpectedTimeOfArrival()));
+        labelTime.textProperty().bind(Bindings
+                .when(request.isArrivalProperty())
+                .then(Bindings.concat("Depart at ", request.getTimeOfDeparture()))
+                .otherwise(Bindings.concat("Arrive by ", request.getExpectedTimeOfArrival()))
+        );
     }
 
     @Override

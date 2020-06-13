@@ -31,6 +31,10 @@ public interface BasicTripOffer {
     double getAverageFuelConsumption();
     DoubleProperty averageFuelConsumptionProperty();
 
+    int getMaxPassengerCapacity();
+    void setMaxPassengerCapacity(int maxPassengerCapacity);
+    IntegerProperty maxPassengerCapacityProperty();
+
 
 
 

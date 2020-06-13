@@ -1,6 +1,7 @@
 package data.transpool.trip.request;
 
 import data.transpool.map.component.Stop;
+import data.transpool.time.TimeDay;
 import exception.data.InvalidDayStartException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
@@ -10,16 +11,14 @@ import java.util.Objects;
 
 public class TripRequestData extends BasicTripRequestData implements TripRequest {
 
-    private IntegerProperty day;
-    private SimpleObjectProperty<LocalTime> requestTime;
+    private SimpleObjectProperty<TimeDay> requestTime;
     private BooleanProperty isTimeOfArrival;
     private SimpleBooleanProperty isContinuous;
 
     public TripRequestData(String riderName, Stop sourceStop, Stop destinationStop, int day,
                            LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) throws TransPoolDataException {
         super(riderName, sourceStop, destinationStop);
-        this.day = new SimpleIntegerProperty();
-        this.requestTime = new SimpleObjectProperty<>(requestTime);
+        this.requestTime = new SimpleObjectProperty<>(new TimeDay(requestTime, day));
         this.isTimeOfArrival = new SimpleBooleanProperty(isTimeOfArrival);
         this.isContinuous = new SimpleBooleanProperty(isContinuous);
         setDay(day);
@@ -32,25 +31,12 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     }
 
     @Override
-    public LocalTime getRequestTime() {
+    public TimeDay getRequestTime() {
         return requestTime.get();
     }
 
-    @Override
-    public int getDay() {
-        return day.get();
-    }
-
-    @Override
-    public IntegerProperty dayProperty() {
-        return day;
-    }
-
     private void setDay(int day) throws InvalidDayStartException {
-        if (day < 1) {
-            throw new InvalidDayStartException();
-        }
-        this.day.set(day);
+        requestTime.get().setDay(day);
     }
 
     @Override
@@ -69,7 +55,7 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     }
 
     @Override
-    public SimpleObjectProperty<LocalTime> requestTimeProperty() {
+    public SimpleObjectProperty<TimeDay> requestTimeProperty() {
         return requestTime;
     }
 

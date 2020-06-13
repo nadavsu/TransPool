@@ -1,10 +1,12 @@
 package data.transpool.trip;
 
+import exception.TransPoolRunTimeException;
 import exception.data.InvalidDayStartException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 public class Scheduling {
 
@@ -89,5 +91,20 @@ public class Scheduling {
     @Override
     public String toString() {
         return recurrences + " on day " + dayStart + " at time " + departureTime;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Scheduling)) return false;
+        Scheduling that = (Scheduling) o;
+        return Objects.equals(dayStart, that.dayStart) &&
+                Objects.equals(recurrences, that.recurrences) &&
+                Objects.equals(departureTime, that.departureTime);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(dayStart, recurrences, departureTime);
     }
 }

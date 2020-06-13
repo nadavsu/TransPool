@@ -1,5 +1,6 @@
 package data.transpool.trip.request;
 
+import data.transpool.time.TimeDay;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,13 +12,10 @@ public interface TripRequest extends BasicTripRequest {
     boolean isTimeOfArrival();
     BooleanProperty isTimeOfArrivalProperty();
 
-    LocalTime getRequestTime();
-    SimpleObjectProperty<LocalTime> requestTimeProperty();
+    TimeDay getRequestTime();
+    SimpleObjectProperty<TimeDay> requestTimeProperty();
 
     boolean isContinuous();
     SimpleBooleanProperty isContinuousProperty();
-
-    int getDay();
-    IntegerProperty dayProperty();
 
 }

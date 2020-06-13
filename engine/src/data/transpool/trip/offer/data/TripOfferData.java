@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
  */
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
-    private List<SubTripOffer> route;       //rename to route.
+    private List<SubTripOffer> route;
 
     private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> allMatchedRequestsData;

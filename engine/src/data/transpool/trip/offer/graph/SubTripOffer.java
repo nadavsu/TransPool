@@ -2,46 +2,52 @@ package data.transpool.trip.offer.graph;
 
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.trip.Scheduling;
+import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.data.BasicTripOfferData;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
+import exception.data.InvalidDayStartException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.LocalTime;
+import java.util.Objects;
 
-//Todo: something with the scheduling that is inherited from BTOD
-//Todo: you stopped here with the next and prev occurrence and the getNextOccurrence in possibleRoute.
 //A part of a trip offer.
 public class SubTripOffer extends BasicTripOfferData {
-    private SubTripOffer nextOccurrence;
     private SubTripOffer prevOccurrence;
+    private SubTripOffer nextOccurrence;
 
     //Place
     private ObjectProperty<Stop> sourceStop;
     private ObjectProperty<Stop> destinationStop;
 
     //Time data
-    private IntegerProperty day;
+    private ObjectProperty<TimeDay> timeOfDepartureFromSource;
+    private ObjectProperty<TimeDay> timeOfArrivalAtDestination;
     private StringProperty recurrences;
-    private ObjectProperty<LocalTime> timeOfDepartureFromSource;
-    private ObjectProperty<LocalTime> timeOfArrivalAtDestination;
 
     //Dynamic data
     private IntegerProperty passengerCapacity;
     private ObservableList<BasicTripRequest> currentRequests;
 
-    //Constructor used for initializing first occurrence
+    //Constructor used for intitializing first occurrence
     public SubTripOffer(Path path, TripOffer tripOffer) {
         super(tripOffer);
+//        this.nextOccurrence = null;
+//        this.prevOccurrence = null;
+
         this.sourceStop = new SimpleObjectProperty<>(path.getSourceStop());
         this.destinationStop = new SimpleObjectProperty<>(path.getDestinationStop());
 
-        this.day = new SimpleIntegerProperty(tripOffer.getScheduling().getDayStart());
-        this.timeOfDepartureFromSource = new SimpleObjectProperty<>(tripOffer.getDepartureTimeAtStop(sourceStop.get()));
-        this.timeOfArrivalAtDestination = new SimpleObjectProperty<>(tripOffer.getDepartureTimeAtStop(destinationStop.get()));
+        this.timeOfDepartureFromSource = new SimpleObjectProperty<>(new TimeDay(
+                tripOffer.getDepartureTimeAtStop(sourceStop.get()),
+                tripOffer.getScheduling().getDayStart()
+        ));
+        this.timeOfArrivalAtDestination = new SimpleObjectProperty<>(new TimeDay(
+                tripOffer.getDepartureTimeAtStop(destinationStop.get()),
+                tripOffer.getScheduling().getDayStart()
+        ));
         this.recurrences = new SimpleStringProperty(tripOffer.getScheduling().getRecurrences());
 
         this.tripPrice = new SimpleIntegerProperty(path.getLength() * PPK.get());
@@ -50,8 +56,22 @@ public class SubTripOffer extends BasicTripOfferData {
 
 
         this.currentRequests = FXCollections.observableArrayList(tripOffer.getAllMatchedRequestsData());
-       this.passengerCapacity = new SimpleIntegerProperty(tripOffer.getPassengerCapacity());
+        this.passengerCapacity = new SimpleIntegerProperty(tripOffer.getPassengerCapacity());
+    }
 
+    public SubTripOffer(SubTripOffer other) {
+        super(other);
+
+        this.sourceStop = new SimpleObjectProperty<>(other.getSourceStop());
+        this.destinationStop = new SimpleObjectProperty<>(other.getDestinationStop());
+
+        this.timeOfDepartureFromSource = new SimpleObjectProperty<>(new TimeDay(other.timeOfDepartureFromSource.get()));
+        this.timeOfArrivalAtDestination = new SimpleObjectProperty<>(new TimeDay(other.timeOfArrivalAtDestination.get()));
+        this.recurrences = new SimpleStringProperty(other.getRecurrences());
+
+        this.tripPrice = new SimpleIntegerProperty(other.getPrice());
+        this.averageFuelConsumption = new SimpleDoubleProperty(other.getAverageFuelConsumption());
+        this.tripDurationInMinutes = new SimpleIntegerProperty(other.getTripDurationInMinutes());
     }
 
     public Stop getSourceStop() {
@@ -82,19 +102,19 @@ public class SubTripOffer extends BasicTripOfferData {
         this.passengerCapacity.set(passengerCapacity);
     }
 
-    public LocalTime getTimeOfArrivalAtDestination() {
-        return timeOfArrivalAtDestination.get();
-    }
-
-    public ObjectProperty<LocalTime> timeOfArrivalAtDestinationProperty() {
+    public ObjectProperty<TimeDay> timeOfArrivalAtDestinationProperty() {
         return timeOfArrivalAtDestination;
     }
 
-    public LocalTime getTimeOfDepartureFromSource() {
+    public TimeDay getTimeOfArrivalAtDestination() {
+        return timeOfArrivalAtDestination.get();
+    }
+
+    public TimeDay getTimeOfDepartureFromSource() {
         return timeOfDepartureFromSource.get();
     }
 
-    public ObjectProperty<LocalTime> timeOfDepartureFromSourceProperty() {
+    public ObjectProperty<TimeDay> timeOfDepartureFromSourceProperty() {
         return timeOfDepartureFromSource;
     }
 
@@ -102,43 +122,101 @@ public class SubTripOffer extends BasicTripOfferData {
         return currentRequests;
     }
 
-    public int getDay() {
-        return day.get();
-    }
 
-    public IntegerProperty dayProperty() {
-        return day;
+    public int getDay() {
+        return timeOfDepartureFromSource.get().getDay();
     }
 
     public String getRecurrences() {
-        return recurrences.get();
+        return schedule.get().getRecurrences();
     }
 
-    public StringProperty recurrencesProperty() {
-        return recurrences;
+    //---------------------
+
+    public SubTripOffer getPrevOccurrence() {
+        return prevOccurrence;
     }
+
+    public void setPrevOccurrence(SubTripOffer prevOccurrence) {
+        this.prevOccurrence = prevOccurrence;
+    }
+
+    public SubTripOffer getNextOccurrence() {
+        return nextOccurrence;
+    }
+
+    public void setNextOccurrence(SubTripOffer nextOccurrence) {
+        this.nextOccurrence = nextOccurrence;
+    }
+
+    //--------------------
 
     public boolean isBefore(SubTripOffer other) {
-        if (this.day.get() < other.day.get()) {
+        if (this.getDay() < other.getDay()) {
             return true;
-        } else if (this.day.get() == other.day.get()) {
-            return this.timeOfArrivalAtDestination.get().isBefore(other.timeOfDepartureFromSource.get())
-                    || this.timeOfArrivalAtDestination.get().equals(other.timeOfArrivalAtDestination.get());
+        } else if (this.getDay() == other.getDay()){
+            return this.getTimeOfArrivalAtDestination().isBefore(other.getTimeOfDepartureFromSource())
+                    || this.getTimeOfArrivalAtDestination().equals(other.getTimeOfDepartureFromSource());
         } else {
             return false;
         }
     }
 
-    public SubTripOffer getNextOcurrence() {
-        return nextOccurrence;
-    }
+/*
+    public SubTripOffer getOccurrenceAfter(TimeDay timeDay) {
+        if (this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
+            return this;
+        } else if (!this.recurrences.get().equals("OneTime")) {
+            if (this.getNextOccurrence() != null) {
+                return getNextOccurrence();
+            } else {
+
+            }
+        } else {
+            return null;
+        }
+
+        while (getNextOccurrence() != null && !this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
+
+        }
+    }*/
+
+    /*public boolean getOccurrenceAfter(TimeDay timeDay) {
+        if (this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
+            return true;
+        } else if (!this.recurrences.get().equals("OneTime")) {
+            while (this.getTimeOfArrivalAtDestination().isBefore(timeDay)) {
+                this.getTimeOfArrivalAtDestination().setNextRecurrence(this.getRecurrences());
+                this.getTimeOfDepartureFromSource().setNextRecurrence(this.getRecurrences());
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }*/
 
     @Override
     public String toString() {
         return "Depart from " + getSourceStop() +
                 " with " + getTransPoolDriver() +
-                " at time " + getTimeOfDepartureFromSource() +
+                " at " + getTimeOfDepartureFromSource() +
                 " and arrive at " + getDestinationStop() +
-                " at time " + getTimeOfArrivalAtDestination();
+                " at " + getTimeOfArrivalAtDestination();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SubTripOffer)) return false;
+        SubTripOffer that = (SubTripOffer) o;
+        return Objects.equals(sourceStop, that.sourceStop) &&
+                Objects.equals(destinationStop, that.destinationStop) &&
+                Objects.equals(schedule, that.schedule) &&
+                Objects.equals(timeOfArrivalAtDestination, that.timeOfArrivalAtDestination);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sourceStop, destinationStop, schedule, timeOfArrivalAtDestination);
     }
 }

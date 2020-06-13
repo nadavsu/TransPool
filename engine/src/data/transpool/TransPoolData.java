@@ -7,6 +7,7 @@ import data.transpool.map.BasicMap;
 import data.transpool.map.BasicMapData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
+import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.graph.TripOfferMap;
@@ -166,20 +167,19 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
                 !tripRequest.isContinuous() || possibleRoute.isContinuous();
 
 
-        //If the time of arrival before is the time of departure, then add a multiple of the recurrences.
-        //If the recurrences are one-time - then don't.
         //Todo: Add filter for capacity
         //Todo: Fix time of arrival
-        return tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop())
-                .stream()
+        PossibleRoutesList list = tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop(), tripRequest.getRequestTime());
+        return list.stream()
                 .filter(timeMatchPredicate)
                 .filter(continuousRidePredicate)
                 .limit(maximumMatches)
                 .collect(Collectors.toCollection(PossibleRoutesList::new));
+
     }
 
-    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination) {
-        return tripOffers.getAllPossibleRoutes(source, destination);
+    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, TimeDay departureTime) {
+        return tripOffers.getAllPossibleRoutes(source, destination, departureTime);
     }
 
     public BasicMap getMap() {

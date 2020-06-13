@@ -4,6 +4,7 @@ import api.components.TripOfferEngine;
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
+import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
@@ -53,8 +54,8 @@ public class TripOfferMap implements TripOfferEngine {
     //----------------------------------------------------------------------------------------------------------------//
 
 
-    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination) {
-        return tripOfferGraph.getAllPossibleRoutes(source, destination);
+    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, TimeDay departureTime) {
+        return tripOfferGraph.getAllPossibleRoutes(source, destination, departureTime);
     }
 
     public TripOfferGraph getTripOfferGraph() {

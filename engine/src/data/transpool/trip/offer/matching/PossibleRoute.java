@@ -1,9 +1,9 @@
 package data.transpool.trip.offer.matching;
 
+import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.user.TransPoolDriver;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +18,12 @@ public class PossibleRoute {
     private boolean isContinuous;
 
     private double averageFuelConsumption;
-    private LocalTime timeOfArrival;
-    private LocalTime timeOfDeparture;
-    private int dayStart;
-    private int dayEnd;
+    private TimeDay timeOfArrival;
+    private TimeDay timeOfDeparture;
 
     public PossibleRoute() {
         this.route = new ArrayList<>();
         this.length = 0;
-        this.dayEnd = 0;
-        this.dayStart = 0;
         this.totalPrice = 0;
         this.totalTripDuration = 0;
         this.totalFuelConsumption = 0;
@@ -38,58 +34,65 @@ public class PossibleRoute {
     public PossibleRoute(PossibleRoute other) {
         this.route = new ArrayList<>(other.route);
         this.length = other.length;
-        this.dayEnd = other.dayEnd;
-        this.dayStart = other.dayStart;
         this.totalPrice = other.totalPrice;
         this.totalTripDuration = other.totalTripDuration;
         this.totalFuelConsumption = other.totalFuelConsumption;
         this.averageFuelConsumption = other.averageFuelConsumption;
         this.isContinuous = other.isContinuous;
-        this.timeOfArrival = other.timeOfArrival;
-        this.timeOfDeparture = other.timeOfDeparture;
+        this.timeOfArrival = new TimeDay(other.timeOfArrival);
+        this.timeOfDeparture = new TimeDay(other.timeOfDeparture);
     }
 
-    public SubTripOffer lastOffer() {
-            return this.route.get(length - 1);
+    public boolean add(SubTripOffer offer, TimeDay departureTime) {
+        if (offer.getOccurrenceAfter(departureTime)) {
+            if (length == 0) {
+                return this.addToEmpty(offer);
+            } else {
+                return this.addToNotEmpty(offer);
+            }
+        } else {
+            return false;
+        }
     }
 
-    public void add(SubTripOffer offer) {
+    private boolean addToEmpty(SubTripOffer offer) {
         this.route.add(offer);
         this.length++;
 
-        if (length <= 1) {
-            this.isContinuous = true;
-            this.timeOfDeparture = offer.getTimeOfDepartureFromSource();
-            this.dayStart = offer.getDay();
-        } else {
-            this.isContinuous = isContinuous
-                    && route.get(length - 2).getTransPoolDriver()
-                    .equals(route.get(length - 1).getTransPoolDriver());
-        }
+        this.isContinuous = true;
+        this.timeOfDeparture = new TimeDay(offer.getTimeOfDepartureFromSource());
         this.totalPrice += offer.getPrice();
         this.totalFuelConsumption += offer.getAverageFuelConsumption();
         this.totalTripDuration += offer.getTripDurationInMinutes();
         this.averageFuelConsumption = totalFuelConsumption / length;
-        this.timeOfArrival = offer.getTimeOfArrivalAtDestination();
+        this.timeOfArrival = new TimeDay(offer.getTimeOfArrivalAtDestination());
+        return true;
+    }
 
-/*        if (offer.getTimeOfArrivalAtDestination().isBefore(timeOfArrival)) {
-            updateDayEnd();
-        }*/
+    private boolean addToNotEmpty(SubTripOffer offer) {
+        this.route.add(offer);
+        this.length++;
 
+        this.totalPrice += offer.getPrice();
+        this.totalFuelConsumption += offer.getAverageFuelConsumption();
+        this.totalTripDuration += offer.getTripDurationInMinutes();
+        this.averageFuelConsumption = totalFuelConsumption / length;
+        this.timeOfArrival = new TimeDay(offer.getTimeOfArrivalAtDestination());
+        this.isContinuous = isContinuous && route.get(length - 2).getTransPoolDriver()
+                .equals(route.get(length - 1).getTransPoolDriver());
+        return true;
     }
 
     public void remove(SubTripOffer offer) {
-        this.route.remove(offer);
+        this.route.remove(length - 1);
         this.length--;
         this.totalPrice -= offer.getPrice();
         this.totalFuelConsumption -= offer.getAverageFuelConsumption();
         this.totalTripDuration -= offer.getTripDurationInMinutes();
-
         if (!isContinuous) {
             checkContinuous();
         }
         if(length > 0) {
-            this.dayEnd = route.get(length - 1).getDay();
             this.averageFuelConsumption = totalFuelConsumption / length;
             this.timeOfArrival = route.get(length - 1).getTimeOfArrivalAtDestination();
         } else {
@@ -97,6 +100,10 @@ public class PossibleRoute {
             this.timeOfArrival = null;
             this.timeOfDeparture = null;
         }
+    }
+
+    public SubTripOffer lastOffer() {
+        return this.route.get(length - 1);
     }
 
     private void checkContinuous() {
@@ -133,7 +140,7 @@ public class PossibleRoute {
         return totalTripDuration;
     }
 
-    public LocalTime getTimeOfArrival() {
+    public TimeDay getTimeOfArrival() {
         return timeOfArrival;
     }
 
@@ -141,30 +148,38 @@ public class PossibleRoute {
         return totalFuelConsumption;
     }
 
-    public LocalTime getTimeOfDeparture() {
+    public TimeDay getTimeOfDeparture() {
         return timeOfDeparture;
     }
 
     public int getDayStart() {
-        return dayStart;
+        return timeOfDeparture.getDay();
     }
 
     public int getDayEnd() {
-        return dayEnd;
+        return timeOfArrival.getDay();
     }
 
     @Override
     public String toString() {
-        StringBuilder str = new StringBuilder();
+        return "Depart from " + route.get(0).getSourceStop() +
+                " with " + route.get(0).getTransPoolDriver() +
+                " at " + route.get(0).getTimeOfDepartureFromSource() +
+                " on day " + route.get(0).getDay() +
+                " and arrive at " + lastOffer().getDestinationStop() +
+                " at " + lastOffer().getTimeOfArrivalAtDestination() +
+                " on day " + lastOffer().getDay() +
+                " with " + lastOffer().getTransPoolDriver();
+/*        StringBuilder str = new StringBuilder();
         for (SubTripOffer offer : route) {
             str.append(offer.toString());
             str.append("\n");
         }
-        str.append("TRIP SUMMARY:\n");
+        str.append("\nTRIP SUMMARY:\n");
         str.append("Total price: ").append(totalPrice).append("\n");
         str.append("Average fuel consumption: ").append(averageFuelConsumption).append("\n");
         str.append("Time of departure: ").append(timeOfDeparture).append("\n");
         str.append("Time of arrival: ").append(timeOfArrival);
-        return str.toString();
+        return str.toString();*/
     }
 }

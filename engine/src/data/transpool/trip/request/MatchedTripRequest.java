@@ -1,5 +1,6 @@
 package data.transpool.trip.request;
 
+import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
@@ -14,7 +15,7 @@ public class MatchedTripRequest extends BasicTripRequestData {
     private ObservableList<TransPoolDriver> transpoolDrivers;
     private IntegerProperty tripPrice;
     private DoubleProperty personalFuelConsumption;
-    private ObjectProperty<LocalTime> expectedTimeOfArrival;
+    private ObjectProperty<TimeDay> expectedTimeOfArrival;
 
     public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleRoute possibleRoute) {
         super(tripRequestToMatch);
@@ -64,15 +65,15 @@ public class MatchedTripRequest extends BasicTripRequestData {
         this.personalFuelConsumption.set(personalFuelConsumption);
     }
 
-    public LocalTime getExpectedTimeOfArrival() {
+    public TimeDay getExpectedTimeOfArrival() {
         return expectedTimeOfArrival.get();
     }
 
-    public ObjectProperty<LocalTime> expectedTimeOfArrivalProperty() {
+    public ObjectProperty<TimeDay> expectedTimeOfArrivalProperty() {
         return expectedTimeOfArrival;
     }
 
-    public void setExpectedTimeOfArrival(LocalTime expectedTimeOfArrival) {
+    public void setExpectedTimeOfArrival(TimeDay expectedTimeOfArrival) {
         this.expectedTimeOfArrival.set(expectedTimeOfArrival);
     }
 

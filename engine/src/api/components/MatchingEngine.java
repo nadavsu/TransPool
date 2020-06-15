@@ -37,8 +37,9 @@ public class MatchingEngine {
 
     public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
-        data.addMatchedRequest(new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute));
-        data.updateSubTripOffers(chosenPossibleRoute);
+        MatchedTripRequest matchedTripRequest = new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute);
+        data.addMatchedRequest(matchedTripRequest);
+        data.updateAfterMatch(chosenPossibleRoute, matchedTripRequest);
     }
 
 

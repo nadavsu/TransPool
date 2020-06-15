@@ -2,6 +2,7 @@ package api.components;
 
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.request.MatchedTripRequest;
 import javafx.collections.ObservableList;
 
 public interface TripOfferEngine {
@@ -12,5 +13,5 @@ public interface TripOfferEngine {
 
     ObservableList<TripOffer> getAllTripOffers();
 
-    void updateSubTripOffers(PossibleRoute chosenPossibleRoute);
+    void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest);
 }

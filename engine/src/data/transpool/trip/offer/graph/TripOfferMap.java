@@ -9,6 +9,7 @@ import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
+import data.transpool.trip.request.MatchedTripRequest;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -53,7 +54,7 @@ public class TripOfferMap implements TripOfferEngine {
     }
 
     @Override
-    public void updateSubTripOffers(PossibleRoute chosenPossibleRoute) {
+    public void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest) {
         for (SubTripOffer subTripOffer : chosenPossibleRoute.getRoute()) {
             getSubTripOffer(
                     subTripOffer.getOfferID(),

@@ -183,7 +183,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         return map;
     }
 
-    public void updateSubTripOffers(PossibleRoute chosenPossibleRoute) {
-        tripOffers.updateSubTripOffers(chosenPossibleRoute);
+    public void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest) {
+        tripOffers.updateAfterMatch(chosenPossibleRoute, matchedTripRequest);
     }
 }

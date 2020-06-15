@@ -3,10 +3,10 @@ package exception;
 /**
  * Thrown when no matches were found for a ride request.
  */
-public class NoMatchesFoundException extends TransPoolRunTimeException {
-    private final String EXCEPTION_MESSAGE = "We couldn't find any matches for the your ride :(";
+public class NoResultsFoundException extends TransPoolRunTimeException {
+    private final String EXCEPTION_MESSAGE = "We couldn't find any results for your search :(";
 
-    public NoMatchesFoundException() {
+    public NoResultsFoundException() {
     }
 
     @Override

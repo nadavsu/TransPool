@@ -10,9 +10,13 @@ import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import data.transpool.trip.request.TripRequestData;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
+import data.transpool.user.TransPoolDriver;
+import exception.NoResultsFoundException;
+import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -90,9 +94,9 @@ public class TransPoolController {
     }
 
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
-                                  LocalTime time, boolean isArrivalTime, boolean isContinuous){
+                                  int day, LocalTime time, boolean isArrivalTime, boolean isContinuous){
         try {
-            engine.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, isContinuous);
+            engine.createNewTransPoolTripRequest(riderName, source, destination, day, time, isArrivalTime, isContinuous);
         } catch (TransPoolDataException e) {
             showAlert(e);
         }
@@ -108,12 +112,24 @@ public class TransPoolController {
 
     }
 
-    public void createNewMatch(PossibleMatch tripOffer) {
-        engine.addNewMatch(tripOffer);
+    public void createNewMatch(int possibleMatchIndex) {
+        engine.addNewMatch(possibleMatchIndex);
     }
 
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {
-        engine.findPossibleMatches(requestToMatch, numOfResults);
+        try {
+            engine.findPossibleMatches(requestToMatch, numOfResults);
+        } catch (NoResultsFoundException | TransPoolDataException e) {
+            showAlert(e);
+        }
+    }
+
+    public void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment) {
+        try {
+            engine.createNewFeedback(feedbacker, feedbackee, rating, comment);
+        } catch (TransPoolRunTimeException e) {
+            showAlert(e);
+        }
     }
 
     public Stage getPrimaryStage() {
@@ -184,17 +200,13 @@ public class TransPoolController {
         feedbackComponentController.bindUIToData(data);
     }
 
+    public void updateCard() {
+        dataBarComponentController.updateUI();
+    }
+
     public void showAlert(Exception e) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
         errorAlert.setHeaderText(null);
         errorAlert.showAndWait();
-    }
-
-    public ObservableList<Integer> getAllMatchedTripRequestIDs() {
-        return engine.getAllMatchedTripRequestIDs();
-    }
-
-    public void initiateFeedbackEngine(int riderID) {
-        engine.initiateFeedbackEngine(riderID);
     }
 }

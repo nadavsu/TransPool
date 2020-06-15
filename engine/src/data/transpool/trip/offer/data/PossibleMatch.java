@@ -1,6 +1,6 @@
-package data.transpool.trip.offer;
+/*
+package data.transpool.trip.offer.data;
 
-import data.transpool.trip.Route;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
@@ -9,23 +9,36 @@ import java.time.LocalTime;
 public class PossibleMatch extends BasicTripOfferData {
 
     private ObjectProperty<LocalTime> estimatedTimeOfArrival;
+    private ObjectProperty<Route> route;
 
     public PossibleMatch(String sourceStop, String destinationStop, TripOffer possibleTripOffer) {
         super(possibleTripOffer);
         this.estimatedTimeOfArrival = new SimpleObjectProperty<>();
-        this.route = new SimpleObjectProperty<>(possibleTripOffer.getRoute().subRoute(sourceStop, destinationStop));
+        //this.route = new SimpleObjectProperty<>(possibleTripOffer.getRoute().subRoute(sourceStop, destinationStop));
         initialize();
     }
 
 
-    @Override
     public void initialize() {
-        this.tripPrice.set(calculatePriceOfRoute(getRoute(), getPPK()));
-        this.tripDurationInMinutes.set(calculateTripDuration(getRoute()));
-        this.averageFuelConsumption.set(calculateAverageFuelConsumption(getRoute()));
+        this.tripPrice.set(getRoute().calculatePriceOfRoute(getPPK()));
+        this.tripDurationInMinutes.set(getRoute().calculateTripDuration());
+        this.averageFuelConsumption.set(getRoute().calculateAverageFuelConsumption());
         this.estimatedTimeOfArrival.set(getScheduling()
                 .getDepartureTime()
                 .plusMinutes(getTripDurationInMinutes()));
+    }
+
+
+    public Route getRoute() {
+        return route.get();
+    }
+
+    public void setRoute(Route route) {
+        this.route.set(route);
+    }
+
+    public ObjectProperty<Route> routeProperty() {
+        return route;
     }
 
     public LocalTime getEstimatedTimeOfArrival() {
@@ -43,3 +56,4 @@ public class PossibleMatch extends BasicTripOfferData {
 
     }
 }
+*/

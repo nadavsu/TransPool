@@ -1,5 +1,9 @@
 package data.transpool.trip.request;
 
+import data.transpool.map.component.Stop;
+import data.transpool.time.TimeDay;
+import exception.data.InvalidDayStartException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
@@ -7,16 +11,17 @@ import java.util.Objects;
 
 public class TripRequestData extends BasicTripRequestData implements TripRequest {
 
+    private SimpleObjectProperty<TimeDay> requestTime;
     private BooleanProperty isTimeOfArrival;
-    private SimpleObjectProperty<LocalTime> requestTime;
     private SimpleBooleanProperty isContinuous;
 
-    public TripRequestData(String riderName, String sourceStop, String destinationStop,
-                           LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) {
+    public TripRequestData(String riderName, Stop sourceStop, Stop destinationStop, int day,
+                           LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) throws TransPoolDataException {
         super(riderName, sourceStop, destinationStop);
+        this.requestTime = new SimpleObjectProperty<>(new TimeDay(requestTime, day));
         this.isTimeOfArrival = new SimpleBooleanProperty(isTimeOfArrival);
-        this.requestTime = new SimpleObjectProperty<>(requestTime);
         this.isContinuous = new SimpleBooleanProperty(isContinuous);
+        setDay(day);
     }
 
 
@@ -26,28 +31,17 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     }
 
     @Override
-    public void setIsTimeOfArrival(boolean isTimeOfArrival) {
-        this.isTimeOfArrival.set(isTimeOfArrival);
-    }
-
-    @Override
-    public LocalTime getRequestTime() {
+    public TimeDay getRequestTime() {
         return requestTime.get();
     }
 
-    @Override
-    public void setRequestTime(LocalTime requestTime) {
-        this.requestTime.set(requestTime);
+    private void setDay(int day) throws InvalidDayStartException {
+        requestTime.get().setDay(day);
     }
 
     @Override
     public boolean isContinuous() {
         return isContinuous.get();
-    }
-
-    @Override
-    public void setContinuous(boolean isContinuous) {
-        this.isContinuous.set(isContinuous);
     }
 
     @Override
@@ -61,7 +55,7 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     }
 
     @Override
-    public SimpleObjectProperty<LocalTime> requestTimeProperty() {
+    public SimpleObjectProperty<TimeDay> requestTimeProperty() {
         return requestTime;
     }
 

@@ -1,12 +1,9 @@
 package data.transpool.trip.request;
 
-import data.transpool.trip.Route;
-import data.transpool.trip.Scheduling;
+import data.transpool.map.component.Stop;
 import data.transpool.user.TransPoolRider;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.StringProperty;
 
 public interface BasicTripRequest {
     TransPoolRider getTransPoolRider();
@@ -16,11 +13,11 @@ public interface BasicTripRequest {
     int getRequestID();
     IntegerProperty requestIDProperty();
 
-    String getSourceStop();
-    void setSourceStop(String sourceStop);
-    StringProperty sourceStopProperty();
+    Stop getSourceStop();
+    void setSourceStop(Stop sourceStop);
+    ObjectProperty<Stop> sourceStopProperty();
 
-    String getDestinationStop();
-    void setDestinationStop(String destinatinStop);
-    StringProperty destinationStopProperty();
+    Stop getDestinationStop();
+    void setDestinationStop(Stop destinationStop);
+    ObjectProperty<Stop> destinationStopProperty();
 }

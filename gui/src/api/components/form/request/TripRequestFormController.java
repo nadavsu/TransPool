@@ -22,12 +22,9 @@ public class TripRequestFormController extends FormController {
     @FXML private JFXTextField textFieldRiderName;
     @FXML private JFXTextField textFieldDestination;
     @FXML private JFXButton buttonAddRequest;
+    @FXML private JFXCheckBox checkBoxContinuousRide;
+    @FXML private JFXTextField textFieldDay;
 
-    private BooleanProperty fileLoaded;
-
-    public TripRequestFormController() {
-        fileLoaded = new SimpleBooleanProperty();
-    }
 
     @FXML
     public void initialize() {
@@ -35,6 +32,12 @@ public class TripRequestFormController extends FormController {
         timeFieldTime.set24HourView(true);
         timeFieldTime.setValue(LocalTime.MIDNIGHT);
         buttonAddRequest.disableProperty().bind(fileLoaded.not());
+
+        textFieldDay.textProperty().addListener(((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                textFieldDay.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        }));
     }
 
     @FXML
@@ -58,8 +61,10 @@ public class TripRequestFormController extends FormController {
         String destination = textFieldDestination.getText();
         String riderName = textFieldRiderName.getText();
         LocalTime time = timeFieldTime.getValue();
+        int day = Integer.parseInt(textFieldDay.getText());
         boolean isArrivalTime = radioButtonArrivalTime.isSelected();
-        transpoolController.createNewTransPoolTripRequest(riderName, source, destination, time, isArrivalTime, true);
+        boolean isContinuous = checkBoxContinuousRide.isSelected();
+        transpoolController.createNewTransPoolTripRequest(riderName, source, destination, day, time, isArrivalTime, isContinuous);
     }
 
     @Override
@@ -77,6 +82,7 @@ public class TripRequestFormController extends FormController {
         textFieldSource.getValidators().add(requiredFieldValidator);
         textFieldDestination.getValidators().add(requiredFieldValidator);
         textFieldRiderName.getValidators().add(requiredFieldValidator);
+        textFieldDay.getValidators().add(requiredFieldValidator);
 
         timeFieldTime.focusedProperty().addListener(
                 (observable, oldValue, newValue) -> timeFieldTime.validate()
@@ -90,6 +96,11 @@ public class TripRequestFormController extends FormController {
         textFieldRiderName.focusedProperty().addListener(
                 (observable, oldValue, newValue) -> textFieldRiderName.validate()
         );
+        textFieldDay.focusedProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    textFieldRiderName.validate();
+                }
+        );
     }
 
     @Override
@@ -97,7 +108,8 @@ public class TripRequestFormController extends FormController {
         return timeFieldTime.validate()
                 && textFieldRiderName.validate()
                 && textFieldDestination.validate()
-                && textFieldSource.validate();
+                && textFieldSource.validate()
+                && textFieldDay.validate();
     }
 
     public BooleanProperty fileLoadedProperty() {

@@ -1,53 +1,91 @@
 package data.transpool.trip.request;
 
-import data.transpool.trip.offer.BasicTripOffer;
-import data.transpool.trip.offer.PossibleMatch;
+import data.transpool.time.TimeDay;
+import data.transpool.trip.offer.graph.SubTripOffer;
+import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.user.Feedback;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 
 import java.time.LocalTime;
+import java.util.List;
 
-public class MatchedTripRequest extends BasicTripRequestData {
+public class MatchedTripRequest extends BasicTripRequestData implements Feedbacker {
 
-    private IntegerProperty tripOfferID;
-    private ObjectProperty<TransPoolDriver> transpoolDriver;
+    private ObservableList<SubTripOffer> rideDetails;
+    private ObservableList<Integer> tripOfferIDs;
+    private ObservableSet<TransPoolDriver> transpoolDrivers;
+
     private IntegerProperty tripPrice;
     private DoubleProperty personalFuelConsumption;
-    private ObjectProperty<LocalTime> expectedTimeOfArrival;
+    private ObjectProperty<TimeDay> expectedTimeOfArrival;
+    private ObjectProperty<TimeDay> timeOfDeparture;
+    private BooleanProperty isArrival;
 
-    public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleMatch tripOfferToMatch) {
+    public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleRoute possibleRoute) {
         super(tripRequestToMatch);
-        this.tripPrice = new SimpleIntegerProperty(tripOfferToMatch.getPrice());
-        this.expectedTimeOfArrival = new SimpleObjectProperty<>(tripOfferToMatch.getEstimatedTimeOfArrival());
-        this.personalFuelConsumption = new SimpleDoubleProperty(tripOfferToMatch.getAverageFuelConsumption());
+        this.isArrival = new SimpleBooleanProperty(tripRequestToMatch.isTimeOfArrival());
+        this.rideDetails = FXCollections.observableArrayList(possibleRoute.getRoute());
+        this.tripPrice = new SimpleIntegerProperty(possibleRoute.getTotalPrice());
+        this.expectedTimeOfArrival = new SimpleObjectProperty<>(possibleRoute.getTimeOfArrival());
+        this.timeOfDeparture = new SimpleObjectProperty<>(possibleRoute.getTimeOfDeparture());
+        this.personalFuelConsumption = new SimpleDoubleProperty(possibleRoute.getAverageFuelConsumption());
+        this.tripOfferIDs = FXCollections.observableArrayList();
+        this.transpoolDrivers = FXCollections.observableSet();
 
-        this.tripOfferID = new SimpleIntegerProperty(tripOfferToMatch.getOfferID());
-        this.transpoolDriver = tripOfferToMatch.transpoolDriverProperty();
+        possibleRoute.getRoute().forEach(subTripOffer -> {
+            tripOfferIDs.add(subTripOffer.getOfferID());
+            transpoolDrivers.add(subTripOffer.getTransPoolDriver());
+        });
     }
 
-    public int getTripOfferID() {
-        return tripOfferID.get();
+    @Override
+    public void leaveFeedback(Feedbackable feedbackable, Feedback feedback) {
+        feedbackable.addFeedback(feedback);
     }
 
-    public IntegerProperty tripOfferIDProperty() {
-        return tripOfferID;
+    @Override
+    public ObservableList<Feedbackable> getAllFeedbackables() {
+        ObservableList<Feedbackable> feedbackables = FXCollections.observableArrayList();
+        feedbackables.addAll(transpoolDrivers);
+        return feedbackables;
     }
 
-    public void setTripOfferID(int tripOfferID) {
-        this.tripOfferID.set(tripOfferID);
+    @Override
+    public String getFeedbackerName() {
+        return getTransPoolRider().getUsername();
     }
 
-    public TransPoolDriver getTransPoolDriver() {
-        return transpoolDriver.get();
+    @Override
+    public int getFeedbackerID() {
+        return getTransPoolRider().getID();
     }
 
-    public ObjectProperty<TransPoolDriver> transpoolDriverProperty() {
-        return transpoolDriver;
+    public boolean isTimeOfArrival() {
+        return isArrival.get();
     }
 
-    public void setTransPoolDriver(TransPoolDriver transpoolDriver) {
-        this.transpoolDriver.set(transpoolDriver);
+    public BooleanProperty isArrivalProperty() {
+        return isArrival;
     }
+
+    public ObservableList<SubTripOffer> getRideDetails() {
+        return rideDetails;
+    }
+
+    public ObservableList<Integer> getTripOfferIDs() {
+        return tripOfferIDs;
+    }
+
+    public ObservableSet<TransPoolDriver> getTransPoolDrivers() {
+        return transpoolDrivers;
+    }
+
 
     public int getTripPrice() {
         return tripPrice.get();
@@ -57,9 +95,6 @@ public class MatchedTripRequest extends BasicTripRequestData {
         return tripPrice;
     }
 
-    public void setTripPrice(int tripPrice) {
-        this.tripPrice.set(tripPrice);
-    }
 
     public double getPersonalFuelConsumption() {
         return personalFuelConsumption.get();
@@ -69,20 +104,20 @@ public class MatchedTripRequest extends BasicTripRequestData {
         return personalFuelConsumption;
     }
 
-    public void setPersonalFuelConsumption(double personalFuelConsumption) {
-        this.personalFuelConsumption.set(personalFuelConsumption);
-    }
-
-    public LocalTime getExpectedTimeOfArrival() {
+    public TimeDay getExpectedTimeOfArrival() {
         return expectedTimeOfArrival.get();
     }
 
-    public ObjectProperty<LocalTime> expectedTimeOfArrivalProperty() {
+    public ObjectProperty<TimeDay> expectedTimeOfArrivalProperty() {
         return expectedTimeOfArrival;
     }
 
-    public void setExpectedTimeOfArrival(LocalTime expectedTimeOfArrival) {
-        this.expectedTimeOfArrival.set(expectedTimeOfArrival);
+    public TimeDay getTimeOfDeparture() {
+        return timeOfDeparture.get();
+    }
+
+    public ObjectProperty<TimeDay> timeOfDepartureProperty() {
+        return timeOfDeparture;
     }
 
     @Override

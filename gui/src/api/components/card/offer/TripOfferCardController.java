@@ -5,7 +5,7 @@ import api.components.card.CardController;
 import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
 import data.transpool.user.Feedback;
-import data.transpool.trip.offer.TripOffer;
+import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -45,13 +45,13 @@ public class TripOfferCardController extends CardController<TripOffer> {
         labelDriverName.textProperty().bind(tripOffer.getTransPoolDriver().usernameProperty());
         labelOfferID.textProperty().bind(tripOffer.offerIDProperty().asString());
 
-        listViewStops.setItems(tripOffer.getRoute().getRoute());
+        listViewStops.setItems(tripOffer.getRouteAsStopsList());
         listViewRiderDetails.setItems(tripOffer.getAllMatchedRequestsData());
         listViewFeedbacks.setItems(tripOffer.getTransPoolDriver().getAllFeedbacks());
         listViewFeedbacks.setCellFactory((listViewFeedbacks) -> new FeedbackCardController());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
-                "There are ", tripOffer.passengerCapacityProperty(), " spaces left on this ride."));
+                "There are ", tripOffer.maxPassengerCapacityProperty(), " spaces left on this ride."));
         labelTripDuration.textProperty().bind(Bindings.concat(
                 "Trip is about ", tripOffer.tripDurationInMinutesProperty(), " minutes long."));
         labelFuelConsumption.textProperty().bind(Bindings.concat(

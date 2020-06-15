@@ -1,9 +1,9 @@
-package data.transpool.trip.offer;
+package data.transpool.trip.offer.data;
 
-import data.transpool.map.Path;
-import data.transpool.trip.Route;
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
+import data.transpool.util.Util;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;
@@ -16,12 +16,12 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     protected ObjectProperty<Scheduling> schedule;
 
     //Initialized at children
-    protected ObjectProperty<Route> route;
     protected IntegerProperty tripDurationInMinutes;
     protected IntegerProperty tripPrice;
     protected DoubleProperty averageFuelConsumption;
+    protected IntegerProperty maxPassengerCapacity;
 
-    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK) {
+    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK, int maxPassengerCapacity) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(driverName));
         this.PPK = new SimpleIntegerProperty(PPK);
@@ -30,61 +30,37 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
+        this.maxPassengerCapacity = new SimpleIntegerProperty(maxPassengerCapacity);
     }
 
-    public BasicTripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip) {
+    public BasicTripOfferData(data.jaxb.TransPoolTrip JAXBTransPoolTrip) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(JAXBTransPoolTrip.getOwner()));
         this.PPK = new SimpleIntegerProperty(JAXBTransPoolTrip.getPPK());
         this.schedule = new SimpleObjectProperty<>(new Scheduling(JAXBTransPoolTrip.getScheduling()));
+        this.maxPassengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
 
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
     }
 
-    public BasicTripOfferData(TripOffer other) {
+    public BasicTripOfferData(BasicTripOffer other) {
         this.offerID = new SimpleIntegerProperty(other.getOfferID());
         this.transpoolDriver = new SimpleObjectProperty<>(other.getTransPoolDriver());
         this.PPK = new SimpleIntegerProperty(other.getPPK());
         this.schedule = new SimpleObjectProperty<>(new Scheduling(other.getScheduling()));
+        this.maxPassengerCapacity = new SimpleIntegerProperty(other.getMaxPassengerCapacity());
 
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
+
     }
 
     @Override
     public IntegerProperty offerIDProperty() {
         return offerID;
-    }
-
-    @Override
-    public int calculatePriceOfRoute(Route route, int PPK) {
-        return route
-                .getUsedPaths()
-                .stream()
-                .mapToInt(p -> p.getLength() * PPK)
-                .sum();
-    }
-
-    @Override
-    public int calculateTripDuration(Route route) {
-        return route
-                .getUsedPaths()
-                .stream()
-                .mapToInt(Path::getPathTime)
-                .sum();
-    }
-
-    @Override
-    public double calculateAverageFuelConsumption(Route route) {
-        return route
-                .getUsedPaths()
-                .stream()
-                .mapToDouble(Path::getFuelConsumption)
-                .average()
-                .orElse(0);
     }
 
     @Override
@@ -101,22 +77,6 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     public void setTransPoolDriver(TransPoolDriver transpoolDriver) {
         this.transpoolDriver.set(transpoolDriver);
     }
-
-    @Override
-    public Route getRoute() {
-        return route.get();
-    }
-
-    @Override
-    public void setRoute(Route route) {
-        this.route.set(route);
-    }
-
-    @Override
-    public ObjectProperty<Route> routeProperty() {
-        return route;
-    }
-
 
     @Override
     public int getPPK() {
@@ -182,5 +142,20 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     @Override
     public DoubleProperty averageFuelConsumptionProperty() {
         return averageFuelConsumption;
+    }
+
+    @Override
+    public int getMaxPassengerCapacity() {
+        return maxPassengerCapacity.get();
+    }
+
+    @Override
+    public void setMaxPassengerCapacity(int maxPassengerCapacity) {
+        this.maxPassengerCapacity.set(maxPassengerCapacity);
+    }
+
+    @Override
+    public IntegerProperty maxPassengerCapacityProperty() {
+        return maxPassengerCapacity;
     }
 }

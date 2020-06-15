@@ -3,11 +3,16 @@ package api;
 import api.components.*;
 import api.task.LoadFileTask;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.PossibleMatch;
-import data.transpool.trip.offer.TripOffer;
-import data.transpool.trip.offer.TripOfferData;
+import data.transpool.trip.offer.data.TripOffer;
+import data.transpool.trip.offer.data.TripOfferData;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.*;
-import exception.NoMatchesFoundException;
+import data.transpool.user.Feedback;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
+import data.transpool.user.TransPoolDriver;
+import exception.NoResultsFoundException;
+import exception.data.InvalidDayStartException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
 import exception.data.TransPoolFileNotFoundException;
@@ -21,18 +26,13 @@ import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Function;
 
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
     private BooleanProperty isLoaded;
 
-    private Task currentRunningTask;
-
     private MatchingEngine matchingEngine;
-    private FeedbackEngine feedbackEngine;
-
     private TransPoolController transpoolController;
 
     public TransPoolEngine(TransPoolController transpoolController) {
@@ -44,12 +44,12 @@ public class TransPoolEngine implements Engine {
 
     @Override
     public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException {
-        currentRunningTask = new LoadFileTask(file);
-        transpoolController.bindTaskToUI(currentRunningTask);
+        Task loadFileTask = new LoadFileTask(file);
+        transpoolController.bindTaskToUI(loadFileTask);
 
         //TODO: handle exceptions.
-        new Thread(currentRunningTask).start();
-        data = (TransPoolData) currentRunningTask.get();
+        new Thread(loadFileTask).start();
+        data = (TransPoolData) loadFileTask.get();
         transpoolController.bindUIToData(data);
 
         isLoaded.set(true);
@@ -57,15 +57,15 @@ public class TransPoolEngine implements Engine {
 
     @Override
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
-                                              LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
-            StopNotFoundException {
+                                              int day, LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
+            TransPoolDataException {
         if (!data.getMap().containsStop(source)) {
             throw new StopNotFoundException(source);
         }
         if (!data.getMap().containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
-        TripRequest request = new TripRequestData(riderName, source, destination, time, isArrivalTime, isContinuous);
+        TripRequest request = new TripRequestData(riderName, data.getStop(source), data.getStop(destination), day, time, isArrivalTime, isContinuous);
         data.addTripRequest(request);
 
     }
@@ -73,19 +73,28 @@ public class TransPoolEngine implements Engine {
     @Override
     public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
-        //Todo: create a new trip request via a task or a thread.
-        data.addTripOffer(new TripOfferData(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
+        if (dayStart < 1) {
+            throw new InvalidDayStartException();
+        }
+        data.addTripOffer(new TripOfferData(data.getMap(), driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
     }
 
     @Override
-    public void addNewMatch(PossibleMatch chosenPossibleMatch) {
-        matchingEngine.addNewMatch(data, chosenPossibleMatch);
-    }
-
-    @Override
-    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException {
-        //Todo: Currently running from the JAT, get it off the JAT.
+    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException, TransPoolDataException {
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
+    }
+
+    @Override
+    public void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment) {
+        feedbacker.leaveFeedback(feedbackee,
+                new Feedback(feedbacker.getFeedbackerID(), feedbacker.getFeedbackerName(), rating, comment)
+        );
+        transpoolController.updateCard();
+    }
+
+    @Override
+    public void addNewMatch(int possibleMatchIndex) {
+        matchingEngine.addNewMatch(data, possibleMatchIndex);
     }
 
     @Override
@@ -99,8 +108,8 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public ObservableList<PossibleMatch> getPossibleMatches() {
-        return matchingEngine.getPossibleMatches();
+    public ObservableList<PossibleRoute> getPossibleRoutes() {
+        return matchingEngine.getPossibleRoutes();
     }
 
     @Override
@@ -120,11 +129,6 @@ public class TransPoolEngine implements Engine {
                 .getAllMatchedTripRequests()
                 .forEach(match -> matchedTripsIDs.add(match.getRequestID()));
         return matchedTripsIDs;
-    }
-
-    @Override
-    public void initiateFeedbackEngine(int riderID) {
-        feedbackEngine = new FeedbackEngine(data, riderID);
     }
 
     @Override

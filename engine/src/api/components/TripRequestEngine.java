@@ -18,4 +18,6 @@ public interface TripRequestEngine {
     ObservableList<TripRequest> getAllTripRequests();
 
     ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
+
+    MatchedTripRequest getMatchedTripRequest(int feedbackerID);
 }

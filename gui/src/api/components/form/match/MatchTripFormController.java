@@ -7,8 +7,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.PossibleMatch;
-import data.transpool.trip.request.BasicTripRequest;
+import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.TripRequest;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -19,12 +18,11 @@ public class MatchTripFormController extends FormController {
 
     @FXML private JFXComboBox<TripRequest> comboBoxRideID;
     @FXML private JFXTextField textFieldNumOfResultsToFind;
-    @FXML private JFXListView<PossibleMatch> listViewResults;
+    @FXML private JFXListView<PossibleRoute> listViewResults;
     @FXML private JFXButton buttonMatchTrip;
     @FXML private JFXButton buttonSearchTrips;
     @FXML private JFXButton buttonClearTrips;
 
-    private BooleanProperty fileLoaded;
     private BooleanProperty foundResults;
 
     public MatchTripFormController() {
@@ -56,7 +54,7 @@ public class MatchTripFormController extends FormController {
 
     @Override
     public void submit() {
-        transpoolController.createNewMatch(listViewResults.getSelectionModel().getSelectedItem());
+        transpoolController.createNewMatch(listViewResults.getSelectionModel().getSelectedIndex());
     }
 
     @Override
@@ -87,7 +85,7 @@ public class MatchTripFormController extends FormController {
     private void searchForMatches() {
         try {
             if (isValid()) {
-                TripRequest requestToMatch = (TripRequest) comboBoxRideID.getValue();
+                TripRequest requestToMatch = comboBoxRideID.getValue();
                 int numOfResults = Integer.parseInt(textFieldNumOfResultsToFind.getText());
                 transpoolController.findPossibleMatches(requestToMatch, numOfResults);
             } else {
@@ -105,6 +103,6 @@ public class MatchTripFormController extends FormController {
     public void bindUIToData(TransPoolData data) {
         foundResults.bind(transpoolController.getEngine().foundMatchesProperty());
         comboBoxRideID.setItems(data.getAllTripRequests());
-        listViewResults.setItems(transpoolController.getEngine().getPossibleMatches());
+        listViewResults.setItems(transpoolController.getEngine().getPossibleRoutes());
     }
 }

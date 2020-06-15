@@ -34,12 +34,10 @@ public class TripOfferFormController extends FormController {
     @FXML private JFXButton buttonRemoveStop;
     @FXML private JFXButton buttonAddTransPoolTrip;
 
-    private BooleanProperty fileLoaded;
     private ObservableList<String> addedStops;
     private ObservableList<String> allStops;
 
     public TripOfferFormController() {
-        fileLoaded = new SimpleBooleanProperty();
         addedStops = FXCollections.observableArrayList();
         allStops = FXCollections.observableArrayList();
     }
@@ -133,6 +131,7 @@ public class TripOfferFormController extends FormController {
         timeFieldDepatureTime.getValidators().add(requiredFieldValidator);
         textFieldDriverName.getValidators().add(requiredFieldValidator);
         textFieldPPK.getValidators().add(requiredFieldValidator);
+        textFieldDay.getValidators().add(requiredFieldValidator);
 
         timeFieldDepatureTime.focusedProperty().addListener((
                 (observable, oldValue, newValue) -> timeFieldDepatureTime.validate()));
@@ -141,13 +140,16 @@ public class TripOfferFormController extends FormController {
         textFieldPPK.focusedProperty().addListener(
                 ((observable, oldValue, newValue) -> textFieldPPK.validate())
         );
+        textFieldDay.focusedProperty().addListener(
+                (observable, oldValue, newValue) -> textFieldDay.validate());
     }
 
     @Override
     public boolean isValid() {
         return textFieldPPK.validate()
                 && textFieldDriverName.validate()
-                && timeFieldDepatureTime.validate();
+                && timeFieldDepatureTime.validate()
+                && textFieldDay.validate();
     }
 
     public void bindDataToUI(TransPoolData data) {

@@ -5,9 +5,10 @@ import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import exception.NoMatchesFoundException;
-import exception.data.InvalidDayStartException;
-import exception.data.StopNotFoundException;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
+import data.transpool.user.TransPoolDriver;
+import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
 import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
@@ -33,7 +34,9 @@ public interface Engine {
     void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
                             int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
 
-    void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException, TransPoolDataException;
+    void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment);
+
+    void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException, TransPoolDataException;
 
     void clearPossibleMatches();
 
@@ -51,7 +54,4 @@ public interface Engine {
 
     BooleanProperty foundMatchesProperty();
 
-    void initiateFeedbackEngine(int riderID);
-
-    ObservableList<String> getPossibleRoutesAsString();
 }

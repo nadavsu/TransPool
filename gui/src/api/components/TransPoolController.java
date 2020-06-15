@@ -10,9 +10,13 @@ import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
-import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import exception.NoMatchesFoundException;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
+import data.transpool.user.TransPoolDriver;
+import exception.NoResultsFoundException;
+import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -115,7 +119,15 @@ public class TransPoolController {
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {
         try {
             engine.findPossibleMatches(requestToMatch, numOfResults);
-        } catch (NoMatchesFoundException | TransPoolDataException e) {
+        } catch (NoResultsFoundException | TransPoolDataException e) {
+            showAlert(e);
+        }
+    }
+
+    public void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment) {
+        try {
+            engine.createNewFeedback(feedbacker, feedbackee, rating, comment);
+        } catch (TransPoolRunTimeException e) {
             showAlert(e);
         }
     }
@@ -188,17 +200,13 @@ public class TransPoolController {
         feedbackComponentController.bindUIToData(data);
     }
 
+    public void updateCard() {
+        dataBarComponentController.updateUI();
+    }
+
     public void showAlert(Exception e) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
         errorAlert.setHeaderText(null);
         errorAlert.showAndWait();
-    }
-
-    public ObservableList<Integer> getAllMatchedTripRequestIDs() {
-        return engine.getAllMatchedTripRequestIDs();
-    }
-
-    public void initiateFeedbackEngine(int riderID) {
-        engine.initiateFeedbackEngine(riderID);
     }
 }

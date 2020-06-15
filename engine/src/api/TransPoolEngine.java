@@ -7,7 +7,11 @@ import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.*;
-import exception.NoMatchesFoundException;
+import data.transpool.user.Feedback;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
+import data.transpool.user.TransPoolDriver;
+import exception.NoResultsFoundException;
 import exception.data.InvalidDayStartException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
@@ -29,8 +33,6 @@ public class TransPoolEngine implements Engine {
     private BooleanProperty isLoaded;
 
     private MatchingEngine matchingEngine;
-    private FeedbackEngine feedbackEngine;
-
     private TransPoolController transpoolController;
 
     public TransPoolEngine(TransPoolController transpoolController) {
@@ -78,8 +80,16 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoMatchesFoundException, TransPoolDataException {
+    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException, TransPoolDataException {
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
+    }
+
+    @Override
+    public void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment) {
+        feedbacker.leaveFeedback(feedbackee,
+                new Feedback(feedbacker.getFeedbackerID(), feedbacker.getFeedbackerName(), rating, comment)
+        );
+        transpoolController.updateCard();
     }
 
     @Override
@@ -103,10 +113,6 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public ObservableList<String> getPossibleRoutesAsString() {
-        return matchingEngine.getPossibleRoutesAsString();
-    }
-    @Override
     public void clearPossibleMatches() {
         matchingEngine.clearPossibleMatches();
     }
@@ -123,11 +129,6 @@ public class TransPoolEngine implements Engine {
                 .getAllMatchedTripRequests()
                 .forEach(match -> matchedTripsIDs.add(match.getRequestID()));
         return matchedTripsIDs;
-    }
-
-    @Override
-    public void initiateFeedbackEngine(int riderID) {
-        feedbackEngine = new FeedbackEngine(data, riderID);
     }
 
     @Override

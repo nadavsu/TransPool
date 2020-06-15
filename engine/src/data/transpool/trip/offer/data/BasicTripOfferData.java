@@ -2,6 +2,7 @@ package data.transpool.trip.offer.data;
 
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
+import data.transpool.util.Util;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
@@ -37,11 +38,11 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(JAXBTransPoolTrip.getOwner()));
         this.PPK = new SimpleIntegerProperty(JAXBTransPoolTrip.getPPK());
         this.schedule = new SimpleObjectProperty<>(new Scheduling(JAXBTransPoolTrip.getScheduling()));
+        this.maxPassengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
 
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
-        this.maxPassengerCapacity = new SimpleIntegerProperty(JAXBTransPoolTrip.getCapacity());
     }
 
     public BasicTripOfferData(BasicTripOffer other) {
@@ -49,10 +50,12 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
         this.transpoolDriver = new SimpleObjectProperty<>(other.getTransPoolDriver());
         this.PPK = new SimpleIntegerProperty(other.getPPK());
         this.schedule = new SimpleObjectProperty<>(new Scheduling(other.getScheduling()));
+        this.maxPassengerCapacity = new SimpleIntegerProperty(other.getMaxPassengerCapacity());
 
         this.tripDurationInMinutes = new SimpleIntegerProperty();
         this.tripPrice = new SimpleIntegerProperty();
         this.averageFuelConsumption = new SimpleDoubleProperty();
+
     }
 
     @Override

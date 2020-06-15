@@ -6,6 +6,7 @@ import data.transpool.map.component.Stop;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
+import data.transpool.util.Util;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
@@ -110,12 +111,12 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     private double calculateAverageFuelConsumption() {
-        return this
+        return Util.round(this
                 .getUsedPaths()
                 .stream()
                 .mapToDouble(Path::getFuelConsumption)
                 .average()
-                .orElse(0);
+                .orElse(0));
     }
 
     public SubTripOffer getSubTripOffer(int ID) {

@@ -54,10 +54,20 @@ public class TripOfferMap implements TripOfferEngine {
 
     @Override
     public void updateSubTripOffers(PossibleRoute chosenPossibleRoute) {
-        chosenPossibleRoute.getRoute().forEach(subTripOffer -> {
-            getSubTripOffer(subTripOffer.getOfferID(), subTripOffer.getSubTripOfferID())
+        for (SubTripOffer subTripOffer : chosenPossibleRoute.getRoute()) {
+            getSubTripOffer(
+                    subTripOffer.getOfferID(),
+                    subTripOffer.getSubTripOfferID()
+            )
+                    .updateOnDay(subTripOffer.getDayStart());
+        }
+/*        chosenPossibleRoute.getRoute().forEach(subTripOffer -> {
+            getSubTripOffer(
+                    subTripOffer.getOfferID(),
+                    subTripOffer.getSubTripOfferID()
+            )
             .updateOnDay(subTripOffer.getDayStart());
-        });
+        });*/
     }
 
     //----------------------------------------------------------------------------------------------------------------//

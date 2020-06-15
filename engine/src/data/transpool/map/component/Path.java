@@ -115,7 +115,6 @@ public class Path {
         if (this == o) return true;
         if (!(o instanceof Path)) return false;
         Path that = (Path) o;
-
         return ((this.source.equals(that.source)
                 && this.destination.equals(that.destination)) ||
                 (this.source.equals(that.destination) && this.destination.equals(that.source)));

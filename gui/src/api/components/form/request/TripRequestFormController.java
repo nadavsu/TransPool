@@ -25,11 +25,6 @@ public class TripRequestFormController extends FormController {
     @FXML private JFXCheckBox checkBoxContinuousRide;
     @FXML private JFXTextField textFieldDay;
 
-    private BooleanProperty fileLoaded;
-
-    public TripRequestFormController() {
-        fileLoaded = new SimpleBooleanProperty();
-    }
 
     @FXML
     public void initialize() {

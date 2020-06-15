@@ -2,10 +2,9 @@ package api.components;
 
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import exception.NoMatchesFoundException;
+import exception.NoResultsFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -27,7 +26,7 @@ public class MatchingEngine {
         foundMatches = new SimpleBooleanProperty(false);
     }
 
-    public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoMatchesFoundException {
+    public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
         this.tripRequestToMatch = tripRequestToMatch;
         possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
 

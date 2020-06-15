@@ -34,12 +34,10 @@ public class TripOfferFormController extends FormController {
     @FXML private JFXButton buttonRemoveStop;
     @FXML private JFXButton buttonAddTransPoolTrip;
 
-    private BooleanProperty fileLoaded;
     private ObservableList<String> addedStops;
     private ObservableList<String> allStops;
 
     public TripOfferFormController() {
-        fileLoaded = new SimpleBooleanProperty();
         addedStops = FXCollections.observableArrayList();
         allStops = FXCollections.observableArrayList();
     }

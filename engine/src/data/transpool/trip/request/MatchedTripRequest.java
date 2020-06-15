@@ -3,18 +3,24 @@ package data.transpool.trip.request;
 import data.transpool.time.TimeDay;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.user.Feedback;
+import data.transpool.user.Feedbackable;
+import data.transpool.user.Feedbacker;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableSet;
 
 import java.time.LocalTime;
+import java.util.List;
 
-public class MatchedTripRequest extends BasicTripRequestData {
+public class MatchedTripRequest extends BasicTripRequestData implements Feedbacker {
 
     private ObservableList<SubTripOffer> rideDetails;
     private ObservableList<Integer> tripOfferIDs;
-    private ObservableList<TransPoolDriver> transpoolDrivers;
+    private ObservableSet<TransPoolDriver> transpoolDrivers;
+
     private IntegerProperty tripPrice;
     private DoubleProperty personalFuelConsumption;
     private ObjectProperty<TimeDay> expectedTimeOfArrival;
@@ -30,12 +36,34 @@ public class MatchedTripRequest extends BasicTripRequestData {
         this.timeOfDeparture = new SimpleObjectProperty<>(possibleRoute.getTimeOfDeparture());
         this.personalFuelConsumption = new SimpleDoubleProperty(possibleRoute.getAverageFuelConsumption());
         this.tripOfferIDs = FXCollections.observableArrayList();
-        this.transpoolDrivers = FXCollections.observableArrayList();
+        this.transpoolDrivers = FXCollections.observableSet();
 
         possibleRoute.getRoute().forEach(subTripOffer -> {
             tripOfferIDs.add(subTripOffer.getOfferID());
             transpoolDrivers.add(subTripOffer.getTransPoolDriver());
         });
+    }
+
+    @Override
+    public void leaveFeedback(Feedbackable feedbackable, Feedback feedback) {
+        feedbackable.addFeedback(feedback);
+    }
+
+    @Override
+    public ObservableList<Feedbackable> getAllFeedbackables() {
+        ObservableList<Feedbackable> feedbackables = FXCollections.observableArrayList();
+        feedbackables.addAll(transpoolDrivers);
+        return feedbackables;
+    }
+
+    @Override
+    public String getFeedbackerName() {
+        return getTransPoolRider().getUsername();
+    }
+
+    @Override
+    public int getFeedbackerID() {
+        return getTransPoolRider().getID();
     }
 
     public boolean isTimeOfArrival() {
@@ -50,16 +78,11 @@ public class MatchedTripRequest extends BasicTripRequestData {
         return rideDetails;
     }
 
-    public ObservableList<TransPoolDriver> getTranspoolDrivers() {
-        return transpoolDrivers;
-    }
-
     public ObservableList<Integer> getTripOfferIDs() {
         return tripOfferIDs;
     }
 
-
-    public ObservableList<TransPoolDriver> getTransPoolDrivers() {
+    public ObservableSet<TransPoolDriver> getTransPoolDrivers() {
         return transpoolDrivers;
     }
 

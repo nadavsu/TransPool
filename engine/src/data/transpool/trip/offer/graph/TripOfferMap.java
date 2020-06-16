@@ -62,13 +62,6 @@ public class TripOfferMap implements TripOfferEngine {
             )
                     .updateOnDay(subTripOffer.getDayStart());
         }
-/*        chosenPossibleRoute.getRoute().forEach(subTripOffer -> {
-            getSubTripOffer(
-                    subTripOffer.getOfferID(),
-                    subTripOffer.getSubTripOfferID()
-            )
-            .updateOnDay(subTripOffer.getDayStart());
-        });*/
     }
 
     //----------------------------------------------------------------------------------------------------------------//

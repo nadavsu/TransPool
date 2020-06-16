@@ -4,24 +4,21 @@ import api.Engine;
 import api.components.data.bar.DataBarController;
 import api.components.form.Form;
 import api.components.form.feedback.FeedbackFormController;
+import api.components.map.MapController;
 import api.components.menu.bar.MenuBarController;
 import api.components.form.match.MatchTripFormController;
 import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
+import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
-import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
 import data.transpool.user.Feedbackable;
 import data.transpool.user.Feedbacker;
-import data.transpool.user.TransPoolDriver;
 import exception.NoResultsFoundException;
 import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -31,7 +28,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.time.Duration;
 import java.time.LocalTime;
+import java.util.concurrent.ExecutionException;
 
 
 /**
@@ -48,12 +47,14 @@ public class TransPoolController {
     @FXML private TripRequestFormController tripRequestComponentController;
     @FXML private DataBarController dataBarComponentController;
     @FXML private FeedbackFormController feedbackComponentController;
+    @FXML private MapController mapComponentController;
 
     @FXML private MenuBar menuBarComponent;
     @FXML private AnchorPane matchTripComponent;
     @FXML private AnchorPane tripOfferComponent;
     @FXML private AnchorPane tripRequestComponent;
     @FXML private VBox dataBarComponent;
+    @FXML private VBox mapComponent;
 
     private BooleanProperty fileLoaded;
     private StringProperty currentTaskProgress;
@@ -68,13 +69,17 @@ public class TransPoolController {
         if (matchTripComponentController != null
                 && menuBarComponentController != null
                 && tripOfferComponentController != null
-                && tripRequestComponentController != null) {
+                && tripRequestComponentController != null
+                && dataBarComponentController != null
+                && feedbackComponentController != null
+                && mapComponentController != null) {
             matchTripComponentController.setTransPoolController(this);
             tripOfferComponentController.setTransPoolController(this);
             tripRequestComponentController.setTransPoolController(this);
             menuBarComponentController.setTransPoolController(this);
             dataBarComponentController.setTransPoolController(this);
             feedbackComponentController.setTransPoolController(this);
+            mapComponentController.setTransPoolController(this);
         }
 
         fileLoaded.bindBidirectional(menuBarComponentController.fileLoadedProperty());
@@ -157,8 +162,26 @@ public class TransPoolController {
 
     //---------------------------------------------------------------------------------------------//
 
+    public void createMap() {
+        engine.createMap(mapComponentController.getMap());
+    }
+    public void incrementTime(Duration duration) {
+        engine.incrementTime(duration);
+    }
+
+    public void decrementTime(Duration duration) {
+        engine.decrementTime(duration);
+    }
+
+    //---------------------------------------------------------------------------------------------//
+
     public void loadFile() {
-        menuBarComponentController.loadFile();
+        try {
+            menuBarComponentController.loadFile();
+            engine.createMap(mapComponentController.getMap());
+        } catch (ExecutionException | InterruptedException e) {
+            showAlert("Execution interrupted!");
+        }
     }
 
 
@@ -198,6 +221,7 @@ public class TransPoolController {
         matchTripComponentController.bindUIToData(data);
         tripOfferComponentController.bindDataToUI(data);
         feedbackComponentController.bindUIToData(data);
+        mapComponentController.bindaUIToData(data);
     }
 
     public void updateCard() {
@@ -206,6 +230,12 @@ public class TransPoolController {
 
     public void showAlert(Exception e) {
         Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
+        errorAlert.setHeaderText(null);
+        errorAlert.showAndWait();
+    }
+
+    public void showAlert(String message) {
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR, message);
         errorAlert.setHeaderText(null);
         errorAlert.showAndWait();
     }

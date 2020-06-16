@@ -2,6 +2,7 @@ package api;
 
 import api.components.*;
 import api.task.LoadFileTask;
+import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
@@ -24,6 +25,7 @@ import javafx.concurrent.Task;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
 
@@ -43,16 +45,16 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException {
+    public void loadFile(File file) throws ExecutionException, InterruptedException {
         Task loadFileTask = new LoadFileTask(file);
         transpoolController.bindTaskToUI(loadFileTask);
 
-        //TODO: handle exceptions.
         new Thread(loadFileTask).start();
         data = (TransPoolData) loadFileTask.get();
-        transpoolController.bindUIToData(data);
-
-        isLoaded.set(true);
+        if (data != null) {
+            transpoolController.bindUIToData(data);
+            isLoaded.set(true);
+        }
     }
 
     @Override
@@ -89,12 +91,28 @@ public class TransPoolEngine implements Engine {
         feedbacker.leaveFeedback(feedbackee,
                 new Feedback(feedbacker.getFeedbackerID(), feedbacker.getFeedbackerName(), rating, comment)
         );
+        //Todo check if it works if you remove this.
         transpoolController.updateCard();
     }
 
     @Override
     public void addNewMatch(int possibleMatchIndex) {
         matchingEngine.addNewMatch(data, possibleMatchIndex);
+    }
+
+    @Override
+    public void createMap(Graph mapGraph) {
+        data.createMap(mapGraph);
+    }
+
+    @Override
+    public void incrementTime(Duration duration) {
+        data.incrementTime(duration);
+    }
+
+    @Override
+    public void decrementTime(Duration duration) {
+        data.decrementTime(duration);
     }
 
     @Override

@@ -2,40 +2,49 @@ package data.transpool;
 
 import api.components.TripOfferEngine;
 import api.components.TripRequestEngine;
+import com.fxgraph.graph.Graph;
+import com.fxgraph.graph.Model;
 import data.jaxb.TransPool;
 import data.transpool.map.BasicMap;
-import data.transpool.map.BasicMapData;
+import data.transpool.map.component.MapGraphModel;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
+import data.transpool.time.TimeEngine;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.graph.TripOfferMap;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import data.transpool.user.TransPoolDriver;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.Duration;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine {
+public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine, TimeEngine {
 
-    private BasicMap map;
+    private MapGraphModel map;
     private TripOfferMap tripOffers;
     private ObservableList<TripRequest> allTripRequests;
     private ObservableList<MatchedTripRequest> allMatchedTripRequests;
 
+    private TimeDay currentTime;
+
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
+        Stop.resetIDGenerator();
         this.allTripRequests = FXCollections.observableArrayList();
         this.allMatchedTripRequests = FXCollections.observableArrayList();
-        this.map = new BasicMapData(JAXBData.getMapDescriptor());
+        this.map = new MapGraphModel(JAXBData.getMapDescriptor());
         this.tripOffers = new TripOfferMap(map, JAXBData.getPlannedTrips().getTransPoolTrip());
+
+        currentTime = new TimeDay(LocalTime.MIDNIGHT, 0);
     }
 
     @Override
@@ -152,6 +161,24 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         return map.getPath(source, destination);
     }
 
+    @Override
+    public void incrementTime(Duration interval) {
+        currentTime.plus(interval);
+    }
+
+    @Override
+    public void decrementTime(Duration interval) {
+        currentTime.minus(interval);
+    }
+
+    @Override
+    public TimeDay getTimeDay() {
+        return currentTime;
+    }
+
+    public void createMap(Graph graph) {
+        map.createMapModel(graph);
+    }
 
     public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
 

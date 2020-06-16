@@ -41,8 +41,8 @@
       <Label fx:id="labelTripDuration" layoutX="12.0" layoutY="262.0" prefHeight="34.0" prefWidth="148.0" styleClass="normal-text" text="Trip is about 40 minutes long" wrapText="true" />
       <Label fx:id="labelFuelConsumption" layoutX="12.0" layoutY="295.0" prefHeight="34.0" prefWidth="148.0" styleClass="normal-text" text="Average fuel consumption is 30" wrapText="true" />
       <Label fx:id="labelPPK" layoutX="11.0" layoutY="337.0" prefHeight="17.0" prefWidth="148.0" styleClass="normal-text" text="Price per kilometer: 30 NIS" />
-      <JFXListView fx:id="listViewRiderDetails" layoutX="8.0" layoutY="399.0" prefHeight="51.0" prefWidth="148.0" />
+      <JFXListView fx:id="listViewRiderDetails" layoutX="8.0" layoutY="399.0" prefHeight="63.0" prefWidth="148.0" />
       <Label fx:id="labelPassengerCapacity" layoutX="10.0" layoutY="361.0" prefHeight="34.0" prefWidth="155.0" styleClass="normal-text" text="There are 3 spaces left on this ride." wrapText="true" />
-      <JFXListView fx:id="listViewFeedbacks" layoutX="8.0" layoutY="459.0" orientation="HORIZONTAL" prefHeight="151.0" prefWidth="148.0" />
+      <JFXListView fx:id="listViewFeedbacks" layoutX="8.0" layoutY="479.0" prefHeight="131.0" prefWidth="148.0" />
    </children>
 </AnchorPane>

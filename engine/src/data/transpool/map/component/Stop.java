@@ -47,6 +47,10 @@ public class Stop {
         return name;
     }
 
+    public static void resetIDGenerator() {
+        IDGenerator = 0;
+    }
+
     @Override
     public String toString() {
         return getName();

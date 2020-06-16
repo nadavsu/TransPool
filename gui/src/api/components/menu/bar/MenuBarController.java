@@ -84,7 +84,7 @@ public class MenuBarController {
         this.fileLoaded.set(fileLoaded);
     }
 
-    public void loadFile() {
+    public void loadFile() throws  InterruptedException, ExecutionException {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Load TransPool data file");
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("XML File", "*.xml"));
@@ -92,26 +92,12 @@ public class MenuBarController {
         if (selectedFile == null) {
             return;
         }
-        try {
-            transpoolController.getEngine().loadFile(selectedFile);
-        } catch (JAXBException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, "There was an error loading the file (JAXB error).");
-            errorAlert.showAndWait();
-        } catch (TransPoolFileNotFoundException | TransPoolDataException e) {
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR, e.getMessage());
-            errorAlert.showAndWait();
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
-        }
+        transpoolController.getEngine().loadFile(selectedFile);
+        transpoolController.createMap();
     }
 
     //todo maybe move this to the engine.
     public void setColorScheme(String colorSchemeFileLocation) {
-        transpoolController
-                .getPrimaryStage()
-                .getScene()
-                .getStylesheets()
-                .clear();
         transpoolController
                 .getPrimaryStage()
                 .getScene()

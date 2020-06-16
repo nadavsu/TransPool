@@ -8,6 +8,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -71,6 +72,27 @@ public class TimeDay {
                     || this.time.get().equals(other.time.get());
         } else {
             return false;
+        }
+    }
+
+    public void plus(Duration interval) {
+        LocalTime timeBefore = time.get();
+        time.set(time.get().plus(interval));
+        if (time.get().compareTo(timeBefore) <= 0) {
+            day.set(day.get() + 1);
+        }
+    }
+
+    public void minus(Duration interval) {
+        LocalTime timeBefore = time.get();
+        LocalTime timeAfter = time.get().minus(interval);
+        int dayAfter = day.get();
+        if (timeAfter.compareTo(timeBefore) >= 0) {
+            dayAfter--;
+        }
+        if (dayAfter >= 0 && !timeAfter.isBefore(LocalTime.MIDNIGHT)) {
+            time.set(timeAfter);
+            day.set(dayAfter);
         }
     }
 

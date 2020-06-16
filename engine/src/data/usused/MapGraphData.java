@@ -9,7 +9,7 @@ import exception.data.TransPoolDataException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MapGraphData extends BasicMapData implements MapGraph {
+public class MapGraphData extends BasicMapData implements MapGraphUnused {
     private List<List<Stop>> graph;
 
     public MapGraphData(MapDescriptor JAXBMap) throws TransPoolDataException {

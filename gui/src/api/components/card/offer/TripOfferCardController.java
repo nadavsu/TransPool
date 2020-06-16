@@ -47,8 +47,8 @@ public class TripOfferCardController extends CardController<TripOffer> {
 
         listViewStops.setItems(tripOffer.getRouteAsStopsList());
         listViewRiderDetails.setItems(tripOffer.getAllMatchedRequestsData());
+
         listViewFeedbacks.setItems(tripOffer.getTransPoolDriver().getAllFeedbacks());
-        listViewFeedbacks.setCellFactory((listViewFeedbacks) -> new FeedbackCardController());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
                 "There are ", tripOffer.maxPassengerCapacityProperty(), " spaces left on this ride."));

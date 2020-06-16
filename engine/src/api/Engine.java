@@ -1,5 +1,6 @@
 package api;
 
+import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
@@ -16,12 +17,15 @@ import javafx.collections.ObservableList;
 
 import javax.xml.bind.JAXBException;
 import java.io.File;
+import java.time.Duration;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
 
 public interface Engine {
 
-    void loadFile(File file) throws JAXBException, TransPoolFileNotFoundException, TransPoolDataException, ExecutionException, InterruptedException;
+    void loadFile(File file) throws ExecutionException, InterruptedException;
+
+    void createMap(Graph mapGraph);
 
     void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                        int day, LocalTime time, boolean isArrivalTime, boolean isContinuous)
@@ -40,6 +44,10 @@ public interface Engine {
 
     void clearPossibleMatches();
 
+    void incrementTime(Duration duration);
+
+    void decrementTime(Duration duration);
+
     ObservableList<PossibleRoute> getPossibleRoutes();
 
     void addNewMatch(int possibleMatchIndex);
@@ -53,5 +61,4 @@ public interface Engine {
     BooleanProperty fileLoadedProperty();
 
     BooleanProperty foundMatchesProperty();
-
 }

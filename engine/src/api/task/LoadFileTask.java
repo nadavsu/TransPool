@@ -19,22 +19,32 @@ public class LoadFileTask extends Task<TransPoolData> {
     }
 
     @Override
-    protected TransPoolData call() throws TransPoolFileNotFoundException, JAXBException, TransPoolDataException, InterruptedException {
-        if (!fileToLoad.exists()) {
-            throw new TransPoolFileNotFoundException();
+    protected TransPoolData call() {
+        try {
+            if (!fileToLoad.exists()) {
+                throw new TransPoolFileNotFoundException();
+            }
+
+            updateMessage("Fetching file...");
+            JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
+
+            updateMessage("Loading file to system...");
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(fileToLoad);
+
+            updateMessage("Parsing...");
+
+            TransPoolData data = new TransPoolData(JAXBData);
+            updateMessage("File loaded successfully!");
+            return data;
+        } catch (TransPoolDataException | TransPoolFileNotFoundException e) {
+            updateMessage(e.getMessage());
+            return null;
+        } catch (JAXBException e) {
+            updateMessage("There was an internal problem (JAXB Error).");
+            return null;
         }
-        updateMessage("Fetching file...");
-        JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
 
-        updateMessage("Loading file to system...");
-        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-        TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(fileToLoad);
-
-        updateMessage("Parsing...");
-        TransPoolData data = new TransPoolData(JAXBData);
-
-        updateMessage("File loaded successfully!");
-        return data;
     }
 
 }

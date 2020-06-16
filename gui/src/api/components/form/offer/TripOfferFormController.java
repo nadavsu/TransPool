@@ -153,6 +153,10 @@ public class TripOfferFormController extends FormController {
     }
 
     public void bindDataToUI(TransPoolData data) {
+        if (!allStops.isEmpty()) {
+            allStops.clear();
+            comboBoxStopToAdd.getItems().clear();
+        }
         data
                 .getMap()
                 .getAllStops()

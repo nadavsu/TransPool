@@ -17,6 +17,7 @@ import java.util.List;
 
 public class MatchedTripRequest extends BasicTripRequestData implements Feedbacker {
 
+
     private ObservableList<SubTripOffer> rideDetails;
     private ObservableList<Integer> tripOfferIDs;
     private ObservableSet<TransPoolDriver> transpoolDrivers;
@@ -42,6 +43,11 @@ public class MatchedTripRequest extends BasicTripRequestData implements Feedback
             tripOfferIDs.add(subTripOffer.getOfferID());
             transpoolDrivers.add(subTripOffer.getTransPoolDriver());
         });
+        updateSubTripOffers();
+    }
+
+    private void updateSubTripOffers() {
+
     }
 
     @Override

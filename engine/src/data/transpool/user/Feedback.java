@@ -65,8 +65,8 @@ public class Feedback {
 
     @Override
     public String toString() {
-        return getFeedbackerName() + "\n"
-                + "Rating: " + getRating() + "\n"
-                + "Comment: " + getComment();
+        return getFeedbackerName() + "\n" +
+                "Rating: " + getRating() + "\n" +
+                "Comment: " + getComment();
     }
 }

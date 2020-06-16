@@ -101,6 +101,9 @@ public class MatchTripFormController extends FormController {
     }
 
     public void bindUIToData(TransPoolData data) {
+        if (!comboBoxRideID.getItems().isEmpty()) {
+            comboBoxRideID.getItems().clear();
+        }
         foundResults.bind(transpoolController.getEngine().foundMatchesProperty());
         comboBoxRideID.setItems(data.getAllTripRequests());
         listViewResults.setItems(transpoolController.getEngine().getPossibleRoutes());

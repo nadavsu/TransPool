@@ -59,7 +59,7 @@ public class TripOfferCardController extends CardController<TripOffer> {
         labelPPK.textProperty().bind(Bindings.concat(
                 "Price per kilometer: ", tripOffer.PPKProperty()));
         labelSchedule.textProperty().bind(Bindings.concat(
-                "Departs ", tripOffer.getScheduling().getRecurrences(),
+                "Departs ", tripOffer.getScheduling().getRecurrences().toString(),
                 " on day ", tripOffer.getScheduling().getDayStart(),
                 " at ", tripOffer.getScheduling().getDepartureTime().toString()));
         labelDriverRating.textProperty().bind(Bindings

@@ -10,6 +10,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import com.jfoenix.validation.RequiredFieldValidator;
 import data.transpool.TransPoolData;
+import data.transpool.trip.Recurrence;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -25,7 +26,7 @@ public class TripOfferFormController extends FormController {
     @FXML private JFXTextField textFieldDriverName;
     @FXML private JFXTimePicker timeFieldDepatureTime;
     @FXML private JFXTextField textFieldDay;
-    @FXML private JFXComboBox<String> comboBoxRecurrences;
+    @FXML private JFXComboBox<Recurrence> comboBoxRecurrences;
     @FXML private JFXComboBox<Integer> comboBoxRiderCapacity;
     @FXML private JFXComboBox<String> comboBoxStopToAdd;
     @FXML private JFXListView<String> listViewRoute;
@@ -51,8 +52,8 @@ public class TripOfferFormController extends FormController {
         timeFieldDepatureTime.setValue(LocalTime.MIDNIGHT);
         comboBoxRiderCapacity.getItems().addAll(1, 2, 3, 4, 5, 6, 7);
         comboBoxRiderCapacity.setValue(1);
-        comboBoxRecurrences.getItems().addAll("One time", "Daily", "Bi-daily", "Weekly", "Monthly");
-        comboBoxRecurrences.setValue("One time");
+        comboBoxRecurrences.getItems().addAll(Recurrence.ONE_TIME, Recurrence.DAILY, Recurrence.BI_DAILY, Recurrence.WEEKLY, Recurrence.MONTHLY);
+        comboBoxRecurrences.setValue(Recurrence.ONE_TIME);
         textFieldPPK.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 textFieldPPK.setText(newValue.replaceAll("[^\\d]", ""));
@@ -104,7 +105,7 @@ public class TripOfferFormController extends FormController {
         int dayStart = 1;
         int riderCapacity = comboBoxRiderCapacity.getValue();
         String driverName = textFieldDriverName.getText();
-        String recurrences = comboBoxRecurrences.getValue();
+        Recurrence recurrences = comboBoxRecurrences.getValue();
         LocalTime departureTime = timeFieldDepatureTime.getValue();
         int PPK = Integer.parseInt(textFieldPPK.getText());
         if (!textFieldDay.getText().equals("")) {
@@ -122,7 +123,7 @@ public class TripOfferFormController extends FormController {
         textFieldPPK.setText("");
         listViewRoute.getItems().clear();
         comboBoxRiderCapacity.setValue(1);
-        comboBoxRecurrences.setValue("One time");
+        comboBoxRecurrences.setValue(Recurrence.ONE_TIME);
         addedStops.clear();
     }
 

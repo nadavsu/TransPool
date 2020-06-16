@@ -5,6 +5,7 @@ import data.transpool.map.component.Stop;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
@@ -15,10 +16,8 @@ import java.util.Map;
 
 
 public interface TripOffer extends BasicTripOffer {
-    /*ObservableList<Feedback> getFeedbacks();
-    int getAverageRating();
-    IntegerProperty averageRatingProperty();
-    Feedback getFeedback(int index);*/
+    double getAverageRating();
+    DoubleProperty averageRatingProperty();
 
     ObservableList<BasicTripRequest> getAllMatchedRequestsData();
     void setAllMatchedRequestsData(ObservableList<BasicTripRequest> allMatchedRequestsData);
@@ -33,4 +32,6 @@ public interface TripOffer extends BasicTripOffer {
     LocalTime getDepartureTimeAtStop(Stop stop);
 
     SubTripOffer getSubTripOffer(int subTripOfferID);
+
+    boolean isCurrentlyHappening();
 }

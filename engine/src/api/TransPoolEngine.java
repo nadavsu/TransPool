@@ -4,6 +4,7 @@ import api.components.*;
 import api.task.LoadFileTask;
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
@@ -73,7 +74,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
+    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         if (dayStart < 1) {
             throw new InvalidDayStartException();

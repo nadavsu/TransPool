@@ -13,11 +13,20 @@
    <children>
       <JFXTabPane minHeight="320.0" minWidth="240.0" prefHeight="682.0" prefWidth="240.0" side="RIGHT">
          <tabs>
-            <Tab closable="false" text="Offers">
+            <Tab closable="false" text="All Offers">
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <ListView fx:id="listViewTripOffers" nodeOrientation="LEFT_TO_RIGHT" prefHeight="653.0" prefWidth="210.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
+            <Tab closable="false" text="Current Offers">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <JFXListView fx:id="listViewCurrentOffers" prefHeight="682.0" prefWidth="211.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                      </children>
                   </AnchorPane>
               </content>

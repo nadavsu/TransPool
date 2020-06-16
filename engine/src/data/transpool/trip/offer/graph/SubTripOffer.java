@@ -1,8 +1,11 @@
 package data.transpool.trip.offer.graph;
 
+import data.jaxb.TransPool;
+import data.transpool.TransPoolData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.offer.data.BasicTripOfferData;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
@@ -26,7 +29,7 @@ public class SubTripOffer extends BasicTripOfferData {
     //Time data
     private ObjectProperty<TimeDay> timeOfDepartureFromSource;
     private ObjectProperty<TimeDay> timeOfArrivalAtDestination;
-    private StringProperty recurrences;
+    private ObjectProperty<Recurrence> recurrences;
 
     //Holds dynamic data
     private Map<Integer, Integer> dayToCapacityMap;
@@ -51,7 +54,7 @@ public class SubTripOffer extends BasicTripOfferData {
                 tripOffer.getDepartureTimeAtStop(destinationStop.get()),
                 tripOffer.getScheduling().getDayStart()
         ));
-        this.recurrences = new SimpleStringProperty(tripOffer.getScheduling().getRecurrences());
+        this.recurrences = new SimpleObjectProperty<>(tripOffer.getScheduling().getRecurrences());
 
         this.tripPrice = new SimpleIntegerProperty(path.getLength() * PPK.get());
         this.averageFuelConsumption = new SimpleDoubleProperty(path.getFuelConsumption());
@@ -67,7 +70,7 @@ public class SubTripOffer extends BasicTripOfferData {
 
         this.timeOfDepartureFromSource = new SimpleObjectProperty<>(new TimeDay(other.timeOfDepartureFromSource.get()));
         this.timeOfArrivalAtDestination = new SimpleObjectProperty<>(new TimeDay(other.timeOfArrivalAtDestination.get()));
-        this.recurrences = new SimpleStringProperty(other.getRecurrences());
+        this.recurrences = new SimpleObjectProperty<>(other.getRecurrences());
 
         this.tripPrice = new SimpleIntegerProperty(other.getPrice());
         this.averageFuelConsumption = new SimpleDoubleProperty(other.getAverageFuelConsumption());
@@ -114,8 +117,18 @@ public class SubTripOffer extends BasicTripOfferData {
         return timeOfDepartureFromSource.get().getDay();
     }
 
-    public String getRecurrences() {
+    public Recurrence getRecurrences() {
         return schedule.get().getRecurrences();
+    }
+
+    public boolean isCurrentlyHappening() {
+        return TransPoolData.currentTime.getTime().isAfter(getTimeOfDepartureFromSource().getTime())
+                && TransPoolData.currentTime.getTime().isBefore(getTimeOfArrivalAtDestination().getTime())
+                && isRecurrenceOnDay(TransPoolData.currentTime.getDay());
+    }
+
+    public boolean isRecurrenceOnDay(int day) {
+        return getRecurrences().isOnDay(day, getDayStart());
     }
 
     public void updateOnDay(int day) {
@@ -131,7 +144,7 @@ public class SubTripOffer extends BasicTripOfferData {
         if (this.getTimeOfDepartureFromSource().isAfter(timeDay)) {
             return dayToCapacityMap.get(getDayStart()) == null || dayToCapacityMap.get(getDayStart()) > 0 ;
 
-        } else if (!this.recurrences.get().equals("OneTime")) {
+        } else if (!this.recurrences.get().equals(Recurrence.ONE_TIME)) {
             while (this.getTimeOfArrivalAtDestination().isBefore(timeDay)) {
                 this.getTimeOfArrivalAtDestination().setNextRecurrence(this.getRecurrences());
                 this.getTimeOfDepartureFromSource().setNextRecurrence(this.getRecurrences());

@@ -30,12 +30,13 @@ import java.util.stream.Collectors;
 
 public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine, TimeEngine {
 
+
     private MapGraphModel map;
     private TripOfferMap tripOffers;
     private ObservableList<TripRequest> allTripRequests;
     private ObservableList<MatchedTripRequest> allMatchedTripRequests;
 
-    private TimeDay currentTime;
+    public static TimeDay currentTime;
 
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
         Stop.resetIDGenerator();
@@ -44,7 +45,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         this.map = new MapGraphModel(JAXBData.getMapDescriptor());
         this.tripOffers = new TripOfferMap(map, JAXBData.getPlannedTrips().getTransPoolTrip());
 
-        currentTime = new TimeDay(LocalTime.MIDNIGHT, 0);
+        currentTime = new TimeDay();
     }
 
     @Override
@@ -60,6 +61,11 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     @Override
     public ObservableList<TripOffer> getAllTripOffers() {
         return tripOffers.getAllTripOffers();
+    }
+
+    @Override
+    public ObservableList<TripOffer> getCurrentOffers() {
+        return tripOffers.getCurrentOffers();
     }
 
     @Override
@@ -164,11 +170,13 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     @Override
     public void incrementTime(Duration interval) {
         currentTime.plus(interval);
+        tripOffers.updateCurrentTripOffers();
     }
 
     @Override
     public void decrementTime(Duration interval) {
         currentTime.minus(interval);
+        tripOffers.updateCurrentTripOffers();
     }
 
     @Override

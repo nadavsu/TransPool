@@ -14,16 +14,19 @@ import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TripOfferMap implements TripOfferEngine {
     private ObservableList<TripOffer> allTripOffers;
+    private ObservableList<TripOffer> currentTripOffers;
     private TripOfferGraph tripOfferGraph;
 
     public TripOfferMap(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
         this.allTripOffers = FXCollections.observableArrayList();
-        initAllTripOffers(map, JAXBTripOffers);
 
+        initAllTripOffers(map, JAXBTripOffers);
         this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
     }
 
@@ -54,6 +57,11 @@ public class TripOfferMap implements TripOfferEngine {
     }
 
     @Override
+    public ObservableList<TripOffer> getCurrentOffers() {
+        return currentTripOffers;
+    }
+
+    @Override
     public void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest) {
         for (SubTripOffer subTripOffer : chosenPossibleRoute.getRoute()) {
             getSubTripOffer(
@@ -65,6 +73,14 @@ public class TripOfferMap implements TripOfferEngine {
     }
 
     //----------------------------------------------------------------------------------------------------------------//
+
+    public void updateCurrentTripOffers() {
+        currentTripOffers.clear();
+        allTripOffers
+                .stream()
+                .filter(TripOffer::isCurrentlyHappening)
+                .forEach(tripOffer -> currentTripOffers.add(tripOffer));
+    }
 
     public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
         return getTripOffer(tripOfferID).getSubTripOffer(subTripOfferID);

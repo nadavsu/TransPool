@@ -12,6 +12,7 @@ import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.request.TripRequest;
 import data.transpool.user.Feedbackable;
 import data.transpool.user.Feedbacker;
@@ -107,7 +108,7 @@ public class TransPoolController {
         }
     }
 
-    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
+    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> addedStops) {
         try {
             engine.createNewTripOffer(driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, addedStops);

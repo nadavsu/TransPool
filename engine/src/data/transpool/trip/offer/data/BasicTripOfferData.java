@@ -1,5 +1,6 @@
 package data.transpool.trip.offer.data;
 
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.Scheduling;
 import data.transpool.user.TransPoolDriver;
 import data.transpool.util.Util;
@@ -21,7 +22,7 @@ public abstract class BasicTripOfferData implements BasicTripOffer {
     protected DoubleProperty averageFuelConsumption;
     protected IntegerProperty maxPassengerCapacity;
 
-    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, String recurrences, int PPK, int maxPassengerCapacity) throws TransPoolDataException {
+    public BasicTripOfferData(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences, int PPK, int maxPassengerCapacity) throws TransPoolDataException {
         this.offerID = new SimpleIntegerProperty(IDGenerator++);
         this.transpoolDriver = new SimpleObjectProperty<>(new TransPoolDriver(driverName));
         this.PPK = new SimpleIntegerProperty(PPK);

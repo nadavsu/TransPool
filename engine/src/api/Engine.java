@@ -2,6 +2,7 @@ package api;
 
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.MatchedTripRequest;
@@ -35,7 +36,7 @@ public interface Engine {
 
     ObservableList<TripOffer> getAllTripOffers();
 
-    void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, String recurrences,
+    void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences,
                             int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
 
     void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment);

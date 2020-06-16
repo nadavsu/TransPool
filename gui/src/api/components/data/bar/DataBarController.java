@@ -22,6 +22,7 @@ public class DataBarController {
     @FXML private ListView<TripRequest> listViewTripRequests;
     @FXML private ListView<TripOffer> listViewTripOffers;
     @FXML private ListView<MatchedTripRequest> listViewMatchedTrips;
+    @FXML private ListView<TripOffer> listViewCurrentOffers;
 
     private StringProperty currentTaskProgress;
     //private ObservableList<TripRequest> tripRequests;
@@ -60,6 +61,7 @@ public class DataBarController {
         listViewTripRequests.setCellFactory(requestListView -> new TripRequestCardController());
         listViewMatchedTrips.setItems(data.getAllMatchedTripRequests());
         listViewMatchedTrips.setCellFactory(listViewMatchedTrips -> new MatchedTripCardController());
+        listViewCurrentOffers.setItems(data.getCurrentOffers());
     }
 
     public void updateUI() {

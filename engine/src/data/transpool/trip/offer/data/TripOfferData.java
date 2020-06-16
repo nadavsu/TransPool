@@ -1,8 +1,11 @@
 package data.transpool.trip.offer.data;
 
+import data.transpool.TransPoolData;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
+import data.transpool.time.TimeDay;
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
@@ -10,6 +13,8 @@ import data.transpool.util.Util;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,11 +28,14 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private List<SubTripOffer> route;
 
+    private TimeDay departureTime;
+    private TimeDay arrivalTime;
+
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
     private Map<Stop, LocalTime> timeTable;
     private List<Path> usedPaths;
 
-    public TripOfferData(BasicMap map, String driverName, LocalTime departureTime, int dayStart, String recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
+    public TripOfferData(BasicMap map, String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         super(driverName, departureTime, dayStart, recurrences, PPK, passengerCapacity);
         this.route = new ArrayList<>();
         this.timeTable = new HashMap<>();
@@ -135,6 +143,16 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
+    public double getAverageRating() {
+        return transpoolDriver.get().getAverageRating();
+    }
+
+    @Override
+    public DoubleProperty averageRatingProperty() {
+        return transpoolDriver.get().averageRatingProperty();
+    }
+
+    @Override
     public ObservableList<BasicTripRequest> getAllMatchedRequestsData() {
         return allMatchedRequestsData;
     }
@@ -162,7 +180,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     /**
      * Updates the trip after there is a found match for it.
      * Adds the details from the match to the status list, decrements the passenger capacity.
-     * @param matchedRequest - the mathed request.
+     * @param matchedRequest - the matched request.
      */
     @Override
     public void updateAfterMatch(MatchedTripRequest matchedRequest) {
@@ -176,6 +194,16 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     @Override
     public LocalTime getDepartureTimeAtStop(Stop stop) {
         return timeTable.get(stop);
+    }
+
+    @Override
+    public boolean isCurrentlyHappening() {
+        for (SubTripOffer subTripOffer : route) {
+            if (subTripOffer.isCurrentlyHappening()) {
+                return true;
+            }
+        }
+         return false;
     }
 
     @Override

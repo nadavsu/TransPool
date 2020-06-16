@@ -1,5 +1,7 @@
 package data.transpool.time;
 
+import data.transpool.TransPoolData;
+import data.transpool.trip.Recurrence;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import exception.TransPoolRunTimeException;
 import exception.data.InvalidDayStartException;
@@ -13,8 +15,17 @@ import java.time.LocalTime;
 import java.util.Objects;
 
 public class TimeDay {
+
+    private static final int DAY_START = 1;
+    private static final LocalTime TIME_START = LocalTime.MIDNIGHT;
+
     private ObjectProperty<LocalTime> time;
     private IntegerProperty day;
+
+    public TimeDay() {
+        time = new SimpleObjectProperty<>(TIME_START);
+        day = new SimpleIntegerProperty(DAY_START);
+    }
 
     public TimeDay(LocalTime time, int day) {
         this.time = new SimpleObjectProperty<>(time);
@@ -90,7 +101,7 @@ public class TimeDay {
         if (timeAfter.compareTo(timeBefore) >= 0) {
             dayAfter--;
         }
-        if (dayAfter >= 0 && !timeAfter.isBefore(LocalTime.MIDNIGHT)) {
+        if (dayAfter >= DAY_START && !timeAfter.isBefore(TIME_START)) {
             time.set(timeAfter);
             day.set(dayAfter);
         }
@@ -110,18 +121,8 @@ public class TimeDay {
         return Objects.hash(time, day);
     }
 
-    public void setNextRecurrence(String recurrences) {
-        if (recurrences.equals("Daily")) {
-            day.set(day.get() + 1);
-        } else if (recurrences.equals("Bi-daily")) {
-            day.set(day.get() + 2);
-        } else if (recurrences.equals("Weekly")) {
-            day.set(day.get() + 7);
-        } else if (recurrences.equals("Monthly")) {
-            day.set(day.get() + 30);
-        } else {
-            throw new TransPoolRunTimeException();
-        }
+    public void setNextRecurrence(Recurrence recurrences) {
+        day.set(day.get() + recurrences.getValue());
     }
 
     @Override
@@ -130,4 +131,7 @@ public class TimeDay {
     }
 
 
+    public boolean isInRange(TimeDay time1, TimeDay time2) {
+        return this.isBefore(time2) && this.isAfter(time1);
+    }
 }

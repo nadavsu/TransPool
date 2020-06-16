@@ -11,21 +11,19 @@ import java.util.Objects;
 public class Scheduling {
 
     private IntegerProperty dayStart;
-    private StringProperty recurrences;
+    private ObjectProperty<Recurrence> recurrences;
     private ObjectProperty<LocalTime> departureTime;
 
-    public Scheduling(int dayStart, LocalTime departureTime, String recurrences) throws TransPoolDataException {
+    public Scheduling(int dayStart, LocalTime departureTime, Recurrence recurrences) throws TransPoolDataException {
         this.departureTime = new SimpleObjectProperty<>(departureTime);
         this.dayStart = new SimpleIntegerProperty();
-        this.recurrences = new SimpleStringProperty();
-
+        this.recurrences = new SimpleObjectProperty<>(recurrences);
         setDayStart(dayStart);
-        setRecurrences(recurrences);
     }
 
     public Scheduling(data.jaxb.Scheduling JAXBScheduling) throws TransPoolDataException {
         dayStart = new SimpleIntegerProperty();
-        recurrences = new SimpleStringProperty();
+        recurrences = new SimpleObjectProperty<>();
         departureTime = new SimpleObjectProperty<>(LocalTime.of(JAXBScheduling.getHourStart(), 0));
 
         setDayStart(JAXBScheduling.getDayStart());
@@ -34,7 +32,7 @@ public class Scheduling {
 
     public Scheduling(Scheduling other) {
         dayStart = new SimpleIntegerProperty(other.getDayStart());
-        recurrences = new SimpleStringProperty(other.getRecurrences());
+        recurrences = new SimpleObjectProperty<>(other.getRecurrences());
         departureTime = new SimpleObjectProperty<>(LocalTime.of(
                 other.getDepartureTime().getHour(),
                 other.getDepartureTime().getMinute()
@@ -60,19 +58,25 @@ public class Scheduling {
         }
     }
 
-    public String getRecurrences() {
+    public Recurrence getRecurrences() {
         return recurrences.get();
     }
 
-    public StringProperty recurrencesProperty() {
+    public ObjectProperty<Recurrence> recurrencesProperty() {
         return recurrences;
     }
 
     public void setRecurrences(String recurrences) {
-        if (recurrences == null || recurrences.equals("")) {
-            this.recurrences.set("One time");
+        if (recurrences.equals("Daily")) {
+            this.recurrences.set(Recurrence.DAILY);
+        } else if (recurrences.equals("Bi-daily")) {
+            this.recurrences.set(Recurrence.BI_DAILY);
+        } else if (recurrences.equals("Weekly")) {
+            this.recurrences.set(Recurrence.WEEKLY);
+        } else if (recurrences.equals("Monthly")) {
+            this.recurrences.set(Recurrence.MONTHLY);
         } else {
-            this.recurrences.set(recurrences);
+            this.recurrences.set(Recurrence.ONE_TIME);
         }
     }
 

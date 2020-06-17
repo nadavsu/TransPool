@@ -11,6 +11,7 @@ import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
 import data.transpool.time.TimeEngine;
+import data.transpool.time.TimeInterval;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.graph.TripOfferMap;
@@ -40,12 +41,12 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
 
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
         Stop.resetIDGenerator();
+        currentTime = new TimeDay();
         this.allTripRequests = FXCollections.observableArrayList();
         this.allMatchedTripRequests = FXCollections.observableArrayList();
         this.map = new MapGraphModel(JAXBData.getMapDescriptor());
         this.tripOffers = new TripOfferMap(map, JAXBData.getPlannedTrips().getTransPoolTrip());
 
-        currentTime = new TimeDay();
     }
 
     @Override
@@ -168,13 +169,13 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     }
 
     @Override
-    public void incrementTime(Duration interval) {
+    public void incrementTime(TimeInterval interval) {
         currentTime.plus(interval);
         tripOffers.updateCurrentTripOffers();
     }
 
     @Override
-    public void decrementTime(Duration interval) {
+    public void decrementTime(TimeInterval interval) {
         currentTime.minus(interval);
         tripOffers.updateCurrentTripOffers();
     }

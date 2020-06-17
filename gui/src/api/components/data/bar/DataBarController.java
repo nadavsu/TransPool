@@ -62,6 +62,7 @@ public class DataBarController {
         listViewMatchedTrips.setItems(data.getAllMatchedTripRequests());
         listViewMatchedTrips.setCellFactory(listViewMatchedTrips -> new MatchedTripCardController());
         listViewCurrentOffers.setItems(data.getCurrentOffers());
+        listViewCurrentOffers.setCellFactory(list -> new TripOfferCardController());
     }
 
     public void updateUI() {

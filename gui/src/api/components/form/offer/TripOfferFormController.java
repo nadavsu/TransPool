@@ -1,19 +1,14 @@
 package api.components.form.offer;
 
-import api.components.TransPoolController;
-import api.components.form.Form;
 import api.components.form.FormController;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
-import com.jfoenix.validation.RequiredFieldValidator;
 import data.transpool.TransPoolData;
-import data.transpool.trip.Recurrence;
-import exception.data.TransPoolDataException;
+import data.transpool.time.Recurrence;
 import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

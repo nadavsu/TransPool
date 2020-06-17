@@ -1,9 +1,8 @@
 package data.transpool.trip.offer.data;
 
-import data.transpool.trip.Recurrence;
-import data.transpool.trip.Scheduling;
+import data.transpool.time.Recurrence;
+import data.transpool.time.Scheduling;
 import data.transpool.user.TransPoolDriver;
-import data.transpool.util.Util;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 

@@ -1,16 +1,12 @@
 package data.transpool.time;
 
-import data.transpool.TransPoolData;
-import data.transpool.trip.Recurrence;
-import data.transpool.trip.offer.graph.SubTripOffer;
-import exception.TransPoolRunTimeException;
 import exception.data.InvalidDayStartException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -27,14 +23,25 @@ public class TimeDay {
         day = new SimpleIntegerProperty(DAY_START);
     }
 
-    public TimeDay(LocalTime time, int day) {
+    public TimeDay(LocalTime time, int day) throws TransPoolDataException {
         this.time = new SimpleObjectProperty<>(time);
-        this.day = new SimpleIntegerProperty(day);
+        this.day = new SimpleIntegerProperty();
+        setDay(day);
     }
 
     public TimeDay(TimeDay other) {
         this.day = new SimpleIntegerProperty(other.day.get());
         this.time = new SimpleObjectProperty<>(other.time.get());
+    }
+
+    public void setDay(Integer day) throws InvalidDayStartException {
+        if (day == null) {
+            this.day.set(1);
+        } else if (day < 1) {
+            throw new InvalidDayStartException();
+        } else {
+            this.day.set(day);
+        }
     }
 
     public LocalTime getTime() {
@@ -55,13 +62,6 @@ public class TimeDay {
 
     public IntegerProperty dayProperty() {
         return day;
-    }
-
-    public void setDay(int day) throws InvalidDayStartException {
-        if (day < 1) {
-            throw new InvalidDayStartException();
-        }
-        this.day.set(day);
     }
 
     public boolean isBefore(TimeDay other) {
@@ -86,17 +86,17 @@ public class TimeDay {
         }
     }
 
-    public void plus(Duration interval) {
+    public void plus(TimeInterval interval) {
         LocalTime timeBefore = time.get();
-        time.set(time.get().plus(interval));
+        time.set(time.get().plusMinutes(interval.getMinutes()));
         if (time.get().compareTo(timeBefore) <= 0) {
             day.set(day.get() + 1);
         }
     }
 
-    public void minus(Duration interval) {
+    public void minus(TimeInterval interval) {
         LocalTime timeBefore = time.get();
-        LocalTime timeAfter = time.get().minus(interval);
+        LocalTime timeAfter = time.get().minusMinutes(interval.getMinutes());
         int dayAfter = day.get();
         if (timeAfter.compareTo(timeBefore) >= 0) {
             dayAfter--;
@@ -105,6 +105,14 @@ public class TimeDay {
             time.set(timeAfter);
             day.set(dayAfter);
         }
+    }
+
+    public void setNextRecurrence(Recurrence recurrences) {
+        day.set(day.get() + recurrences.getValue());
+    }
+
+    public boolean isInRange(TimeDay time1, TimeDay time2) {
+        return this.isBefore(time2) && this.isAfter(time1);
     }
 
     @Override
@@ -121,17 +129,9 @@ public class TimeDay {
         return Objects.hash(time, day);
     }
 
-    public void setNextRecurrence(Recurrence recurrences) {
-        day.set(day.get() + recurrences.getValue());
-    }
-
     @Override
     public String toString() {
-        return getTime() + " on day " + getDay();
+        return "on time " + getTime() + " on day " + getDay();
     }
 
-
-    public boolean isInRange(TimeDay time1, TimeDay time2) {
-        return this.isBefore(time2) && this.isAfter(time1);
-    }
 }

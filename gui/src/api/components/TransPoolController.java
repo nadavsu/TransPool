@@ -10,9 +10,9 @@ import api.components.form.match.MatchTripFormController;
 import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
-import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
-import data.transpool.trip.Recurrence;
+import data.transpool.time.TimeInterval;
+import data.transpool.time.Recurrence;
 import data.transpool.trip.request.TripRequest;
 import data.transpool.user.Feedbackable;
 import data.transpool.user.Feedbacker;
@@ -166,11 +166,11 @@ public class TransPoolController {
     public void createMap() {
         engine.createMap(mapComponentController.getMap());
     }
-    public void incrementTime(Duration duration) {
+    public void incrementTime(TimeInterval duration) {
         engine.incrementTime(duration);
     }
 
-    public void decrementTime(Duration duration) {
+    public void decrementTime(TimeInterval duration) {
         engine.decrementTime(duration);
     }
 

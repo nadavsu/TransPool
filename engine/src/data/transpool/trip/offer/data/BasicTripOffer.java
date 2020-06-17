@@ -1,6 +1,6 @@
 package data.transpool.trip.offer.data;
 
-import data.transpool.trip.Scheduling;
+import data.transpool.time.Scheduling;
 import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;

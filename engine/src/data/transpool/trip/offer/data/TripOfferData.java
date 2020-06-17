@@ -1,20 +1,17 @@
 package data.transpool.trip.offer.data;
 
-import data.transpool.TransPoolData;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
-import data.transpool.trip.Recurrence;
+import data.transpool.time.Recurrence;
 import data.transpool.trip.offer.graph.SubTripOffer;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.util.Util;
 import exception.TransPoolRunTimeException;
 import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -27,9 +24,6 @@ import java.util.*;
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private List<SubTripOffer> route;
-
-    private TimeDay departureTime;
-    private TimeDay arrivalTime;
 
     private ObservableList<BasicTripRequest> allMatchedRequestsData;
     private Map<Stop, LocalTime> timeTable;
@@ -80,7 +74,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     private void initializeTimeTable() {
-        LocalTime timeAtStop = getScheduling().getDepartureTime();
+        LocalTime timeAtStop = getScheduling().getDepartureTime().getTime();
         Path firstPath = usedPaths.get(0);
 
         timeTable.put(firstPath.getSourceStop(), timeAtStop);
@@ -119,19 +113,44 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     private double calculateAverageFuelConsumption() {
-        return Util.round(this
+        return this
                 .getUsedPaths()
                 .stream()
                 .mapToDouble(Path::getFuelConsumption)
                 .average()
-                .orElse(0));
+                .orElse(0);
     }
 
+    @Override
     public SubTripOffer getSubTripOffer(int ID) {
-        return route.stream()
+        return route
+                .stream()
                 .filter(subTripOffer -> subTripOffer.getSubTripOfferID() == ID)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public boolean isCurrentlyHappening() {
+        for (SubTripOffer subTripOffer : route) {
+            if (subTripOffer.isCurrentlyHappening()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Not used.
+     * @param matchedRequest
+     */
+    @Override
+    public void updateAfterMatch(MatchedTripRequest matchedRequest) {
+        if (getMaxPassengerCapacity() == 0) {
+            throw new TransPoolRunTimeException();
+        }
+        setMaxPassengerCapacity(getMaxPassengerCapacity() - 1);
+        allMatchedRequestsData.add(matchedRequest);
     }
 
     @Override
@@ -177,33 +196,9 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         return usedPaths;
     }
 
-    /**
-     * Updates the trip after there is a found match for it.
-     * Adds the details from the match to the status list, decrements the passenger capacity.
-     * @param matchedRequest - the matched request.
-     */
-    @Override
-    public void updateAfterMatch(MatchedTripRequest matchedRequest) {
-        if (getMaxPassengerCapacity() == 0) {
-            throw new TransPoolRunTimeException();
-        }
-        setMaxPassengerCapacity(getMaxPassengerCapacity() - 1);
-        allMatchedRequestsData.add(matchedRequest);
-    }
-
     @Override
     public LocalTime getDepartureTimeAtStop(Stop stop) {
         return timeTable.get(stop);
-    }
-
-    @Override
-    public boolean isCurrentlyHappening() {
-        for (SubTripOffer subTripOffer : route) {
-            if (subTripOffer.isCurrentlyHappening()) {
-                return true;
-            }
-        }
-         return false;
     }
 
     @Override

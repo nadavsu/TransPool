@@ -1,14 +1,14 @@
 package data.transpool.trip.offer.graph;
 
-import data.jaxb.TransPool;
 import data.transpool.TransPoolData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
-import data.transpool.trip.Recurrence;
+import data.transpool.time.Recurrence;
 import data.transpool.trip.offer.data.BasicTripOfferData;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,8 +28,8 @@ public class SubTripOffer extends BasicTripOfferData {
 
     //Time data
     private ObjectProperty<TimeDay> timeOfDepartureFromSource;
-    private ObjectProperty<TimeDay> timeOfArrivalAtDestination;
     private ObjectProperty<Recurrence> recurrences;
+    private ObjectProperty<TimeDay> timeOfArrivalAtDestination;
 
     //Holds dynamic data
     private Map<Integer, Integer> dayToCapacityMap;
@@ -37,7 +37,7 @@ public class SubTripOffer extends BasicTripOfferData {
     //Dynamic data
     private ObservableList<BasicTripRequest> currentRequests;
 
-    public SubTripOffer(int ID, Path path, TripOffer tripOffer) {
+    public SubTripOffer(int ID, Path path, TripOffer tripOffer) throws TransPoolDataException {
         super(tripOffer);
         this.subTripOfferID = ID;
         this.currentRequests = FXCollections.observableArrayList(tripOffer.getAllMatchedRequestsData());
@@ -121,13 +121,15 @@ public class SubTripOffer extends BasicTripOfferData {
         return schedule.get().getRecurrences();
     }
 
+    //----------------------------------------------------------------------------------------------------------------//
+    //TODO: make a class current trip request which will have data with function of time?
     public boolean isCurrentlyHappening() {
-        return TransPoolData.currentTime.getTime().isAfter(getTimeOfDepartureFromSource().getTime())
-                && TransPoolData.currentTime.getTime().isBefore(getTimeOfArrivalAtDestination().getTime())
-                && isRecurrenceOnDay(TransPoolData.currentTime.getDay());
+        return !TransPoolData.currentTime.getTime().isBefore(getTimeOfDepartureFromSource().getTime())
+                && !TransPoolData.currentTime.getTime().isAfter(getTimeOfArrivalAtDestination().getTime())
+                && isHappeningOnDay(TransPoolData.currentTime.getDay());
     }
 
-    public boolean isRecurrenceOnDay(int day) {
+    public boolean isHappeningOnDay(int day) {
         return getRecurrences().isOnDay(day, getDayStart());
     }
 

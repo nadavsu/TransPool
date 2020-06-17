@@ -1,7 +1,4 @@
-package data.transpool.trip;
-
-import java.util.HashMap;
-import java.util.Map;
+package data.transpool.time;
 
 public enum Recurrence {
     ONE_TIME("OneTime", 0),

@@ -59,13 +59,11 @@ public class TripOfferCardController extends CardController<TripOffer> {
         labelPPK.textProperty().bind(Bindings.concat(
                 "Price per kilometer: ", tripOffer.PPKProperty()));
         labelSchedule.textProperty().bind(Bindings.concat(
-                "Departs ", tripOffer.getScheduling().getRecurrences().toString(),
-                " on day ", tripOffer.getScheduling().getDayStart(),
-                " at ", tripOffer.getScheduling().getDepartureTime().toString()));
+                "Departs ", tripOffer.getScheduling().toString()));
         labelDriverRating.textProperty().bind(Bindings
                 .when(tripOffer.getTransPoolDriver().averageRatingProperty().isEqualTo(0))
                 .then("No rating yet.")
-                .otherwise(tripOffer.getTransPoolDriver().averageRatingProperty().asString()));
+                .otherwise(Bindings.concat("Rating: ", tripOffer.getTransPoolDriver().getAverageRating())));
 
     }
 }

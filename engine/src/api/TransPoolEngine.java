@@ -4,7 +4,8 @@ import api.components.*;
 import api.task.LoadFileTask;
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
-import data.transpool.trip.Recurrence;
+import data.transpool.time.Recurrence;
+import data.transpool.time.TimeInterval;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
@@ -12,19 +13,16 @@ import data.transpool.trip.request.*;
 import data.transpool.user.Feedback;
 import data.transpool.user.Feedbackable;
 import data.transpool.user.Feedbacker;
-import data.transpool.user.TransPoolDriver;
 import exception.NoResultsFoundException;
 import exception.data.InvalidDayStartException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
-import exception.data.TransPoolFileNotFoundException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
-import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.Duration;
 import java.time.LocalTime;
@@ -107,12 +105,12 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void incrementTime(Duration duration) {
+    public void incrementTime(TimeInterval duration) {
         data.incrementTime(duration);
     }
 
     @Override
-    public void decrementTime(Duration duration) {
+    public void decrementTime(TimeInterval duration) {
         data.decrementTime(duration);
     }
 

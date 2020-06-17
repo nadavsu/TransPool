@@ -17,6 +17,7 @@ import javafx.collections.ObservableList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TripOfferMap implements TripOfferEngine {
     private ObservableList<TripOffer> allTripOffers;
@@ -25,8 +26,11 @@ public class TripOfferMap implements TripOfferEngine {
 
     public TripOfferMap(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
         this.allTripOffers = FXCollections.observableArrayList();
+        this.currentTripOffers = FXCollections.observableArrayList();
 
         initAllTripOffers(map, JAXBTripOffers);
+        updateCurrentTripOffers();
+
         this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
     }
 
@@ -76,10 +80,11 @@ public class TripOfferMap implements TripOfferEngine {
 
     public void updateCurrentTripOffers() {
         currentTripOffers.clear();
-        allTripOffers
-                .stream()
-                .filter(TripOffer::isCurrentlyHappening)
-                .forEach(tripOffer -> currentTripOffers.add(tripOffer));
+        for (TripOffer tripOffer : allTripOffers) {
+            if (tripOffer.isCurrentlyHappening()) {
+                currentTripOffers.add(tripOffer);
+            }
+        }
     }
 
     public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {

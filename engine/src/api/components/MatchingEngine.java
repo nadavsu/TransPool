@@ -35,6 +35,9 @@ public class MatchingEngine {
         }
     }
 
+
+    //Create a new matchedTripRequest
+    //Add the possibleRoute to the list of matched routes inside tripOfferMap?
     public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
         MatchedTripRequest matchedTripRequest = new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute);

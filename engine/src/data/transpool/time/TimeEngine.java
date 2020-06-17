@@ -3,7 +3,7 @@ package data.transpool.time;
 import java.time.Duration;
 
 public interface TimeEngine {
-    void incrementTime(Duration interval);
-    void decrementTime(Duration interval);
+    void incrementTime(TimeInterval interval);
+    void decrementTime(TimeInterval interval);
     TimeDay getTimeDay();
 }

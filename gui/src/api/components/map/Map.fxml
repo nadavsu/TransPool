@@ -30,9 +30,9 @@
       </ScrollPane>
       <GridPane hgap="10.0" minHeight="40.0" prefHeight="40.0" prefWidth="550.0">
         <columnConstraints>
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="99.0" minWidth="10.0" prefWidth="90.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="66.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="114.0" minWidth="10.0" prefWidth="83.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="146.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="98.0" minWidth="10.0" prefWidth="84.0" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="91.0" minWidth="10.0" prefWidth="73.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="107.0" minWidth="10.0" prefWidth="26.0" />
@@ -43,7 +43,7 @@
          <children>
             <JFXButton fx:id="buttonPrevious" onAction="#previousButtonAction" prefHeight="27.0" prefWidth="60.0" text="Prev" GridPane.halignment="RIGHT" />
             <JFXButton fx:id="buttonNext" onAction="#nextButtonAction" prefHeight="27.0" prefWidth="68.0" text="Next" GridPane.columnIndex="1" />
-            <JFXComboBox fx:id="comboboxInterval" prefHeight="27.0" prefWidth="89.0" promptText="Interval" GridPane.columnIndex="2" />
+            <JFXComboBox fx:id="comboboxInterval" prefHeight="27.0" prefWidth="143.0" promptText="Interval" GridPane.columnIndex="2" />
             <Label fx:id="labelCurrentDay" text="Day 5" GridPane.columnIndex="3" />
             <Label fx:id="labelCurrentTime" text="14:15" GridPane.columnIndex="4" />
          </children>

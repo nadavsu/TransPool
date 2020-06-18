@@ -47,7 +47,6 @@
             <Label fx:id="labelRequestDestination" prefHeight="15.0" prefWidth="210.0" styleClass="normal-text" text="Gets off at HIT" GridPane.rowIndex="1" />
             <Label fx:id="labelArrivalDeparture" prefHeight="44.0" prefWidth="183.0" styleClass="normal-text" text="Requested time of departure:" wrapText="true" GridPane.rowIndex="2" />
             <Label fx:id="labelTime" prefHeight="17.0" prefWidth="183.0" styleClass="normal-text" text="14:00" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
-            <Label fx:id="labelDay" text="On day 7" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </children>

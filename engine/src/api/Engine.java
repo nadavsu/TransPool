@@ -49,7 +49,7 @@ public interface Engine {
 
     ObservableList<PossibleRoute> getPossibleRoutes();
 
-    void addNewMatch(int possibleMatchIndex);
+    void addNewMatch(int possibleMatchIndex) throws TransPoolDataException;
 
     ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
 

@@ -99,8 +99,6 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
 
     @Override
     public String toString() {
-        return "Rider " + requestID.get()
-                + " gets on at " + sourceStop.get()
-                + " and gets off at " + destinationStop.get();
+        return "Rider " + requestID.get() + " - " + getTransPoolRider();
     }
 }

@@ -1,7 +1,8 @@
-package data.transpool.trip.offer.graph;
+package data.transpool.trip.offer.map;
 
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
+import data.transpool.trip.offer.data.SubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.data.TripOffer;
@@ -65,9 +66,8 @@ public class TripOfferGraph {
 
         for (SubTripOffer nextOffer : adjointList.get(currentStop.getID())) {
             if (nextOffer != null && !beingVisited[nextOffer.getDestinationStop().getID()]) {
-                SubTripOffer toAdd = new SubTripOffer(nextOffer);
-                if (currentRoute.add(toAdd, departureTime)) {
-                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, toAdd.getTimeOfArrivalAtDestination(), beingVisited,
+                if (currentRoute.add(nextOffer, departureTime)) {
+                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, currentRoute.getTimeOfArrival(), beingVisited,
                             currentRoute, possibleRoutes);
                 }
                 currentRoute.remove(nextOffer);

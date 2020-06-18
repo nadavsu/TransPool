@@ -2,15 +2,13 @@ package data.transpool.trip.offer.data;
 
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.trip.offer.graph.SubTripOffer;
+import data.transpool.time.TimeDay;
 import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
+import data.transpool.trip.request.MatchedTripRequestPart;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.ObjectProperty;
 import javafx.collections.ObservableList;
 
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 
@@ -19,19 +17,21 @@ public interface TripOffer extends BasicTripOffer {
     double getAverageRating();
     DoubleProperty averageRatingProperty();
 
-    ObservableList<BasicTripRequest> getAllMatchedRequestsData();
-    void setAllMatchedRequestsData(ObservableList<BasicTripRequest> allMatchedRequestsData);
+    ObservableList<MatchedTripRequestPart> getAllMatchedRequestsData();
 
     List<Path> getUsedPaths();
-    Map<Stop, LocalTime> getTimeTable();
+    Map<Stop, TimeDay> getTimeTable();
     List<SubTripOffer> getRoute();
     ObservableList<String> getRouteAsStopsList();
 
-    void updateAfterMatch(MatchedTripRequest matchedRequest);
+    void updateAfterMatch(MatchedTripRequest matchedRequest, TimedSubTripOffer subTripOffer);
 
-    LocalTime getDepartureTimeAtStop(Stop stop);
+    TimeDay getDepartureTimeAtStop(Stop stop);
 
     SubTripOffer getSubTripOffer(int subTripOfferID);
 
     boolean isCurrentlyHappening();
+   // Stop getCurrentStop();
+
+
 }

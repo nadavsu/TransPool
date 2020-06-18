@@ -4,6 +4,7 @@ import api.Constants;
 import api.components.card.CardController;
 import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
+import data.transpool.trip.request.MatchedTripRequestPart;
 import data.transpool.user.Feedback;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.BasicTripRequest;
@@ -25,7 +26,7 @@ public class TripOfferCardController extends CardController<TripOffer> {
     @FXML private Label labelTripDuration;
     @FXML private Label labelFuelConsumption;
     @FXML private Label labelPPK;
-    @FXML private JFXListView<BasicTripRequest> listViewRiderDetails;
+    @FXML private JFXListView<MatchedTripRequestPart> listViewRiderDetails;
     @FXML private Label labelPassengerCapacity;
     @FXML private JFXListView<Feedback> listViewFeedbacks;
     @FXML private AnchorPane anchorPaneCardBody;
@@ -51,19 +52,19 @@ public class TripOfferCardController extends CardController<TripOffer> {
         listViewFeedbacks.setItems(tripOffer.getTransPoolDriver().getAllFeedbacks());
 
         labelPassengerCapacity.textProperty().bind(Bindings.concat(
-                "There are ", tripOffer.maxPassengerCapacityProperty(), " spaces left on this ride."));
+                "There are ", tripOffer.maxPassengerCapacityProperty(), " spaces on this ride."));
         labelTripDuration.textProperty().bind(Bindings.concat(
                 "Trip is about ", tripOffer.tripDurationInMinutesProperty(), " minutes long."));
         labelFuelConsumption.textProperty().bind(Bindings.concat(
-                "Average fuel consumption is about ", tripOffer.averageFuelConsumptionProperty()));
+                "Average fuel consumption: ", tripOffer.averageFuelConsumptionProperty()));
         labelPPK.textProperty().bind(Bindings.concat(
-                "Price per kilometer: ", tripOffer.PPKProperty()));
+                "PPK: ", tripOffer.PPKProperty()));
         labelSchedule.textProperty().bind(Bindings.concat(
-                "Departs ", tripOffer.getScheduling().toString()));
+                "Departs ", tripOffer.getScheduling().getRecurrences(), " ", tripOffer.getScheduling().getDepartureTime()));
         labelDriverRating.textProperty().bind(Bindings
                 .when(tripOffer.getTransPoolDriver().averageRatingProperty().isEqualTo(0))
                 .then("No rating yet.")
-                .otherwise(Bindings.concat("Rating: ", tripOffer.getTransPoolDriver().getAverageRating())));
+                .otherwise(Bindings.concat("Rating: ", tripOffer.getTransPoolDriver().averageRatingProperty())));
 
     }
 }

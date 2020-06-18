@@ -1,7 +1,9 @@
 package data.transpool.trip.offer.matching;
 
+import data.transpool.time.Scheduling;
 import data.transpool.time.TimeDay;
-import data.transpool.trip.offer.graph.SubTripOffer;
+import data.transpool.trip.offer.data.TimedSubTripOffer;
+import data.transpool.trip.offer.data.SubTripOffer;
 import data.transpool.user.TransPoolDriver;
 
 import java.util.ArrayList;
@@ -9,7 +11,7 @@ import java.util.List;
 
 public class PossibleRoute {
 
-    private List<SubTripOffer> route;
+    private List<TimedSubTripOffer> route;
     private int length;
 
     private int totalPrice;
@@ -44,19 +46,20 @@ public class PossibleRoute {
     }
 
     public boolean add(SubTripOffer offer, TimeDay departureTime) {
-        if (offer.getOccurrenceAfter(departureTime)) {
+        Scheduling nextOccurrence = offer.getFirstRecurrenceAfter(departureTime);
+        if (nextOccurrence != null) {
             if (length == 0) {
-                return this.addToEmpty(offer);
+                return this.addToEmpty(offer, nextOccurrence);
             } else {
-                return this.addToNotEmpty(offer);
+                return this.addToNotEmpty(offer, nextOccurrence);
             }
         } else {
             return false;
         }
     }
 
-    private boolean addToEmpty(SubTripOffer offer) {
-        this.route.add(offer);
+    private boolean addToEmpty(SubTripOffer offer, Scheduling scheduling) {
+        this.route.add(new TimedSubTripOffer(scheduling.getDepartureTime(), scheduling.getArrivalTime(), offer));
         this.length++;
 
         this.isContinuous = true;
@@ -65,21 +68,21 @@ public class PossibleRoute {
         this.totalFuelConsumption += offer.getAverageFuelConsumption();
         this.totalTripDuration += offer.getTripDurationInMinutes();
         this.averageFuelConsumption = totalFuelConsumption / length;
-        this.timeOfArrival = new TimeDay(offer.getTimeOfArrivalAtDestination());
+        this.timeOfArrival = new TimeDay(scheduling.getArrivalTime());
         return true;
     }
 
-    private boolean addToNotEmpty(SubTripOffer offer) {
-        this.route.add(offer);
+    private boolean addToNotEmpty(SubTripOffer offer, Scheduling scheduling) {
+        this.route.add(new TimedSubTripOffer(scheduling.getDepartureTime(), scheduling.getArrivalTime(), offer));
         this.length++;
 
         this.totalPrice += offer.getPrice();
         this.totalFuelConsumption += offer.getAverageFuelConsumption();
         this.totalTripDuration += offer.getTripDurationInMinutes();
         this.averageFuelConsumption = totalFuelConsumption / length;
-        this.timeOfArrival = new TimeDay(offer.getTimeOfArrivalAtDestination());
-        this.isContinuous = isContinuous && route.get(length - 2).getTransPoolDriver()
-                .equals(route.get(length - 1).getTransPoolDriver());
+        this.timeOfArrival = new TimeDay(scheduling.getArrivalTime());
+        this.isContinuous = isContinuous && route.get(length - 2).getSubTripOffer().getTransPoolDriver()
+                .equals(route.get(length - 1).getSubTripOffer().getTransPoolDriver());
         return true;
     }
 
@@ -94,7 +97,7 @@ public class PossibleRoute {
         }
         if(length > 0) {
             this.averageFuelConsumption = totalFuelConsumption / length;
-            this.timeOfArrival = route.get(length - 1).getTimeOfArrivalAtDestination();
+            this.timeOfArrival = route.get(length - 1).getArrivalTime();
         } else {
             this.averageFuelConsumption = 0;
             this.timeOfArrival = null;
@@ -102,21 +105,19 @@ public class PossibleRoute {
         }
     }
 
-    public SubTripOffer lastOffer() {
+    public TimedSubTripOffer lastOffer() {
         return this.route.get(length - 1);
     }
 
     private void checkContinuous() {
         isContinuous = true;
-        TransPoolDriver startingDriver = route.get(0).getTransPoolDriver();
-        for (SubTripOffer offer : route) {
-            isContinuous = isContinuous
-                    && offer.getTransPoolDriver()
-                    .equals(startingDriver);
+        TransPoolDriver startingDriver = route.get(0).getSubTripOffer().getTransPoolDriver();
+        for (TimedSubTripOffer offer : route) {
+            isContinuous = isContinuous && offer.getSubTripOffer().getTransPoolDriver().equals(startingDriver);
         }
     }
 
-    public List<SubTripOffer> getRoute() {
+    public List<TimedSubTripOffer> getRoute() {
         return route;
     }
 
@@ -163,7 +164,7 @@ public class PossibleRoute {
     @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
-        for (SubTripOffer offer : route) {
+        for (TimedSubTripOffer offer : route) {
             str.append(offer.toString());
             str.append("\n");
         }

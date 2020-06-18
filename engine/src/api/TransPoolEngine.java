@@ -81,7 +81,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException, TransPoolDataException {
+    public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException {
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
     }
 
@@ -95,7 +95,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void addNewMatch(int possibleMatchIndex) {
+    public void addNewMatch(int possibleMatchIndex) throws TransPoolDataException {
         matchingEngine.addNewMatch(data, possibleMatchIndex);
     }
 

@@ -15,6 +15,5 @@ public interface TripOfferEngine {
 
     ObservableList<TripOffer> getCurrentOffers();
 
-    void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest);
 
 }

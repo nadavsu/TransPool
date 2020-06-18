@@ -1,26 +1,25 @@
 package data.transpool.trip.request;
 
 import data.transpool.time.TimeDay;
-import data.transpool.trip.offer.graph.SubTripOffer;
+import data.transpool.trip.offer.data.TimedSubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.user.Feedback;
 import data.transpool.user.Feedbackable;
 import data.transpool.user.Feedbacker;
 import data.transpool.user.TransPoolDriver;
+import exception.data.RideFullException;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableSet;
 
-import java.time.LocalTime;
-import java.util.List;
-
 public class MatchedTripRequest extends BasicTripRequestData implements Feedbacker {
 
 
-    private ObservableList<SubTripOffer> rideDetails;
-    private ObservableList<Integer> tripOfferIDs;
+    private ObservableList<TimedSubTripOffer> route;
+    private ObservableSet<Integer> tripOfferIDs;
     private ObservableSet<TransPoolDriver> transpoolDrivers;
+
 
     private IntegerProperty tripPrice;
     private DoubleProperty personalFuelConsumption;
@@ -28,26 +27,29 @@ public class MatchedTripRequest extends BasicTripRequestData implements Feedback
     private ObjectProperty<TimeDay> timeOfDeparture;
     private BooleanProperty isArrival;
 
-    public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleRoute possibleRoute) {
+    public MatchedTripRequest(TripRequest tripRequestToMatch, PossibleRoute possibleRoute) throws RideFullException {
         super(tripRequestToMatch);
         this.isArrival = new SimpleBooleanProperty(tripRequestToMatch.isTimeOfArrival());
-        this.rideDetails = FXCollections.observableArrayList(possibleRoute.getRoute());
+        this.route = FXCollections.observableArrayList(possibleRoute.getRoute());
         this.tripPrice = new SimpleIntegerProperty(possibleRoute.getTotalPrice());
         this.expectedTimeOfArrival = new SimpleObjectProperty<>(possibleRoute.getTimeOfArrival());
         this.timeOfDeparture = new SimpleObjectProperty<>(possibleRoute.getTimeOfDeparture());
         this.personalFuelConsumption = new SimpleDoubleProperty(possibleRoute.getAverageFuelConsumption());
-        this.tripOfferIDs = FXCollections.observableArrayList();
+        this.tripOfferIDs = FXCollections.observableSet();
         this.transpoolDrivers = FXCollections.observableSet();
 
         possibleRoute.getRoute().forEach(subTripOffer -> {
-            tripOfferIDs.add(subTripOffer.getOfferID());
-            transpoolDrivers.add(subTripOffer.getTransPoolDriver());
+            tripOfferIDs.add(subTripOffer.getSubTripOffer().getOfferID());
+            transpoolDrivers.add(subTripOffer.getSubTripOffer().getTransPoolDriver());
+            subTripOffer.getSubTripOffer().getMainOffer().updateAfterMatch(this, subTripOffer);
         });
         updateSubTripOffers();
     }
 
-    private void updateSubTripOffers() {
-
+    private void updateSubTripOffers() throws RideFullException {
+        for (TimedSubTripOffer timedOffer : route) {
+            timedOffer.updateFather(timedOffer.getDay(), this);
+        }
     }
 
     @Override
@@ -80,11 +82,11 @@ public class MatchedTripRequest extends BasicTripRequestData implements Feedback
         return isArrival;
     }
 
-    public ObservableList<SubTripOffer> getRideDetails() {
-        return rideDetails;
+    public ObservableList<TimedSubTripOffer> getRoute() {
+        return route;
     }
 
-    public ObservableList<Integer> getTripOfferIDs() {
+    public ObservableSet<Integer> getTripOfferIDs() {
         return tripOfferIDs;
     }
 

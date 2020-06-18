@@ -17,7 +17,6 @@ public class TripRequestCardController extends CardController<TripRequest> {
     @FXML private Label labelRequestDestination;
     @FXML private Label labelArrivalDeparture;
     @FXML private Label labelTime;
-    @FXML private Label labelDay;
 
     @Override
     protected void loadCard() {

@@ -68,8 +68,7 @@ public class TimeDay {
         if (this.day.get() < other.day.get()) {
             return true;
         } else if (this.day.get() == other.day.get()) {
-            return this.time.get().isBefore(other.time.get())
-                    || this.time.get().equals(other.time.get());
+            return this.time.get().isBefore(other.time.get());
         } else {
             return false;
         }
@@ -79,24 +78,23 @@ public class TimeDay {
         if (this.day.get() > other.day.get()) {
             return true;
         } else if (this.day.get() == other.day.get()) {
-            return this.time.get().isAfter(other.time.get())
-                    || this.time.get().equals(other.time.get());
+            return this.time.get().isAfter(other.time.get());
         } else {
             return false;
         }
     }
 
-    public void plus(TimeInterval interval) {
+    public void plus(int minutes) {
         LocalTime timeBefore = time.get();
-        time.set(time.get().plusMinutes(interval.getMinutes()));
+        time.set(time.get().plusMinutes(minutes));
         if (time.get().compareTo(timeBefore) <= 0) {
             day.set(day.get() + 1);
         }
     }
 
-    public void minus(TimeInterval interval) {
+    public void minus(int minutes) {
         LocalTime timeBefore = time.get();
-        LocalTime timeAfter = time.get().minusMinutes(interval.getMinutes());
+        LocalTime timeAfter = time.get().minusMinutes(minutes);
         int dayAfter = day.get();
         if (timeAfter.compareTo(timeBefore) >= 0) {
             dayAfter--;

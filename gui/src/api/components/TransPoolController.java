@@ -119,7 +119,11 @@ public class TransPoolController {
     }
 
     public void createNewMatch(int possibleMatchIndex) {
-        engine.addNewMatch(possibleMatchIndex);
+        try {
+            engine.addNewMatch(possibleMatchIndex);
+        } catch (TransPoolDataException e) {
+            showAlert(e);
+        }
     }
 
     public void findPossibleMatches(TripRequest requestToMatch, int numOfResults) {

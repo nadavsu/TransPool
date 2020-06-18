@@ -1,35 +1,33 @@
-package data.transpool.trip.offer.graph;
+package data.transpool.trip.offer.map;
 
 import api.components.TripOfferEngine;
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
+import data.transpool.trip.offer.data.SubTripOffer;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.data.TripOfferData;
-import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.request.MatchedTripRequest;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class TripOfferMap implements TripOfferEngine {
     private ObservableList<TripOffer> allTripOffers;
-    private ObservableList<TripOffer> currentTripOffers;
     private TripOfferGraph tripOfferGraph;
+
+    //Live details
+    private ObservableList<TripOffer> currentTripOffers;
+
 
     public TripOfferMap(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
         this.allTripOffers = FXCollections.observableArrayList();
         this.currentTripOffers = FXCollections.observableArrayList();
-
         initAllTripOffers(map, JAXBTripOffers);
-        updateCurrentTripOffers();
+        updateMap();
 
         this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
     }
@@ -65,20 +63,9 @@ public class TripOfferMap implements TripOfferEngine {
         return currentTripOffers;
     }
 
-    @Override
-    public void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest) {
-        for (SubTripOffer subTripOffer : chosenPossibleRoute.getRoute()) {
-            getSubTripOffer(
-                    subTripOffer.getOfferID(),
-                    subTripOffer.getSubTripOfferID()
-            )
-                    .updateOnDay(subTripOffer.getDayStart());
-        }
-    }
-
     //----------------------------------------------------------------------------------------------------------------//
 
-    public void updateCurrentTripOffers() {
+    public void updateMap() {
         currentTripOffers.clear();
         for (TripOffer tripOffer : allTripOffers) {
             if (tripOffer.isCurrentlyHappening()) {

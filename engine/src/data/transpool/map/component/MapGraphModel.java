@@ -1,8 +1,5 @@
 package data.transpool.map.component;
 
-import api.components.map.course.transpool.graph.component.coordinate.CoordinateNode;
-import api.components.map.course.transpool.graph.component.coordinate.CoordinatesManager;
-import api.components.map.course.transpool.graph.component.details.StationDetailsDTO;
 import api.components.map.course.transpool.graph.component.road.ArrowedEdge;
 import api.components.map.course.transpool.graph.component.station.StationManager;
 import api.components.map.course.transpool.graph.component.station.StationNode;
@@ -13,9 +10,6 @@ import data.jaxb.MapDescriptor;
 import data.transpool.map.BasicMapData;
 import exception.data.TransPoolDataException;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MapGraphModel extends BasicMapData {
 
     private Model mapGraphModel;
@@ -24,18 +18,23 @@ public class MapGraphModel extends BasicMapData {
         super(JAXBMap);
     }
 
+
+/*
+    public void update(TripOfferMap tripOfferMap) {
+        tripOfferMap.getCurrentOffers().forEach(tripOffer -> {
+            tripOffer.getCurrentSubTripOffers().forEach(subTripOffer -> {
+                subTripOffer.getSourceStop().addDrive(subTripOffer.getTransPoolDriver());
+            });
+        });
+    }*/
+
     public void createMapModel(Graph graph) {
-        mapGraphModel = graph.getModel();
         graph.beginUpdate();
-        //Creating the all the stations
-        StationManager sm = createStations(mapGraphModel);
-
-        //Creating all the edges.
-        createEdges(sm);
-
+        mapGraphModel = graph.getModel();
+        StationManager stationManager = createStations(mapGraphModel);
+        createEdges(stationManager);
         graph.endUpdate();
-
-        graph.layout(new MapGridLayout(sm));
+        graph.layout(new MapGridLayout(stationManager));
     }
 
     private StationManager createStations(Model model) {
@@ -44,26 +43,11 @@ public class MapGraphModel extends BasicMapData {
         allStops.forEach((string, stop) -> {
             StationNode station = sm.getOrCreate(stop.getX(), stop.getY());
             station.setName(string);
-            station.setDetailsSupplier(() -> {
-                List<String> trips = new ArrayList<>();
-                return new StationDetailsDTO(trips);
-            });
+            station.setDetailsSupplier(stop::getDetails);
             model.addCell(station);
         });
 
         return sm;
-    }
-
-    private CoordinatesManager createCoordinates() {
-        CoordinatesManager cm = new CoordinatesManager(CoordinateNode::new);
-
-        for (int i = 0; i < length; i++) {
-            for (int j = 0; j < width; j++) {
-                mapGraphModel.addCell(cm.getOrCreate(i+1, j+1));
-            }
-        }
-
-        return cm;
     }
 
     private void createEdges(StationManager sm) {

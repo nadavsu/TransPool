@@ -3,7 +3,7 @@ package api.components.card.match;
 import api.Constants;
 import api.components.card.CardController;
 import com.jfoenix.controls.JFXListView;
-import data.transpool.trip.offer.graph.SubTripOffer;
+import data.transpool.trip.offer.data.TimedSubTripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -20,12 +20,12 @@ public class MatchedTripCardController extends CardController<MatchedTripRequest
     @FXML private Label labelTripPrice;
     @FXML private Label labelPersonalFuelConsumption;
     @FXML private Label labelTime;
-    @FXML private JFXListView<SubTripOffer> listViewRideDetails;
+    @FXML private JFXListView<TimedSubTripOffer> listViewRideDetails;
     @FXML private AnchorPane anchorPaneCardBody;
 
     @Override
     protected void initializeValues(MatchedTripRequest request) {
-        listViewRideDetails.setItems(request.getRideDetails());
+        listViewRideDetails.setItems(request.getRoute());
         labelRequestID.textProperty().bind(request.requestIDProperty().asString());
         labelRiderName.textProperty().bind(request.getTransPoolRider().usernameProperty());
 

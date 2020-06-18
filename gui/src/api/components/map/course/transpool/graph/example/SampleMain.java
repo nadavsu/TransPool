@@ -6,6 +6,7 @@ import api.components.map.course.transpool.graph.layout.MapGridLayout;
 import com.fxgraph.graph.Graph;
 import com.fxgraph.graph.Model;
 import com.fxgraph.graph.PannableCanvas;
+import data.transpool.user.TransPoolDriver;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -83,9 +84,7 @@ public class SampleMain extends Application {
         StationNode station = sm.getOrCreate(2, 2);
         station.setName("This is a test for long string");
         station.setDetailsSupplier(() -> {
-            List<String> trips = new ArrayList<>();
-            trips.add("Mosh");
-            trips.add("Menash");
+            List<TransPoolDriver> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);
@@ -93,7 +92,7 @@ public class SampleMain extends Application {
         station = sm.getOrCreate(5, 5);
         station.setName("B");
         station.setDetailsSupplier(() -> {
-            List<String> trips = new ArrayList<>();
+            List<TransPoolDriver> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);
@@ -101,11 +100,7 @@ public class SampleMain extends Application {
         station = sm.getOrCreate(7, 9);
         station.setName("C");
         station.setDetailsSupplier(() -> {
-            List<String> trips = new ArrayList<>();
-            trips.add("Mosh");
-            trips.add("Menash");
-            trips.add("Tikva");
-            trips.add("Mazal");
+            List<TransPoolDriver> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);
@@ -113,8 +108,7 @@ public class SampleMain extends Application {
         station = sm.getOrCreate(4, 6);
         station.setName("D");
         station.setDetailsSupplier(() -> {
-            List<String> trips = new ArrayList<>();
-            trips.add("Mazal");
+            List<TransPoolDriver> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);

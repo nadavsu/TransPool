@@ -1,5 +1,7 @@
 package api.components.map.course.transpool.graph.component.details;
 
+import data.transpool.user.TransPoolDriver;
+
 import java.util.List;
 
 /*
@@ -10,9 +12,9 @@ public class StationDetailsDTO {
     private String name;
     private int x;
     private int y;
-    private List<String> drives;
+    private List<TransPoolDriver> drives;
 
-    public StationDetailsDTO(List<String> drives) {
+    public StationDetailsDTO(List<TransPoolDriver> drives) {
         this.drives = drives;
     }
 
@@ -40,7 +42,15 @@ public class StationDetailsDTO {
         return name;
     }
 
-    public List<String> getDrives() {
+    public List<TransPoolDriver> getDrives() {
         return drives;
+    }
+
+    public void addDriver(TransPoolDriver driver) {
+        drives.add(driver);
+    }
+
+    public void clear() {
+        drives.clear();
     }
 }

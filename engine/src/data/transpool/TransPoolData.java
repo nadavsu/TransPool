@@ -3,7 +3,6 @@ package data.transpool;
 import api.components.TripOfferEngine;
 import api.components.TripRequestEngine;
 import com.fxgraph.graph.Graph;
-import com.fxgraph.graph.Model;
 import data.jaxb.TransPool;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.MapGraphModel;
@@ -14,7 +13,7 @@ import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeInterval;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.offer.graph.TripOfferMap;
+import data.transpool.trip.offer.map.TripOfferMap;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
@@ -22,8 +21,6 @@ import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.time.Duration;
-import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -170,14 +167,15 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
 
     @Override
     public void incrementTime(TimeInterval interval) {
-        currentTime.plus(interval);
-        tripOffers.updateCurrentTripOffers();
+        currentTime.plus(interval.getMinutes());
+        tripOffers.updateMap();
+
     }
 
     @Override
     public void decrementTime(TimeInterval interval) {
-        currentTime.minus(interval);
-        tripOffers.updateCurrentTripOffers();
+        currentTime.minus(interval.getMinutes());
+        tripOffers.updateMap();
     }
 
     @Override
@@ -217,9 +215,5 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
 
     public BasicMap getMap() {
         return map;
-    }
-
-    public void updateAfterMatch(PossibleRoute chosenPossibleRoute, MatchedTripRequest matchedTripRequest) {
-        tripOffers.updateAfterMatch(chosenPossibleRoute, matchedTripRequest);
     }
 }

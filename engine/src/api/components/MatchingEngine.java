@@ -5,6 +5,8 @@ import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
 import exception.NoResultsFoundException;
+import exception.data.RideFullException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -38,11 +40,10 @@ public class MatchingEngine {
 
     //Create a new matchedTripRequest
     //Add the possibleRoute to the list of matched routes inside tripOfferMap?
-    public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) {
+    public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) throws TransPoolDataException {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
         MatchedTripRequest matchedTripRequest = new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute);
         data.addMatchedRequest(matchedTripRequest);
-        data.updateAfterMatch(chosenPossibleRoute, matchedTripRequest);
     }
 
 

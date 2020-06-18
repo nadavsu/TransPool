@@ -19,6 +19,9 @@ import javafx.fxml.FXML;
 
 import java.util.stream.Collectors;
 
+/**
+ * A form controller for the Feedbacks tab on the left hand side of the UI.
+ */
 public class FeedbackFormController extends FormController {
 
     @FXML private JFXComboBox<MatchedTripRequest> comboBoxRideID;

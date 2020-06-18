@@ -9,6 +9,9 @@ import data.transpool.user.TransPoolDriver;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An array list of TimeSubTripOffers and the summary details such as total price, fuel consumption etc.
+ */
 public class PossibleRoute {
 
     private List<TimedSubTripOffer> route;

@@ -5,6 +5,9 @@ import javafx.collections.ObservableSet;
 
 import java.util.List;
 
+/**
+ * An interface of someone who can leave feedbacks. They usually contain a list of Feedbackables.
+ */
 public interface Feedbacker {
     String getFeedbackerName();
     int getFeedbackerID();

@@ -2,6 +2,10 @@ package data.transpool.trip.offer.matching;
 
 import java.util.ArrayList;
 
+
+/**
+ * Unfinished class - an arrayList of PossibleRoutes which in the future could be sorted in different ways.
+ */
 public class PossibleRoutesList extends ArrayList<PossibleRoute>{
 
     public void sortCheapestFirst() {

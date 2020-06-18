@@ -56,7 +56,7 @@
       </JFXTabPane>
       <AnchorPane prefHeight="35.0" prefWidth="230.0">
          <children>
-            <Label fx:id="labelTaskProgress" layoutX="13.0" layoutY="10.0" prefHeight="17.0" prefWidth="209.0" textAlignment="CENTER" />
+            <Label fx:id="labelTaskProgress" layoutX="13.0" prefHeight="35.0" prefWidth="209.0" textAlignment="CENTER" wrapText="true" />
          </children>
       </AnchorPane>
    </children>

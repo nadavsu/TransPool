@@ -73,27 +73,6 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         initializeSubTripOffers();
     }
 
-    private void initializeSubTripOffers() {
-        for (int i = 0; i < usedPaths.size(); i++) {
-            route.add(new SubTripOffer(i, usedPaths.get(i), this));
-        }
-    }
-
-/*
-    private void initializeTimeTable() {
-        TimeDay timeAtStop = new TimeDay(getScheduling().getDepartureTime());
-        Path firstPath = usedPaths.get(0);
-
-        timeTable.put(firstPath.getSourceStop(), new Scheduling(scheduleAtStop));
-        scheduleAtStop.getDepartureTime().plus(firstPath.getPathTime());
-
-        for (Path path : usedPaths) {
-            timeTable.put(path.getDestinationStop(), new Scheduling(scheduleAtStop));
-            scheduleAtStop.getDepartureTime().plus(path.getPathTime());
-        }
-    }
-*/
-
     private void initializeTimeTable() {
         TimeDay timeAtStop = new TimeDay(getScheduling().getDepartureTime());
         Path firstPath = usedPaths.get(0);
@@ -106,6 +85,13 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
             timeAtStop.plus(path.getPathTime());
         }
     }
+
+    private void initializeSubTripOffers() {
+        for (int i = 0; i < usedPaths.size(); i++) {
+            route.add(new SubTripOffer(i, usedPaths.get(i), this));
+        }
+    }
+
 
     private void initializeUsedPaths(List<String> route, BasicMap map) throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
@@ -159,6 +145,19 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
             }
         }
         return false;
+    }
+
+    @Override
+    public SubTripOffer getCurrentSubTripOffer() {
+        for (SubTripOffer subTripOffer : route) {
+            if (subTripOffer.isCurrentlyDeparting()) {
+                return subTripOffer;
+            }
+        }
+        if (route.get(route.size() - 1).isCurrentlyArriving()) {
+            return route.get(route.size() - 1);
+        }
+        return null;
     }
 
     @Override
@@ -223,22 +222,9 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         TripOfferData that = (TripOfferData) o;
         return offerID.get() == that.offerID.get();
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(offerID.get());
     }
-
-/*    public Stop getCurrentStop() {
-        if (route.get(0).isCurrentlyAtSourceStop()) {
-            return route.get(0).getSourceStop();
-        } else {
-            for (SubTripOffer subTripOffer : route) {
-                if (subTripOffer.isCurrentlyAtDestinationStop()) {
-                    return subTripOffer.getDestinationStop();
-                }
-            }
-        }
-        return null;
-    }*/
-
 }

@@ -4,6 +4,10 @@ import data.transpool.time.TimeDay;
 import data.transpool.trip.request.BasicTripRequest;
 import exception.data.RideFullException;
 
+/**
+ * A sub trip offer with a timestamp. THis class is used for the matching, and searching for relevant routes.
+ */
+
 public class TimedSubTripOffer {
     private SubTripOffer subTripOffer;
     private TimeDay departureTime;

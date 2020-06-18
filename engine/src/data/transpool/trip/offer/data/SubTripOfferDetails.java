@@ -10,12 +10,10 @@ import java.util.List;
  * A class which holds the details of the riders on a specific day
  */
 public class SubTripOfferDetails {
-    private SubTripOffer subTripOffer;
     private int maxCapacity;
     private List<BasicTripRequest> riders;
 
     public SubTripOfferDetails(SubTripOffer tripOffer, BasicTripRequest rider) {
-        this.subTripOffer = tripOffer;
         this.maxCapacity = tripOffer.getMaxPassengerCapacity();
         this.riders = new ArrayList<>(maxCapacity);
         this.riders.add(rider);
@@ -47,7 +45,6 @@ public class SubTripOfferDetails {
 
     @Override
     public String toString() {
-        return "Driver: " + subTripOffer.getTransPoolDriver().toString() +
-                "\nCurrent riders: " + riders.toString();
+        return "Current riders: " + riders.toString();
     }
 }

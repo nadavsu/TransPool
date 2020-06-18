@@ -1,6 +1,8 @@
 package api.components.map.course.transpool.graph.component.details;
 
-import data.transpool.user.TransPoolDriver;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ObservableValue;
 
 import java.util.List;
 
@@ -12,10 +14,12 @@ public class StationDetailsDTO {
     private String name;
     private int x;
     private int y;
-    private List<TransPoolDriver> drives;
+    private List<String> details;
+    private IntegerProperty numOfCars;
 
-    public StationDetailsDTO(List<TransPoolDriver> drives) {
-        this.drives = drives;
+    public StationDetailsDTO(List<String> details) {
+        this.details = details;
+        this.numOfCars = new SimpleIntegerProperty(0);
     }
 
     public void setX(int x) {
@@ -42,15 +46,21 @@ public class StationDetailsDTO {
         return name;
     }
 
-    public List<TransPoolDriver> getDrives() {
-        return drives;
+    public List<String> getDetails() {
+        return details;
     }
 
-    public void addDriver(TransPoolDriver driver) {
-        drives.add(driver);
+    public void addDetails(String details) {
+        this.details.add(details);
+        this.numOfCars.set(numOfCars.get() + 1);
     }
 
     public void clear() {
-        drives.clear();
+        details.clear();
+        numOfCars.set(0);
+    }
+
+    public IntegerProperty numOfCarsProperty() {
+        return numOfCars;
     }
 }

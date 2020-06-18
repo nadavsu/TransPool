@@ -24,10 +24,13 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.LocalTime;
-import java.util.concurrent.ExecutionException;
 
+
+/**
+ * The main engine of the application.
+ * Holds the data, and other engines.
+ */
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
@@ -44,16 +47,17 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void loadFile(File file) throws ExecutionException, InterruptedException {
-        Task loadFileTask = new LoadFileTask(file);
+    public void loadFile(File file) {
+        Task<TransPoolData> loadFileTask = new LoadFileTask(this, file);
         transpoolController.bindTaskToUI(loadFileTask);
 
-        new Thread(loadFileTask).start();
-        data = (TransPoolData) loadFileTask.get();
-        if (data != null) {
+        loadFileTask.valueProperty().addListener((observable, oldValue, newValue) -> {
             transpoolController.bindUIToData(data);
             isLoaded.set(true);
-        }
+            transpoolController.createMap();
+        });
+
+        new Thread(loadFileTask).start();
     }
 
     @Override
@@ -90,8 +94,12 @@ public class TransPoolEngine implements Engine {
         feedbacker.leaveFeedback(feedbackee,
                 new Feedback(feedbacker.getFeedbackerID(), feedbacker.getFeedbackerName(), rating, comment)
         );
-        //Todo check if it works if you remove this.
         transpoolController.updateCard();
+    }
+
+    @Override
+    public void setData(TransPoolData data) {
+        this.data = data;
     }
 
     @Override

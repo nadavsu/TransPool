@@ -84,7 +84,7 @@ public class SampleMain extends Application {
         StationNode station = sm.getOrCreate(2, 2);
         station.setName("This is a test for long string");
         station.setDetailsSupplier(() -> {
-            List<TransPoolDriver> trips = new ArrayList<>();
+            List<String> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);
@@ -92,7 +92,7 @@ public class SampleMain extends Application {
         station = sm.getOrCreate(5, 5);
         station.setName("B");
         station.setDetailsSupplier(() -> {
-            List<TransPoolDriver> trips = new ArrayList<>();
+            List<String> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);
@@ -100,7 +100,7 @@ public class SampleMain extends Application {
         station = sm.getOrCreate(7, 9);
         station.setName("C");
         station.setDetailsSupplier(() -> {
-            List<TransPoolDriver> trips = new ArrayList<>();
+            List<String> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);
@@ -108,7 +108,7 @@ public class SampleMain extends Application {
         station = sm.getOrCreate(4, 6);
         station.setName("D");
         station.setDetailsSupplier(() -> {
-            List<TransPoolDriver> trips = new ArrayList<>();
+            List<String> trips = new ArrayList<>();
             return new StationDetailsDTO(trips);
         });
         model.addCell(station);

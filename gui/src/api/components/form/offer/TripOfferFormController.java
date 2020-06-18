@@ -15,14 +15,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
+
+/**
+ * A form controller for the Trip Offers tab on the left hand side of the UI.
+ */
 public class TripOfferFormController extends FormController {
 
     @FXML private JFXTextField textFieldDriverName;
     @FXML private JFXTimePicker timeFieldDepatureTime;
     @FXML private JFXTextField textFieldDay;
     @FXML private JFXComboBox<Recurrence> comboBoxRecurrences;
-    @FXML private JFXComboBox<Integer> comboBoxRiderCapacity;
+    @FXML private JFXTextField textFieldRiderCapacity;
     @FXML private JFXComboBox<String> comboBoxStopToAdd;
     @FXML private JFXListView<String> listViewRoute;
     @FXML private JFXTextField textFieldPPK;
@@ -45,13 +50,18 @@ public class TripOfferFormController extends FormController {
         listViewRoute.setItems(addedStops);
         timeFieldDepatureTime.set24HourView(true);
         timeFieldDepatureTime.setValue(LocalTime.MIDNIGHT);
-        comboBoxRiderCapacity.getItems().addAll(1, 2, 3, 4, 5, 6, 7);
-        comboBoxRiderCapacity.setValue(1);
         comboBoxRecurrences.getItems().addAll(Recurrence.ONE_TIME, Recurrence.DAILY, Recurrence.BI_DAILY, Recurrence.WEEKLY, Recurrence.MONTHLY);
         comboBoxRecurrences.setValue(Recurrence.ONE_TIME);
+
+        //Blocking the user from inputting characters which are not numerical.
         textFieldPPK.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 textFieldPPK.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+        textFieldRiderCapacity.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                textFieldRiderCapacity.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
         textFieldDay.textProperty().addListener(((observable, oldValue, newValue) -> {
@@ -98,7 +108,7 @@ public class TripOfferFormController extends FormController {
     @Override
     public void submit() {
         int dayStart = 1;
-        int riderCapacity = comboBoxRiderCapacity.getValue();
+        int riderCapacity = Integer.parseInt(textFieldRiderCapacity.getText());
         String driverName = textFieldDriverName.getText();
         Recurrence recurrences = comboBoxRecurrences.getValue();
         LocalTime departureTime = timeFieldDepatureTime.getValue();
@@ -117,7 +127,7 @@ public class TripOfferFormController extends FormController {
         textFieldDriverName.setText("");
         textFieldPPK.setText("");
         listViewRoute.getItems().clear();
-        comboBoxRiderCapacity.setValue(1);
+        textFieldRiderCapacity.clear();
         comboBoxRecurrences.setValue(Recurrence.ONE_TIME);
         addedStops.clear();
     }
@@ -128,6 +138,7 @@ public class TripOfferFormController extends FormController {
         textFieldDriverName.getValidators().add(requiredFieldValidator);
         textFieldPPK.getValidators().add(requiredFieldValidator);
         textFieldDay.getValidators().add(requiredFieldValidator);
+        textFieldRiderCapacity.getValidators().add(requiredFieldValidator);
 
         timeFieldDepatureTime.focusedProperty().addListener((
                 (observable, oldValue, newValue) -> timeFieldDepatureTime.validate()));
@@ -138,6 +149,9 @@ public class TripOfferFormController extends FormController {
         );
         textFieldDay.focusedProperty().addListener(
                 (observable, oldValue, newValue) -> textFieldDay.validate());
+        textFieldRiderCapacity.focusedProperty().addListener( (observable, oldValue, newValue) -> {
+            textFieldRiderCapacity.validate();
+        });
     }
 
     @Override
@@ -145,7 +159,8 @@ public class TripOfferFormController extends FormController {
         return textFieldPPK.validate()
                 && textFieldDriverName.validate()
                 && timeFieldDepatureTime.validate()
-                && textFieldDay.validate();
+                && textFieldDay.validate()
+                && textFieldRiderCapacity.validate();
     }
 
     public void bindDataToUI(TransPoolData data) {

@@ -6,6 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import data.transpool.TransPoolData;
 import data.transpool.time.TimeInterval;
+import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -45,6 +46,10 @@ public class MapController {
         currentTime = new SimpleObjectProperty<>(LocalTime.MIDNIGHT);
         currentDay = new SimpleIntegerProperty(0);
         mapGraph = new Graph();
+        Platform.runLater(() -> {
+            mapGraph.getUseViewportGestures().set(false);
+            mapGraph.getUseNodeGestures().set(false);
+        });
     }
 
     public void setTransPoolController(TransPoolController controller) {

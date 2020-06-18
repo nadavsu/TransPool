@@ -60,4 +60,6 @@ public interface Engine {
     BooleanProperty fileLoadedProperty();
 
     BooleanProperty foundMatchesProperty();
+
+    void setData(TransPoolData data);
 }

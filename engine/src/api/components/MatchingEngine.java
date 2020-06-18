@@ -28,18 +28,32 @@ public class MatchingEngine {
         foundMatches = new SimpleBooleanProperty(false);
     }
 
+
+    /**
+     * Finds the possible routes for a request.
+     * @param data - The data to search the possible routes on
+     * @param tripRequestToMatch - The trip request to match
+     * @param maximumMatches - maximum matches;
+     * @throws NoResultsFoundException - If no results are found, the user is told.
+     */
     public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
         this.tripRequestToMatch = tripRequestToMatch;
         possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
 
         if (!possibleRoutes.isEmpty()) {
             foundMatches.set(true);
+        } else {
+            throw new NoResultsFoundException();
         }
     }
 
 
-    //Create a new matchedTripRequest
-    //Add the possibleRoute to the list of matched routes inside tripOfferMap?
+    /**
+     * Adds a new match to the system and updates all relevant data.
+     * @param data - data to update
+     * @param chosenPossibleRouteIndex - The chosen possible route in the list possibleRoutes.
+     * @throws TransPoolDataException
+     */
     public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) throws TransPoolDataException {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
         MatchedTripRequest matchedTripRequest = new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute);
@@ -54,6 +68,9 @@ public class MatchingEngine {
         return possibleRoutes;
     }
 
+    /**
+     * Clears the engine's data.
+     */
     public void clearPossibleMatches() {
         possibleRoutes.clear();
         foundMatches.set(false);

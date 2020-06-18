@@ -10,6 +10,10 @@ import data.jaxb.MapDescriptor;
 import data.transpool.map.BasicMapData;
 import exception.data.TransPoolDataException;
 
+/**
+ * A class which holds the data model for the live map.
+ * Extends BasicMapData
+ */
 public class MapGraphModel extends BasicMapData {
 
     private Model mapGraphModel;
@@ -19,15 +23,10 @@ public class MapGraphModel extends BasicMapData {
     }
 
 
-/*
-    public void update(TripOfferMap tripOfferMap) {
-        tripOfferMap.getCurrentOffers().forEach(tripOffer -> {
-            tripOffer.getCurrentSubTripOffers().forEach(subTripOffer -> {
-                subTripOffer.getSourceStop().addDrive(subTripOffer.getTransPoolDriver());
-            });
-        });
-    }*/
-
+    /**
+     * Creates a new model for an empty graph
+     * @param graph - the graph to create the model for.
+     */
     public void createMapModel(Graph graph) {
         graph.beginUpdate();
         mapGraphModel = graph.getModel();
@@ -37,6 +36,12 @@ public class MapGraphModel extends BasicMapData {
         graph.layout(new MapGridLayout(stationManager));
     }
 
+    /**
+     * Adds the stations to the models.
+     * Class Stops holds the details supplier function.
+     * @param model
+     * @return
+     */
     private StationManager createStations(Model model) {
         StationManager sm = new StationManager(StationNode::new);
 
@@ -60,5 +65,13 @@ public class MapGraphModel extends BasicMapData {
                     new ArrowedEdge(sm.getOrCreate(sourceX, sourceY), sm.getOrCreate(destinationX, destinationY))
             );
         });
+    }
+
+    /**
+     * Updates the map every time the timeline is moved.
+     * Clears the stop's details.
+     */
+    public void update() {
+        allStops.forEach((s, stop) -> stop.clearDetails());
     }
 }

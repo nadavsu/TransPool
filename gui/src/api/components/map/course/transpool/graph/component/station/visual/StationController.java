@@ -1,12 +1,16 @@
 package api.components.map.course.transpool.graph.component.station.visual;
 
 import api.components.map.course.transpool.graph.component.details.StationDetailsDTO;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -24,6 +28,7 @@ public class StationController {
     private int y;
 
     @FXML private Circle stationCircle;
+    @FXML private Label labelNumberOfCars;
 
     public void setX(int x) {
         this.x = x;
@@ -41,6 +46,18 @@ public class StationController {
 
     public void setDetailsDTOSupplier(Supplier<StationDetailsDTO> detailsDTOSupplier) {
         this.detailsDTOSupplier = detailsDTOSupplier;
+        labelNumberOfCars.textProperty().bind(detailsDTOSupplier.get().numOfCarsProperty().asString());
+/*        stationCircle.fillProperty().bind(Bindings
+                .when(
+                        detailsDTOSupplier
+                                .get()
+                                .numOfCarsProperty()
+                                .greaterThan(0))
+                .then(Bindings.createObjectBinding(() -> Color.color(3,153,255)))
+                .otherwise(Bindings.createObjectBinding(() -> Color.color(255, 28,87)))
+        );
+*/
+
     }
 
     @FXML
@@ -59,14 +76,14 @@ public class StationController {
             FXMLLoader fxmlLoader = new FXMLLoader();
             URL url = getClass().getResource("../../details/visual/StationDetailsView.fxml");
             fxmlLoader.setLocation(url);
-            GridPane root = fxmlLoader.load(url.openStream());
+            ScrollPane root = fxmlLoader.load(url.openStream());
 
             StationDetailsController controller = fxmlLoader.getController();
             controller.setData(stationDetailsDTO);
 
             Stage details = new Stage();
             details.initModality(Modality.APPLICATION_MODAL);
-            final Scene scene = new Scene(root, 300, 300);
+            final Scene scene = new Scene(root, 445, 265);
             details.setScene(scene);
             details.show();
         } catch (IOException e) {

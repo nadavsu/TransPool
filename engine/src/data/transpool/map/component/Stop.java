@@ -34,13 +34,8 @@ public class Stop {
         this.details = other.details;
     }
 
-    public void updateDrivers(List<TripOffer> currentOffers) {
-        details.clear();
-        currentOffers.forEach(offer -> addDriver());
-    }
-
-    public void addDriver(TransPoolDriver driver) {
-        details.addDriver(driver);
+    public void addDetails(String details) {
+        this.details.addDetails(details);
     }
 
 
@@ -91,5 +86,9 @@ public class Stop {
     @Override
     public int hashCode() {
         return Objects.hash(ID, x, y, getName());
+    }
+
+    public void clearDetails() {
+        details.clear();
     }
 }

@@ -1,30 +1,19 @@
 package api;
 
 import api.components.TransPoolController;
-import com.fxgraph.graph.Graph;
-import com.fxgraph.graph.Model;
+import api.components.splash.screen.SplashScreenController;
 import javafx.animation.PauseTransition;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import api.components.map.course.transpool.graph.component.coordinate.CoordinateNode;
-import api.components.map.course.transpool.graph.component.coordinate.CoordinatesManager;
-import api.components.map.course.transpool.graph.component.details.StationDetailsDTO;
-import api.components.map.course.transpool.graph.component.road.ArrowedEdge;
-import api.components.map.course.transpool.graph.component.station.StationManager;
-import api.components.map.course.transpool.graph.component.station.StationNode;
-import api.components.map.course.transpool.graph.layout.MapGridLayout;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
-public class GraphicalUserInterface extends Application {
+public class TransPoolGUI extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("TransPool");
@@ -39,6 +28,7 @@ public class GraphicalUserInterface extends Application {
         splashScreenLoader.setLocation(splashScreenFXML);
         Parent splashScreenRoot = splashScreenLoader.load();
         Scene splashScreenScene = new Scene(splashScreenRoot, 1080, 720);
+        SplashScreenController splashScreenController = splashScreenLoader.getController();
         primaryStage.setScene(splashScreenScene);
         primaryStage.show();
 
@@ -54,7 +44,7 @@ public class GraphicalUserInterface extends Application {
         transpoolController.setPrimaryStage(primaryStage);
 
         //Pause transition for the splash screen. When pause is finished the scene is switched to the main scene.
-        PauseTransition splashScreenPause = new PauseTransition(Duration.millis(2300));
+        PauseTransition splashScreenPause = new PauseTransition(Duration.millis(3300));
         splashScreenPause.setOnFinished(event -> {
             primaryStage.setScene(mainScene);
         });
@@ -63,6 +53,6 @@ public class GraphicalUserInterface extends Application {
     }
 
     public static void main(String[] args) {
-        launch(GraphicalUserInterface.class);
+        launch(TransPoolGUI.class);
     }
 }

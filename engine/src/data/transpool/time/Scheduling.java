@@ -8,6 +8,10 @@ import javafx.beans.property.*;
 import java.time.LocalTime;
 import java.util.Objects;
 
+/**
+ * Scheduling - Used by everything that is scheduled.
+ * Members - arrival time, departure time and recurrences.
+ */
 public class Scheduling {
     private ObjectProperty<TimeDay> departureTime;
     private ObjectProperty<TimeDay> arrivalTime;
@@ -55,6 +59,10 @@ public class Scheduling {
         this.arrivalTime.set(arrivalTime);
     }
 
+    /**
+     * Converts a String recurrence from the JAXB files to the enum.
+     * @param recurrences
+     */
     private void setRecurrences(String recurrences) {
         switch (recurrences) {
             case "Daily":
@@ -75,25 +83,60 @@ public class Scheduling {
         }
     }
 
+    /**
+     * Checks if now is the departure time. Uses TransPoolData.currentTime.
+     * @return - true if the schedule is currently at departure time, false otherwise.
+     */
     public boolean isCurrentlyDeparting() {
         return TransPoolData.currentTime.getTime().equals(departureTime.get().getTime())
                 && isHappeningOnDay(TransPoolData.currentTime.getDay());
     }
 
+    /**
+     * Checks if the schedule is currently happening, if the current time is
+     * between the departureTime and the arrivalTime
+     * @return - true if the current time is between the departureTime and the arrivalTime, false otherwise.
+     */
     public boolean isCurrentlyHappening() {
         return !TransPoolData.currentTime.getTime().isBefore(departureTime.get().getTime())
                 && !TransPoolData.currentTime.getTime().isAfter(arrivalTime.get().getTime())
                 && isHappeningOnDay(TransPoolData.currentTime.getDay());
     }
 
+    /**
+     * Checks if now is the time of arrival of the schedule.
+     * @return true if now is the time of arrival of the schedule, false otherwise.
+     */
+    public boolean isCurrentlyArriving() {
+        return TransPoolData.currentTime.getTime().equals(arrivalTime.get().getTime())
+                && isHappeningOnDay(TransPoolData.currentTime.getDay());
+    }
+
+    /**
+     * Checks the schedule is happening on some day
+     * @param day - the day to check if the schedule is occurring.
+     * @return - true if occurring n day, false otherwise.
+     */
     public boolean isHappeningOnDay(int day) {
         return getRecurrences().isOnDay(day, getDayStart());
     }
 
+
+    /**
+     * Checks to see if a schedule is occurring before timeDay.
+     * @param timeDay - The point in time to check if the schedule is happening before.
+     * @return - true if the schedule is happening before timeDay, false otherwise.
+     */
     public boolean isBefore(TimeDay timeDay) {
         return this.getDepartureTime().isBefore(timeDay);
     }
 
+    /**
+     * Gets the first recurrence happening after timeDay.
+     * @param scheduling - The scheduling you want to get the firsr occurrence after timeDay.
+     * @param timeDay - The time and day you want the schedule after
+     * @return - A new instance of schedule which is the first one after timeDay.
+     */
     public static Scheduling getFirstRecurrenceAfter(Scheduling scheduling, TimeDay timeDay) {
         if (timeDay.isBefore(scheduling.getDepartureTime())) {
             return scheduling;

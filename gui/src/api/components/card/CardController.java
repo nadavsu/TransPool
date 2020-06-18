@@ -5,6 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ * Cards are a way of displaying data in a list. They are basically controllers for custom ListViewCells.
+ * @param <T> - The data class which the card will display (i.e. Feedback, TripRequest, TripOffer)
+ */
 public abstract class CardController<T> extends ListCell<T> {
     protected FXMLLoader loader;
 

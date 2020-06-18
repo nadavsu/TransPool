@@ -26,6 +26,13 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+
+/**
+ * The main class which holds the model of the system.
+ * MapGraphModel - holds the live map model and the basic map data.
+ * TripOfferMap - holds the trip offer data as a map.
+ * Holds the current time of the system.
+ */
 public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine, TimeEngine {
 
 
@@ -168,14 +175,16 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     @Override
     public void incrementTime(TimeInterval interval) {
         currentTime.plus(interval.getMinutes());
-        tripOffers.updateMap();
+        map.update();
+        tripOffers.update();
 
     }
 
     @Override
     public void decrementTime(TimeInterval interval) {
         currentTime.minus(interval.getMinutes());
-        tripOffers.updateMap();
+        map.update();
+        tripOffers.update();
     }
 
     @Override
@@ -187,6 +196,14 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         map.createMapModel(graph);
     }
 
+
+    /**
+     * Gets the possible routes from the TripOfferMap, and filters all routes which are not relevant by
+     * departure or arrival time. Also filters all rides that are not continuous if the rider asked for continuous rides.
+     * @param tripRequest
+     * @param maximumMatches
+     * @return
+     */
     public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
 
         Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {

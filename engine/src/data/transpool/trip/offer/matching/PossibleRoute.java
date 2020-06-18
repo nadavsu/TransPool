@@ -84,6 +84,8 @@ public class PossibleRoute {
         this.totalTripDuration += offer.getTripDurationInMinutes();
         this.averageFuelConsumption = totalFuelConsumption / length;
         this.timeOfArrival = new TimeDay(scheduling.getArrivalTime());
+
+        //Checking if the ride is continuous throughout the ride.
         this.isContinuous = isContinuous && route.get(length - 2).getSubTripOffer().getTransPoolDriver()
                 .equals(route.get(length - 1).getSubTripOffer().getTransPoolDriver());
         return true;
@@ -112,6 +114,11 @@ public class PossibleRoute {
         return this.route.get(length - 1);
     }
 
+
+    /**
+     * Bonus #4 - The algorithm checks if the ride is continuous by checking if the TransPool rider is the same throughout
+     * the whole ride.
+     */
     private void checkContinuous() {
         isContinuous = true;
         TransPoolDriver startingDriver = route.get(0).getSubTripOffer().getTransPoolDriver();

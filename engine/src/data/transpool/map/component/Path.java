@@ -2,7 +2,6 @@ package data.transpool.map.component;
 
 import exception.data.PathDoesNotExistException;
 
-//TODO: check if this works
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

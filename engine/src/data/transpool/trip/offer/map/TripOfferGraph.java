@@ -89,8 +89,8 @@ public class TripOfferGraph {
                 if (currentRoute.add(nextOffer, departureTime)) {
                     depthFirstTraversal(nextOffer.getDestinationStop(), destination, currentRoute.getTimeOfArrival(), beingVisited,
                             currentRoute, possibleRoutes);
+                    currentRoute.remove(nextOffer);
                 }
-                currentRoute.remove(nextOffer);
             }
         }
 

@@ -138,7 +138,7 @@ public class Scheduling {
      * @return - A new instance of schedule which is the first one after timeDay.
      */
     public static Scheduling getFirstRecurrenceAfter(Scheduling scheduling, TimeDay timeDay) {
-        if (timeDay.isBefore(scheduling.getDepartureTime())) {
+        if (!timeDay.isAfter(scheduling.getDepartureTime())) {
             return scheduling;
         } else if (!scheduling.getRecurrences().equals(Recurrence.ONE_TIME)){
             Scheduling nextOccurrence = new Scheduling(scheduling);

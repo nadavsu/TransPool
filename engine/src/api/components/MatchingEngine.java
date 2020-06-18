@@ -15,8 +15,7 @@ import javafx.collections.ObservableList;
 import java.util.stream.Collectors;
 
 /**
- * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match
- * and the chosen TP trip to match.
+ * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match.
  */
 public class MatchingEngine {
     private TripRequest tripRequestToMatch;

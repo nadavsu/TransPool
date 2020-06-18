@@ -104,6 +104,7 @@ public class MenuBarController {
      * @param colorSchemeFileLocation - The location of the colorScheme file.
      */
     public void setColorScheme(String colorSchemeFileLocation) {
+        transpoolController.getPrimaryStage().getScene().getStylesheets().clear();
         transpoolController
                 .getPrimaryStage()
                 .getScene()

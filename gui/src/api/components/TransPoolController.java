@@ -183,7 +183,9 @@ public class TransPoolController {
     public void loadFile() {
         try {
             menuBarComponentController.loadFile();
-            engine.createMap(mapComponentController.getMap());
+            if (fileLoaded.get()) {
+                engine.createMap(mapComponentController.getMap());
+            }
         } catch (ExecutionException | InterruptedException e) {
             showAlert("Execution interrupted!");
         }

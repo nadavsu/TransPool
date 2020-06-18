@@ -31,7 +31,9 @@ public interface TripOffer extends BasicTripOffer {
     SubTripOffer getSubTripOffer(int subTripOfferID);
 
     boolean isCurrentlyHappening();
-   // Stop getCurrentStop();
+
+    SubTripOffer getCurrentSubTripOffer();
+    // Stop getCurrentStop();
 
 
 }

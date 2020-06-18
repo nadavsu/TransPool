@@ -25,13 +25,14 @@ public class LoadFileTask extends Task<TransPoolData> {
                 throw new TransPoolFileNotFoundException();
             }
 
+            Thread.sleep(300);
             updateMessage("Fetching file...");
             JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
-
+            Thread.sleep(300);
             updateMessage("Loading file to system...");
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(fileToLoad);
-
+            Thread.sleep(300);
             updateMessage("Parsing...");
 
             TransPoolData data = new TransPoolData(JAXBData);
@@ -42,6 +43,9 @@ public class LoadFileTask extends Task<TransPoolData> {
             return null;
         } catch (JAXBException e) {
             updateMessage("There was an internal problem (JAXB Error).");
+            return null;
+        } catch (InterruptedException e) {
+            e.printStackTrace();
             return null;
         }
 

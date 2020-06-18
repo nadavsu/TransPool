@@ -74,21 +74,6 @@ public class SubTripOffer extends BasicTripOfferData {
         return destinationStop.get();
     }
 
-    public SubTripOfferDetails getDetailsOnDay(int day) {
-        return dayToDetailsMap.get(day);
-    }
-
-    public void setDetailsOnDay(int day, SubTripOfferDetails details) throws RideFullException {
-        if (!dayToDetailsMap.get(day).isRideFull()) {
-            this.dayToDetailsMap.put(day, details);
-        } else {
-            throw new RideFullException();
-        }
-    }
-
-    public void addNewDay(int day, SubTripOfferDetails details) {
-        dayToDetailsMap.put(day, details);
-    }
 
     public void addRiderOnDay(int day, BasicTripRequest matchedTrip) throws RideFullException {
         if (dayToDetailsMap.get(day) != null) {
@@ -127,14 +112,20 @@ public class SubTripOffer extends BasicTripOfferData {
         return schedule.get().isCurrentlyDeparting();
     }
 
-    public void updateStop() {
-        if (isCurrentlyDeparting()) {
-            getSourceStop().addDriver(transpoolDriver.get());
-        }
-    }
-
     public Scheduling getFirstRecurrenceAfter(TimeDay timeDay) {
         return Scheduling.getFirstRecurrenceAfter(getScheduling(), timeDay);
+    }
+
+    public String currentDetails() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("Driver: ").append(getTransPoolDriver().toString()).append("\n");
+        if (dayToDetailsMap.get(TransPoolData.currentTime.getDay()) != null) {
+            builder.append(dayToDetailsMap.get(TransPoolData.currentTime.getDay()));
+            builder.append("\n\n");
+        } else {
+            builder.append("Riding alone.\n\n");
+        }
+        return builder.toString();
     }
 
     @Override

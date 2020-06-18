@@ -168,14 +168,16 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     @Override
     public void incrementTime(TimeInterval interval) {
         currentTime.plus(interval.getMinutes());
-        tripOffers.updateMap();
+        map.update();
+        tripOffers.update();
 
     }
 
     @Override
     public void decrementTime(TimeInterval interval) {
         currentTime.minus(interval.getMinutes());
-        tripOffers.updateMap();
+        map.update();
+        tripOffers.update();
     }
 
     @Override

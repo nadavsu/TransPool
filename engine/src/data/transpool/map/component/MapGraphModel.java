@@ -19,14 +19,6 @@ public class MapGraphModel extends BasicMapData {
     }
 
 
-/*
-    public void update(TripOfferMap tripOfferMap) {
-        tripOfferMap.getCurrentOffers().forEach(tripOffer -> {
-            tripOffer.getCurrentSubTripOffers().forEach(subTripOffer -> {
-                subTripOffer.getSourceStop().addDrive(subTripOffer.getTransPoolDriver());
-            });
-        });
-    }*/
 
     public void createMapModel(Graph graph) {
         graph.beginUpdate();
@@ -60,5 +52,9 @@ public class MapGraphModel extends BasicMapData {
                     new ArrowedEdge(sm.getOrCreate(sourceX, sourceY), sm.getOrCreate(destinationX, destinationY))
             );
         });
+    }
+
+    public void update() {
+        allStops.forEach((s, stop) -> stop.clearDetails());
     }
 }

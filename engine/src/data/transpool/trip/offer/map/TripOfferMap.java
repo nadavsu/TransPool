@@ -16,6 +16,10 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The main class which holds the trip offer graph and all the trip offers data. Also holds the timed data
+ * such as current trip offers and current sub trip offers which are happening.
+ */
 public class TripOfferMap implements TripOfferEngine {
     private ObservableList<TripOffer> allTripOffers;
     private TripOfferGraph tripOfferGraph;
@@ -68,6 +72,13 @@ public class TripOfferMap implements TripOfferEngine {
 
     //----------------------------------------------------------------------------------------------------------------//
 
+    /**
+     * This function updates the map every time the system's time is changed.
+     * 1. Gets all the current tripoffers happening.
+     * 2. Populates the list of current subTripOffers happening
+     * 3. Updates the stops with the relevant details through the subTripOffers using subTripOffer.currentDetails() functions.
+     *    The details are shown on the live map when a stop is clicked.
+     */
     public void update() {
         currentTripOffers.clear();
         currentSubTripOffers.clear();
@@ -78,8 +89,10 @@ public class TripOfferMap implements TripOfferEngine {
             }
         }
         for (SubTripOffer subTripOffer : currentSubTripOffers) {
-            if (subTripOffer != null) {
+            if (subTripOffer != null && subTripOffer.isCurrentlyDeparting()) {
                 subTripOffer.getSourceStop().addDetails(subTripOffer.currentDetails());
+            } else if (subTripOffer != null && subTripOffer.isCurrentlyArriving()) {
+                subTripOffer.getDestinationStop().addDetails(subTripOffer.currentDetails());
             }
         }
     }

@@ -19,10 +19,14 @@ import java.io.File;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+
+/**
+ * The main controller for the menubar on the top left hand side of the UI.
+ */
 public class MenuBarController {
 
-    private final static String DARK_COLOR_SCHEME = "api/components/main/scheme/color_scheme_dark.css";
-    private final static String LIGHT_COLOR_SCHEME = "api/components/main/scheme/color_scheme_light.css";
+    private final static String DARK_COLOR_SCHEME = "/api/components/main/scheme/color_scheme_dark.css";
+    private final static String LIGHT_COLOR_SCHEME = "/api/components/main/scheme/color_scheme_light.css";
 
     private TransPoolController transpoolController;
 
@@ -93,10 +97,12 @@ public class MenuBarController {
             return;
         }
         transpoolController.getEngine().loadFile(selectedFile);
-        transpoolController.createMap();
     }
 
-    //todo maybe move this to the engine.
+    /**
+     * Unfortunately this doesn't work and I don't know why :(
+     * @param colorSchemeFileLocation - The location of the colorScheme file.
+     */
     public void setColorScheme(String colorSchemeFileLocation) {
         transpoolController
                 .getPrimaryStage()

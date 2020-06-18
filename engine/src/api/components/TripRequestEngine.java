@@ -6,6 +6,9 @@ import data.transpool.trip.request.TripRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * THe engine interface that controls the trip requests.
+ */
 public interface TripRequestEngine {
     TripRequest getTripRequest(int ID);
 

@@ -13,6 +13,9 @@ import javafx.fxml.FXML;
 
 import java.time.LocalTime;
 
+/**
+ * A form controller for Trip Requests.
+ */
 public class TripRequestFormController extends FormController {
 
     @FXML private JFXTimePicker timeFieldTime;
@@ -38,6 +41,7 @@ public class TripRequestFormController extends FormController {
                 textFieldDay.setText(newValue.replaceAll("[^\\d]", ""));
             }
         }));
+        radioButtonArrivalTime.setDisable(true);
     }
 
     @FXML

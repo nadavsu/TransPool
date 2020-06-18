@@ -1,5 +1,9 @@
 package data.transpool.time;
 
+
+/**
+ * An enum holding the recurrences with their names and values.
+ */
 public enum Recurrence {
     ONE_TIME("OneTime", 0),
     DAILY("Daily",1),
@@ -19,6 +23,12 @@ public enum Recurrence {
         return value;
     }
 
+    /**
+     * Checks if a recurrence is happening on a specific day.
+     * @param day - The day to check if the recurrence is happening
+     * @param dayStart - The offset of the recurrence - When the schedule has started.
+     * @return
+     */
     public boolean isOnDay(int day, int dayStart) {
         if (day < dayStart) {
             return false;

@@ -14,6 +14,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
+/**
+ * The controller for the right hand side bar of the UI. Holds the lists containing cards.
+ */
 public class DataBarController {
 
     private TransPoolController transPoolController;
@@ -25,12 +28,10 @@ public class DataBarController {
     @FXML private ListView<TripOffer> listViewCurrentOffers;
 
     private StringProperty currentTaskProgress;
-    //private ObservableList<TripRequest> tripRequests;
 
 
     public DataBarController() {
         currentTaskProgress = new SimpleStringProperty();
-        //tripRequests = FXCollections.observableArrayList();
     }
 
     public void setTransPoolController(TransPoolController transPoolController) {
@@ -53,7 +54,6 @@ public class DataBarController {
         currentTaskProgress.bind(theTask.messageProperty());
     }
 
-    //Todo: should be transPoolController.getAllTripOffers() which tells the engine to get all trip offers?
     public void bindUIToData(TransPoolData data) {
         listViewTripOffers.setItems(data.getAllTripOffers());
         listViewTripOffers.setCellFactory(offerListView -> new TripOfferCardController());

@@ -16,6 +16,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+/**
+ * A card controller for TripOffers.
+ */
 public class TripOfferCardController extends CardController<TripOffer> {
 
     @FXML private Label labelDriverName;

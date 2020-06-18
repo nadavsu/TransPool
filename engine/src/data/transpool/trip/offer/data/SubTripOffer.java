@@ -16,7 +16,7 @@ import java.util.Objects;
 
 /**
  * Contains the data of a part of a trip offer (made from a single path)
- * dayToDetailsMap contains the details of the matched trips on the relevant days.
+ * dayToDetailsMap - contains the details of the matched trips on the relevant days.
  */
 public class SubTripOffer extends BasicTripOfferData {
     private TripOffer mainOffer;
@@ -47,20 +47,6 @@ public class SubTripOffer extends BasicTripOfferData {
         );
     }
 
-    public SubTripOffer(SubTripOffer other) {
-        super(other);
-        this.mainOffer = other.mainOffer;
-        this.subTripOfferID = other.subTripOfferID;
-        this.dayToDetailsMap = new HashMap<>(other.dayToDetailsMap);
-        this.sourceStop = new SimpleObjectProperty<>(other.getSourceStop());
-        this.destinationStop = new SimpleObjectProperty<>(other.getDestinationStop());
-
-        this.schedule = new SimpleObjectProperty<>(other.getScheduling());
-        this.tripPrice = new SimpleIntegerProperty(other.getPrice());
-        this.averageFuelConsumption = new SimpleDoubleProperty(other.getAverageFuelConsumption());
-        this.tripDurationInMinutes = new SimpleIntegerProperty(other.getTripDurationInMinutes());
-    }
-
 
     public int getSubTripOfferID() {
         return subTripOfferID;
@@ -75,6 +61,12 @@ public class SubTripOffer extends BasicTripOfferData {
     }
 
 
+    /**
+     * Adds the relevant details on day 'day'.
+     * @param day - The day to add the details.
+     * @param matchedTrip - The matchedTrip to create the details from.
+     * @throws RideFullException - Thrown if the ride is full and you can't add a rider on that day.
+     */
     public void addRiderOnDay(int day, BasicTripRequest matchedTrip) throws RideFullException {
         if (dayToDetailsMap.get(day) != null) {
             dayToDetailsMap.get(day).addRider(matchedTrip);
@@ -103,7 +95,6 @@ public class SubTripOffer extends BasicTripOfferData {
         return mainOffer;
     }
 
-    //----------------------------------------------------------------------------------------------------------------//
     public boolean isCurrentlyHappening() {
         return schedule.get().isCurrentlyHappening();
     }
@@ -112,10 +103,19 @@ public class SubTripOffer extends BasicTripOfferData {
         return schedule.get().isCurrentlyDeparting();
     }
 
+    public boolean isCurrentlyArriving() {
+        return schedule.get().isCurrentlyArriving();
+    }
+
     public Scheduling getFirstRecurrenceAfter(TimeDay timeDay) {
         return Scheduling.getFirstRecurrenceAfter(getScheduling(), timeDay);
     }
 
+
+    /**
+     * @return - a string of the details happening currently. Uses TransPoolData.currentTime.
+     * Used for displaying who is staying at which station currently.
+     */
     public String currentDetails() {
         StringBuilder builder = new StringBuilder();
         builder.append("Driver: ").append(getTransPoolDriver().toString()).append("\n");

@@ -67,6 +67,7 @@ public class TransPoolController {
 
     @FXML
     public void initialize() {
+        //Setting the TransPool controllers for the components.
         if (matchTripComponentController != null
                 && menuBarComponentController != null
                 && tripOfferComponentController != null
@@ -83,6 +84,7 @@ public class TransPoolController {
             mapComponentController.setTransPoolController(this);
         }
 
+        //Binding the fileLoaded property for each relevant component.
         fileLoaded.bindBidirectional(menuBarComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(matchTripComponentController.fileLoadedProperty());
         fileLoaded.bindBidirectional(tripOfferComponentController.fileLoadedProperty());
@@ -97,6 +99,23 @@ public class TransPoolController {
     public void setEngine(Engine engine) {
         this.engine = engine;
         fileLoaded.bind(this.engine.fileLoadedProperty());
+    }
+
+    public void clearForm(Form form) {
+        form.clear();
+    }
+
+    public void submitForm(Form form) {
+        try {
+            if (form.isValid()) {
+                form.submit();
+                form.clear();
+            } else {
+                throw new RequiredFieldEmptyException();
+            }
+        } catch(RequiredFieldEmptyException e) {
+            showAlert(e);
+        }
     }
 
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
@@ -142,6 +161,30 @@ public class TransPoolController {
         }
     }
 
+    //---------------------------------------------------------------------------------------------//
+
+    public void loadFile() {
+        try {
+            menuBarComponentController.loadFile();
+            if (fileLoaded.get()) {
+                engine.createMap(mapComponentController.getMap());
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            showAlert("Execution interrupted!");
+        }
+    }
+
+
+    public void setColorScheme(String colorSchemeFileLocation) {
+        menuBarComponentController.setColorScheme(colorSchemeFileLocation);
+    }
+
+    public void quit() {
+        menuBarComponentController.quit();
+    }
+
+    //---------------------------------------------------------------------------------------------//
+
     public Stage getPrimaryStage() {
         return primaryStage;
     }
@@ -178,46 +221,9 @@ public class TransPoolController {
         engine.decrementTime(duration);
     }
 
-    //---------------------------------------------------------------------------------------------//
 
-    public void loadFile() {
-        try {
-            menuBarComponentController.loadFile();
-            if (fileLoaded.get()) {
-                engine.createMap(mapComponentController.getMap());
-            }
-        } catch (ExecutionException | InterruptedException e) {
-            showAlert("Execution interrupted!");
-        }
-    }
+    //-----------------------------------------------------------------------------------------------------------------//
 
-
-    public void setColorScheme(String colorSchemeFileLocation) {
-        menuBarComponentController.setColorScheme(colorSchemeFileLocation);
-    }
-
-    public void quit() {
-        menuBarComponentController.quit();
-    }
-
-    //---------------------------------------------------------------------------------------------//
-
-    public void clearForm(Form form) {
-        form.clear();
-    }
-
-    public void submitForm(Form form) {
-        try {
-            if (form.isValid()) {
-                form.submit();
-                form.clear();
-            } else {
-                throw new RequiredFieldEmptyException();
-            }
-        } catch(RequiredFieldEmptyException e) {
-            showAlert(e);
-        }
-    }
 
     public void bindTaskToUI(Task currentRunningTask) {
         dataBarComponentController.bindTaskToUI(currentRunningTask);

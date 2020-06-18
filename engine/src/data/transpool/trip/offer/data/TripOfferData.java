@@ -154,6 +154,9 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
                 return subTripOffer;
             }
         }
+        if (route.get(route.size() - 1).isCurrentlyArriving()) {
+            return route.get(route.size() - 1);
+        }
         return null;
     }
 
@@ -225,30 +228,3 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         return Objects.hash(offerID.get());
     }
 }
-
-    /*    public Stop getCurrentStop() {
-            if (route.get(0).isCurrentlyAtSourceStop()) {
-                return route.get(0).getSourceStop();
-            } else {
-                for (SubTripOffer subTripOffer : route) {
-                    if (subTripOffer.isCurrentlyAtDestinationStop()) {
-                        return subTripOffer.getDestinationStop();
-                    }
-                }
-            }
-            return null;
-        }*/
-    /*
-        private void initializeTimeTable() {
-            TimeDay timeAtStop = new TimeDay(getScheduling().getDepartureTime());
-            Path firstPath = usedPaths.get(0);
-
-            timeTable.put(firstPath.getSourceStop(), new Scheduling(scheduleAtStop));
-            scheduleAtStop.getDepartureTime().plus(firstPath.getPathTime());
-
-            for (Path path : usedPaths) {
-                timeTable.put(path.getDestinationStop(), new Scheduling(scheduleAtStop));
-                scheduleAtStop.getDepartureTime().plus(path.getPathTime());
-            }
-        }
-    */

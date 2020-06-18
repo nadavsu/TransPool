@@ -33,7 +33,6 @@ public interface TripOffer extends BasicTripOffer {
     boolean isCurrentlyHappening();
 
     SubTripOffer getCurrentSubTripOffer();
-    // Stop getCurrentStop();
 
 
 }

@@ -13,6 +13,9 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
+/**
+ * A Card controller for MatchedTripRequests.
+ */
 public class MatchedTripCardController extends CardController<MatchedTripRequest> {
 
     @FXML private Label labelRiderName;

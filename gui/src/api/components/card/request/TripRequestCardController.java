@@ -9,6 +9,9 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 
+/**
+ * A card controller for TripRequests.
+ */
 public class TripRequestCardController extends CardController<TripRequest> {
 
     @FXML private Label labelRiderName;

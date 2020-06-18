@@ -9,7 +9,7 @@ import javafx.beans.property.*;
 import java.time.LocalTime;
 
 /**
- * Contains basic data for a sub trip offer.
+ * Contains basic data of a trip offer - be it a sub-trip offer or a normal trip offer.
  */
 public abstract class BasicTripOfferData implements BasicTripOffer {
     private static int IDGenerator = 100000;

@@ -2,6 +2,7 @@ package data.transpool.user;
 
 import javafx.beans.property.*;
 
+
 public class Feedback {
     private IntegerProperty feedbackerID;
     private StringProperty feedbackerName;

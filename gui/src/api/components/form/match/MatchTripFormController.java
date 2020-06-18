@@ -14,6 +14,9 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
+/**
+ * A controller for the Match Trips tab on the left hand side of the UI.
+ */
 public class MatchTripFormController extends FormController {
 
     @FXML private JFXComboBox<TripRequest> comboBoxRideID;
@@ -82,6 +85,7 @@ public class MatchTripFormController extends FormController {
         return textFieldNumOfResultsToFind.validate()
                 && comboBoxRideID.validate();
     }
+
     private void searchForMatches() {
         try {
             if (isValid()) {

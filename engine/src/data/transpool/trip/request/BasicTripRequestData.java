@@ -6,6 +6,9 @@ import javafx.beans.property.*;
 
 import java.util.Objects;
 
+/**
+ * A class holding the basic Trip Request data.
+ */
 public abstract class BasicTripRequestData implements BasicTripRequest {
 
     private static int IDGenerator = 20000;

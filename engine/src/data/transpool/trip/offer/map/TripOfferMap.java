@@ -1,6 +1,6 @@
 package data.transpool.trip.offer.map;
 
-import api.components.TripOfferEngine;
+import logic.components.TripOfferEngine;
 import data.jaxb.TransPoolTrip;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;

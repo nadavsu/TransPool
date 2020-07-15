@@ -10,10 +10,12 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import logic.Engine;
+import logic.TransPoolEngine;
 
 import java.net.URL;
 
-public class TransPoolGUI extends Application {
+public class TransPool extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("TransPool");
@@ -53,6 +55,6 @@ public class TransPoolGUI extends Application {
     }
 
     public static void main(String[] args) {
-        launch(TransPoolGUI.class);
+        launch(TransPool.class);
     }
 }

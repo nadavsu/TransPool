@@ -1,6 +1,6 @@
 package api.components;
 
-import api.Engine;
+import logic.Engine;
 import api.components.data.bar.DataBarController;
 import api.components.form.Form;
 import api.components.form.feedback.FeedbackFormController;
@@ -29,7 +29,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
 
@@ -167,7 +166,7 @@ public class TransPoolController {
         try {
             menuBarComponentController.loadFile();
             if (fileLoaded.get()) {
-                engine.createMap(mapComponentController.getMap());
+                createMap();
             }
         } catch (ExecutionException | InterruptedException e) {
             showAlert("Execution interrupted!");

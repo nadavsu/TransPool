@@ -1,4 +1,4 @@
-package api.components;
+package logic.components;
 
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.matching.PossibleRoute;

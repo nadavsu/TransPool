@@ -49,7 +49,6 @@ public class ArrowedEdge extends Edge {
         line.endYProperty().addListener(q -> {
             recalculateArrowHead(line);
         });
-
     }
 
     // arrow head calculations are based on this sample of code:

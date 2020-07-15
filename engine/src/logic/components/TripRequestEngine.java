@@ -1,9 +1,7 @@
-package api.components;
+package logic.components;
 
-import data.transpool.trip.request.BasicTripRequest;
 import data.transpool.trip.request.MatchedTripRequest;
 import data.transpool.trip.request.TripRequest;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**

@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact name="gui:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/gui_jar</output-path>
+    <root id="root">
+      <element id="archive" name="gui.jar">
+        <element id="module-output" name="gui" />
+        <element id="module-output" name="engine" />
+      </element>
+      <element id="library" level="project" name="fxgraph-0.0.3" />
+    </root>
+  </artifact>
+</component>

@@ -11,18 +11,18 @@ import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * The map.
+ * The map data.
  * Contains a list of stops, a list of paths, and a matrix containing the stops' positions on the map.
  */
-public class BasicMapData implements BasicMap {
+public abstract class BasicMapData implements BasicMap {
 
     private final static int MIN_MAP_SIZE = 6;
     private final static int MAX_MAP_SIZE = 100;
 
-    protected int width;
-    protected int length;
-    protected MapMatrix mapMatrix;
+    private int width;
+    private int length;
 
+    private MapMatrix mapMatrix;
     protected static java.util.Map<String, Stop> allStops;
     protected static List<Path> allPaths;
 
@@ -45,7 +45,7 @@ public class BasicMapData implements BasicMap {
     /**
      * Initializer for creating a map of stops from JAXB generated stops list.
      * The function checks if the stop already exists, if so an StopNameDuplicationException is thrown,
-     * otherwise the stop is added to the hashmap.
+     * otherwise the stop is added to the hash-map.
      * @param JAXBMap - The map containing the stops.
      * @throws StopNameDuplicationException - thrown if there is a duplication stop.
      */
@@ -64,7 +64,8 @@ public class BasicMapData implements BasicMap {
      * The function checks if the path exists, or if there is a duplicated path. If so, an exception is thrown,
      * otherwise the path is added to allPaths.
      * @param JAXBMap - The JAXB generated path.
-     * @throws TransPoolDataException - thrown if there's a problem with the data inside the JAXB classes/file.
+     * @throws PathDuplicationException - thrown if there's a problem with the data inside the JAXB classes/file.
+     * @throws PathDoesNotExistException - thrown if the path trying to create does not exist.
      */
     private void initAllPaths(MapDescriptor JAXBMap) throws PathDuplicationException, PathDoesNotExistException {
         List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
@@ -82,23 +83,26 @@ public class BasicMapData implements BasicMap {
         }
     }
 
+    private void setWidth(int width) throws MapDimensionsException {
+        if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
+            throw new MapDimensionsException();
+        }
+        this.width = width;
+    }
+
+    private void setLength(int length) throws MapDimensionsException {
+        if (length > MAX_MAP_SIZE || length < MIN_MAP_SIZE) {
+            throw new MapDimensionsException();
+        }
+        this.length = length;
+    }
+
     /**
      * Finds the path with the given source and destination stop names.
      * @param source - The name of the source stop.
      * @param destination - The name of the destination stop.
      * @return A reference to the path from the list of all paths if found, null otherwise.
      */
-    public static Path getPathBySourceAndDestination(String source, String destination) {
-        Predicate<Path> sourceDestinationMatchPredicate = p ->
-                p.getDestinationName().equals(destination) && p.getSourceName().equals(source);
-
-        return allPaths
-                .stream()
-                .filter(sourceDestinationMatchPredicate)
-                .findFirst()
-                .orElse(null);
-    }
-
     @Override
     public Path getPath(Stop source, Stop destination) {
         Predicate<Path> sourceDestinationMatchPredicate = p ->
@@ -121,20 +125,6 @@ public class BasicMapData implements BasicMap {
                 .filter(sourceDestinationMatchPredicate)
                 .findFirst()
                 .orElse(null);
-    }
-
-    private void setWidth(int width) throws MapDimensionsException {
-        if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
-            throw new MapDimensionsException();
-        }
-        this.width = width;
-    }
-
-    private void setLength(int length) throws MapDimensionsException {
-        if (length > MAX_MAP_SIZE || length < MIN_MAP_SIZE) {
-            throw new MapDimensionsException();
-        }
-        this.length = length;
     }
 
     @Override
@@ -189,10 +179,6 @@ public class BasicMapData implements BasicMap {
         return false;
     }
 
-    public MapMatrix getMapMatrix() {
-        return mapMatrix;
-    }
-
     /**
      * 2 Dimensional array of strings containing the name of the stop in each coordinate.
      */
@@ -212,10 +198,6 @@ public class BasicMapData implements BasicMap {
                 }
                 mapMatrix[y][x] = stop.getName();
             }
-        }
-
-        public String[][] getMapMatrix() {
-            return mapMatrix;
         }
     }
 }

@@ -1,4 +1,4 @@
-package api;
+package logic;
 
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;

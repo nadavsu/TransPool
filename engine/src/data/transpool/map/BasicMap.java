@@ -10,15 +10,15 @@ public interface BasicMap {
     int getMapWidth();
     int getMapLength();
 
-    boolean containsStop(String stopName);
     Map<String, Stop> getAllStops();
     List<Stop> getAllStopsAsList();
     Stop getStop(String stopName);
     int getNumberOfStops();
+    boolean containsStop(String stopName);
 
     List<Path> getAllPaths();
-    boolean containsPath(String source, String destination);
     Path getPath(Stop source, Stop destination);
     Path getPath(String source, String destination);
+    boolean containsPath(String source, String destination);
 
 }

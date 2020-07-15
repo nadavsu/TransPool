@@ -1,5 +1,6 @@
 package api.components.map.course.transpool.graph.component.station.visual;
 
+import api.Constants;
 import api.components.map.course.transpool.graph.component.details.StationDetailsDTO;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -47,25 +48,23 @@ public class StationController {
     public void setDetailsDTOSupplier(Supplier<StationDetailsDTO> detailsDTOSupplier) {
         this.detailsDTOSupplier = detailsDTOSupplier;
         labelNumberOfCars.textProperty().bind(detailsDTOSupplier.get().numOfCarsProperty().asString());
-/*        stationCircle.fillProperty().bind(Bindings
+        stationCircle.fillProperty().bind(Bindings
                 .when(
                         detailsDTOSupplier
                                 .get()
                                 .numOfCarsProperty()
                                 .greaterThan(0))
-                .then(Bindings.createObjectBinding(() -> Color.color(3,153,255)))
-                .otherwise(Bindings.createObjectBinding(() -> Color.color(255, 28,87)))
+                .then(Bindings.createObjectBinding(() -> Constants.SECONDARY_COLOR))
+                .otherwise(Bindings.createObjectBinding(() -> Constants.PRIMARY_COLOR))
         );
-*/
 
     }
-
-    @FXML
     /*
-    Upon clicking on the station area, will get the station details (this is where you would generate updated, fresh details every time)
-    and will create a new Stage where the popup will be presented with the updated details.
-    The popup is MODAL and have to be closed to continue work with the map
-     */
+        Upon clicking on the station area, will get the station details (this is where you would generate updated, fresh details every time)
+        and will create a new Stage where the popup will be presented with the updated details.
+        The popup is MODAL and have to be closed to continue work with the map
+         */
+    @FXML
     private void showStationDetails(MouseEvent event) {
         try {
             StationDetailsDTO stationDetailsDTO = detailsDTOSupplier.get();
@@ -74,7 +73,7 @@ public class StationController {
             stationDetailsDTO.setY(y);
 
             FXMLLoader fxmlLoader = new FXMLLoader();
-            URL url = getClass().getResource("../../details/visual/StationDetailsView.fxml");
+            URL url = getClass().getResource("/api/components/map/course/transpool/graph/component/details/visual/StationDetailsView.fxml");
             fxmlLoader.setLocation(url);
             ScrollPane root = fxmlLoader.load(url.openStream());
 

@@ -1,7 +1,8 @@
-package api;
+package logic;
 
 import api.components.*;
-import api.task.LoadFileTask;
+import logic.components.MatchingEngine;
+import logic.task.LoadFileTask;
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
 import data.transpool.time.Recurrence;
@@ -26,7 +27,7 @@ import javafx.concurrent.Task;
 import java.io.File;
 import java.time.LocalTime;
 
-
+//A9B7C6
 /**
  * The main engine of the application.
  * Holds the data, and other engines.
@@ -34,10 +35,12 @@ import java.time.LocalTime;
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
-    private BooleanProperty isLoaded;
 
     private MatchingEngine matchingEngine;
+
     private TransPoolController transpoolController;
+
+    private BooleanProperty isLoaded;
 
     public TransPoolEngine(TransPoolController transpoolController) {
         this.transpoolController = transpoolController;
@@ -98,13 +101,13 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void setData(TransPoolData data) {
-        this.data = data;
+    public void addNewMatch(int possibleMatchIndex) throws TransPoolDataException {
+        matchingEngine.addNewMatch(data, possibleMatchIndex);
     }
 
     @Override
-    public void addNewMatch(int possibleMatchIndex) throws TransPoolDataException {
-        matchingEngine.addNewMatch(data, possibleMatchIndex);
+    public void setData(TransPoolData data) {
+        this.data = data;
     }
 
     @Override

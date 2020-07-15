@@ -1,4 +1,4 @@
-package data.transpool.map.component;
+package data.transpool.map;
 
 import api.components.map.course.transpool.graph.component.road.ArrowedEdge;
 import api.components.map.course.transpool.graph.component.station.StationManager;
@@ -14,11 +14,11 @@ import exception.data.TransPoolDataException;
  * A class which holds the data model for the live map.
  * Extends BasicMapData
  */
-public class MapGraphModel extends BasicMapData {
+public class Map extends BasicMapData {
 
     private Model mapGraphModel;
 
-    public MapGraphModel(MapDescriptor JAXBMap) throws TransPoolDataException {
+    public Map(MapDescriptor JAXBMap) throws TransPoolDataException {
         super(JAXBMap);
     }
 
@@ -72,6 +72,6 @@ public class MapGraphModel extends BasicMapData {
      * Clears the stop's details.
      */
     public void update() {
-        allStops.forEach((s, stop) -> stop.clearDetails());
+        allStops.forEach((str, stop) -> stop.clearDetails());
     }
 }

@@ -5,7 +5,7 @@ import api.components.map.course.transpool.graph.component.util.NodesManager;
 import java.util.function.BiFunction;
 
 /*
-Makes sure that each Station node will e created exactly once
+Makes sure that each Station node will be created exactly once
  */
 public class StationManager extends NodesManager<StationNode> {
 

@@ -1,11 +1,11 @@
 package data.transpool;
 
-import api.components.TripOfferEngine;
-import api.components.TripRequestEngine;
+import logic.components.TripOfferEngine;
+import logic.components.TripRequestEngine;
 import com.fxgraph.graph.Graph;
 import data.jaxb.TransPool;
 import data.transpool.map.BasicMap;
-import data.transpool.map.component.MapGraphModel;
+import data.transpool.map.Map;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeDay;
@@ -22,7 +22,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.util.List;
-import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -33,10 +32,10 @@ import java.util.stream.Collectors;
  * TripOfferMap - holds the trip offer data as a map.
  * Holds the current time of the system.
  */
-public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine, TimeEngine {
+public class TransPoolData implements BasicMap, TripRequestEngine, TripOfferEngine, TimeEngine {
 
 
-    private MapGraphModel map;
+    private Map map;
     private TripOfferMap tripOffers;
     private ObservableList<TripRequest> allTripRequests;
     private ObservableList<MatchedTripRequest> allMatchedTripRequests;
@@ -48,7 +47,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
         currentTime = new TimeDay();
         this.allTripRequests = FXCollections.observableArrayList();
         this.allMatchedTripRequests = FXCollections.observableArrayList();
-        this.map = new MapGraphModel(JAXBData.getMapDescriptor());
+        this.map = new Map(JAXBData.getMapDescriptor());
         this.tripOffers = new TripOfferMap(map, JAXBData.getPlannedTrips().getTransPoolTrip());
 
     }
@@ -133,7 +132,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     }
 
     @Override
-    public Map<String, Stop> getAllStops() {
+    public java.util.Map getAllStops() {
         return map.getAllStops();
     }
 

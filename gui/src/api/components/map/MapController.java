@@ -96,7 +96,7 @@ public class MapController {
     }
 
     public void bindaUIToData(TransPoolData data) {
-        currentTime.bind(data.getTimeDay().timeProperty());
-        currentDay.bind(data.getTimeDay().dayProperty());
+        currentTime.bind(data.getCurrentTime().timeProperty());
+        currentDay.bind(data.getCurrentTime().dayProperty());
     }
 }

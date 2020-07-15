@@ -70,6 +70,11 @@ public class TripOfferMap implements TripOfferEngine {
         return currentTripOffers;
     }
 
+    @Override
+    public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
+        return getTripOffer(tripOfferID).getSubTripOffer(subTripOfferID);
+    }
+
     //----------------------------------------------------------------------------------------------------------------//
 
     /**
@@ -97,16 +102,8 @@ public class TripOfferMap implements TripOfferEngine {
         }
     }
 
-    public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
-        return getTripOffer(tripOfferID).getSubTripOffer(subTripOfferID);
-    }
-
     public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, TimeDay departureTime) {
         return tripOfferGraph.getAllPossibleRoutes(source, destination, departureTime);
-    }
-
-    public TripOfferGraph getTripOfferGraph() {
-        return tripOfferGraph;
     }
 
 }

@@ -188,7 +188,7 @@ public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngi
     }
 
     @Override
-    public TimeDay getTimeDay() {
+    public TimeDay getCurrentTime() {
         return currentTime;
     }
 

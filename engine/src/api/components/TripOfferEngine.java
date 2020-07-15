@@ -1,5 +1,6 @@
 package api.components;
 
+import data.transpool.trip.offer.data.SubTripOffer;
 import data.transpool.trip.offer.data.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.MatchedTripRequest;
@@ -17,6 +18,8 @@ public interface TripOfferEngine {
     ObservableList<TripOffer> getAllTripOffers();
 
     ObservableList<TripOffer> getCurrentOffers();
+
+    SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID);
 
 
 }

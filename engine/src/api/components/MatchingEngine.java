@@ -2,10 +2,9 @@ package api.components;
 
 import data.transpool.TransPoolData;
 import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.trip.request.TripRequest;
+import data.transpool.trip.request.component.MatchedTripRequest;
+import data.transpool.trip.request.component.TripRequest;
 import exception.NoResultsFoundException;
-import exception.data.RideFullException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

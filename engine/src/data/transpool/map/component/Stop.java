@@ -1,13 +1,10 @@
 package data.transpool.map.component;
 
 import api.components.map.course.transpool.graph.component.details.StationDetailsDTO;
-import data.transpool.trip.offer.data.TripOffer;
-import data.transpool.user.TransPoolDriver;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Stop {
@@ -18,7 +15,7 @@ public class Stop {
     private StringProperty name;
     private StationDetailsDTO details;
 
-    public Stop(data.jaxb.Stop JAXBStop) {
+    public Stop(data.generated.Stop JAXBStop) {
         this.ID = IDGenerator++;
         this.x = JAXBStop.getX();
         this.y = JAXBStop.getY();

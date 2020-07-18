@@ -1,236 +1,216 @@
 package data.transpool;
 
-import api.components.TripOfferEngine;
-import api.components.TripRequestEngine;
 import com.fxgraph.graph.Graph;
-import data.jaxb.TransPool;
+import data.generated.TransPool;
 import data.transpool.map.BasicMap;
-import data.transpool.map.component.MapGraphModel;
+import data.transpool.map.MapGraph;
+import data.transpool.map.MapGraphModel;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
-import data.transpool.time.TimeDay;
+import data.transpool.time.component.TimeDay;
 import data.transpool.time.TimeEngine;
-import data.transpool.time.TimeInterval;
-import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.time.TimeEngineBase;
+import data.transpool.time.component.TimeInterval;
+import data.transpool.trip.offer.TripOfferEngine;
+import data.transpool.trip.offer.component.SubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.offer.map.TripOfferMap;
-import data.transpool.trip.offer.data.TripOffer;
-import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.trip.request.TripRequest;
+import data.transpool.trip.offer.TripOfferEngineBase;
+import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.request.TripRequestEngine;
+import data.transpool.trip.request.component.MatchedTripRequest;
+import data.transpool.trip.request.component.TripRequest;
+import data.transpool.trip.request.TripRequestEngineBase;
+import data.transpool.user.UserEngine;
+import data.transpool.user.UserEngineBase;
 import exception.data.TransPoolDataException;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 
 /**
  * The main class which holds the model of the system.
- * MapGraphModel - holds the live map model and the basic map data.
- * TripOfferMap - holds the trip offer data as a map.
- * Holds the current time of the system.
+ * MapGraph - holds the live map model and the basic map data.
+ * TripOfferEngine - holds the trip offer data.
+ * TripRequestEngine - The engine for trip requests and matched requests - holds the data.
+ * TimeEngine - Controls the system time.
  */
-public class TransPoolData implements TripRequestEngine, BasicMap, TripOfferEngine, TimeEngine {
 
+//TODO: User Engine should not (or should it?) be used here right now.
+public class TransPoolData implements DataEngine {
 
-    private MapGraphModel map;
-    private TripOfferMap tripOffers;
-    private ObservableList<TripRequest> allTripRequests;
-    private ObservableList<MatchedTripRequest> allMatchedTripRequests;
+    private MapGraph map;
+    private TripOfferEngine tripOfferEngine;
+    private TripRequestEngine tripRequestEngine;
+    private TimeEngine timeEngine;
+    private UserEngine userEngine;
 
-    public static TimeDay currentTime;
+    private List<Updatable> updatables;
 
     public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
         Stop.resetIDGenerator();
-        currentTime = new TimeDay();
-        this.allTripRequests = FXCollections.observableArrayList();
-        this.allMatchedTripRequests = FXCollections.observableArrayList();
         this.map = new MapGraphModel(JAXBData.getMapDescriptor());
-        this.tripOffers = new TripOfferMap(map, JAXBData.getPlannedTrips().getTransPoolTrip());
 
+        this.tripRequestEngine = new TripRequestEngineBase();
+        this.tripOfferEngine = new TripOfferEngineBase(map, JAXBData.getPlannedTrips().getTransPoolTrip());
+        this.timeEngine = new TimeEngineBase();
+        this.userEngine = new UserEngineBase();
+
+        this.updatables = new ArrayList<>();
+        initUpdatables();
+    }
+
+    private void initUpdatables() {
+        this.updatables.add(tripOfferEngine);
+        this.updatables.add(map);
     }
 
     @Override
+    public TripRequestEngine getTripRequestEngine() {
+        return tripRequestEngine;
+    }
+
+    @Override
+    public TripOfferEngine getTripOfferEngine() {
+        return tripOfferEngine;
+    }
+
+    @Override
+    public BasicMap getMap() {
+        return map;
+    }
+
+    @Override
+    public TimeEngine getTimeEngine() {
+        return timeEngine;
+    }
+
+    @Override
+    public UserEngine getUserEngine() {
+        return userEngine;
+    }
+
+    @Override
+    public void update() {
+        updatables.forEach(Updatable::update);
+    }
+
     public TripOffer getTripOffer(int ID) {
-        return tripOffers.getTripOffer(ID);
+        return tripOfferEngine.getTripOffer(ID);
     }
 
-    @Override
     public void addTripOffer(TripOffer tripOffer) {
-        tripOffers.addTripOffer(tripOffer);
+        tripOfferEngine.addTripOffer(tripOffer);
     }
 
-    @Override
     public ObservableList<TripOffer> getAllTripOffers() {
-        return tripOffers.getAllTripOffers();
+        return tripOfferEngine.getAllTripOffers();
     }
 
-    @Override
     public ObservableList<TripOffer> getCurrentOffers() {
-        return tripOffers.getCurrentOffers();
+        return tripOfferEngine.getCurrentOffers();
     }
 
-    @Override
-    public TripRequest getTripRequest(int ID) {
-        return allTripRequests
-                .stream()
-                .filter(t -> t.getRequestID() == ID)
-                .findFirst()
-                .orElse(null);
+    public List<SubTripOffer> getCurrentSubTripOffers() {
+        return tripOfferEngine.getCurrentSubTripOffers();
     }
 
-    @Override
-    public MatchedTripRequest getMatchedTripRequest(int feedbackerID) {
-        return allMatchedTripRequests
-                .stream()
-                .filter(m -> m.getRequestID() == feedbackerID)
-                .findFirst()
-                .orElse(null);
+    public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
+        return tripOfferEngine.getSubTripOffer(tripOfferID, subTripOfferID);
     }
 
-    @Override
+    public TripRequest getTripRequest(int TripRequestID) {
+        return tripRequestEngine.getTripRequest(TripRequestID);
+    }
+
+    public MatchedTripRequest getMatchedTripRequest(int MatchedTripRequestID) {
+        return tripRequestEngine.getMatchedTripRequest(MatchedTripRequestID);
+    }
+
     public void deleteTripRequest(TripRequest requestToDelete) {
-        allTripRequests.remove(requestToDelete);
+        tripRequestEngine.deleteTripRequest(requestToDelete);
     }
 
-    @Override
     public void addTripRequest(TripRequest tripRequest) {
-        allTripRequests.add(tripRequest);
+        tripRequestEngine.addTripRequest(tripRequest);
     }
 
-    @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
-        allMatchedTripRequests.add(matchedTripRequest);
-        deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
+        tripRequestEngine.addMatchedRequest(matchedTripRequest);
     }
 
-    @Override
     public ObservableList<TripRequest> getAllTripRequests() {
-        return allTripRequests;
+        return tripRequestEngine.getAllTripRequests();
     }
 
-    @Override
     public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
-        return allMatchedTripRequests;
+        return tripRequestEngine.getAllMatchedTripRequests();
     }
 
-    @Override
     public int getMapWidth() {
         return map.getMapWidth();
     }
 
-    @Override
     public int getMapLength() {
         return map.getMapLength();
     }
 
-    @Override
     public boolean containsStop(String stopName) {
         return map.containsStop(stopName);
     }
 
-    @Override
     public Map<String, Stop> getAllStops() {
         return map.getAllStops();
     }
 
-    @Override
     public List<Stop> getAllStopsAsList() {
         return map.getAllStopsAsList();
     }
 
-    @Override
     public Stop getStop(String stopName) {
         return map.getStop(stopName);
     }
 
-    @Override
     public int getNumberOfStops() {
         return map.getNumberOfStops();
     }
 
-    @Override
     public List<Path> getAllPaths() {
         return map.getAllPaths();
     }
 
-    @Override
     public boolean containsPath(String source, String destination) {
         return map.containsPath(source, destination);
     }
 
-    @Override
     public Path getPath(Stop source, Stop destination) {
         return map.getPath(source, destination);
     }
 
-    @Override
     public Path getPath(String source, String destination) {
         return map.getPath(source, destination);
     }
 
-    @Override
     public void incrementTime(TimeInterval interval) {
-        currentTime.plus(interval.getMinutes());
-        map.update();
-        tripOffers.update();
-
+        timeEngine.incrementTime(interval, this);
     }
 
-    @Override
     public void decrementTime(TimeInterval interval) {
-        currentTime.minus(interval.getMinutes());
-        map.update();
-        tripOffers.update();
+        timeEngine.decrementTime(interval, this);
     }
 
-    @Override
     public TimeDay getCurrentTime() {
-        return currentTime;
+        return TimeEngineBase.currentTime;
+    }
+
+    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
+        return tripOfferEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
     }
 
     public void createMap(Graph graph) {
         map.createMapModel(graph);
     }
 
-
-    /**
-     * Gets the possible routes from the TripOfferMap, and filters all routes which are not relevant by
-     * departure or arrival time. Also filters all rides that are not continuous if the rider asked for continuous rides.
-     * @param tripRequest
-     * @param maximumMatches
-     * @return
-     */
-    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
-
-        Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {
-            if (tripRequest.isTimeOfArrival()) {
-                return possibleRoute.getTimeOfArrival().equals(tripRequest.getRequestTime());
-            } else {
-                return possibleRoute.getTimeOfDeparture().equals(tripRequest.getRequestTime());
-            }
-        };
-
-        Predicate<PossibleRoute> continuousRidePredicate = possibleRoute ->
-                !tripRequest.isContinuous() || possibleRoute.isContinuous();
-
-        PossibleRoutesList possibleRoutes = tripOffers.getAllPossibleRoutes(tripRequest.getSourceStop(), tripRequest.getDestinationStop(), tripRequest.getRequestTime());
-        return possibleRoutes.stream()
-                .filter(timeMatchPredicate)
-                .filter(continuousRidePredicate)
-                .limit(maximumMatches)
-                .collect(Collectors.toCollection(PossibleRoutesList::new));
-
-    }
-
-    public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, TimeDay departureTime) {
-        return tripOffers.getAllPossibleRoutes(source, destination, departureTime);
-    }
-
-    public BasicMap getMap() {
-        return map;
-    }
 }

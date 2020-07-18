@@ -1,10 +1,10 @@
 package data.transpool.trip.offer.matching;
 
-import data.transpool.time.Scheduling;
-import data.transpool.time.TimeDay;
-import data.transpool.trip.offer.data.TimedSubTripOffer;
-import data.transpool.trip.offer.data.SubTripOffer;
-import data.transpool.user.TransPoolDriver;
+import data.transpool.time.component.Scheduling;
+import data.transpool.time.component.TimeDay;
+import data.transpool.trip.offer.component.TimedSubTripOffer;
+import data.transpool.trip.offer.component.SubTripOffer;
+import data.transpool.user.account.TransPoolDriver;
 
 import java.util.ArrayList;
 import java.util.List;

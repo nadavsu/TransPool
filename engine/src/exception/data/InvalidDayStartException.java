@@ -1,8 +1,5 @@
 package exception.data;
 
-import data.transpool.TransPoolData;
-import data.transpool.user.TransPoolDriver;
-
 public class InvalidDayStartException extends TransPoolDataException {
     private final String EXCEPTION_MESSAGE = "Day must be bigger than 0";
 

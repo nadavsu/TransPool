@@ -7,7 +7,7 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
 import data.transpool.TransPoolData;
-import data.transpool.time.Recurrence;
+import data.transpool.time.component.Recurrence;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -15,7 +15,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 
 /**

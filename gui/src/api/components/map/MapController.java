@@ -5,7 +5,7 @@ import com.fxgraph.graph.Graph;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import data.transpool.TransPoolData;
-import data.transpool.time.TimeInterval;
+import data.transpool.time.component.TimeInterval;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;

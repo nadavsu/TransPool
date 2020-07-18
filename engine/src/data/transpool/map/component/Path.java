@@ -21,7 +21,7 @@ public class Path {
      * Constructor for creating a new path from the generated JAXB classes.
      * @param JAXBPath - the generated JAXB path.
      */
-    public Path(java.util.Map<String, Stop> allStops, data.jaxb.Path JAXBPath) throws PathDoesNotExistException {
+    public Path(java.util.Map<String, Stop> allStops, data.generated.Path JAXBPath) throws PathDoesNotExistException {
         String source = JAXBPath.getFrom();
         String destination = JAXBPath.getTo();
         if (!allStops.containsKey(source)) {

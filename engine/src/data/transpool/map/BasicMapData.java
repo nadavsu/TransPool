@@ -1,6 +1,6 @@
 package data.transpool.map;
 
-import data.jaxb.MapDescriptor;
+import data.generated.MapDescriptor;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import exception.data.*;
@@ -50,8 +50,8 @@ public class BasicMapData implements BasicMap {
      * @throws StopNameDuplicationException - thrown if there is a duplication stop.
      */
     private void initAllStops(MapDescriptor JAXBMap) throws StopNameDuplicationException {
-        List<data.jaxb.Stop> JAXBStopsList = JAXBMap.getStops().getStop();
-        for(data.jaxb.Stop stop : JAXBStopsList) {
+        List<data.generated.Stop> JAXBStopsList = JAXBMap.getStops().getStop();
+        for(data.generated.Stop stop : JAXBStopsList) {
             if (allStops.containsKey(stop.getName())) {
                 throw new StopNameDuplicationException(stop.getName());
             }
@@ -67,8 +67,8 @@ public class BasicMapData implements BasicMap {
      * @throws TransPoolDataException - thrown if there's a problem with the data inside the JAXB classes/file.
      */
     private void initAllPaths(MapDescriptor JAXBMap) throws PathDuplicationException, PathDoesNotExistException {
-        List<data.jaxb.Path> JAXBPathList = JAXBMap.getPaths().getPath();
-        for (data.jaxb.Path JAXBPath : JAXBPathList) {
+        List<data.generated.Path> JAXBPathList = JAXBMap.getPaths().getPath();
+        for (data.generated.Path JAXBPath : JAXBPathList) {
             Path transpoolPath = new Path(allStops, JAXBPath);
             if (allPaths.contains(transpoolPath)) {
                 throw new PathDuplicationException(transpoolPath.getSourceName(), transpoolPath.getDestinationName());
@@ -200,8 +200,8 @@ public class BasicMapData implements BasicMap {
         private String[][] mapMatrix = new String[BasicMapData.MAX_MAP_SIZE][BasicMapData.MAX_MAP_SIZE];
 
         public MapMatrix(MapDescriptor JAXBMap) throws StopOutOfBoundsException, StopCoordinatesDuplicationException {
-            List<data.jaxb.Stop> JAXBStopsList = JAXBMap.getStops().getStop();
-            for (data.jaxb.Stop stop : JAXBStopsList) {
+            List<data.generated.Stop> JAXBStopsList = JAXBMap.getStops().getStop();
+            for (data.generated.Stop stop : JAXBStopsList) {
                 int x = stop.getX();
                 int y = stop.getY();
                 if (x > width || y > length) {

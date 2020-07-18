@@ -1,7 +1,7 @@
 package api.task;
 
 import api.Engine;
-import data.jaxb.TransPool;
+import data.generated.TransPool;
 import data.transpool.TransPoolData;
 import exception.data.TransPoolDataException;
 import exception.data.TransPoolFileNotFoundException;

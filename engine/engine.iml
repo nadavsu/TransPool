@@ -10,5 +10,6 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="gui" />
     <orderEntry type="library" name="fxgraph-0.0.3" level="project" />
+    <orderEntry type="module" module-name="WebApp" />
   </component>
 </module>

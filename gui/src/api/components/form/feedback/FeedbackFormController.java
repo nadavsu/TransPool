@@ -6,18 +6,13 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextArea;
 import data.transpool.TransPoolData;
-import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.user.Feedbackable;
-import data.transpool.user.Feedbacker;
-import exception.NoResultsFoundException;
+import data.transpool.trip.request.component.MatchedTripRequest;
+import data.transpool.user.feedback.Feedbackable;
+import data.transpool.user.feedback.Feedbacker;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-
-import java.util.stream.Collectors;
 
 /**
  * A form controller for the Feedbacks tab on the left hand side of the UI.

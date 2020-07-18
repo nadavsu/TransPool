@@ -6,7 +6,6 @@ import api.components.map.course.transpool.graph.layout.MapGridLayout;
 import com.fxgraph.graph.Graph;
 import com.fxgraph.graph.Model;
 import com.fxgraph.graph.PannableCanvas;
-import data.transpool.user.TransPoolDriver;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;

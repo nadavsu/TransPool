@@ -2,21 +2,20 @@ package api;
 
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
-import data.transpool.time.Recurrence;
-import data.transpool.time.TimeInterval;
-import data.transpool.trip.offer.data.TripOffer;
+import data.transpool.time.component.Recurrence;
+import data.transpool.time.component.TimeInterval;
+import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.trip.request.MatchedTripRequest;
-import data.transpool.trip.request.TripRequest;
-import data.transpool.user.Feedbackable;
-import data.transpool.user.Feedbacker;
+import data.transpool.trip.request.component.MatchedTripRequest;
+import data.transpool.trip.request.component.TripRequest;
+import data.transpool.user.feedback.Feedbackable;
+import data.transpool.user.feedback.Feedbacker;
 import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 
 import java.io.File;
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
 

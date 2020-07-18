@@ -1,7 +1,7 @@
 package api.components.card.request;
 import api.Constants;
 import api.components.card.CardController;
-import data.transpool.trip.request.TripRequest;
+import data.transpool.trip.request.component.TripRequest;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

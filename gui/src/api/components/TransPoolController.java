@@ -11,11 +11,11 @@ import api.components.form.offer.TripOfferFormController;
 import api.components.form.request.TripRequestFormController;
 import api.exception.RequiredFieldEmptyException;
 import data.transpool.TransPoolData;
-import data.transpool.time.TimeInterval;
-import data.transpool.time.Recurrence;
-import data.transpool.trip.request.TripRequest;
-import data.transpool.user.Feedbackable;
-import data.transpool.user.Feedbacker;
+import data.transpool.time.component.TimeInterval;
+import data.transpool.time.component.Recurrence;
+import data.transpool.trip.request.component.TripRequest;
+import data.transpool.user.feedback.Feedbackable;
+import data.transpool.user.feedback.Feedbacker;
 import exception.NoResultsFoundException;
 import exception.TransPoolRunTimeException;
 import exception.data.TransPoolDataException;
@@ -29,7 +29,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.time.Duration;
 import java.time.LocalTime;
 import java.util.concurrent.ExecutionException;
 

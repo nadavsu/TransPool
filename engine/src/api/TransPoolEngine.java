@@ -4,15 +4,17 @@ import api.components.*;
 import api.task.LoadFileTask;
 import com.fxgraph.graph.Graph;
 import data.transpool.TransPoolData;
-import data.transpool.time.Recurrence;
-import data.transpool.time.TimeInterval;
-import data.transpool.trip.offer.data.TripOffer;
-import data.transpool.trip.offer.data.TripOfferData;
+import data.transpool.time.component.Recurrence;
+import data.transpool.time.component.TimeInterval;
+import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.component.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.trip.request.*;
-import data.transpool.user.Feedback;
-import data.transpool.user.Feedbackable;
-import data.transpool.user.Feedbacker;
+import data.transpool.trip.request.component.MatchedTripRequest;
+import data.transpool.trip.request.component.TripRequest;
+import data.transpool.trip.request.component.TripRequestData;
+import data.transpool.user.feedback.Feedback;
+import data.transpool.user.feedback.Feedbackable;
+import data.transpool.user.feedback.Feedbacker;
 import exception.NoResultsFoundException;
 import exception.data.InvalidDayStartException;
 import exception.data.StopNotFoundException;
@@ -34,9 +36,10 @@ import java.time.LocalTime;
 public class TransPoolEngine implements Engine {
 
     private TransPoolData data;
+    private MatchingEngine matchingEngine;
+
     private BooleanProperty isLoaded;
 
-    private MatchingEngine matchingEngine;
     private TransPoolController transpoolController;
 
     public TransPoolEngine(TransPoolController transpoolController) {

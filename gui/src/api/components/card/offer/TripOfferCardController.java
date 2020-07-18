@@ -2,12 +2,10 @@ package api.components.card.offer;
 
 import api.Constants;
 import api.components.card.CardController;
-import api.components.card.feedback.FeedbackCardController;
 import com.jfoenix.controls.JFXListView;
-import data.transpool.trip.request.MatchedTripRequestPart;
-import data.transpool.user.Feedback;
-import data.transpool.trip.offer.data.TripOffer;
-import data.transpool.trip.request.BasicTripRequest;
+import data.transpool.trip.request.component.MatchedTripRequestPart;
+import data.transpool.user.feedback.Feedback;
+import data.transpool.trip.offer.component.TripOffer;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

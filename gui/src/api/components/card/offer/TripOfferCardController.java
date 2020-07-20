@@ -4,7 +4,7 @@ import api.Constants;
 import api.components.card.CardController;
 import com.jfoenix.controls.JFXListView;
 import data.transpool.trip.request.component.MatchedTripRequestPart;
-import data.transpool.user.feedback.Feedback;
+import data.transpool.user.component.feedback.Feedback;
 import data.transpool.trip.offer.component.TripOffer;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;

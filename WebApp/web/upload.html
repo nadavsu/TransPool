@@ -1,11 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="Signup page for new users">
     <meta name="author" content="Nadav Suliman">
-    <title>TransPool - Signup</title>
+
+    <title>TransPool - Upload</title>
+
     <!--Default Header=================================================================================-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!--===============================================================================================-->
@@ -26,40 +28,52 @@
     <link rel="stylesheet" type="text/css" href="common/stylesheet/navbar.css">
     <!--===============================================================================================-->
 
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
     <link href="pages/signup/signup.css" rel="stylesheet">
 
 </head>
+<nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="home.html">
+        <img src="common/images/logo_nav_bar.png" alt="TransPool" id="logo">
+    </a>
+    <a href="upload.html" class="btn align-middle btn-primary ml-auto mr-3 order-lg-last" type="button">Upload</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chat.html">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="account.html">Account</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
-<body class="text-center">
-<div class="card shadow p-3 mb-5 bg-white rounded" style="width: 25rem">
-    <form class="form-signup" method="GET" action="login">
-        <img class="mb-4" src="common/images/login_logo.png" alt="TransPool">
+<!--End of navbar-->
+
+<div class="text-center card shadow p-3 mb-5 bg-white rounded" style="width: 25rem">
+    <h5 class="card-title">Upload a new map</h5>
+    <form class="upload-map" enctype="multipart/form-data" method="POST" action="upload">
         <br>
-        <label for="username" class="sr-only">Username</label>
-        <input type="text" id="username" name=username class="form-control" placeholder="Username" required autofocus>
-        <br>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="account_type" id="rider" value="rider" checked>
-            <label class="form-check-label" for="rider">
-                I'm a rider
-            </label>
+        <div class="form-group">
+            <input type="file" class="form-control-file" id="map">
         </div>
-        <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="account_type" id="driver" value="driver">
-            <label class="form-check-label" for="driver">
-                I'm a driver
-            </label>
-        </div>
-<!--        <div class="radio-button mb-3">
-            <input type="radio" id="rider" name="account_type" value="rider" checked>
-            <label for="rider">I'm a rider</label><br>
-            <input type="radio" id="driver" name="account_type" value="driver">
-            <label for="driver">I'm a driver</label><br>
-        </div>-->
+        <label for="mapname" class="sr-only">Username</label>
+        <input type="text" id="mapname" name=mapname class="form-control" placeholder="Map name" required autofocus>
         <br><br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Upload</button>
     </form>
 </div>
+
+<hr class="featurette-divider">
+<footer class="container">
+    <p class="float-right"><a href="#">Back to top</a></p>
+    <p>TransPool &middot; Created by <a href="https://www.linkedin.com/in/nadav-suliman/">Nadav Suliman</a> using Bootstrap</p>
+</footer>
 </body>
 </html>

@@ -2,14 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Signup page for new users">
+    <meta name="author" content="Nadav Suliman">
+
     <title>TransPool - Home</title>
+    <link rel="stylesheet" type="text/css" href="pages/home/home.css">
+
+    <!--Default Header=================================================================================-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <!--===============================================================================================-->
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <!--===============================================================================================-->
     <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script type="text/javascript" src="common/lib/jquery-2.0.3.min.js"></script>
     <!--===============================================================================================-->
     <!-- Popper JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -20,38 +27,63 @@
     <link rel="icon" href="common/images/icon32.png">
     <!--===============================================================================================-->
     <link rel="stylesheet" type="text/css" href="common/stylesheet/navbar.css">
-    <link rel="stylesheet" type="text/css" href="pages/home/home.css">
+    <!--===============================================================================================-->
+
+    <script type="text/javascript">
+        $(function () {
+            $.ajax({
+                data: "",
+                method: "GET",
+                url: "getuser",
+                timeout: 2000,
+                error: function() {
+                    console.error("blah to get ajax response");
+                },
+                success: function(response) {
+                    $(".username").text(response);
+                }
+            });
+        });
+    </script>
+
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
     <a class="navbar-brand" href="home.html">
         <img src="common/images/logo_nav_bar.png" alt="TransPool" id="logo">
     </a>
+    <a href="upload.html" class="btn align-middle btn-primary ml-auto mr-3 order-lg-last" type="button">Upload</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto"></ul>
-        <ul class="navbar-nav">
-            <a href="#" class="btn btn-primary">Upload</a>
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="#">Account</a>
+                <a class="nav-link" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chat.html">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="account.html">Account</a>
             </li>
         </ul>
     </div>
 </nav>
 
+<!--End of navbar-->
+
 <div class="row main-body">
     <div class="col-md-2">
-        <div class="card">
+        <div class="card shadow p-3 mb-5 bg-white rounded">
             <img class="card-img-top" src="common/images/cards/offer_icon.png" alt="User image">
             <div class="card-body">
-                <h5 class="card-title">Shira Zohar</h5>
+                <h5 class="card-title username">Shira Zohar</h5>
                 <h6 class="card-subtitle text-muted balance">Balance: $50</h6>
                 <br/>
                 <h6 class="card-subtitle text-muted">Last Transactions:</h6>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">
+                    <li class="list-group-item transaction">
                         <div>
                             <h6>27/07/20</h6>
                             <small class="text-muted">
@@ -62,7 +94,7 @@
                             </small>
                         </div>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item transaction">
                         <div>
                             <h6>27/07/20</h6>
                             <small class="text-muted">
@@ -73,7 +105,7 @@
                             </small>
                         </div>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item transaction">
                         <div>
                             <h6>27/07/20</h6>
                             <small class="text-muted">
@@ -87,7 +119,7 @@
 
                 </ul>
                 <br/>
-                <a href="#" class="btn btn-primary">Charge Credit</a>
+                <a href="account.html" class="btn btn-primary">Charge Credit</a>
             </div>
         </div>
     </div>
@@ -109,14 +141,27 @@
             <div class="card">
                 <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
                 <div class="card-body">
-                    <h4 class="card-title map-name">Tel Aviv</h4>
-                    <p class="card-text num-of-offers">23 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 5 are matched</p>
-                    <p class="card-text stops-paths">20 Stops, 21 paths.</p>
+                    <h4 class="card-title map-name">Rishon Lezion</h4>
+                    <p class="card-text num-of-offers">3 Trip offers</p>
+                    <p class="card-text num-of-requests">3 Ride requests, 2 are matched</p>
+                    <p class="card-text stops-paths">42 Stops, 21 paths.</p>
                     <a href="#" class="btn btn-primary">Open</a>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Uploaded by Nadav Suliman</small>
+                </div>
+            </div>
+            <div class="card">
+                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
+                <div class="card-body">
+                    <h4 class="card-title map-name">Herzliya</h4>
+                    <p class="card-text num-of-offers">42 Trip offers</p>
+                    <p class="card-text num-of-requests">3 Ride requests, 0 are matched</p>
+                    <p class="card-text stops-paths">23 Stops, 32 paths.</p>
+                    <a href="#" class="btn btn-primary">Open</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-muted">Uploaded by Hadas Suliman</small>
                 </div>
             </div>
             <div class="card">
@@ -135,23 +180,10 @@
             <div class="card">
                 <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
                 <div class="card-body">
-                    <h4 class="card-title map-name">Tel Aviv</h4>
-                    <p class="card-text num-of-offers">23 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 5 are matched</p>
-                    <p class="card-text stops-paths">20 Stops, 21 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Nadav Suliman</small>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Tel Aviv</h4>
-                    <p class="card-text num-of-offers">23 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 5 are matched</p>
-                    <p class="card-text stops-paths">20 Stops, 21 paths.</p>
+                    <h4 class="card-title map-name">Jerusalem</h4>
+                    <p class="card-text num-of-offers">62 Trip offers</p>
+                    <p class="card-text num-of-requests">12 Ride requests, 11 are matched</p>
+                    <p class="card-text stops-paths">44 Stops, 20 paths.</p>
                     <a href="#" class="btn btn-primary">Open</a>
                 </div>
                 <div class="card-footer">
@@ -174,5 +206,11 @@
         </div>
     </div>
 </div>
+
+<hr class="featurette-divider">
+<footer class="container">
+    <p class="float-right"><a href="#">Back to top</a></p>
+    <p>TransPool &middot; Created by <a href="https://www.linkedin.com/in/nadav-suliman/">Nadav Suliman</a> using Bootstrap</p>
+</footer>
 </body>
 </html>

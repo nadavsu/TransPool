@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
                     } else {
                         if (userTypeFromParameter.equals(Constants.RIDER)) {
                             userEngine.addUser(new TransPoolRider(userNameFromParameter));
-                        } else if (userNameFromParameter.equals(Constants.DRIVER)) {
+                        } else if (userTypeFromParameter.equals(Constants.DRIVER)) {
                             userEngine.addUser(new TransPoolDriver(userNameFromParameter));
                         } else {
                             res.sendRedirect(SIGNUP_URL);

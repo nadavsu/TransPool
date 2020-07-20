@@ -1,7 +1,7 @@
 package data.transpool.user.account;
 
-import data.transpool.user.feedback.Feedback;
-import data.transpool.user.feedback.Feedbackable;
+import data.transpool.user.component.feedback.Feedback;
+import data.transpool.user.component.feedback.Feedbackable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;

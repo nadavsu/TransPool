@@ -2,7 +2,7 @@ package api.components.card.feedback;
 
 import api.Constants;
 import api.components.card.CardController;
-import data.transpool.user.feedback.Feedback;
+import data.transpool.user.component.feedback.Feedback;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.FXML;

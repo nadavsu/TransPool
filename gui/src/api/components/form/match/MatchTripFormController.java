@@ -6,7 +6,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.component.TripRequest;
 import javafx.beans.property.BooleanProperty;
@@ -104,7 +104,7 @@ public class MatchTripFormController extends FormController {
         return fileLoaded;
     }
 
-    public void bindUIToData(TransPoolData data) {
+    public void bindUIToData(TransPoolMapEngine data) {
         if (!comboBoxRideID.getItems().isEmpty()) {
             comboBoxRideID.getItems().clear();
         }

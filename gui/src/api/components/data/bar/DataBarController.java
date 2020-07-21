@@ -4,7 +4,7 @@ import api.components.TransPoolController;
 import api.components.card.match.MatchedTripCardController;
 import api.components.card.offer.TripOfferCardController;
 import api.components.card.request.TripRequestCardController;
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
@@ -55,7 +55,7 @@ public class DataBarController {
         currentTaskProgress.bind(theTask.messageProperty());
     }
 
-    public void bindUIToData(TransPoolData data) {
+    public void bindUIToData(TransPoolMapEngine data) {
         listViewTripOffers.setItems(data.getAllTripOffers());
         listViewTripOffers.setCellFactory(offerListView -> new TripOfferCardController());
         listViewTripRequests.setItems(data.getAllTripRequests());

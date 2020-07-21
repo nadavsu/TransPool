@@ -183,11 +183,6 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
-    public DoubleProperty averageRatingProperty() {
-        return transpoolDriver.get().averageRatingProperty();
-    }
-
-    @Override
     public ObservableList<MatchedTripRequestPart> getAllMatchedRequestsData() {
         return allMatchedRequestsData;
     }

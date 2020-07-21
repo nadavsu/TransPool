@@ -1,16 +1,16 @@
 package api.components;
 
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
  */
 public class MatchingEngine {
     private TripRequest tripRequestToMatch;
-    private ObservableList<PossibleRoute> possibleRoutes;
-    private BooleanProperty foundMatches;
+    private List<PossibleRoute> possibleRoutes;
+    private boolean foundMatches;
 
     public MatchingEngine() {
-        possibleRoutes = FXCollections.observableArrayList();
-        foundMatches = new SimpleBooleanProperty(false);
+        possibleRoutes = new ArrayList<>();
+        foundMatches = false;
     }
 
 
@@ -34,12 +34,12 @@ public class MatchingEngine {
      * @param maximumMatches - maximum matches;
      * @throws NoResultsFoundException - If no results are found, the user is told.
      */
-    public void findPossibleMatches(TransPoolData data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
+    public void findPossibleMatches(TransPoolMapEngine data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
         this.tripRequestToMatch = tripRequestToMatch;
         possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
 
         if (!possibleRoutes.isEmpty()) {
-            foundMatches.set(true);
+            foundMatches = true;
         } else {
             throw new NoResultsFoundException();
         }
@@ -52,7 +52,7 @@ public class MatchingEngine {
      * @param chosenPossibleRouteIndex - The chosen possible route in the list possibleRoutes.
      * @throws TransPoolDataException
      */
-    public void addNewMatch(TransPoolData data, int chosenPossibleRouteIndex) throws TransPoolDataException {
+    public void addNewMatch(TransPoolMapEngine data, int chosenPossibleRouteIndex) throws TransPoolDataException {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
         MatchedTripRequest matchedTripRequest = new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute);
         data.addMatchedRequest(matchedTripRequest);
@@ -62,7 +62,7 @@ public class MatchingEngine {
     /**
      * @return the list of all possible matches.
      */
-    public ObservableList<PossibleRoute> getPossibleRoutes() {
+    public List<PossibleRoute> getPossibleRoutes() {
         return possibleRoutes;
     }
 
@@ -71,10 +71,10 @@ public class MatchingEngine {
      */
     public void clearPossibleMatches() {
         possibleRoutes.clear();
-        foundMatches.set(false);
+        foundMatches = false;
     }
 
-    public BooleanProperty foundMatchesProperty() {
+    public boolean isFoundMatches() {
         return foundMatches;
     }
 

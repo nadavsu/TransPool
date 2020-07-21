@@ -136,9 +136,9 @@ public class TripOfferEngineBase implements TripOfferEngine {
         }
         for (SubTripOffer subTripOffer : currentSubTripOffers) {
             if (subTripOffer != null && subTripOffer.isCurrentlyDeparting()) {
-                subTripOffer.getSourceStop().addDetails(subTripOffer.currentDetails());
+                //subTripOffer.getSourceStop().addDetails(subTripOffer.currentDetails());
             } else if (subTripOffer != null && subTripOffer.isCurrentlyArriving()) {
-                subTripOffer.getDestinationStop().addDetails(subTripOffer.currentDetails());
+                //subTripOffer.getDestinationStop().addDetails(subTripOffer.currentDetails());
             }
         }
     }

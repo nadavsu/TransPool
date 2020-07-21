@@ -1,7 +1,5 @@
 package data.transpool.time.component;
 
-import data.transpool.TransPoolData;
-import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeEngineBase;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;

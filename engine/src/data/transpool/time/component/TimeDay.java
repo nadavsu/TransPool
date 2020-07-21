@@ -19,65 +19,56 @@ public class TimeDay {
     private static final int DAY_START = 1;
     private static final LocalTime TIME_START = LocalTime.MIDNIGHT;
 
-    private ObjectProperty<LocalTime> time;
-    private IntegerProperty day;
+    private LocalTime time;
+    private int day;
 
     public TimeDay() {
-        time = new SimpleObjectProperty<>(TIME_START);
-        day = new SimpleIntegerProperty(DAY_START);
+        time = TIME_START;
+        day = DAY_START;
     }
 
     public TimeDay(LocalTime time, int day) throws TransPoolDataException {
-        this.time = new SimpleObjectProperty<>(time);
-        this.day = new SimpleIntegerProperty();
+        this.time = time;
         setDay(day);
     }
 
     public TimeDay(TimeDay other) {
-        this.day = new SimpleIntegerProperty(other.day.get());
-        this.time = new SimpleObjectProperty<>(other.time.get());
+        this.day = other.day;
+        this.time = other.time;
     }
 
     public void setDay(Integer day) throws InvalidDayStartException {
         if (day == null) {
-            this.day.set(1);
+            this.day = 1;
         } else if (day < 1) {
             throw new InvalidDayStartException();
         } else {
-            this.day.set(day);
+            this.day = day;
         }
     }
 
     public LocalTime getTime() {
-        return time.get();
-    }
-
-    public ObjectProperty<LocalTime> timeProperty() {
         return time;
     }
 
     public void setTime(LocalTime time) {
-        this.time.set(time);
+        this.time = time;
     }
 
     public int getDay() {
-        return day.get();
-    }
-
-    public IntegerProperty dayProperty() {
         return day;
     }
-
+    
     /**
      * Checks to see if an instance of TimeDay is before another instance ofTimeDay.
      * @param other - the other TimeDay (duh)
      * @return - true if this instance is before other, false otherwise.
      */
     public boolean isBefore(TimeDay other) {
-        if (this.day.get() < other.day.get()) {
+        if (this.day < other.day) {
             return true;
-        } else if (this.day.get() == other.day.get()) {
-            return this.time.get().isBefore(other.time.get());
+        } else if (this.day == other.day) {
+            return this.time.isBefore(other.time);
         } else {
             return false;
         }
@@ -90,10 +81,10 @@ public class TimeDay {
      * @return - true if this instance is after other, false otherwise.
      */
     public boolean isAfter(TimeDay other) {
-        if (this.day.get() > other.day.get()) {
+        if (this.day > other.day) {
             return true;
-        } else if (this.day.get() == other.day.get()) {
-            return this.time.get().isAfter(other.time.get());
+        } else if (this.day == other.day) {
+            return this.time.isAfter(other.time);
         } else {
             return false;
         }
@@ -104,10 +95,10 @@ public class TimeDay {
      * @param minutes - to add.
      */
     public void plus(int minutes) {
-        LocalTime timeBefore = time.get();
-        time.set(time.get().plusMinutes(minutes));
-        if (time.get().compareTo(timeBefore) <= 0) {
-            day.set(day.get() + 1);
+        LocalTime timeBefore = time;
+        time = time.plusMinutes(minutes);
+        if (time.compareTo(timeBefore) <= 0) {
+            day = day + 1;
         }
     }
 
@@ -117,20 +108,20 @@ public class TimeDay {
      * @param minutes - minutes to reduce.
      */
     public void minus(int minutes) {
-        LocalTime timeBefore = time.get();
-        LocalTime timeAfter = time.get().minusMinutes(minutes);
-        int dayAfter = day.get();
+        LocalTime timeBefore = time;
+        LocalTime timeAfter = time.minusMinutes(minutes);
+        int dayAfter = day;
         if (timeAfter.compareTo(timeBefore) >= 0) {
             dayAfter--;
         }
         if (dayAfter >= DAY_START && !timeAfter.isBefore(TIME_START)) {
-            time.set(timeAfter);
-            day.set(dayAfter);
+            time = timeAfter;
+            day = dayAfter;
         }
     }
 
     public void setNextRecurrence(Recurrence recurrences) {
-        day.set(day.get() + recurrences.getValue());
+        day += recurrences.getValue();
     }
 
     public boolean isInRange(TimeDay time1, TimeDay time2) {
@@ -142,8 +133,8 @@ public class TimeDay {
         if (this == o) return true;
         if (!(o instanceof TimeDay)) return false;
         TimeDay timeDay = (TimeDay) o;
-        return time.get().equals(timeDay.time.get()) &&
-                day.get() == timeDay.day.get();
+        return time.equals(timeDay.time) &&
+                day == timeDay.day;
     }
 
     @Override

@@ -1,10 +1,8 @@
 package data.transpool;
 
-import com.fxgraph.graph.Graph;
 import data.generated.TransPool;
 import data.transpool.map.BasicMap;
-import data.transpool.map.MapGraph;
-import data.transpool.map.MapGraphModel;
+import data.transpool.map.BasicMapData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
@@ -38,25 +36,22 @@ import java.util.Map;
  * TimeEngine - Controls the system time.
  */
 
-//TODO: User Engine should not (or should it?) be used here right now.
-public class TransPoolData implements DataEngine {
+public class TransPoolMapEngine implements TransPoolMap {
 
-    private MapGraph map;
+    private BasicMap map;
     private TripOfferEngine tripOfferEngine;
     private TripRequestEngine tripRequestEngine;
     private TimeEngine timeEngine;
-    private UserEngine userEngine;
 
     private List<Updatable> updatables;
 
-    public TransPoolData(TransPool JAXBData) throws TransPoolDataException {
+    public TransPoolMapEngine(TransPool JAXBData) throws TransPoolDataException {
         Stop.resetIDGenerator();
-        this.map = new MapGraphModel(JAXBData.getMapDescriptor());
+        this.map = new BasicMapData(JAXBData.getMapDescriptor());
 
         this.tripRequestEngine = new TripRequestEngineBase();
         this.tripOfferEngine = new TripOfferEngineBase(map, JAXBData.getPlannedTrips().getTransPoolTrip());
         this.timeEngine = new TimeEngineBase();
-        this.userEngine = new UserEngineBase();
 
         this.updatables = new ArrayList<>();
         initUpdatables();
@@ -64,7 +59,6 @@ public class TransPoolData implements DataEngine {
 
     private void initUpdatables() {
         this.updatables.add(tripOfferEngine);
-        this.updatables.add(map);
     }
 
     @Override
@@ -85,11 +79,6 @@ public class TransPoolData implements DataEngine {
     @Override
     public TimeEngine getTimeEngine() {
         return timeEngine;
-    }
-
-    @Override
-    public UserEngine getUserEngine() {
-        return userEngine;
     }
 
     @Override
@@ -207,10 +196,6 @@ public class TransPoolData implements DataEngine {
 
     public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
         return tripOfferEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
-    }
-
-    public void createMap(Graph graph) {
-        map.createMapModel(graph);
     }
 
 }

@@ -29,23 +29,6 @@
     <link rel="stylesheet" type="text/css" href="common/stylesheet/navbar.css">
     <!--===============================================================================================-->
 
-    <script type="text/javascript">
-        $(function () {
-            $.ajax({
-                data: "",
-                method: "GET",
-                url: "getuser",
-                timeout: 2000,
-                error: function() {
-                    console.error("blah to get ajax response");
-                },
-                success: function(response) {
-                    $(".username").text(response);
-                }
-            });
-        });
-    </script>
-
 </head>
 <body>
 <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
@@ -73,50 +56,18 @@
 
 <!--End of navbar-->
 
+
+<!--Main body-->
 <div class="row main-body">
     <div class="col-md-2">
         <div class="card shadow p-3 mb-5 bg-white rounded">
-            <img class="card-img-top" src="common/images/cards/offer_icon.png" alt="User image">
+            <img class="card-img-top user-image" src="common/images/cards/offer_icon.png" alt="User image">
             <div class="card-body">
-                <h5 class="card-title username">Shira Zohar</h5>
-                <h6 class="card-subtitle text-muted balance">Balance: $50</h6>
+                <h5 class="card-title username"></h5>
+                <h6 class="card-subtitle text-muted">Balance: $<span class="balance"></span></h6>
                 <br/>
-                <h6 class="card-subtitle text-muted">Last Transactions:</h6>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item transaction">
-                        <div>
-                            <h6>27/07/20</h6>
-                            <small class="text-muted">
-                                -> $50
-                                <br>Money before: $0
-                                <br>Money after: $50
-
-                            </small>
-                        </div>
-                    </li>
-                    <li class="list-group-item transaction">
-                        <div>
-                            <h6>27/07/20</h6>
-                            <small class="text-muted">
-                                -> $50
-                                <br>Money before: $0
-                                <br>Money after: $50
-
-                            </small>
-                        </div>
-                    </li>
-                    <li class="list-group-item transaction">
-                        <div>
-                            <h6>27/07/20</h6>
-                            <small class="text-muted">
-                                -> $50
-                                <br>Money before: $0
-                                <br>Money after: $50
-
-                            </small>
-                        </div>
-                    </li>
-
+                <h6 class="card-subtitle text-muted">Recent Transactions:</h6>
+                <ul class="list-group list-group-flush last-transactions">
                 </ul>
                 <br/>
                 <a href="account.html" class="btn btn-primary">Charge Credit</a>
@@ -206,6 +157,11 @@
         </div>
     </div>
 </div>
+
+<script src="common/scripts/GetUser.js" type="text/javascript"></script>
+<script src="common/scripts/Transaction.js" type="text/javascript"></script>
+<script src="pages/home/home.js" type="text/javascript"></script>
+
 
 <hr class="featurette-divider">
 <footer class="container">

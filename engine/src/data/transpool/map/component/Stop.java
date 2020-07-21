@@ -1,6 +1,5 @@
 package data.transpool.map.component;
 
-import api.components.map.course.transpool.graph.component.details.StationDetailsDTO;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -13,14 +12,12 @@ public class Stop {
     private int x;
     private int y;
     private StringProperty name;
-    private StationDetailsDTO details;
 
     public Stop(data.generated.Stop JAXBStop) {
         this.ID = IDGenerator++;
         this.x = JAXBStop.getX();
         this.y = JAXBStop.getY();
         this.name = new SimpleStringProperty(JAXBStop.getName().trim());
-        this.details = new StationDetailsDTO(new ArrayList<>());
     }
 
     public Stop(Stop other) {
@@ -28,11 +25,6 @@ public class Stop {
         this.x = other.x;
         this.y = other.y;
         this.name = new SimpleStringProperty(other.getName());
-        this.details = other.details;
-    }
-
-    public void addDetails(String details) {
-        this.details.addDetails(details);
     }
 
 
@@ -60,10 +52,6 @@ public class Stop {
         IDGenerator = 0;
     }
 
-    public StationDetailsDTO getDetails() {
-        return details;
-    }
-
     @Override
     public String toString() {
         return getName();
@@ -83,9 +71,5 @@ public class Stop {
     @Override
     public int hashCode() {
         return Objects.hash(ID, x, y, getName());
-    }
-
-    public void clearDetails() {
-        details.clear();
     }
 }

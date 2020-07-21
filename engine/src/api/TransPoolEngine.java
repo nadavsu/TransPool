@@ -1,9 +1,9 @@
 package api;
 
 import api.components.*;
-import api.task.LoadFileTask;
-import com.fxgraph.graph.Graph;
-import data.transpool.TransPoolData;
+import data.generated.TransPool;
+import data.transpool.TransPoolMap;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
@@ -19,14 +19,16 @@ import exception.NoResultsFoundException;
 import exception.data.InvalidDayStartException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Set;
 
 
 /**
@@ -35,32 +37,20 @@ import java.time.LocalTime;
  */
 public class TransPoolEngine implements Engine {
 
-    private TransPoolData data;
+    private TransPoolMapEngine data;
     private MatchingEngine matchingEngine;
 
-    private BooleanProperty isLoaded;
-
-    private TransPoolController transpoolController;
-
-    public TransPoolEngine(TransPoolController transpoolController) {
-        this.transpoolController = transpoolController;
+    public TransPoolEngine() {
         this.matchingEngine = new MatchingEngine();
-
-        this.isLoaded = new SimpleBooleanProperty(false);
     }
 
     @Override
-    public void loadFile(File file) {
-        Task<TransPoolData> loadFileTask = new LoadFileTask(this, file);
-        transpoolController.bindTaskToUI(loadFileTask);
+    public void loadFile(File file) throws JAXBException, TransPoolDataException {
+        JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
+        Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+        TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(file);
 
-        loadFileTask.valueProperty().addListener((observable, oldValue, newValue) -> {
-            transpoolController.bindUIToData(data);
-            isLoaded.set(true);
-            transpoolController.createMap();
-        });
-
-        new Thread(loadFileTask).start();
+        data = new TransPoolMapEngine(JAXBData);
     }
 
     @Override
@@ -97,22 +87,16 @@ public class TransPoolEngine implements Engine {
         feedbacker.leaveFeedback(feedbackee,
                 new Feedback(feedbacker.getFeedbackerID(), feedbacker.getFeedbackerName(), rating, comment)
         );
-        transpoolController.updateCard();
     }
 
     @Override
-    public void setData(TransPoolData data) {
+    public void setData(TransPoolMapEngine data) {
         this.data = data;
     }
 
     @Override
     public void addNewMatch(int possibleMatchIndex) throws TransPoolDataException {
         matchingEngine.addNewMatch(data, possibleMatchIndex);
-    }
-
-    @Override
-    public void createMap(Graph mapGraph) {
-        data.createMap(mapGraph);
     }
 
     @Override
@@ -136,7 +120,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public ObservableList<PossibleRoute> getPossibleRoutes() {
+    public List<PossibleRoute> getPossibleRoutes() {
         return matchingEngine.getPossibleRoutes();
     }
 
@@ -160,18 +144,12 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public TransPoolData getData() {
+    public TransPoolMapEngine getData() {
         return data;
     }
 
-
     @Override
-    public BooleanProperty fileLoadedProperty() {
-        return isLoaded;
-    }
-
-    @Override
-    public BooleanProperty foundMatchesProperty() {
-        return matchingEngine.foundMatchesProperty();
+    public boolean isFoundMatches() {
+        return matchingEngine.isFoundMatches();
     }
 }

@@ -1,7 +1,6 @@
 package api;
 
-import com.fxgraph.graph.Graph;
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
@@ -12,26 +11,25 @@ import data.transpool.user.component.feedback.Feedbackable;
 import data.transpool.user.component.feedback.Feedbacker;
 import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 
+import javax.xml.bind.JAXBException;
 import java.io.File;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public interface Engine {
 
-    void loadFile(File file) throws ExecutionException, InterruptedException;
-
-    void createMap(Graph mapGraph);
+    void loadFile(File file) throws ExecutionException, InterruptedException, JAXBException, TransPoolDataException;
 
     void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                        int day, LocalTime time, boolean isArrivalTime, boolean isContinuous)
             throws TransPoolDataException;
 
-    ObservableList<TripRequest> getAllTripRequests();
+    List<TripRequest> getAllTripRequests();
 
-    ObservableList<TripOffer> getAllTripOffers();
+    List<TripOffer> getAllTripOffers();
 
     void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences,
                             int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
@@ -46,7 +44,7 @@ public interface Engine {
 
     void decrementTime(TimeInterval duration);
 
-    ObservableList<PossibleRoute> getPossibleRoutes();
+    List<PossibleRoute> getPossibleRoutes();
 
     void addNewMatch(int possibleMatchIndex) throws TransPoolDataException;
 
@@ -54,11 +52,9 @@ public interface Engine {
 
     ObservableList<Integer> getAllMatchedTripRequestIDs();
 
-    TransPoolData getData();
+    TransPoolMapEngine getData();
 
-    BooleanProperty fileLoadedProperty();
+    boolean isFoundMatches();
 
-    BooleanProperty foundMatchesProperty();
-
-    void setData(TransPoolData data);
+    void setData(TransPoolMapEngine data);
 }

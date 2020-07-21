@@ -7,41 +7,44 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TransPoolDriver extends TransPoolUserAccount implements Feedbackable {
 
     private static int IDGenerator = 30000;
-    private ObservableList<Feedback> feedbacks;
-    private DoubleProperty averageRating;
+    private List<Feedback> feedbacks;
+    private double averageRating;
     private double totalRating;
 
     public TransPoolDriver(String username) {
         super(username);
         this.setID(IDGenerator++);
-        this.feedbacks = FXCollections.observableArrayList();
-        this.averageRating = new SimpleDoubleProperty(0);
+        this.feedbacks = new ArrayList<>();
+        this.averageRating = 0;
         this.totalRating = 0;
     }
 
     public TransPoolDriver(TransPoolDriver other) {
-        super(other.username.get());
+        super(other.username);
         this.setID(other.getID());
-        this.feedbacks = FXCollections.observableArrayList(other.feedbacks);
-        this.averageRating = new SimpleDoubleProperty(other.getAverageRating());
+        this.feedbacks = new ArrayList<>(other.feedbacks);
+        this.averageRating = other.averageRating;
         this.totalRating = other.totalRating;
     }
 
     @Override
-    public ObservableList<Feedback> getAllFeedbacks() {
+    public List<Feedback> getAllFeedbacks() {
         return feedbacks;
     }
 
     @Override
     public double getAverageRating() {
-        return averageRating.get();
+        return averageRating;
     }
 
     @Override
-    public DoubleProperty averageRatingProperty() {
+    public double averageRatingProperty() {
         return averageRating;
     }
 
@@ -49,7 +52,7 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
     public void addFeedback(Feedback feedback) {
         this.feedbacks.add(feedback);
         this.totalRating += feedback.getRating();
-        this.averageRating.set(totalRating / feedbacks.size());
+        this.averageRating = (totalRating / feedbacks.size());
     }
 
     @Override

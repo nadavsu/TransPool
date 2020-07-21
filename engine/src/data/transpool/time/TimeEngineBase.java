@@ -5,10 +5,9 @@ import data.transpool.time.component.TimeDay;
 import data.transpool.time.component.TimeInterval;
 
 public class TimeEngineBase implements TimeEngine {
-    public static TimeDay currentTime;
+    public static TimeDay currentTime = new TimeDay();
 
     public TimeEngineBase() {
-        currentTime = new TimeDay();
     }
 
     @Override

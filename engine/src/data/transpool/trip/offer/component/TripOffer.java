@@ -14,7 +14,6 @@ import java.util.Map;
 
 public interface TripOffer extends BasicTripOffer {
     double getAverageRating();
-    DoubleProperty averageRatingProperty();
 
     ObservableList<MatchedTripRequestPart> getAllMatchedRequestsData();
 

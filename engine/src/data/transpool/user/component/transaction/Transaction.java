@@ -3,25 +3,33 @@ package data.transpool.user.component.transaction;
 import data.transpool.time.component.TimeDay;
 
 public class Transaction {
-    private TimeDay date;
-    private TransactionType transactionType;
-    private double sum;
 
-    public Transaction(TimeDay date, TransactionType transactionType, double sum) {
+    public enum Type {
+        CREDIT_CHARGE,
+        PAY,
+        RECEIVE
+    }
+
+    private TimeDay date;
+    private Type type;
+    private double amount;
+
+    public Transaction(TimeDay date, Type type, double sum) {
         this.date = date;
-        this.transactionType = transactionType;
-        this.sum = sum;
+        this.type = type;
+        this.amount = sum;
     }
 
     public TimeDay getDate() {
         return date;
     }
 
-    public TransactionType getTransactionType() {
-        return transactionType;
+    public Type getType() {
+        return type;
     }
 
-    public double getSum() {
-        return sum;
+    public double getAmount() {
+        return amount;
     }
+
 }

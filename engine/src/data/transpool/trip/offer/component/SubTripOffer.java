@@ -1,6 +1,5 @@
 package data.transpool.trip.offer.component;
 
-import data.transpool.TransPoolData;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeEngineBase;

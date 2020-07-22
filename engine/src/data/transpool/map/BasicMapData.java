@@ -82,23 +82,26 @@ public class BasicMapData implements BasicMap {
         }
     }
 
+    private void setWidth(int width) throws MapDimensionsException {
+        if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
+            throw new MapDimensionsException();
+        }
+        this.width = width;
+    }
+
+    private void setLength(int length) throws MapDimensionsException {
+        if (length > MAX_MAP_SIZE || length < MIN_MAP_SIZE) {
+            throw new MapDimensionsException();
+        }
+        this.length = length;
+    }
+
     /**
      * Finds the path with the given source and destination stop names.
      * @param source - The name of the source stop.
      * @param destination - The name of the destination stop.
      * @return A reference to the path from the list of all paths if found, null otherwise.
      */
-    public static Path getPathBySourceAndDestination(String source, String destination) {
-        Predicate<Path> sourceDestinationMatchPredicate = p ->
-                p.getDestinationName().equals(destination) && p.getSourceName().equals(source);
-
-        return allPaths
-                .stream()
-                .filter(sourceDestinationMatchPredicate)
-                .findFirst()
-                .orElse(null);
-    }
-
     @Override
     public Path getPath(Stop source, Stop destination) {
         Predicate<Path> sourceDestinationMatchPredicate = p ->
@@ -123,18 +126,14 @@ public class BasicMapData implements BasicMap {
                 .orElse(null);
     }
 
-    private void setWidth(int width) throws MapDimensionsException {
-        if (width < MIN_MAP_SIZE || width > MAX_MAP_SIZE) {
-            throw new MapDimensionsException();
+    @Override
+    public boolean containsPath(String source, String destination) {
+        for (Path path : allPaths) {
+            if (path.getSourceName().equals(source) && path.getDestinationName().equals(destination)) {
+                return true;
+            }
         }
-        this.width = width;
-    }
-
-    private void setLength(int length) throws MapDimensionsException {
-        if (length > MAX_MAP_SIZE || length < MIN_MAP_SIZE) {
-            throw new MapDimensionsException();
-        }
-        this.length = length;
+        return false;
     }
 
     @Override
@@ -177,16 +176,6 @@ public class BasicMapData implements BasicMap {
     @Override
     public List<Path> getAllPaths() {
         return allPaths;
-    }
-
-    @Override
-    public boolean containsPath(String source, String destination) {
-        for (Path path : allPaths) {
-            if (path.getSourceName().equals(source) && path.getDestinationName().equals(destination)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public MapMatrix getMapMatrix() {

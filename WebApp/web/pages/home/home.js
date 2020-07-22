@@ -1,5 +1,6 @@
 $(getUser(createUserCard));
 
+
 // userJson = {ID: "" ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; transactionType: "" ; amount: ""}}
 function createUserCard(user) {
     var lastThreeTransactions = user.transactionHistory.slice(Math.max(user.transactionHistory.length - 3, 0));

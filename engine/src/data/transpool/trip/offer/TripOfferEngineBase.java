@@ -33,21 +33,20 @@ public class TripOfferEngineBase implements TripOfferEngine {
     private List<SubTripOffer> currentSubTripOffers;
 
 
-    public TripOfferEngineBase(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
+    public TripOfferEngineBase(BasicMap map) throws TransPoolDataException {
         this.allTripOffers = FXCollections.observableArrayList();
         this.currentSubTripOffers = new ArrayList<>();
         this.currentTripOffers = FXCollections.observableArrayList();
-        initAllTripOffers(map, JAXBTripOffers);
         update();
 
         this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
     }
 
-    private void initAllTripOffers(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
-        for (TransPoolTrip JAXBTrip : JAXBTripOffers) {
-            allTripOffers.add(new TripOfferData(JAXBTrip, map));
-        }
-    }
+//    private void initAllTripOffers(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
+//        for (TransPoolTrip JAXBTrip : JAXBTripOffers) {
+//            allTripOffers.add(new TripOfferData(JAXBTrip, map));
+//        }
+//    }
 
     @Override
     public TripOffer getTripOffer(int ID) {

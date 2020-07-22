@@ -7,6 +7,8 @@ import data.transpool.trip.request.TripRequestEngine;
 import data.transpool.user.UserEngine;
 
 public interface TransPoolMap extends Updatable {
+    String getMapName();
+    String getUploaderName();
     BasicMap getMap();
     TripRequestEngine getTripRequestEngine();
     TripOfferEngine getTripOfferEngine();

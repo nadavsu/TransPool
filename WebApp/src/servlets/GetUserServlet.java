@@ -32,9 +32,6 @@ public class GetUserServlet extends HttpServlet {
                 out.print(Constants.SIGNUP_URL);
             } else {
                 TransPoolUserAccount currentUser = userEngine.getUserAccount(userNameFromSession);
-/*                currentUser.getTransactionHistory().add(new Transaction(new TimeDay(), Transaction.Type.RECEIVE, 100));
-                currentUser.getTransactionHistory().add(new Transaction(new TimeDay(), Transaction.Type.CREDIT_CHARGE, 200));
-                currentUser.getTransactionHistory().add(new Transaction(new TimeDay(), Transaction.Type.PAY, 50));*/
                 Gson gson = new Gson();
                 String userJson = gson.toJson(currentUser);
                 out.print(userJson);

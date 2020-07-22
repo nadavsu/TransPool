@@ -36,7 +36,11 @@ import java.util.Map;
  * TimeEngine - Controls the system time.
  */
 
-public class TransPoolMapEngine implements TransPoolMap {
+//TODO: maybe create basic map ---> tripMap ---> timedTripMap?
+public class TransPoolMapBase implements TransPoolMap {
+
+    private String mapName;
+    private String uploaderName;
 
     private BasicMap map;
     private TripOfferEngine tripOfferEngine;
@@ -45,12 +49,16 @@ public class TransPoolMapEngine implements TransPoolMap {
 
     private List<Updatable> updatables;
 
-    public TransPoolMapEngine(TransPool JAXBData) throws TransPoolDataException {
+    public TransPoolMapBase(String mapName, String uploaderName, TransPool JAXBData) throws TransPoolDataException {
+        //TODO: this will create a problem when uploading multiple files. or would it?
         Stop.resetIDGenerator();
-        this.map = new BasicMapData(JAXBData.getMapDescriptor());
 
+        this.mapName = mapName;
+        this.uploaderName = uploaderName;
+
+        this.map = new BasicMapData(JAXBData.getMapDescriptor());
         this.tripRequestEngine = new TripRequestEngineBase();
-        this.tripOfferEngine = new TripOfferEngineBase(map, JAXBData.getPlannedTrips().getTransPoolTrip());
+        this.tripOfferEngine = new TripOfferEngineBase(map);
         this.timeEngine = new TimeEngineBase();
 
         this.updatables = new ArrayList<>();
@@ -59,6 +67,16 @@ public class TransPoolMapEngine implements TransPoolMap {
 
     private void initUpdatables() {
         this.updatables.add(tripOfferEngine);
+    }
+
+    @Override
+    public String getMapName() {
+        return mapName;
+    }
+
+    @Override
+    public String getUploaderName() {
+        return uploaderName;
     }
 
     @Override
@@ -114,24 +132,24 @@ public class TransPoolMapEngine implements TransPoolMap {
         return tripRequestEngine.getTripRequest(TripRequestID);
     }
 
-    public MatchedTripRequest getMatchedTripRequest(int MatchedTripRequestID) {
-        return tripRequestEngine.getMatchedTripRequest(MatchedTripRequestID);
+    public void addTripRequest(TripRequest tripRequest) {
+        tripRequestEngine.addTripRequest(tripRequest);
     }
 
     public void deleteTripRequest(TripRequest requestToDelete) {
         tripRequestEngine.deleteTripRequest(requestToDelete);
     }
 
-    public void addTripRequest(TripRequest tripRequest) {
-        tripRequestEngine.addTripRequest(tripRequest);
+    public ObservableList<TripRequest> getAllTripRequests() {
+        return tripRequestEngine.getAllTripRequests();
+    }
+
+    public MatchedTripRequest getMatchedTripRequest(int MatchedTripRequestID) {
+        return tripRequestEngine.getMatchedTripRequest(MatchedTripRequestID);
     }
 
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
         tripRequestEngine.addMatchedRequest(matchedTripRequest);
-    }
-
-    public ObservableList<TripRequest> getAllTripRequests() {
-        return tripRequestEngine.getAllTripRequests();
     }
 
     public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {

@@ -1,6 +1,6 @@
 package api.components;
 
-import data.transpool.TransPoolMapEngine;
+import data.transpool.TransPoolMapBase;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
@@ -34,7 +34,7 @@ public class MatchingEngine {
      * @param maximumMatches - maximum matches;
      * @throws NoResultsFoundException - If no results are found, the user is told.
      */
-    public void findPossibleMatches(TransPoolMapEngine data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
+    public void findPossibleMatches(TransPoolMapBase data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
         this.tripRequestToMatch = tripRequestToMatch;
         possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
 
@@ -52,7 +52,7 @@ public class MatchingEngine {
      * @param chosenPossibleRouteIndex - The chosen possible route in the list possibleRoutes.
      * @throws TransPoolDataException
      */
-    public void addNewMatch(TransPoolMapEngine data, int chosenPossibleRouteIndex) throws TransPoolDataException {
+    public void addNewMatch(TransPoolMapBase data, int chosenPossibleRouteIndex) throws TransPoolDataException {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);
         MatchedTripRequest matchedTripRequest = new MatchedTripRequest(tripRequestToMatch, chosenPossibleRoute);
         data.addMatchedRequest(matchedTripRequest);

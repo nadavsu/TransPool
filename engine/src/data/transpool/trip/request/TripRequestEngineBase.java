@@ -25,10 +25,10 @@ public class TripRequestEngineBase implements TripRequestEngine {
     }
 
     @Override
-    public MatchedTripRequest getMatchedTripRequest(int feedbackerID) {
+    public MatchedTripRequest getMatchedTripRequest(int ID) {
         return allMatchedTripRequests
                 .stream()
-                .filter(m -> m.getRequestID() == feedbackerID)
+                .filter(m -> m.getRequestID() == ID)
                 .findFirst()
                 .orElse(null);
     }

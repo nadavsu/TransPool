@@ -2,8 +2,7 @@ package api;
 
 import api.components.*;
 import data.generated.TransPool;
-import data.transpool.TransPoolMap;
-import data.transpool.TransPoolMapEngine;
+import data.transpool.TransPoolMapBase;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
@@ -28,16 +27,16 @@ import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.time.LocalTime;
 import java.util.List;
-import java.util.Set;
 
 
 /**
  * The main engine of the application.
  * Holds the data, and other engines.
  */
-public class TransPoolEngine implements Engine {
 
-    private TransPoolMapEngine data;
+//Everything here will eventually be a serlvlet.
+public class TransPoolEngine implements Engine {
+    private TransPoolMapBase data;
     private MatchingEngine matchingEngine;
 
     public TransPoolEngine() {
@@ -50,7 +49,7 @@ public class TransPoolEngine implements Engine {
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(file);
 
-        data = new TransPoolMapEngine(JAXBData);
+        data = new TransPoolMapBase("generic_name", JAXBData);
     }
 
     @Override
@@ -90,7 +89,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void setData(TransPoolMapEngine data) {
+    public void setData(TransPoolMapBase data) {
         this.data = data;
     }
 
@@ -144,7 +143,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public TransPoolMapEngine getData() {
+    public TransPoolMapBase getData() {
         return data;
     }
 

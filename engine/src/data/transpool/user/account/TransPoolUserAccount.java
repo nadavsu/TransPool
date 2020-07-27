@@ -1,18 +1,13 @@
 package data.transpool.user.account;
 
-import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeEngineBase;
-import data.transpool.user.component.transaction.Balance;
-import data.transpool.user.component.transaction.Transaction;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import data.transpool.user.component.balance.Balance;
+import data.transpool.user.component.balance.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class TransPoolUserAccount implements Balance {
+public abstract class TransPoolUserAccount implements User, Balance {
 
     protected int ID;
     protected String username;
@@ -25,14 +20,12 @@ public abstract class TransPoolUserAccount implements Balance {
         this.username = username;
     }
 
+    @Override
     public int getID() {
         return ID;
     }
 
-    protected void setID(int ID) {
-        this.ID = ID;
-    }
-
+    @Override
     public String getUsername() {
         return username;
     }
@@ -43,22 +36,22 @@ public abstract class TransPoolUserAccount implements Balance {
     }
 
     @Override
-    public void receive(double amount) {
+    public void receiveCredit(double amount) {
         this.balance += amount;
         this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.RECEIVE, amount));
     }
 
     @Override
-    public void deposit(double amount) {
+    public void depositCredit(double amount) {
         this.balance += amount;
         this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.CREDIT_CHARGE, amount));
     }
 
     @Override
-    public void transfer(double amount, Balance other) {
+    public void transferCredit(double amount, Balance other) {
         this.balance -= amount;
         this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.PAY, amount));
-        other.receive(amount);
+        other.receiveCredit(amount);
     }
 
     @Override
@@ -74,5 +67,9 @@ public abstract class TransPoolUserAccount implements Balance {
     @Override
     public String toString() {
         return username;
+    }
+
+    protected void setID(int ID) {
+        this.ID = ID;
     }
 }

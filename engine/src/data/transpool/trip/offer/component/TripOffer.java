@@ -8,29 +8,27 @@ import data.transpool.trip.request.component.MatchedTripRequestPart;
 import javafx.beans.property.DoubleProperty;
 import javafx.collections.ObservableList;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 
 public interface TripOffer extends BasicTripOffer {
-    double getAverageRating();
-
-    ObservableList<MatchedTripRequestPart> getAllMatchedRequestsData();
-
-    List<Path> getUsedPaths();
+    Collection<Path> getUsedPaths();
     Map<Stop, TimeDay> getTimeTable();
-    List<SubTripOffer> getRoute();
-    ObservableList<String> getRouteAsStopsList();
+    Collection<SubTripOffer> getRoute();
+    Collection<MatchedTripRequestPart> getMatchedRequestsDetails();
 
-    void updateAfterMatch(MatchedTripRequest matchedRequest, TimedSubTripOffer subTripOffer);
-
+    Stop getSourceStop();
+    Stop getDestinationStop();
+    TimeDay getDepartureTime();
+    TimeDay getArrivalTime();
     TimeDay getDepartureTimeAtStop(Stop stop);
 
     SubTripOffer getSubTripOffer(int subTripOfferID);
-
-    boolean isCurrentlyHappening();
-
     SubTripOffer getCurrentSubTripOffer();
+    boolean isCurrentlyHappening();
+    void updateAfterMatch(MatchedTripRequest matchedRequest, TimedSubTripOffer subTripOffer);
 
 
 }

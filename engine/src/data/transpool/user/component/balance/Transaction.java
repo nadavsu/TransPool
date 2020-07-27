@@ -1,4 +1,4 @@
-package data.transpool.user.component.transaction;
+package data.transpool.user.component.balance;
 
 import data.transpool.time.component.TimeDay;
 

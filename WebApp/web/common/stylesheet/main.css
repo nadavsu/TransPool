@@ -1,0 +1,29 @@
+.main-body {
+    margin-top:77px;
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.btn {
+    background-color: #0399ff;
+    border-color: #0399ff;
+    -webkit-text-fill-color: #FFFFFF;
+}
+
+.btn:hover {
+    background-color: #097aff;
+    border-color: #097aff;
+}
+
+.btn:focus {
+    background-color: #097aff;
+    border-color: #097aff;
+}
+
+.text-red {
+    -webkit-text-fill-color: #FF1B57;
+}
+
+.text-blue {
+    -webkit-text-fill-color: #097aff;
+}

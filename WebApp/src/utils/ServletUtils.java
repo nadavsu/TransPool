@@ -1,6 +1,7 @@
 package utils;
 
-import api.TransPoolMapEngine;
+import api.MapEngine;
+import api.MapEngineBase;
 import data.transpool.user.UserEngine;
 import data.transpool.user.UserEngineBase;
 
@@ -24,12 +25,12 @@ public class ServletUtils {
         return (UserEngine) servletContext.getAttribute(USER_ENGINE_ATTRIBUTE_NAME);
     }
 
-    public static TransPoolMapEngine getMapEngine(ServletContext servletContext) {
+    public static MapEngine getMapEngine(ServletContext servletContext) {
         synchronized (mapEngineLock) {
             if (servletContext.getAttribute(MAP_ENGINE_ATTRIBUTE_NAME) == null) {
-                servletContext.setAttribute(MAP_ENGINE_ATTRIBUTE_NAME, new TransPoolMapEngine());
+                servletContext.setAttribute(MAP_ENGINE_ATTRIBUTE_NAME, new MapEngineBase());
             }
         }
-        return (TransPoolMapEngine) servletContext.getAttribute(MAP_ENGINE_ATTRIBUTE_NAME);
+        return (MapEngine) servletContext.getAttribute(MAP_ENGINE_ATTRIBUTE_NAME);
     }
 }

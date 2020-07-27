@@ -144,7 +144,7 @@ public class TimeDay {
 
     @Override
     public String toString() {
-        return "on time " + getTime() + " on day " + getDay();
+        return "day " + day + " at " + time;
     }
 
 }

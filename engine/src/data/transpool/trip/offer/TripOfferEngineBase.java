@@ -69,6 +69,11 @@ public class TripOfferEngineBase implements TripOfferEngine {
     }
 
     @Override
+    public int getNumOfTripOffers() {
+        return allTripOffers.size();
+    }
+
+    @Override
     public ObservableList<TripOffer> getCurrentOffers() {
         return currentTripOffers;
     }

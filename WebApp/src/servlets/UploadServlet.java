@@ -1,6 +1,6 @@
 package servlets;
 
-import api.TransPoolMapEngine;
+import api.MapEngine;
 import constants.Constants;
 import data.generated.TransPool;
 import data.transpool.TransPoolMapBase;
@@ -19,12 +19,8 @@ import javax.servlet.http.Part;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
-import java.util.Collection;
-import java.util.Scanner;
 
 @WebServlet("/upload")
 @MultipartConfig(fileSizeThreshold = 1024 * 1024, maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 5 * 5)
@@ -34,7 +30,7 @@ public class UploadServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
 
-        TransPoolMapEngine mapEngine = ServletUtils.getMapEngine(getServletContext());
+        MapEngine mapEngine = ServletUtils.getMapEngine(getServletContext());
         String mapNameFromParameter = req.getParameter(Constants.MAP_NAME);
         String uploaderNameFromSession = SessionUtils.getUsername(req);
         Part part = req.getPart(Constants.MAP_FILE);
@@ -68,7 +64,7 @@ public class UploadServlet extends HttpServlet {
         processRequest(req, resp);
     }
 
-    private void loadFile(TransPoolMapEngine mapEngine, Part file, String mapName, String uploaderName) throws JAXBException,
+    private void loadFile(MapEngine mapEngine, Part file, String mapName, String uploaderName) throws JAXBException,
             TransPoolDataException, IOException, FileTypeException {
 
         if (file.getContentType().equals("text/xml")) {

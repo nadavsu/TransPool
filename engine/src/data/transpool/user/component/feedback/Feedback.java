@@ -1,72 +1,54 @@
 package data.transpool.user.component.feedback;
 
-import javafx.beans.property.*;
-
-
 public class Feedback {
-    private IntegerProperty feedbackerID;
-    private StringProperty feedbackerName;
-    private IntegerProperty rating;
-    private StringProperty comment;
+    private int feedbackerID;
+    private String feedbackerName;
+    private int rating;
+    private String comment;
 
-    public Feedback(int feedbackerID, String feedbackName, int rating, String comment) {
-        this.feedbackerID = new SimpleIntegerProperty(feedbackerID);
-        this.feedbackerName = new SimpleStringProperty(feedbackName);
-        this.rating = new SimpleIntegerProperty(rating);
-        this.comment = new SimpleStringProperty(comment);
+    public Feedback(int feedbackerID, String feedbackerName, int rating, String comment) {
+        this.feedbackerID = feedbackerID;
+        this.feedbackerName = feedbackerName;
+        this.rating = rating;
+        this.comment = comment;
     }
 
     public int getRating() {
-        return rating.get();
-    }
-
-    public IntegerProperty ratingProperty() {
         return rating;
     }
-
+    
     public void setRating(int rating) {
-        this.rating.set(rating);
+        this.rating = rating;
     }
 
     public String getComment() {
-        return comment.get();
-    }
-
-    public StringProperty commentProperty() {
         return comment;
     }
 
     public void setComment(String comment) {
-        this.comment.set(comment);
+        this.comment = comment;
     }
 
     public String getFeedbackerName() {
-        return feedbackerName.get();
-    }
-
-    public StringProperty feedbackerNameProperty() {
         return feedbackerName;
     }
-
+    
     public void setFeedbackerName(String feedbackerName) {
-        this.feedbackerName.set(feedbackerName);
+        this.feedbackerName = feedbackerName;
     }
 
     public int getFeedbackerID() {
-        return feedbackerID.get();
-    }
-
-    public IntegerProperty feedbackerIDProperty() {
         return feedbackerID;
     }
+    
 
     public void setFeedbackerID(int feedbackerID) {
-        this.feedbackerID.set(feedbackerID);
+        this.feedbackerID = feedbackerID;
     }
 
     @Override
     public String toString() {
-        return getFeedbackerName() + "\n" +
+        return feedbackerName + "\n" +
                 "Rating: " + getRating() + "\n" +
                 "Comment: " + getComment();
     }

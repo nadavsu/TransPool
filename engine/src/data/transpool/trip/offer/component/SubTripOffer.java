@@ -22,8 +22,8 @@ public class SubTripOffer extends BasicTripOfferData {
     private TripOffer mainOffer;
     private int subTripOfferID;
 
-    private ObjectProperty<Stop> sourceStop;
-    private ObjectProperty<Stop> destinationStop;
+    private Stop sourceStop;
+    private Stop destinationStop;
 
     private Map<Integer, SubTripOfferDetails> dayToDetailsMap;
 
@@ -31,20 +31,19 @@ public class SubTripOffer extends BasicTripOfferData {
         super(tripOffer);
         this.mainOffer = tripOffer;
         this.subTripOfferID = ID;
-        this.sourceStop = new SimpleObjectProperty<>(path.getSourceStop());
-        this.destinationStop = new SimpleObjectProperty<>(path.getDestinationStop());
+        this.sourceStop = path.getSourceStop();
+        this.destinationStop = path.getDestinationStop();
 
-        this.tripPrice = new SimpleIntegerProperty(path.getLength() * PPK.get());
-        this.averageFuelConsumption = new SimpleDoubleProperty(path.getFuelConsumption());
-        this.tripDurationInMinutes = new SimpleIntegerProperty(path.getPathTime());
+        this.tripPrice = path.getLength() * PPK;
+        this.averageFuelConsumption = path.getFuelConsumption();
+        this.tripDurationInMinutes = path.getPathTime();
         this.dayToDetailsMap = new HashMap<>();
-        this.schedule = new SimpleObjectProperty<>(
+        this.schedule = 
                 new Scheduling(
-                        tripOffer.getDepartureTimeAtStop(sourceStop.get()),
-                        tripOffer.getDepartureTimeAtStop(destinationStop.get()),
+                        tripOffer.getDepartureTimeAtStop(sourceStop),
+                        tripOffer.getDepartureTimeAtStop(destinationStop),
                         tripOffer.getScheduling().getRecurrences()
-                )
-        );
+                );
     }
 
 
@@ -53,17 +52,18 @@ public class SubTripOffer extends BasicTripOfferData {
     }
 
     public Stop getSourceStop() {
-        return sourceStop.get();
+        return sourceStop;
     }
 
     public Stop getDestinationStop() {
-        return destinationStop.get();
+        return destinationStop;
     }
 
 
     /**
      * Adds the relevant details on day 'day'.
-     * @param day - The day to add the details.
+     *
+     * @param day         - The day to add the details.
      * @param matchedTrip - The matchedTrip to create the details from.
      * @throws RideFullException - Thrown if the ride is full and you can't add a rider on that day.
      */
@@ -76,19 +76,19 @@ public class SubTripOffer extends BasicTripOfferData {
     }
 
     public TimeDay getTimeOfArrivalAtDestination() {
-        return schedule.get().getDepartureTime();
+        return schedule.getDepartureTime();
     }
 
     public TimeDay getTimeOfDepartureFromSource() {
-        return schedule.get().getDepartureTime();
+        return schedule.getDepartureTime();
     }
 
     public int getDayStart() {
-        return schedule.get().getDayStart();
+        return schedule.getDayStart();
     }
 
     public Recurrence getRecurrences() {
-        return schedule.get().getRecurrences();
+        return schedule.getRecurrences();
     }
 
     public TripOffer getMainOffer() {
@@ -96,15 +96,15 @@ public class SubTripOffer extends BasicTripOfferData {
     }
 
     public boolean isCurrentlyHappening() {
-        return schedule.get().isCurrentlyHappening();
+        return schedule.isCurrentlyHappening();
     }
 
     public boolean isCurrentlyDeparting() {
-        return schedule.get().isCurrentlyDeparting();
+        return schedule.isCurrentlyDeparting();
     }
 
     public boolean isCurrentlyArriving() {
-        return schedule.get().isCurrentlyArriving();
+        return schedule.isCurrentlyArriving();
     }
 
     public Scheduling getFirstRecurrenceAfter(TimeDay timeDay) {

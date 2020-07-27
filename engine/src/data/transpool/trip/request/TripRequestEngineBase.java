@@ -5,14 +5,17 @@ import data.transpool.trip.request.component.TripRequest;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class TripRequestEngineBase implements TripRequestEngine {
 
-    private ObservableList<TripRequest> allTripRequests;
-    private ObservableList<MatchedTripRequest> allMatchedTripRequests;
+    private List<TripRequest> allTripRequests;
+    private List<MatchedTripRequest> allMatchedTripRequests;
 
     public TripRequestEngineBase() {
-        this.allTripRequests = FXCollections.observableArrayList();
-        this.allMatchedTripRequests = FXCollections.observableArrayList();
+        this.allTripRequests = new ArrayList<>();
+        this.allMatchedTripRequests = new ArrayList<>();
     }
 
     @Override
@@ -44,18 +47,28 @@ public class TripRequestEngineBase implements TripRequestEngine {
     }
 
     @Override
+    public int getNumOfTripRequests() {
+        return allTripRequests.size() + allMatchedTripRequests.size();
+    }
+
+    @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
         allMatchedTripRequests.add(matchedTripRequest);
         deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
     }
 
     @Override
-    public ObservableList<TripRequest> getAllTripRequests() {
+    public List<TripRequest> getAllTripRequests() {
         return allTripRequests;
     }
 
     @Override
-    public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
+    public List<MatchedTripRequest> getAllMatchedTripRequests() {
         return allMatchedTripRequests;
+    }
+
+    @Override
+    public int getNumOfMatchedRequests() {
+        return allMatchedTripRequests.size();
     }
 }

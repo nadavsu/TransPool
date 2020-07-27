@@ -27,7 +27,7 @@ public class ChargeServlet extends HttpServlet {
         } else {
             String amountToAddFromParameter = req.getParameter(Constants.BALANCE_TO_ADD);
             double amountToAdd = Double.parseDouble(amountToAddFromParameter);
-            currentUser.deposit(amountToAdd);
+            currentUser.depositCredit(amountToAdd);
             resp.sendRedirect(Constants.ACCOUNT_URL);
         }
 

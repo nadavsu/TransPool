@@ -23,8 +23,8 @@ public class BasicMapData implements BasicMap {
     protected int length;
     protected MapMatrix mapMatrix;
 
-    protected static java.util.Map<String, Stop> allStops;
-    protected static List<Path> allPaths;
+    protected java.util.Map<String, Stop> allStops;
+    protected List<Path> allPaths;
 
     /**
      * Constructor for creating a map out of the JAXB generated classes.
@@ -134,6 +134,11 @@ public class BasicMapData implements BasicMap {
             }
         }
         return false;
+    }
+
+    @Override
+    public int getNumberOfPaths() {
+        return allPaths.size();
     }
 
     @Override

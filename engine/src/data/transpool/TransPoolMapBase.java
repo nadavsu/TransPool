@@ -18,8 +18,6 @@ import data.transpool.trip.request.TripRequestEngine;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import data.transpool.trip.request.TripRequestEngineBase;
-import data.transpool.user.UserEngine;
-import data.transpool.user.UserEngineBase;
 import exception.data.TransPoolDataException;
 import javafx.collections.ObservableList;
 
@@ -36,7 +34,6 @@ import java.util.Map;
  * TimeEngine - Controls the system time.
  */
 
-//TODO: maybe create basic map ---> tripMap ---> timedTripMap?
 public class TransPoolMapBase implements TransPoolMap {
 
     private String mapName;
@@ -69,6 +66,7 @@ public class TransPoolMapBase implements TransPoolMap {
         this.updatables.add(tripOfferEngine);
     }
 
+    //Basic Components-------------------------------------------------------------//
     @Override
     public String getMapName() {
         return mapName;
@@ -80,13 +78,13 @@ public class TransPoolMapBase implements TransPoolMap {
     }
 
     @Override
-    public TripRequestEngine getTripRequestEngine() {
-        return tripRequestEngine;
+    public void update() {
+        updatables.forEach(Updatable::update);
     }
 
     @Override
-    public TripOfferEngine getTripOfferEngine() {
-        return tripOfferEngine;
+    public MapDetailsDTO getDetails() {
+        return new MapDetailsDTO(this);
     }
 
     @Override
@@ -94,126 +92,178 @@ public class TransPoolMapBase implements TransPoolMap {
         return map;
     }
 
+    //TripOfferEngine-------------------------------------------------------------//
     @Override
-    public TimeEngine getTimeEngine() {
-        return timeEngine;
-    }
-
-    @Override
-    public void update() {
-        updatables.forEach(Updatable::update);
-    }
-
-    public TripOffer getTripOffer(int ID) {
-        return tripOfferEngine.getTripOffer(ID);
-    }
-
     public void addTripOffer(TripOffer tripOffer) {
         tripOfferEngine.addTripOffer(tripOffer);
     }
 
-    public ObservableList<TripOffer> getAllTripOffers() {
+    @Override
+    public List<TripOffer> getAllTripOffers() {
         return tripOfferEngine.getAllTripOffers();
     }
 
-    public ObservableList<TripOffer> getCurrentOffers() {
+    @Override
+    public int getNumOfTripOffers() {
+        return tripOfferEngine.getNumOfTripOffers();
+    }
+
+    @Override
+    public TripOffer getTripOffer(int ID) {
+        return tripOfferEngine.getTripOffer(ID);
+    }
+
+    @Override
+    public List<TripOffer> getCurrentOffers() {
         return tripOfferEngine.getCurrentOffers();
     }
 
+    @Override
     public List<SubTripOffer> getCurrentSubTripOffers() {
         return tripOfferEngine.getCurrentSubTripOffers();
     }
 
+    @Override
     public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
         return tripOfferEngine.getSubTripOffer(tripOfferID, subTripOfferID);
     }
 
-    public TripRequest getTripRequest(int TripRequestID) {
-        return tripRequestEngine.getTripRequest(TripRequestID);
+    @Override
+    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
+        return tripOfferEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
     }
 
+    //TripRequestEngine------------------------------------------------------------//
+    @Override
     public void addTripRequest(TripRequest tripRequest) {
         tripRequestEngine.addTripRequest(tripRequest);
     }
 
+    @Override
+    public TripRequest getTripRequest(int TripRequestID) {
+        return tripRequestEngine.getTripRequest(TripRequestID);
+    }
+
+    @Override
     public void deleteTripRequest(TripRequest requestToDelete) {
         tripRequestEngine.deleteTripRequest(requestToDelete);
     }
 
-    public ObservableList<TripRequest> getAllTripRequests() {
+    @Override
+    public List<TripRequest> getAllTripRequests() {
         return tripRequestEngine.getAllTripRequests();
     }
 
+    @Override
     public MatchedTripRequest getMatchedTripRequest(int MatchedTripRequestID) {
         return tripRequestEngine.getMatchedTripRequest(MatchedTripRequestID);
     }
 
+    @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
         tripRequestEngine.addMatchedRequest(matchedTripRequest);
     }
 
-    public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
+    @Override
+    public List<MatchedTripRequest> getAllMatchedTripRequests() {
         return tripRequestEngine.getAllMatchedTripRequests();
     }
 
+    @Override
+    public int getNumOfTripRequests() {
+        return tripRequestEngine.getNumOfTripRequests();
+    }
+
+    @Override
+    public int getNumOfMatchedRequests() {
+        return tripRequestEngine.getNumOfMatchedRequests();
+    }
+
+    //Map-----------------------------------------------------------------------------------//
+    @Override
     public int getMapWidth() {
         return map.getMapWidth();
     }
 
+    @Override
     public int getMapLength() {
         return map.getMapLength();
     }
 
+    @Override
     public boolean containsStop(String stopName) {
         return map.containsStop(stopName);
     }
 
+    @Override
     public Map<String, Stop> getAllStops() {
         return map.getAllStops();
     }
 
+    @Override
     public List<Stop> getAllStopsAsList() {
         return map.getAllStopsAsList();
     }
 
+    @Override
     public Stop getStop(String stopName) {
         return map.getStop(stopName);
     }
 
+    @Override
     public int getNumberOfStops() {
         return map.getNumberOfStops();
     }
 
+    @Override
     public List<Path> getAllPaths() {
         return map.getAllPaths();
     }
 
+    @Override
     public boolean containsPath(String source, String destination) {
         return map.containsPath(source, destination);
     }
 
+    @Override
     public Path getPath(Stop source, Stop destination) {
         return map.getPath(source, destination);
     }
 
+    @Override
     public Path getPath(String source, String destination) {
         return map.getPath(source, destination);
     }
 
+    @Override
     public void incrementTime(TimeInterval interval) {
         timeEngine.incrementTime(interval, this);
     }
 
+    @Override
     public void decrementTime(TimeInterval interval) {
         timeEngine.decrementTime(interval, this);
     }
 
+    //TimeEngine---------------------------------------------------------------------------------------//
+    @Override
     public TimeDay getCurrentTime() {
         return TimeEngineBase.currentTime;
     }
 
-    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
-        return tripOfferEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
+    @Override
+    public int getNumberOfPaths() {
+        return map.getNumberOfPaths();
+    }
+
+    @Override
+    public void incrementTime(TimeInterval interval, Updatable updatable) {
+        timeEngine.incrementTime(interval, updatable);
+    }
+
+    @Override
+    public void decrementTime(TimeInterval interval, Updatable updatable) {
+        timeEngine.decrementTime(interval, updatable);
     }
 
 }

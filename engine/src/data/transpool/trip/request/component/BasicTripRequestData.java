@@ -12,79 +12,59 @@ import java.util.Objects;
 public abstract class BasicTripRequestData implements BasicTripRequest {
 
     private static int IDGenerator = 20000;
-    protected IntegerProperty requestID;
-    protected ObjectProperty<TransPoolRider> transpoolRider;
-    protected ObjectProperty<Stop> sourceStop;
-    protected ObjectProperty<Stop> destinationStop;
+    protected int requestID;
+    protected TransPoolRider transpoolRider;
+    protected Stop sourceStop;
+    protected Stop destinationStop;
 
     public BasicTripRequestData(String riderName, Stop sourceStop, Stop destinationStop) {
-        this.requestID = new SimpleIntegerProperty(IDGenerator++);
-        this.transpoolRider = new SimpleObjectProperty<>(new TransPoolRider(riderName));
-        this.sourceStop = new SimpleObjectProperty<>(new Stop(sourceStop));
-        this.destinationStop = new SimpleObjectProperty<>(new Stop(destinationStop));
+        this.requestID = IDGenerator++;
+        this.transpoolRider = new TransPoolRider(riderName);
+        this.sourceStop = new Stop(sourceStop);
+        this.destinationStop = new Stop(destinationStop);
     }
 
     public BasicTripRequestData(TripRequest other) {
-        this.requestID = new SimpleIntegerProperty(other.getRequestID());
-        this.transpoolRider = new SimpleObjectProperty<>(new TransPoolRider(other.getTransPoolRider()));
-        this.sourceStop = new SimpleObjectProperty<>(other.getSourceStop());
-        this.destinationStop = new SimpleObjectProperty<>(other.getDestinationStop());
+        this.requestID = other.getRequestID();
+        this.transpoolRider = new TransPoolRider(other.getTransPoolRider());
+        this.sourceStop = new Stop(other.getSourceStop());
+        this.destinationStop = new Stop(other.getDestinationStop());
     }
 
     @Override
     public int getRequestID() {
-        return this.requestID.get();
+        return this.requestID;
     }
 
     @Override
     public TransPoolRider getTransPoolRider() {
-        return transpoolRider.get();
+        return transpoolRider;
     }
 
     @Override
     public void setTransPoolRider(TransPoolRider transpoolRider) {
-        this.transpoolRider.set(transpoolRider);
+        this.transpoolRider = transpoolRider;
     }
 
 
     @Override
     public Stop getSourceStop() {
-        return this.sourceStop.get();
+        return this.sourceStop;
     }
 
     @Override
     public void setSourceStop(Stop sourceStop) {
-        this.sourceStop.set(sourceStop);
+        this.sourceStop = sourceStop;
     }
 
     @Override
     public Stop getDestinationStop() {
-        return this.destinationStop.get();
+        return this.destinationStop;
     }
 
     @Override
     public void setDestinationStop(Stop destinationStop) {
-        this.destinationStop.set(destinationStop);
-    }
-
-    @Override
-    public ObjectProperty<TransPoolRider> transpoolRiderProperty() {
-        return transpoolRider;
-    }
-
-    @Override
-    public IntegerProperty requestIDProperty() {
-        return requestID;
-    }
-
-    @Override
-    public ObjectProperty<Stop> sourceStopProperty() {
-        return sourceStop;
-    }
-
-    @Override
-    public ObjectProperty<Stop> destinationStopProperty() {
-        return destinationStop;
+        this.destinationStop = destinationStop;
     }
 
     @Override
@@ -92,7 +72,7 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
         if (this == o) return true;
         if (!(o instanceof BasicTripRequestData)) return false;
         BasicTripRequestData that = (BasicTripRequestData) o;
-        return requestID.equals(that.requestID);
+        return requestID == (that.requestID);
     }
 
     @Override
@@ -102,6 +82,6 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
 
     @Override
     public String toString() {
-        return "Rider " + requestID.get() + " - " + getTransPoolRider();
+        return "Rider " + requestID + " - " + getTransPoolRider();
     }
 }

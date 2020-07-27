@@ -2,10 +2,8 @@ package servlets;
 
 import com.google.gson.Gson;
 import constants.Constants;
-import data.transpool.time.component.TimeDay;
 import data.transpool.user.UserEngine;
 import data.transpool.user.account.TransPoolUserAccount;
-import data.transpool.user.component.transaction.Transaction;
 import utils.ServletUtils;
 import utils.SessionUtils;
 

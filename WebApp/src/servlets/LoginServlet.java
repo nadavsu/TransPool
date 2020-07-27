@@ -34,15 +34,11 @@ public class LoginServlet extends HttpServlet {
                 //Redirected from index.html
                 if (userNameFromParameter == null || userNameFromParameter.isEmpty()) {
                     out.print(Constants.SIGNUP_URL);
-                    //response.sendRedirect(SIGNUP_URL);
                 } else {
                     userNameFromParameter = userNameFromParameter.trim();
                     synchronized (this) {
                         if (userEngine.isUserExists(userNameFromParameter)) {
                             out.print("The username " + userNameFromParameter + " is already taken.");
-/*                      String errorMessage = "The username " + userNameFromParameter + " is already taken.";
-                        req.setAttribute(Constants.USERNAME_ERROR, errorMessage);
-                        getServletContext().getRequestDispatcher(LOGIN_ERROR_URL).forward(req, res);*/
                         } else {
                             if (userTypeFromParameter.equals(Constants.RIDER)) {
                                 userEngine.addUser(new TransPoolRider(userNameFromParameter));
@@ -55,13 +51,11 @@ public class LoginServlet extends HttpServlet {
                             request.getSession(true).setAttribute(Constants.USERNAME, userNameFromParameter);
                             request.getSession(true).setAttribute(Constants.ACCOUNT_TYPE, userTypeFromParameter);
                             out.print(Constants.HOME_URL);
-                            //response.sendRedirect(HOME_URL);
                         }
                     }
                 }
             } else {
                 out.print(Constants.HOME_URL);
-                //response.sendRedirect(HOME_URL);
             }
         }
 

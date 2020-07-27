@@ -1,9 +1,7 @@
 package data.transpool.user.component.feedback;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.collections.ObservableList;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * An interface of an object which can be feedbacked.
@@ -11,7 +9,6 @@ import java.util.List;
 public interface Feedbackable {
     void addFeedback(Feedback feedback);
     Feedback getFeedback(int riderID);
-    List<Feedback> getAllFeedbacks();
+    Collection<Feedback> getAllFeedbacks();
     double getAverageRating();
-    double averageRatingProperty();
 }

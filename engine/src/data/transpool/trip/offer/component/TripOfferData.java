@@ -10,7 +10,6 @@ import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.MatchedTripRequestPart;
 import exception.data.PathDoesNotExistException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.DoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -23,14 +22,13 @@ import java.util.*;
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private List<SubTripOffer> route;
-
-    private ObservableList<MatchedTripRequestPart> allMatchedRequestsData;
     private Map<Stop, TimeDay> timeTable;
     private List<Path> usedPaths;
+    private List<MatchedTripRequestPart> matchedRequestsDetails;
 
     public TripOfferData(BasicMap map, String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences, int passengerCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         super(driverName, PPK, passengerCapacity);
-        this.allMatchedRequestsData = FXCollections.observableArrayList();
+        this.matchedRequestsDetails = FXCollections.observableArrayList();
         this.route = new ArrayList<>();
         this.timeTable = new HashMap<>();
         this.usedPaths = new ArrayList<>();
@@ -38,32 +36,10 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         initializeUsedPaths(route, map);
 
         //Order matters.
-        this.tripPrice.set(calculatePriceOfRoute(this.PPK.get()));
-        this.tripDurationInMinutes.set(calculateTripDuration());
-        this.averageFuelConsumption.set(calculateAverageFuelConsumption());
-        this.schedule.set(new Scheduling(dayStart, departureTime, tripDurationInMinutes.get(), recurrences));
-
-        //Order matters.
-        initializeTimeTable();
-        initializeSubTripOffers();
-    }
-
-    public TripOfferData(data.generated.TransPoolTrip JAXBTransPoolTrip, BasicMap map) throws TransPoolDataException {
-        super(JAXBTransPoolTrip);
-        this.allMatchedRequestsData = FXCollections.observableArrayList();
-        this.route = new ArrayList<>();
-        this.usedPaths = new ArrayList<>();
-        this.timeTable = new HashMap<>();
-
-        String[] routeArray = JAXBTransPoolTrip.getRoute().getPath().split(",");
-        List<String> JAXBRoute = Arrays.asList(routeArray);
-        initializeUsedPaths(JAXBRoute, map);
-
-        //Order matters.
-        this.tripPrice.set(calculatePriceOfRoute(this.PPK.get()));
-        this.tripDurationInMinutes.set(calculateTripDuration());
-        this.averageFuelConsumption.set(calculateAverageFuelConsumption());
-        this.schedule.set(new Scheduling(JAXBTransPoolTrip.getScheduling(), tripDurationInMinutes.get()));
+        this.tripPrice = calculatePriceOfRoute(this.PPK);
+        this.tripDurationInMinutes = calculateTripDuration();
+        this.averageFuelConsumption = calculateAverageFuelConsumption();
+        this.schedule = new Scheduling(dayStart, departureTime, tripDurationInMinutes, recurrences);
 
         //Order matters.
         initializeTimeTable();
@@ -145,6 +121,16 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
+    public TimeDay getDepartureTime() {
+        return getDepartureTimeAtStop(getSourceStop());
+    }
+
+    @Override
+    public TimeDay getArrivalTime() {
+        return route.get(route.size() - 1).getTimeOfArrivalAtDestination();
+    }
+
+    @Override
     public SubTripOffer getCurrentSubTripOffer() {
         for (SubTripOffer subTripOffer : route) {
             if (subTripOffer.isCurrentlyDeparting()) {
@@ -158,33 +144,28 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
+    public Stop getSourceStop() {
+        return route.get(0).getSourceStop();
+    }
+
+    @Override
+    public Stop getDestinationStop() {
+        return route.get(route.size() - 1).getDestinationStop();
+    }
+
+    @Override
     public TimeDay getDepartureTimeAtStop(Stop stop) {
         return timeTable.get(stop);
     }
 
     @Override
+    public List<MatchedTripRequestPart> getMatchedRequestsDetails() {
+        return matchedRequestsDetails;
+    }
+
+    @Override
     public void updateAfterMatch(MatchedTripRequest matchedRequest, TimedSubTripOffer subTripOffer) {
-        allMatchedRequestsData.add(new MatchedTripRequestPart(matchedRequest.getTransPoolRider(), subTripOffer));
-    }
-
-
-
-    @Override
-    public ObservableList<String> getRouteAsStopsList() {
-        ObservableList<String> stopNamesList = FXCollections.observableArrayList();
-        stopNamesList.add(route.get(0).getSourceStop().getName());
-        route.forEach(subTripOffer -> stopNamesList.add(subTripOffer.getDestinationStop().getName()));
-        return stopNamesList;
-    }
-
-    @Override
-    public double getAverageRating() {
-        return transpoolDriver.get().getAverageRating();
-    }
-
-    @Override
-    public ObservableList<MatchedTripRequestPart> getAllMatchedRequestsData() {
-        return allMatchedRequestsData;
+        matchedRequestsDetails.add(new MatchedTripRequestPart(matchedRequest.getTransPoolRider(), subTripOffer));
     }
 
     @Override
@@ -204,7 +185,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     @Override
     public String toString() {
-        return transpoolDriver.get() + " - " + offerID.get();
+        return transpoolDriver + " - " + offerID;
     }
 
     @Override
@@ -212,11 +193,11 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
         if (this == o) return true;
         if (!(o instanceof TripOfferData)) return false;
         TripOfferData that = (TripOfferData) o;
-        return offerID.get() == that.offerID.get();
+        return this.offerID == that.offerID;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(offerID.get());
+        return Objects.hash(offerID);
     }
 }

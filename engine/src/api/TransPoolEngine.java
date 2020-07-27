@@ -44,22 +44,23 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
+    //TODO: DONE IN SERVLET.
     public void loadFile(File file) throws JAXBException, TransPoolDataException {
         JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(file);
 
-        data = new TransPoolMapBase("generic_name", JAXBData);
+        data = new TransPoolMapBase("generic_name", "generic_username", JAXBData);
     }
 
     @Override
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               int day, LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
             TransPoolDataException {
-        if (!data.getMap().containsStop(source)) {
+        if (!data.containsStop(source)) {
             throw new StopNotFoundException(source);
         }
-        if (!data.getMap().containsStop(destination)) {
+        if (!data.containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
         TripRequest request = new TripRequestData(riderName, data.getStop(source), data.getStop(destination), day, time, isArrivalTime, isContinuous);
@@ -109,12 +110,12 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public ObservableList<TripRequest> getAllTripRequests() {
+    public List<TripRequest> getAllTripRequests() {
         return data.getAllTripRequests();
     }
 
     @Override
-    public ObservableList<TripOffer> getAllTripOffers() {
+    public List<TripOffer> getAllTripOffers() {
         return data.getAllTripOffers();
     }
 
@@ -129,7 +130,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public ObservableList<MatchedTripRequest> getAllMatchedTripRequests() {
+    public List<MatchedTripRequest> getAllMatchedTripRequests() {
         return data.getAllMatchedTripRequests();
     }
 

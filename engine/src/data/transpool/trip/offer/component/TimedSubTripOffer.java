@@ -33,16 +33,8 @@ public class TimedSubTripOffer {
         return departureTime;
     }
 
-    public void setDepartureTime(TimeDay departureTime) {
-        this.departureTime = departureTime;
-    }
-
     public TimeDay getArrivalTime() {
         return arrivalTime;
-    }
-
-    public void setArrivalTime(TimeDay arrivalTime) {
-        this.arrivalTime = arrivalTime;
     }
 
     public int getDay() {

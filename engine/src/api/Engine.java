@@ -48,9 +48,9 @@ public interface Engine {
 
     void addNewMatch(int possibleMatchIndex) throws TransPoolDataException;
 
-    ObservableList<MatchedTripRequest> getAllMatchedTripRequests();
+    List<MatchedTripRequest> getAllMatchedTripRequests();
 
-    ObservableList<Integer> getAllMatchedTripRequestIDs();
+    List<Integer> getAllMatchedTripRequestIDs();
 
     TransPoolMapBase getData();
 

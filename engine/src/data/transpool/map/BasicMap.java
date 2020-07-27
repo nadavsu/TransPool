@@ -21,5 +21,6 @@ public interface BasicMap {
     boolean containsPath(String source, String destination);
     Path getPath(Stop source, Stop destination);
     Path getPath(String source, String destination);
+    int getNumberOfPaths();
 
 }

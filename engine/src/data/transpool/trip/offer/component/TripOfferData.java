@@ -21,7 +21,7 @@ import java.util.*;
  */
 public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
-    private List<SubTripOffer> route;
+    private List<TripOfferPart> route;
     private Map<Stop, TimeDay> timeTable;
     private List<Path> usedPaths;
     private List<MatchedTripRequestPart> matchedRequestsDetails;
@@ -61,7 +61,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     private void initializeSubTripOffers() {
         for (int i = 0; i < usedPaths.size(); i++) {
-            route.add(new SubTripOffer(i, usedPaths.get(i), this));
+            route.add(new TripOfferPart(i, usedPaths.get(i), this));
         }
     }
 
@@ -102,7 +102,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
-    public SubTripOffer getSubTripOffer(int ID) {
+    public TripOfferPart getSubTripOffer(int ID) {
         return route
                 .stream()
                 .filter(subTripOffer -> subTripOffer.getSubTripOfferID() == ID)
@@ -112,8 +112,8 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     @Override
     public boolean isCurrentlyHappening() {
-        for (SubTripOffer subTripOffer : route) {
-            if (subTripOffer.isCurrentlyHappening()) {
+        for (TripOfferPart tripOfferPart : route) {
+            if (tripOfferPart.isCurrentlyHappening()) {
                 return true;
             }
         }
@@ -122,7 +122,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
 
     @Override
     public TimeDay getDepartureTime() {
-        return getDepartureTimeAtStop(getSourceStop());
+        return getTimeAtStop(getSourceStop());
     }
 
     @Override
@@ -131,10 +131,10 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
-    public SubTripOffer getCurrentSubTripOffer() {
-        for (SubTripOffer subTripOffer : route) {
-            if (subTripOffer.isCurrentlyDeparting()) {
-                return subTripOffer;
+    public TripOfferPart getCurrentSubTripOffer() {
+        for (TripOfferPart tripOfferPart : route) {
+            if (tripOfferPart.isCurrentlyDeparting()) {
+                return tripOfferPart;
             }
         }
         if (route.get(route.size() - 1).isCurrentlyArriving()) {
@@ -154,7 +154,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
-    public TimeDay getDepartureTimeAtStop(Stop stop) {
+    public TimeDay getTimeAtStop(Stop stop) {
         return timeTable.get(stop);
     }
 
@@ -169,7 +169,7 @@ public class TripOfferData extends BasicTripOfferData implements TripOffer {
     }
 
     @Override
-    public List<SubTripOffer> getRoute() {
+    public List<TripOfferPart> getRoute() {
         return route;
     }
 

@@ -2,7 +2,7 @@ package data.transpool.trip.offer.graph;
 
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.SubTripOffer;
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.component.TripOffer;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 public class TripOfferGraph {
-    private List<List<SubTripOffer>> adjointList;
+    private List<List<TripOfferPart>> adjointList;
 
     public TripOfferGraph() {
         adjointList = new ArrayList<>();
@@ -37,9 +37,9 @@ public class TripOfferGraph {
                 .forEach(this::newConnection);
     }
 
-    private void newConnection(SubTripOffer subTripOffer) {
-        int sourceID = subTripOffer.getSourceStop().getID();
-        adjointList.get(sourceID).add(subTripOffer);
+    private void newConnection(TripOfferPart tripOfferPart) {
+        int sourceID = tripOfferPart.getSourceStop().getID();
+        adjointList.get(sourceID).add(tripOfferPart);
     }
 
     /**
@@ -84,10 +84,10 @@ public class TripOfferGraph {
             return;
         }
 
-        for (SubTripOffer nextOffer : adjointList.get(currentStop.getID())) {
+        for (TripOfferPart nextOffer : adjointList.get(currentStop.getID())) {
             if (nextOffer != null && !beingVisited[nextOffer.getDestinationStop().getID()]) {
                 if (currentRoute.add(nextOffer, departureTime)) {
-                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, currentRoute.getTimeOfArrival(), beingVisited,
+                    depthFirstTraversal(nextOffer.getDestinationStop(), destination, currentRoute.getArrivalTime(), beingVisited,
                             currentRoute, possibleRoutes);
                     currentRoute.remove(nextOffer);
                 }

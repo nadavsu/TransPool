@@ -13,7 +13,7 @@ public class SubTripOfferDetails {
     private int maxCapacity;
     private List<BasicTripRequest> riders;
 
-    public SubTripOfferDetails(SubTripOffer tripOffer, BasicTripRequest rider) {
+    public SubTripOfferDetails(TripOfferPart tripOffer, BasicTripRequest rider) {
         this.maxCapacity = tripOffer.getMaxPassengerCapacity();
         this.riders = new ArrayList<>(maxCapacity);
         this.riders.add(rider);

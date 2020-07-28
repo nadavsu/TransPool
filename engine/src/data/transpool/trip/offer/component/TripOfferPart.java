@@ -8,7 +8,6 @@ import data.transpool.time.component.TimeDay;
 import data.transpool.time.component.Recurrence;
 import data.transpool.trip.request.component.BasicTripRequest;
 import exception.data.RideFullException;
-import javafx.beans.property.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,16 +17,20 @@ import java.util.Objects;
  * Contains the data of a part of a trip offer (made from a single path)
  * dayToDetailsMap - contains the details of the matched trips on the relevant days.
  */
-public class SubTripOffer extends BasicTripOfferData {
+public class TripOfferPart extends BasicTripOfferData implements Schedule {
     private TripOffer mainOffer;
     private int subTripOfferID;
 
     private Stop sourceStop;
     private Stop destinationStop;
 
+    private TimeDay departureTime;
+    private TimeDay arrivalTime;
+    private Recurrence occurrenceType;
+
     private Map<Integer, SubTripOfferDetails> dayToDetailsMap;
 
-    public SubTripOffer(int ID, Path path, TripOffer tripOffer) {
+    public TripOfferPart(int ID, Path path, TripOffer tripOffer) {
         super(tripOffer);
         this.mainOffer = tripOffer;
         this.subTripOfferID = ID;
@@ -38,14 +41,49 @@ public class SubTripOffer extends BasicTripOfferData {
         this.averageFuelConsumption = path.getFuelConsumption();
         this.tripDurationInMinutes = path.getPathTime();
         this.dayToDetailsMap = new HashMap<>();
+
+        this.departureTime = tripOffer.getTimeAtStop(sourceStop);
+        this.arrivalTime = tripOffer.getTimeAtStop(destinationStop);
+        this.occurrenceType = tripOffer.getScheduling().getRecurrences();
+
         this.schedule = 
                 new Scheduling(
-                        tripOffer.getDepartureTimeAtStop(sourceStop),
-                        tripOffer.getDepartureTimeAtStop(destinationStop),
+                        tripOffer.getTimeAtStop(sourceStop),
+                        tripOffer.getTimeAtStop(destinationStop),
                         tripOffer.getScheduling().getRecurrences()
                 );
     }
 
+
+    @Override
+    public Recurrence getOccurrenceType() {
+        return occurrenceType;
+    }
+
+    @Override
+    public Occurrence getFirstOccurrenceAfter(TimeDay timeDay) {
+        if (!departureTime.isBefore(timeDay)) {
+            return new TripOfferPartOccurrence(this, departureTime, arrivalTime);
+        } else if (!occurrenceType.equals(Recurrence.ONE_TIME)) {
+            TripOfferPart nextOccurrence = new TripOfferPart(this);
+            while (nextOccurrence.isBefore(timeDay)) {
+                nextOccurrence.setNextOccurrence();
+            }
+            return nextOccurrence;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public Occurrence getNextOccurrence() {
+        return null;
+    }
+
+    @Override
+    public void setNextOccurrence() {
+
+    }
 
     public int getSubTripOfferID() {
         return subTripOfferID;
@@ -138,8 +176,8 @@ public class SubTripOffer extends BasicTripOfferData {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof SubTripOffer)) return false;
-        SubTripOffer that = (SubTripOffer) o;
+        if (!(o instanceof TripOfferPart)) return false;
+        TripOfferPart that = (TripOfferPart) o;
         return subTripOfferID == that.subTripOfferID &&
                 sourceStop.equals(that.sourceStop) &&
                 destinationStop.equals(that.destinationStop);

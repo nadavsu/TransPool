@@ -18,9 +18,9 @@ public class MatchedTripRequestPart {
 
     public MatchedTripRequestPart(TransPoolRider rider, TimedSubTripOffer timedSubTripOffer) {
         this.rider = rider;
-        this.sourceStop = timedSubTripOffer.getSubTripOffer().getSourceStop();
+        this.sourceStop = timedSubTripOffer.getTripOfferPart().getSourceStop();
         this.departureTime = timedSubTripOffer.getDepartureTime();
-        this.destinationStop = timedSubTripOffer.getSubTripOffer().getDestinationStop();
+        this.destinationStop = timedSubTripOffer.getTripOfferPart().getDestinationStop();
         this.arrivalTime = timedSubTripOffer.getArrivalTime();
     }
 

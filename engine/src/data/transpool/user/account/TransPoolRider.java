@@ -6,7 +6,6 @@ import data.transpool.trip.request.component.TripRequest;
 import data.transpool.user.component.feedback.Feedback;
 import data.transpool.user.component.feedback.Feedbackable;
 import data.transpool.user.component.feedback.Feedbacker;
-import exception.data.FeedbackableNotFoundException;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -52,7 +51,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
 
         matchedRequest
                 .getRoute()
-                .forEach(subTripOffer -> transferCredit(subTripOffer.getSubTripOffer().getPrice(), subTripOffer.getSubTripOffer().getTransPoolDriver()));
+                .forEach(subTripOffer -> transferCredit(subTripOffer.getTripOfferPart().getPrice(), subTripOffer.getTripOfferPart().getTransPoolDriver()));
     }
 
     @Override

@@ -9,24 +9,24 @@ import exception.data.RideFullException;
  */
 
 public class TimedSubTripOffer {
-    private SubTripOffer subTripOffer;
+    private TripOfferPart tripOfferPart;
     private TimeDay departureTime;
     private TimeDay arrivalTime;
 
-    public TimedSubTripOffer(TimeDay departureTime, TimeDay arrivalTime, SubTripOffer subTripOffer) {
-        this.subTripOffer = subTripOffer;
+    public TimedSubTripOffer(TimeDay departureTime, TimeDay arrivalTime, TripOfferPart tripOfferPart) {
+        this.tripOfferPart = tripOfferPart;
         this.departureTime = departureTime;
         this.arrivalTime = arrivalTime;
     }
 
     public TimedSubTripOffer(TimedSubTripOffer other) {
-        this.subTripOffer = other.subTripOffer;
+        this.tripOfferPart = other.tripOfferPart;
         this.departureTime = other.departureTime;
         this.arrivalTime = other.arrivalTime;
     }
 
     public void updateFather(int day, BasicTripRequest matchedRequest) throws RideFullException {
-        subTripOffer.addRiderOnDay(day, matchedRequest);
+        tripOfferPart.addRiderOnDay(day, matchedRequest);
     }
 
     public TimeDay getDepartureTime() {
@@ -41,16 +41,16 @@ public class TimedSubTripOffer {
         return arrivalTime.getDay();
     }
 
-    public SubTripOffer getSubTripOffer() {
-        return subTripOffer;
+    public TripOfferPart getTripOfferPart() {
+        return tripOfferPart;
     }
 
     @Override
     public String toString() {
-        return "Depart from " + subTripOffer.getSourceStop() +
-                " with "  +  subTripOffer.getTransPoolDriver() +
+        return "Depart from " + tripOfferPart.getSourceStop() +
+                " with "  +  tripOfferPart.getTransPoolDriver() +
                 " at " + departureTime +
                 " and arrive on " + arrivalTime +
-                " at " + subTripOffer.getDestinationStop();
+                " at " + tripOfferPart.getDestinationStop();
     }
 }

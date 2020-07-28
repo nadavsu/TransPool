@@ -1,13 +1,11 @@
 package data.transpool.trip.offer;
 
 import data.transpool.Updatable;
-import data.transpool.trip.offer.component.SubTripOffer;
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.request.component.TripRequest;
-import javafx.collections.ObservableList;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,7 +20,7 @@ public interface TripOfferEngine extends Updatable {
 
     int getNumOfTripOffers();
 
-    SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID);
+    TripOfferPart getSubTripOffer(int tripOfferID, int subTripOfferID);
 
     //TODO: this should go in Matching Engine or something
     PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches);
@@ -30,7 +28,7 @@ public interface TripOfferEngine extends Updatable {
 
     List<TripOffer> getCurrentOffers();
 
-    List<SubTripOffer> getCurrentSubTripOffers();
+    List<TripOfferPart> getCurrentTripOfferParts();
 
 
 }

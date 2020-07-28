@@ -1,12 +1,10 @@
 package data.transpool.trip.offer;
 
-import data.generated.TransPoolTrip;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.SubTripOffer;
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.offer.component.TripOfferData;
 import data.transpool.trip.offer.graph.TripOfferGraph;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
@@ -30,12 +28,12 @@ public class TripOfferEngineBase implements TripOfferEngine {
 
     //Live details
     private ObservableList<TripOffer> currentTripOffers;
-    private List<SubTripOffer> currentSubTripOffers;
+    private List<TripOfferPart> currentTripOfferParts;
 
 
     public TripOfferEngineBase(BasicMap map) throws TransPoolDataException {
         this.allTripOffers = FXCollections.observableArrayList();
-        this.currentSubTripOffers = new ArrayList<>();
+        this.currentTripOfferParts = new ArrayList<>();
         this.currentTripOffers = FXCollections.observableArrayList();
         update();
 
@@ -79,12 +77,12 @@ public class TripOfferEngineBase implements TripOfferEngine {
     }
 
     @Override
-    public List<SubTripOffer> getCurrentSubTripOffers() {
-        return currentSubTripOffers;
+    public List<TripOfferPart> getCurrentTripOfferParts() {
+        return currentTripOfferParts;
     }
 
     @Override
-    public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
+    public TripOfferPart getSubTripOffer(int tripOfferID, int subTripOfferID) {
         return getTripOffer(tripOfferID).getSubTripOffer(subTripOfferID);
     }
 
@@ -102,9 +100,9 @@ public class TripOfferEngineBase implements TripOfferEngine {
 
         Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {
             if (tripRequest.isTimeOfArrival()) {
-                return possibleRoute.getTimeOfArrival().equals(tripRequest.getRequestTime());
+                return possibleRoute.getArrivalTime().equals(tripRequest.getRequestTime());
             } else {
-                return possibleRoute.getTimeOfDeparture().equals(tripRequest.getRequestTime());
+                return possibleRoute.getDepartureTime().equals(tripRequest.getRequestTime());
             }
         };
 
@@ -131,17 +129,17 @@ public class TripOfferEngineBase implements TripOfferEngine {
     @Override
     public void update() {
         currentTripOffers.clear();
-        currentSubTripOffers.clear();
+        currentTripOfferParts.clear();
         for (TripOffer tripOffer : allTripOffers) {
             if (tripOffer.isCurrentlyHappening()) {
                 currentTripOffers.add(tripOffer);
-                currentSubTripOffers.add(tripOffer.getCurrentSubTripOffer());
+                currentTripOfferParts.add(tripOffer.getCurrentSubTripOffer());
             }
         }
-        for (SubTripOffer subTripOffer : currentSubTripOffers) {
-            if (subTripOffer != null && subTripOffer.isCurrentlyDeparting()) {
+        for (TripOfferPart tripOfferPart : currentTripOfferParts) {
+            if (tripOfferPart != null && tripOfferPart.isCurrentlyDeparting()) {
                 //subTripOffer.getSourceStop().addDetails(subTripOffer.currentDetails());
-            } else if (subTripOffer != null && subTripOffer.isCurrentlyArriving()) {
+            } else if (tripOfferPart != null && tripOfferPart.isCurrentlyArriving()) {
                 //subTripOffer.getDestinationStop().addDetails(subTripOffer.currentDetails());
             }
         }

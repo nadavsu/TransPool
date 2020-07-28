@@ -10,7 +10,7 @@ import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeEngineBase;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.TripOfferEngine;
-import data.transpool.trip.offer.component.SubTripOffer;
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.offer.TripOfferEngineBase;
 import data.transpool.trip.offer.component.TripOffer;
@@ -19,7 +19,6 @@ import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import data.transpool.trip.request.TripRequestEngineBase;
 import exception.data.TransPoolDataException;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -119,12 +118,12 @@ public class TransPoolMapBase implements TransPoolMap {
     }
 
     @Override
-    public List<SubTripOffer> getCurrentSubTripOffers() {
-        return tripOfferEngine.getCurrentSubTripOffers();
+    public List<TripOfferPart> getCurrentTripOfferParts() {
+        return tripOfferEngine.getCurrentTripOfferParts();
     }
 
     @Override
-    public SubTripOffer getSubTripOffer(int tripOfferID, int subTripOfferID) {
+    public TripOfferPart getSubTripOffer(int tripOfferID, int subTripOfferID) {
         return tripOfferEngine.getSubTripOffer(tripOfferID, subTripOfferID);
     }
 

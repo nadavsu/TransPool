@@ -3,17 +3,9 @@ package data.transpool.trip.request.component;
 import data.transpool.time.component.TimeDay;
 import data.transpool.trip.offer.component.TimedSubTripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.user.component.feedback.Feedback;
-import data.transpool.user.component.feedback.Feedbackable;
-import data.transpool.user.component.feedback.Feedbacker;
 import data.transpool.user.account.TransPoolDriver;
 import exception.data.RideFullException;
-import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.ObservableSet;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -37,16 +29,16 @@ public class MatchedTripRequest extends BasicTripRequestData {
         this.isArrival = tripRequestToMatch.isTimeOfArrival();
         this.route = possibleRoute.getRoute();
         this.tripPrice = possibleRoute.getTotalPrice();
-        this.expectedTimeOfArrival = possibleRoute.getTimeOfArrival();
-        this.timeOfDeparture = possibleRoute.getTimeOfDeparture();
+        this.expectedTimeOfArrival = possibleRoute.getArrivalTime();
+        this.timeOfDeparture = possibleRoute.getDepartureTime();
         this.personalFuelConsumption = possibleRoute.getAverageFuelConsumption();
         this.tripOfferIDs = new HashSet<>();
         this.transpoolDrivers = new HashSet<>();
 
         possibleRoute.getRoute().forEach(subTripOffer -> {
-            tripOfferIDs.add(subTripOffer.getSubTripOffer().getOfferID());
-            transpoolDrivers.add(subTripOffer.getSubTripOffer().getTransPoolDriver());
-            subTripOffer.getSubTripOffer().getMainOffer().updateAfterMatch(this, subTripOffer);
+            tripOfferIDs.add(subTripOffer.getTripOfferPart().getOfferID());
+            transpoolDrivers.add(subTripOffer.getTripOfferPart().getTransPoolDriver());
+            subTripOffer.getTripOfferPart().getMainOffer().updateAfterMatch(this, subTripOffer);
         });
         updateSubTripOffers();
     }

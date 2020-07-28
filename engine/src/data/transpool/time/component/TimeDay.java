@@ -125,7 +125,7 @@ public class TimeDay {
     }
 
     public boolean isInRange(TimeDay time1, TimeDay time2) {
-        return this.isBefore(time2) && this.isAfter(time1);
+        return !this.isAfter(time2) && !this.isBefore(time1);
     }
 
     @Override

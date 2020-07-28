@@ -1,7 +1,8 @@
 package data.transpool.trip.request.component;
 
 import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.TimedSubTripOffer;
+import data.transpool.trip.offer.component.TripOfferPart;
+import data.transpool.trip.offer.component.TripOfferPartOccurrence;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.user.account.TransPoolDriver;
 import exception.data.RideFullException;
@@ -13,7 +14,7 @@ import java.util.Set;
 public class MatchedTripRequest extends BasicTripRequestData {
 
 
-    private List<TimedSubTripOffer> route;
+    private List<TripOfferPartOccurrence> route;
     private Set<Integer> tripOfferIDs;
     private Set<TransPoolDriver> transpoolDrivers;
 
@@ -35,17 +36,20 @@ public class MatchedTripRequest extends BasicTripRequestData {
         this.tripOfferIDs = new HashSet<>();
         this.transpoolDrivers = new HashSet<>();
 
-        possibleRoute.getRoute().forEach(subTripOffer -> {
-            tripOfferIDs.add(subTripOffer.getTripOfferPart().getOfferID());
-            transpoolDrivers.add(subTripOffer.getTripOfferPart().getTransPoolDriver());
-            subTripOffer.getTripOfferPart().getMainOffer().updateAfterMatch(this, subTripOffer);
-        });
-        updateSubTripOffers();
+        for (TripOfferPartOccurrence tripOfferPart : possibleRoute.getRoute()) {
+            tripOfferIDs.add(tripOfferPart.getID());
+            transpoolDrivers.add(tripOfferPart.getTransPoolDriver());
+
+            tripOfferPart.addRider(transpoolRider);
+            tripOfferPart.updateFather(transpoolRider);
+            //tripOfferPart.getMainOffer().updateAfterMatch(this, tripOfferPart);
+
+        }
     }
 
     private void updateSubTripOffers() throws RideFullException {
-        for (TimedSubTripOffer timedOffer : route) {
-            timedOffer.updateFather(timedOffer.getDay(), this);
+        for (TripOfferPartOccurrence tripOfferPart : route) {
+
         }
     }
 
@@ -53,7 +57,7 @@ public class MatchedTripRequest extends BasicTripRequestData {
         return isArrival;
     }
 
-    public List<TimedSubTripOffer> getRoute() {
+    public List<TripOfferPartOccurrence> getRoute() {
         return route;
     }
 

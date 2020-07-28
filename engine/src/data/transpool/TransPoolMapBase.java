@@ -9,10 +9,10 @@ import data.transpool.time.component.TimeDay;
 import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeEngineBase;
 import data.transpool.time.component.TimeInterval;
-import data.transpool.trip.offer.TripOfferEngine;
+import data.transpool.trip.offer.TripOffersEngine;
+import data.transpool.trip.offer.TripOffersEngineBase;
 import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.offer.TripOfferEngineBase;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.request.TripRequestEngine;
 import data.transpool.trip.request.component.MatchedTripRequest;
@@ -39,7 +39,7 @@ public class TransPoolMapBase implements TransPoolMap {
     private String uploaderName;
 
     private BasicMap map;
-    private TripOfferEngine tripOfferEngine;
+    private TripOffersEngine tripOffersEngine;
     private TripRequestEngine tripRequestEngine;
     private TimeEngine timeEngine;
 
@@ -54,7 +54,7 @@ public class TransPoolMapBase implements TransPoolMap {
 
         this.map = new BasicMapData(JAXBData.getMapDescriptor());
         this.tripRequestEngine = new TripRequestEngineBase();
-        this.tripOfferEngine = new TripOfferEngineBase(map);
+        this.tripOffersEngine = new TripOffersEngineBase(map);
         this.timeEngine = new TimeEngineBase();
 
         this.updatables = new ArrayList<>();
@@ -62,7 +62,7 @@ public class TransPoolMapBase implements TransPoolMap {
     }
 
     private void initUpdatables() {
-        this.updatables.add(tripOfferEngine);
+        this.updatables.add(tripOffersEngine);
     }
 
     //Basic Components-------------------------------------------------------------//
@@ -94,42 +94,42 @@ public class TransPoolMapBase implements TransPoolMap {
     //TripOfferEngine-------------------------------------------------------------//
     @Override
     public void addTripOffer(TripOffer tripOffer) {
-        tripOfferEngine.addTripOffer(tripOffer);
+        tripOffersEngine.addTripOffer(tripOffer);
     }
 
     @Override
     public List<TripOffer> getAllTripOffers() {
-        return tripOfferEngine.getAllTripOffers();
+        return tripOffersEngine.getAllTripOffers();
     }
 
     @Override
     public int getNumOfTripOffers() {
-        return tripOfferEngine.getNumOfTripOffers();
+        return tripOffersEngine.getNumOfTripOffers();
     }
 
     @Override
     public TripOffer getTripOffer(int ID) {
-        return tripOfferEngine.getTripOffer(ID);
+        return tripOffersEngine.getTripOffer(ID);
     }
 
     @Override
     public List<TripOffer> getCurrentOffers() {
-        return tripOfferEngine.getCurrentOffers();
+        return tripOffersEngine.getCurrentOffers();
     }
 
     @Override
     public List<TripOfferPart> getCurrentTripOfferParts() {
-        return tripOfferEngine.getCurrentTripOfferParts();
+        return tripOffersEngine.getCurrentTripOfferParts();
     }
 
     @Override
     public TripOfferPart getSubTripOffer(int tripOfferID, int subTripOfferID) {
-        return tripOfferEngine.getSubTripOffer(tripOfferID, subTripOfferID);
+        return tripOffersEngine.getSubTripOffer(tripOfferID, subTripOfferID);
     }
 
     @Override
     public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
-        return tripOfferEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
+        return tripOffersEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
     }
 
     //TripRequestEngine------------------------------------------------------------//

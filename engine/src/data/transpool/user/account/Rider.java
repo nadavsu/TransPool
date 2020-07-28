@@ -1,7 +1,6 @@
 package data.transpool.user.account;
 
 import data.transpool.TransPoolMap;
-import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 

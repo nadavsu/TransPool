@@ -1,5 +1,6 @@
-package data.transpool.trip.offer.component;
+package data.transpool.old;
 
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.request.component.BasicTripRequest;
 import exception.data.RideFullException;
 

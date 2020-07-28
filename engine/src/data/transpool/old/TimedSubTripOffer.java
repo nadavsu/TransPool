@@ -1,6 +1,7 @@
-package data.transpool.trip.offer.component;
+package data.transpool.old;
 
 import data.transpool.time.component.TimeDay;
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.request.component.BasicTripRequest;
 import exception.data.RideFullException;
 
@@ -26,7 +27,7 @@ public class TimedSubTripOffer {
     }
 
     public void updateFather(int day, BasicTripRequest matchedRequest) throws RideFullException {
-        tripOfferPart.addRiderOnDay(day, matchedRequest);
+        //tripOfferPart.addRiderOnDay(day, matchedRequest);
     }
 
     public TimeDay getDepartureTime() {

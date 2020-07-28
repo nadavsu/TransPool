@@ -3,7 +3,6 @@ package data.transpool.trip.offer.component;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
 import data.transpool.trip.request.component.MatchedTripRequestPart;
-import data.transpool.user.account.TransPoolDriver;
 
 import java.util.ArrayList;
 import java.util.List;

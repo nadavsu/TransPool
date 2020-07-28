@@ -1,6 +1,8 @@
-package data.transpool.time.component;
+package data.transpool.old;
 
 import data.transpool.time.TimeEngineBase;
+import data.transpool.time.component.Recurrence;
+import data.transpool.time.component.TimeDay;
 import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
@@ -27,15 +29,6 @@ public class Scheduling {
         this.departureTime = new SimpleObjectProperty<>(timeStart);
         this.arrivalTime = new SimpleObjectProperty<>(timeEnd);
         this.recurrences = new SimpleObjectProperty<>(recurrences);
-    }
-
-    public Scheduling(data.generated.Scheduling JAXBScheduling, int tripDuration) throws TransPoolDataException {
-        this.recurrences = new SimpleObjectProperty<>();
-        LocalTime time = LocalTime.of(JAXBScheduling.getHourStart(), 0);
-        this.departureTime = new SimpleObjectProperty<>(new TimeDay(time, getDayStart(JAXBScheduling.getDayStart())));
-        this.arrivalTime = new SimpleObjectProperty<>();
-        setArrivalTime(tripDuration);
-        setRecurrences(JAXBScheduling.getRecurrences());
     }
 
     public Scheduling(Scheduling other) {

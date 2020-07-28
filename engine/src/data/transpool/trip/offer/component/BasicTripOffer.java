@@ -1,22 +1,19 @@
 package data.transpool.trip.offer.component;
 
-import data.transpool.time.component.Scheduling;
+import data.transpool.map.component.Stop;
+import data.transpool.time.component.Recurrence;
+import data.transpool.time.component.TimeDay;
 import data.transpool.user.account.TransPoolDriver;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
 
 public interface BasicTripOffer {
-    int getOfferID();
+    int getID();
 
     TransPoolDriver getTransPoolDriver();
-    void setTransPoolDriver(TransPoolDriver transpoolDriver);
-
-    Scheduling getScheduling();
-    void setScheduling(Scheduling schedule);
 
     int getPPK();
-    void setPPK(int PPK);
 
     int getTripDurationInMinutes();
 
@@ -25,11 +22,14 @@ public interface BasicTripOffer {
     double getAverageFuelConsumption();
 
     int getMaxPassengerCapacity();
-    void setMaxPassengerCapacity(int maxPassengerCapacity);
 
+    Stop getSourceStop();
 
+    Stop getDestinationStop();
 
+    TimeDay getDepartureTime();
 
+    TimeDay getArrivalTime();
 
-
+    Recurrence getRecurrences();
 }

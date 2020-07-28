@@ -2,7 +2,7 @@ package data.transpool.trip.request.component;
 
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.TimedSubTripOffer;
+import data.transpool.trip.offer.component.TripOfferPartOccurrence;
 import data.transpool.user.account.TransPoolRider;
 
 /**
@@ -16,12 +16,12 @@ public class MatchedTripRequestPart {
     private TimeDay arrivalTime;
     private TransPoolRider rider;
 
-    public MatchedTripRequestPart(TransPoolRider rider, TimedSubTripOffer timedSubTripOffer) {
+    public MatchedTripRequestPart(TransPoolRider rider, TripOfferPartOccurrence tripOfferPartOccurrence) {
         this.rider = rider;
-        this.sourceStop = timedSubTripOffer.getTripOfferPart().getSourceStop();
-        this.departureTime = timedSubTripOffer.getDepartureTime();
-        this.destinationStop = timedSubTripOffer.getTripOfferPart().getDestinationStop();
-        this.arrivalTime = timedSubTripOffer.getArrivalTime();
+        this.sourceStop = tripOfferPartOccurrence.getSourceStop();
+        this.departureTime = tripOfferPartOccurrence.getDepartureTime();
+        this.destinationStop = tripOfferPartOccurrence.getDestinationStop();
+        this.arrivalTime = tripOfferPartOccurrence.getArrivalTime();
     }
 
     public Stop getSourceStop() {

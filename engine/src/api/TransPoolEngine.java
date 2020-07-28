@@ -6,11 +6,11 @@ import data.transpool.TransPoolMapBase;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.offer.component.TripOfferData;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import data.transpool.trip.request.component.TripRequestData;
+import data.transpool.user.account.TransPoolDriver;
 import data.transpool.user.component.feedback.Feedback;
 import data.transpool.user.component.feedback.Feedbackable;
 import data.transpool.user.component.feedback.Feedbacker;
@@ -69,12 +69,12 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences,
+    public void createNewTripOffer(TransPoolDriver driver, LocalTime departureTime, int dayStart, Recurrence recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
         if (dayStart < 1) {
             throw new InvalidDayStartException();
         }
-        data.addTripOffer(new TripOfferData(data.getMap(), driverName, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
+        data.addTripOffer(new TripOffer(data.getMap(), driver, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
     }
 
     @Override

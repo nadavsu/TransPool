@@ -3,8 +3,8 @@ package data.transpool.trip.offer;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.graph.TripOfferGraph;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
@@ -22,16 +22,16 @@ import java.util.stream.Collectors;
  * The main class which holds the trip offer graph and all the trip offers data. Also holds the timed data
  * such as current trip offers and current sub trip offers which are happening.
  */
-public class TripOfferEngineBase implements TripOfferEngine {
-    private ObservableList<TripOffer> allTripOffers;
+public class TripOffersEngineBase implements TripOffersEngine {
+    private List<TripOffer> allTripOffers;
     private TripOfferGraph tripOfferGraph;
 
     //Live details
-    private ObservableList<TripOffer> currentTripOffers;
+    private List<TripOffer> currentTripOffers;
     private List<TripOfferPart> currentTripOfferParts;
 
 
-    public TripOfferEngineBase(BasicMap map) throws TransPoolDataException {
+    public TripOffersEngineBase(BasicMap map) {
         this.allTripOffers = FXCollections.observableArrayList();
         this.currentTripOfferParts = new ArrayList<>();
         this.currentTripOffers = FXCollections.observableArrayList();
@@ -40,17 +40,11 @@ public class TripOfferEngineBase implements TripOfferEngine {
         this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
     }
 
-//    private void initAllTripOffers(BasicMap map, List<TransPoolTrip> JAXBTripOffers) throws TransPoolDataException {
-//        for (TransPoolTrip JAXBTrip : JAXBTripOffers) {
-//            allTripOffers.add(new TripOfferData(JAXBTrip, map));
-//        }
-//    }
-
     @Override
     public TripOffer getTripOffer(int ID) {
         return allTripOffers
                 .stream()
-                .filter(t -> t.getOfferID() == ID)
+                .filter(t -> t.getID() == ID)
                 .findFirst()
                 .orElse(null);
     }
@@ -62,7 +56,7 @@ public class TripOfferEngineBase implements TripOfferEngine {
     }
 
     @Override
-    public ObservableList<TripOffer> getAllTripOffers() {
+    public List<TripOffer> getAllTripOffers() {
         return allTripOffers;
     }
 
@@ -72,7 +66,7 @@ public class TripOfferEngineBase implements TripOfferEngine {
     }
 
     @Override
-    public ObservableList<TripOffer> getCurrentOffers() {
+    public List<TripOffer> getCurrentOffers() {
         return currentTripOffers;
     }
 

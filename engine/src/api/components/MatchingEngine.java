@@ -50,7 +50,7 @@ public class MatchingEngine {
      * Adds a new match to the system and updates all relevant data.
      * @param data - data to update
      * @param chosenPossibleRouteIndex - The chosen possible route in the list possibleRoutes.
-     * @throws TransPoolDataException
+     * @throws TransPoolDataException - .
      */
     public void addNewMatch(TransPoolMapBase data, int chosenPossibleRouteIndex) throws TransPoolDataException {
         PossibleRoute chosenPossibleRoute = possibleRoutes.get(chosenPossibleRouteIndex);

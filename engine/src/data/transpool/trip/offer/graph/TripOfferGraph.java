@@ -2,10 +2,11 @@ package data.transpool.trip.offer.graph;
 
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
+import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.component.SingleTripOfferEngine;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -37,11 +37,9 @@ public class TimeDay {
         this.time = other.time;
     }
 
-    public void setDay(Integer day) throws InvalidDayStartException {
+    public void setDay(Integer day) {
         if (day == null) {
             this.day = 1;
-        } else if (day < 1) {
-            throw new InvalidDayStartException();
         } else {
             this.day = day;
         }

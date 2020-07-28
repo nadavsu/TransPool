@@ -39,6 +39,10 @@ public enum Recurrence {
         }
     }
 
+    public int getNextRecurrenceDay(int day, Recurrence recurrenceType) {
+        return day += recurrenceType.getValue();
+    }
+
     @Override
     public String toString() {
         return name;

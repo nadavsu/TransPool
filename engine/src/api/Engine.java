@@ -7,6 +7,7 @@ import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
+import data.transpool.user.account.TransPoolDriver;
 import data.transpool.user.component.feedback.Feedbackable;
 import data.transpool.user.component.feedback.Feedbacker;
 import exception.NoResultsFoundException;
@@ -31,7 +32,7 @@ public interface Engine {
 
     List<TripOffer> getAllTripOffers();
 
-    void createNewTripOffer(String driverName, LocalTime departureTime, int dayStart, Recurrence recurrences,
+    void createNewTripOffer(TransPoolDriver driver, LocalTime departureTime, int dayStart, Recurrence recurrences,
                             int riderCapacity, int PPK, ObservableList<String> addedStops) throws TransPoolDataException;
 
     void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment);

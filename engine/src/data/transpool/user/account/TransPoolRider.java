@@ -51,7 +51,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
 
         matchedRequest
                 .getRoute()
-                .forEach(subTripOffer -> transferCredit(subTripOffer.getTripOfferPart().getPrice(), subTripOffer.getTripOfferPart().getTransPoolDriver()));
+                .forEach(tripOfferPart -> transferCredit(tripOfferPart.getPrice(), tripOfferPart.getTransPoolDriver()));
     }
 
     @Override

@@ -3,11 +3,10 @@ package data.transpool.trip.offer.component;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeEngineBase;
-import data.transpool.time.component.Scheduling;
+import data.transpool.time.component.Schedule;
 import data.transpool.time.component.TimeDay;
 import data.transpool.time.component.Recurrence;
-import data.transpool.trip.request.component.BasicTripRequest;
-import exception.data.RideFullException;
+import data.transpool.user.account.TransPoolDriver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,9 +16,16 @@ import java.util.Objects;
  * Contains the data of a part of a trip offer (made from a single path)
  * dayToDetailsMap - contains the details of the matched trips on the relevant days.
  */
-public class TripOfferPart extends BasicTripOfferData implements Schedule {
+public class TripOfferPart implements Schedule, BasicTripOffer {
     private TripOffer mainOffer;
-    private int subTripOfferID;
+
+    private int ID;
+    private TransPoolDriver transpoolDriver;
+    private int PPK;
+    private int maxPassengerCapacity;
+    private int tripPrice;
+    private double averageFuelConsumption;
+    private int tripDurationInMinutes;
 
     private Stop sourceStop;
     private Stop destinationStop;
@@ -28,65 +34,117 @@ public class TripOfferPart extends BasicTripOfferData implements Schedule {
     private TimeDay arrivalTime;
     private Recurrence occurrenceType;
 
-    private Map<Integer, SubTripOfferDetails> dayToDetailsMap;
+    private Map<Integer, TripOfferPartOccurrence> dayToOccurrenceMap;
 
     public TripOfferPart(int ID, Path path, TripOffer tripOffer) {
-        super(tripOffer);
+        this.dayToOccurrenceMap = new HashMap<>();
         this.mainOffer = tripOffer;
-        this.subTripOfferID = ID;
+        this.ID = ID;
+        this.transpoolDriver = tripOffer.getTransPoolDriver();
+
         this.sourceStop = path.getSourceStop();
         this.destinationStop = path.getDestinationStop();
 
-        this.tripPrice = path.getLength() * PPK;
+        this.PPK = tripOffer.getPPK();
+        this.maxPassengerCapacity = tripOffer.getMaxPassengerCapacity();
+        this.tripPrice = path.getLength() * tripOffer.getPPK();
         this.averageFuelConsumption = path.getFuelConsumption();
         this.tripDurationInMinutes = path.getPathTime();
-        this.dayToDetailsMap = new HashMap<>();
 
         this.departureTime = tripOffer.getTimeAtStop(sourceStop);
         this.arrivalTime = tripOffer.getTimeAtStop(destinationStop);
-        this.occurrenceType = tripOffer.getScheduling().getRecurrences();
-
-        this.schedule = 
-                new Scheduling(
-                        tripOffer.getTimeAtStop(sourceStop),
-                        tripOffer.getTimeAtStop(destinationStop),
-                        tripOffer.getScheduling().getRecurrences()
-                );
+        this.occurrenceType = tripOffer.getRecurrences();
     }
 
 
+
     @Override
-    public Recurrence getOccurrenceType() {
+    public int getID() {
+        return ID;
+    }
+
+    @Override
+    public TransPoolDriver getTransPoolDriver() {
+        return transpoolDriver;
+    }
+
+    @Override
+    public int getPPK() {
+        return PPK;
+    }
+
+    @Override
+    public int getMaxPassengerCapacity() {
+        return maxPassengerCapacity;
+    }
+
+    @Override
+    public int getPrice() {
+        return tripPrice;
+    }
+
+    @Override
+    public double getAverageFuelConsumption() {
+        return averageFuelConsumption;
+    }
+
+    @Override
+    public int getTripDurationInMinutes() {
+        return tripDurationInMinutes;
+    }
+
+    @Override
+    public int getDayStart() {
+        return departureTime.getDay();
+    }
+
+    @Override
+    public TimeDay getDepartureTime() {
+        return departureTime;
+    }
+
+    @Override
+    public TimeDay getArrivalTime() {
+        return arrivalTime;
+    }
+
+    @Override
+    public Recurrence getRecurrences() {
         return occurrenceType;
     }
 
     @Override
-    public Occurrence getFirstOccurrenceAfter(TimeDay timeDay) {
+    public TripOfferPartOccurrence getFirstOccurrence() {
+        return this.getOrCreateOccurrence(getDayStart());
+    }
+
+    @Override
+    public TripOfferPartOccurrence getOccurrenceAfter(TimeDay timeDay) {
         if (!departureTime.isBefore(timeDay)) {
-            return new TripOfferPartOccurrence(this, departureTime, arrivalTime);
+            return getFirstOccurrence();
+
         } else if (!occurrenceType.equals(Recurrence.ONE_TIME)) {
-            TripOfferPart nextOccurrence = new TripOfferPart(this);
-            while (nextOccurrence.isBefore(timeDay)) {
-                nextOccurrence.setNextOccurrence();
+            TripOfferPartOccurrence currentOccurrence = getFirstOccurrence();
+            int currentDay = currentOccurrence.getOccurrenceDay();
+
+            while (currentOccurrence.isBefore(timeDay)) {
+                currentDay += occurrenceType.getValue();
+                currentOccurrence = getOrCreateOccurrence(currentDay);
             }
-            return nextOccurrence;
+
+            return currentOccurrence;
+
         } else {
             return null;
         }
     }
 
     @Override
-    public Occurrence getNextOccurrence() {
-        return null;
-    }
-
-    @Override
-    public void setNextOccurrence() {
-
-    }
-
-    public int getSubTripOfferID() {
-        return subTripOfferID;
+    public TripOfferPartOccurrence getOrCreateOccurrence(int occurrenceDay) {
+        if (dayToOccurrenceMap.get(occurrenceDay) == null) {
+            dayToOccurrenceMap.put(occurrenceDay, new TripOfferPartOccurrence(this, departureTime, arrivalTime, occurrenceDay));
+        }
+        return dayToOccurrenceMap.get(occurrenceDay);
     }
 
     public Stop getSourceStop() {
@@ -97,56 +155,24 @@ public class TripOfferPart extends BasicTripOfferData implements Schedule {
         return destinationStop;
     }
 
-
-    /**
-     * Adds the relevant details on day 'day'.
-     *
-     * @param day         - The day to add the details.
-     * @param matchedTrip - The matchedTrip to create the details from.
-     * @throws RideFullException - Thrown if the ride is full and you can't add a rider on that day.
-     */
-    public void addRiderOnDay(int day, BasicTripRequest matchedTrip) throws RideFullException {
-        if (dayToDetailsMap.get(day) != null) {
-            dayToDetailsMap.get(day).addRider(matchedTrip);
-        } else {
-            dayToDetailsMap.put(day, new SubTripOfferDetails(this, matchedTrip));
-        }
-    }
-
-    public TimeDay getTimeOfArrivalAtDestination() {
-        return schedule.getDepartureTime();
-    }
-
-    public TimeDay getTimeOfDepartureFromSource() {
-        return schedule.getDepartureTime();
-    }
-
-    public int getDayStart() {
-        return schedule.getDayStart();
-    }
-
-    public Recurrence getRecurrences() {
-        return schedule.getRecurrences();
-    }
-
     public TripOffer getMainOffer() {
         return mainOffer;
     }
 
     public boolean isCurrentlyHappening() {
-        return schedule.isCurrentlyHappening();
+        return !TimeEngineBase.currentTime.getTime().isBefore(departureTime.getTime())
+                && !TimeEngineBase.currentTime.getTime().isAfter(arrivalTime.getTime())
+                && occurrenceType.isOnDay(getDayStart(), TimeEngineBase.currentTime.getDay());
     }
 
     public boolean isCurrentlyDeparting() {
-        return schedule.isCurrentlyDeparting();
+        return TimeEngineBase.currentTime.getTime().equals(departureTime.getTime())
+                && occurrenceType.isOnDay(getDayStart(), TimeEngineBase.currentTime.getDay());
     }
 
     public boolean isCurrentlyArriving() {
-        return schedule.isCurrentlyArriving();
-    }
-
-    public Scheduling getFirstRecurrenceAfter(TimeDay timeDay) {
-        return Scheduling.getFirstRecurrenceAfter(getScheduling(), timeDay);
+        return TimeEngineBase.currentTime.getTime().equals(arrivalTime.getTime())
+                && occurrenceType.isOnDay(getDayStart(), TimeEngineBase.currentTime.getDay());
     }
 
 
@@ -157,8 +183,8 @@ public class TripOfferPart extends BasicTripOfferData implements Schedule {
     public String currentDetails() {
         StringBuilder builder = new StringBuilder();
         builder.append("Driver: ").append(getTransPoolDriver().toString()).append("\n");
-        if (dayToDetailsMap.get(TimeEngineBase.currentTime.getDay()) != null) {
-            builder.append(dayToDetailsMap.get(TimeEngineBase.currentTime.getDay()));
+        if (dayToOccurrenceMap.get(TimeEngineBase.currentTime.getDay()) != null) {
+            builder.append(dayToOccurrenceMap.get(TimeEngineBase.currentTime.getDay()));
             builder.append("\n\n");
         } else {
             builder.append("Riding alone.\n\n");
@@ -178,13 +204,13 @@ public class TripOfferPart extends BasicTripOfferData implements Schedule {
         if (this == o) return true;
         if (!(o instanceof TripOfferPart)) return false;
         TripOfferPart that = (TripOfferPart) o;
-        return subTripOfferID == that.subTripOfferID &&
+        return this.ID == that.ID &&
                 sourceStop.equals(that.sourceStop) &&
                 destinationStop.equals(that.destinationStop);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(subTripOfferID, sourceStop, destinationStop);
+        return Objects.hash(ID, sourceStop, destinationStop);
     }
 }

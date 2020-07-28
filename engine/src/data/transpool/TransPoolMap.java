@@ -2,11 +2,10 @@ package data.transpool;
 
 import data.transpool.map.BasicMap;
 import data.transpool.time.TimeEngine;
-import data.transpool.trip.offer.TripOfferEngine;
-import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.TripOffersEngine;
 import data.transpool.trip.request.TripRequestEngine;
 
-public interface TransPoolMap extends Updatable, BasicMap, TripOfferEngine, TripRequestEngine, TimeEngine {
+public interface TransPoolMap extends Updatable, BasicMap, TripOffersEngine, TripRequestEngine, TimeEngine {
     String getMapName();
     String getUploaderName();
     MapDetailsDTO getDetails();

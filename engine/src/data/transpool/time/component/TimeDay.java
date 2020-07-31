@@ -142,7 +142,7 @@ public class TimeDay {
 
     @Override
     public String toString() {
-        return "day " + day + " at " + time;
+        return "Day " + day + " at " + time;
     }
 
 }

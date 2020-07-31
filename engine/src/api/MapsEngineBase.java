@@ -1,7 +1,7 @@
 package api;
 
 import data.transpool.MapDetailsDTO;
-import data.transpool.TransPoolMap;
+import data.transpool.SingleMapEngine;
 
 import java.util.*;
 
@@ -9,22 +9,22 @@ import java.util.*;
 /**
  * Holds and manages all maps in the system.
  */
-public class MapEngineBase implements MapEngine {
+public class MapsEngineBase implements MapsEngine {
 
     //Name to map map.
-    private Map<String, TransPoolMap> maps;
+    private Map<String, SingleMapEngine> maps;
 
-    public MapEngineBase() {
+    public MapsEngineBase() {
         maps = new HashMap<>();
     }
 
     @Override
-    public synchronized void addMap(TransPoolMap map) {
+    public synchronized void addMap(SingleMapEngine map) {
         maps.put(map.getMapName(), map);
     }
 
     @Override
-    public TransPoolMap getMap(String mapName) {
+    public SingleMapEngine getMap(String mapName) {
         return maps.get(mapName);
     }
 
@@ -34,14 +34,14 @@ public class MapEngineBase implements MapEngine {
     }
 
     @Override
-    public Map<String, TransPoolMap> getMaps() {
+    public Map<String, SingleMapEngine> getMaps() {
         return Collections.unmodifiableMap(maps);
     }
 
     @Override
     public List<MapDetailsDTO> getMapDetailsDTOs() {
         List<MapDetailsDTO> mapDetailsDTOs = new ArrayList<>();
-        maps.forEach((mapName, map) -> mapDetailsDTOs.add(map.getDetails()));
+        maps.forEach((mapName, map) -> mapDetailsDTOs.add(map.getMapDetails()));
         return mapDetailsDTOs;
     }
 }

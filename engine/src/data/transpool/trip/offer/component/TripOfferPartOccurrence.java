@@ -193,4 +193,9 @@ public class TripOfferPartOccurrence implements Occurrence, BasicTripOffer {
     public void updateFather(TransPoolRider transPoolRider) {
         mainOffer.updateAfterMatch(transPoolRider, this);
     }
+
+    public String getTripOfferOccurrenceDescription() {
+        return "Depart from " + sourceStop + " on " + departureTime + " with " + transpoolDriver
+                + " and arrive on " + arrivalTime + " at " + destinationStop;
+    }
 }

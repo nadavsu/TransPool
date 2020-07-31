@@ -2,14 +2,13 @@ package api;
 
 import api.components.*;
 import data.generated.TransPool;
-import data.transpool.TransPoolMapBase;
+import data.transpool.TransPoolMap;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
-import data.transpool.trip.request.component.TripRequestData;
 import data.transpool.user.account.TransPoolDriver;
 import data.transpool.user.component.feedback.Feedback;
 import data.transpool.user.component.feedback.Feedbackable;
@@ -36,7 +35,7 @@ import java.util.List;
 
 //Everything here will eventually be a serlvlet.
 public class TransPoolEngine implements Engine {
-    private TransPoolMapBase data;
+    private TransPoolMap data;
     private MatchingEngine matchingEngine;
 
     public TransPoolEngine() {
@@ -50,9 +49,10 @@ public class TransPoolEngine implements Engine {
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
         TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(file);
 
-        data = new TransPoolMapBase("generic_name", "generic_username", JAXBData);
+        data = new TransPoolMap("generic_name", "generic_username", JAXBData);
     }
 
+    //TODO: DONE IN SEVLET
     @Override
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               int day, LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
@@ -63,11 +63,12 @@ public class TransPoolEngine implements Engine {
         if (!data.containsStop(destination)) {
             throw new StopNotFoundException(destination);
         }
-        TripRequest request = new TripRequestData(riderName, data.getStop(source), data.getStop(destination), day, time, isArrivalTime, isContinuous);
-        data.addTripRequest(request);
+        //TripRequest request = new TripRequestData(, riderName, data.getStop(source), data.getStop(destination), day, time, isArrivalTime, isContinuous);
+        //data.addTripRequest(request);
 
     }
 
+    //TODO: DONE IN SERVLET
     @Override
     public void createNewTripOffer(TransPoolDriver driver, LocalTime departureTime, int dayStart, Recurrence recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
@@ -90,7 +91,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public void setData(TransPoolMapBase data) {
+    public void setData(TransPoolMap data) {
         this.data = data;
     }
 
@@ -144,7 +145,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    public TransPoolMapBase getData() {
+    public TransPoolMap getData() {
         return data;
     }
 

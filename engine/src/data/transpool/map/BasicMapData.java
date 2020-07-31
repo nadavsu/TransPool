@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * The map.
@@ -64,7 +65,8 @@ public class BasicMapData implements BasicMap {
      * The function checks if the path exists, or if there is a duplicated path. If so, an exception is thrown,
      * otherwise the path is added to allPaths.
      * @param JAXBMap - The JAXB generated path.
-     * @throws TransPoolDataException - thrown if there's a problem with the data inside the JAXB classes/file.
+     * @throws PathDoesNotExistException - If the path between two stops does not exist
+     * @throws PathDuplicationException - If there is a duplicate path already in the map.
      */
     private void initAllPaths(MapDescriptor JAXBMap) throws PathDuplicationException, PathDoesNotExistException {
         List<data.generated.Path> JAXBPathList = JAXBMap.getPaths().getPath();
@@ -157,7 +159,8 @@ public class BasicMapData implements BasicMap {
     }
 
     @Override
-    public Stop getStop(String stopName) { return allStops.get(stopName);
+    public Stop getStop(String stopName) {
+        return allStops.get(stopName);
     }
 
     @Override
@@ -166,6 +169,15 @@ public class BasicMapData implements BasicMap {
         allStops
                 .forEach((string, stop) -> stopsList.add(stop));
         return stopsList;
+    }
+
+    @Override
+    public List<String> getAllStopNamesAsList() {
+        return this
+                .getAllStopsAsList()
+                .stream()
+                .map(Stop::toString)
+                .collect(Collectors.toList());
     }
 
     @Override

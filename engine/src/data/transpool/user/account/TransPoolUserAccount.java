@@ -69,6 +69,10 @@ public abstract class TransPoolUserAccount implements User, Balance {
         return username;
     }
 
+    public TransPoolUserAccountDTO getDetails() {
+        return new TransPoolUserAccountDTO(this);
+    }
+
     protected void setID(int ID) {
         this.ID = ID;
     }

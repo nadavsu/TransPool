@@ -1,6 +1,6 @@
 package api;
 
-import data.transpool.TransPoolMapBase;
+import data.transpool.TransPoolMap;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
@@ -53,9 +53,9 @@ public interface Engine {
 
     List<Integer> getAllMatchedTripRequestIDs();
 
-    TransPoolMapBase getData();
+    TransPoolMap getData();
 
     boolean isFoundMatches();
 
-    void setData(TransPoolMapBase data);
+    void setData(TransPoolMap data);
 }

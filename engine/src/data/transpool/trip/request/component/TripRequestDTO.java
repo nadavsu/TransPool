@@ -6,13 +6,13 @@ public class TripRequestDTO {
     private String riderName;
     private String sourceStopName;
     private String destinationStopName;
-    private TimeDay requestTime;
+    private String requestTime;
 
     public TripRequestDTO(TripRequest tripRequest) {
         this.riderName = tripRequest.getTransPoolRider().getUsername();
         this.sourceStopName = tripRequest.getSourceStop().getName();
         this.destinationStopName = tripRequest.getDestinationStop().getName();
-        this.requestTime = tripRequest.getRequestTime();
+        this.requestTime = tripRequest.getRequestTime().toString();
     }
 
     public String getRiderName() {
@@ -27,7 +27,7 @@ public class TripRequestDTO {
         return destinationStopName;
     }
 
-    public TimeDay getRequestTime() {
+    public String getRequestTime() {
         return requestTime;
     }
 }

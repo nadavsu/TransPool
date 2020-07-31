@@ -11,7 +11,7 @@ public class MapDetailsDTO {
     private int numOfStops;
     private int numOfPaths;
 
-    public MapDetailsDTO(TransPoolMap transpoolMap) {
+    public MapDetailsDTO(SingleMapEngine transpoolMap) {
         this.mapName = transpoolMap.getMapName();
         this.uploaderName = transpoolMap.getUploaderName();
         this.numOfTripOffers = transpoolMap.getNumOfTripOffers();

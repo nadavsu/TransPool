@@ -1,11 +1,13 @@
 package data.transpool.user.account;
 
-import data.transpool.TransPoolMap;
+import data.transpool.SingleMapEngine;
 import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.component.TripOfferDTO;
 
 import java.util.Collection;
 
 public interface Driver {
     Collection<TripOffer> getTripOffers();
-    void addTripOffer(TransPoolMap map, TripOffer offer);
+    Collection<TripOfferDTO> getTripOffersDetails();
+    void addTripOffer(SingleMapEngine map, TripOffer offer);
 }

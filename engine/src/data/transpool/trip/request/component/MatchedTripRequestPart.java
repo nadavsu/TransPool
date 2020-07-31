@@ -10,45 +10,45 @@ import data.transpool.user.account.TransPoolRider;
  */
 public class MatchedTripRequestPart {
 
-    private Stop sourceStop;
-    private Stop destinationStop;
+    private String sourceStopName;
+    private String destinationStopName;
     private TimeDay departureTime;
     private TimeDay arrivalTime;
-    private TransPoolRider rider;
+    private String riderUsername;
 
     public MatchedTripRequestPart(TransPoolRider rider, TripOfferPartOccurrence tripOfferPartOccurrence) {
-        this.rider = rider;
-        this.sourceStop = tripOfferPartOccurrence.getSourceStop();
+        this.riderUsername = rider.getUsername();
+        this.sourceStopName = tripOfferPartOccurrence.getSourceStop().getName();
         this.departureTime = tripOfferPartOccurrence.getDepartureTime();
-        this.destinationStop = tripOfferPartOccurrence.getDestinationStop();
+        this.destinationStopName = tripOfferPartOccurrence.getDestinationStop().getName();
         this.arrivalTime = tripOfferPartOccurrence.getArrivalTime();
     }
 
-    public Stop getSourceStop() {
-        return sourceStop;
+    public String getSourceStopName() {
+        return sourceStopName;
     }
 
     public TimeDay getDepartureTime() {
         return departureTime;
     }
 
-    public Stop getDestinationStop() {
-        return destinationStop;
+    public String getDestinationStopName() {
+        return destinationStopName;
     }
 
     public TimeDay getArrivalTime() {
         return arrivalTime;
     }
 
-    public TransPoolRider getRider() {
-        return rider;
+    public String getRiderUsername() {
+        return riderUsername;
     }
 
     @Override
     public String toString() {
-        return rider + " gets on at " + sourceStop +
+        return riderUsername + " gets on at " + sourceStopName +
                 " on " + departureTime +
-                " and gets off at " + destinationStop +
+                " and gets off at " + destinationStopName +
                 " on " + arrivalTime;
     }
 }

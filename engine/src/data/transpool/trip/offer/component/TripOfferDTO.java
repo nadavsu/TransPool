@@ -1,48 +1,71 @@
 package data.transpool.trip.offer.component;
 
 import data.transpool.map.component.Stop;
-import data.transpool.time.component.TimeDay;
 import data.transpool.trip.request.component.MatchedTripRequestPart;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TripOfferDTO {
     private String driverName;
-    private TimeDay departureTime;
-    private Stop sourceStop;
-    private Stop destinationStop;
-    private List<MatchedTripRequestPart> matchedRequestsDetails;
+    private String departureTime;
+    private String recurrences;
+    private String sourceStopName;
+    private String destinationStopName;
+    private List<String> route;
+    private List<String> matchedRequestsDetails;
     private int PPK;
     private double fuelConsumption;
 
     public TripOfferDTO(TripOffer tripOffer) {
         this.driverName = tripOffer.getTransPoolDriver().getUsername();
-        this.departureTime = tripOffer.getDepartureTime();
-        this.sourceStop = tripOffer.getSourceStop();
-        this.destinationStop = tripOffer.getDestinationStop();
-        this.matchedRequestsDetails = new ArrayList<>(tripOffer.getMatchedRequestsDetails());
+        this.departureTime = tripOffer.getDepartureTime().toString();
+        this.recurrences = tripOffer.getRecurrences().toString();
+        this.sourceStopName = tripOffer.getSourceStop().getName();
+        this.destinationStopName = tripOffer.getDestinationStop().getName();
         this.PPK = tripOffer.getPPK();
         this.fuelConsumption = tripOffer.getAverageFuelConsumption();
+        this.matchedRequestsDetails = initMatchedRequestDetails(tripOffer);
+        this.route = initRoute(tripOffer);
+    }
+
+
+    private List<String> initRoute(TripOffer tripOffer) {
+        List<String> route = tripOffer
+                .getRoute()
+                .stream()
+                .map(TripOfferPart::getSourceStop)
+                .map(Stop::getName)
+                .collect(Collectors.toList());
+        route.add(tripOffer.getDestinationStop().getName());
+        return route;
+    }
+
+    private List<String> initMatchedRequestDetails(TripOffer tripOffer) {
+        return tripOffer
+                .getMatchedRequestsDetails()
+                .stream()
+                .map(MatchedTripRequestPart::toString)
+                .collect(Collectors.toList());
     }
 
     public String getDriverName() {
         return driverName;
     }
 
-    public TimeDay getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public Stop getSourceStop() {
-        return sourceStop;
+    public String getSourceStopName() {
+        return sourceStopName;
     }
 
-    public Stop getDestinationStop() {
-        return destinationStop;
+    public String getDestinationStopName() {
+        return destinationStopName;
     }
 
-    public List<MatchedTripRequestPart> getMatchedRequestsDetails() {
+    public List<String> getMatchedRequestsDetails() {
         return matchedRequestsDetails;
     }
 
@@ -52,5 +75,13 @@ public class TripOfferDTO {
 
     public double getFuelConsumption() {
         return fuelConsumption;
+    }
+
+    public String getRecurrences() {
+        return recurrences;
+    }
+
+    public List<String> getRoute() {
+        return route;
     }
 }

@@ -1,6 +1,7 @@
-package data.transpool.trip.offer.component;
+package data.transpool.old;
 
 import data.transpool.time.component.Recurrence;
+import data.transpool.trip.offer.component.BasicTripOffer;
 import data.transpool.user.account.TransPoolDriver;
 
 /**

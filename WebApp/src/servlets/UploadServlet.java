@@ -1,9 +1,9 @@
 package servlets;
 
-import api.MapEngine;
+import api.MapsEngine;
 import constants.Constants;
 import data.generated.TransPool;
-import data.transpool.TransPoolMapBase;
+import data.transpool.TransPoolMap;
 import exception.FileTypeException;
 import exception.data.TransPoolDataException;
 import utils.ServletUtils;
@@ -30,17 +30,17 @@ public class UploadServlet extends HttpServlet {
         resp.setContentType("text/html");
         PrintWriter out = resp.getWriter();
 
-        MapEngine mapEngine = ServletUtils.getMapEngine(getServletContext());
+        MapsEngine mapsEngine = ServletUtils.getMapEngine(getServletContext());
         String mapNameFromParameter = req.getParameter(Constants.MAP_NAME);
         String uploaderNameFromSession = SessionUtils.getUsername(req);
         Part part = req.getPart(Constants.MAP_FILE);
 
         synchronized (this) {
-            if (mapEngine.isMapExists(mapNameFromParameter)) {
+            if (mapsEngine.isMapExists(mapNameFromParameter)) {
                 out.print("A map with this name already exists.");
             } else if (part != null) {
                 try {
-                    loadFile(mapEngine, part, mapNameFromParameter, uploaderNameFromSession);
+                    loadFile(mapsEngine, part, mapNameFromParameter, uploaderNameFromSession);
                     out.print(Constants.HOME_URL);     //On success.
                 } catch (TransPoolDataException | FileTypeException e) {
                     out.print(e.getMessage());
@@ -64,14 +64,14 @@ public class UploadServlet extends HttpServlet {
         processRequest(req, resp);
     }
 
-    private void loadFile(MapEngine mapEngine, Part file, String mapName, String uploaderName) throws JAXBException,
+    private void loadFile(MapsEngine mapsEngine, Part file, String mapName, String uploaderName) throws JAXBException,
             TransPoolDataException, IOException, FileTypeException {
 
         if (file.getContentType().equals("text/xml")) {
             JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             TransPool JAXBData = (TransPool) jaxbUnmarshaller.unmarshal(file.getInputStream());
-            mapEngine.addMap(new TransPoolMapBase(mapName, uploaderName, JAXBData));
+            mapsEngine.addMap(new TransPoolMap(mapName, uploaderName, JAXBData));
         } else {
             throw new FileTypeException();
         }

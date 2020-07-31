@@ -42,15 +42,11 @@ public class MatchedTripRequest extends BasicTripRequestData {
 
             tripOfferPart.addRider(transpoolRider);
             tripOfferPart.updateFather(transpoolRider);
-            //tripOfferPart.getMainOffer().updateAfterMatch(this, tripOfferPart);
-
         }
     }
 
-    private void updateSubTripOffers() throws RideFullException {
-        for (TripOfferPartOccurrence tripOfferPart : route) {
-
-        }
+    public MatchedTripRequestDTO getDetails() {
+        return new MatchedTripRequestDTO(this);
     }
 
     public boolean isTimeOfArrival() {

@@ -51,7 +51,7 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
         this.departureTime = new TimeDay(departureTime, dayStart);
         this.recurrences = recurrences;
 
-        this.matchedRequestsDetails = FXCollections.observableArrayList();
+        this.matchedRequestsDetails = new ArrayList<>();
         this.route = new ArrayList<>();
         this.timeTable = new HashMap<>();
         this.usedPaths = new ArrayList<>();
@@ -122,6 +122,10 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
                 .mapToDouble(Path::getFuelConsumption)
                 .average()
                 .orElse(0);
+    }
+
+    public TripOfferDTO getDetails() {
+        return new TripOfferDTO(this);
     }
 
     @Override

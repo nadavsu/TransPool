@@ -1,5 +1,6 @@
 package data.transpool.trip.request.component;
 
+import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
 import exception.data.InvalidDayStartException;
@@ -15,9 +16,9 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     private boolean isTimeOfArrival;
     private boolean isContinuous;
 
-    public TripRequestData(String riderName, Stop sourceStop, Stop destinationStop, int day,
+    public TripRequestData(BasicMap map, String riderName, String sourceStop, String destinationStop, int day,
                            LocalTime requestTime, boolean isTimeOfArrival, boolean isContinuous) throws TransPoolDataException {
-        super(riderName, sourceStop, destinationStop);
+        super(map, riderName, sourceStop, destinationStop);
         this.requestTime = new TimeDay(requestTime, day);
         this.isTimeOfArrival = isTimeOfArrival;
         this.isContinuous = isContinuous;

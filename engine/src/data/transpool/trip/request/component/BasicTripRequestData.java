@@ -1,7 +1,11 @@
 package data.transpool.trip.request.component;
 
+import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
+import data.transpool.trip.Trip;
 import data.transpool.user.account.TransPoolRider;
+import exception.data.StopNotFoundException;
+import exception.data.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.util.Objects;
@@ -17,11 +21,11 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
     protected Stop sourceStop;
     protected Stop destinationStop;
 
-    public BasicTripRequestData(String riderName, Stop sourceStop, Stop destinationStop) {
+    public BasicTripRequestData(BasicMap map, String riderName, String sourceStopName, String destinationStopName) throws TransPoolDataException {
         this.requestID = IDGenerator++;
         this.transpoolRider = new TransPoolRider(riderName);
-        this.sourceStop = new Stop(sourceStop);
-        this.destinationStop = new Stop(destinationStop);
+        this.sourceStop = initializeStop(map, sourceStopName);
+        this.destinationStop = initializeStop(map, destinationStopName);
     }
 
     public BasicTripRequestData(TripRequest other) {
@@ -29,6 +33,22 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
         this.transpoolRider = new TransPoolRider(other.getTransPoolRider());
         this.sourceStop = new Stop(other.getSourceStop());
         this.destinationStop = new Stop(other.getDestinationStop());
+    }
+
+    /**
+     *
+     * @param map - The map to get the stop from
+     * @param stopName - The stop name to get from the map
+     * @return - A <underline>copy</underline> of the stop from the map.
+     * @throws  - StopNotFoundException if there is not such stop with name stopName in the map.
+     */
+    private Stop initializeStop(BasicMap map, String stopName) throws StopNotFoundException {
+        Stop stop = map.getStop(stopName);
+        if (stop == null) {
+            throw new StopNotFoundException(stopName);
+        } else {
+            return new Stop(stop);
+        }
     }
 
     @Override
@@ -41,30 +61,16 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
         return transpoolRider;
     }
 
-    @Override
-    public void setTransPoolRider(TransPoolRider transpoolRider) {
-        this.transpoolRider = transpoolRider;
-    }
-
 
     @Override
     public Stop getSourceStop() {
         return this.sourceStop;
     }
 
-    @Override
-    public void setSourceStop(Stop sourceStop) {
-        this.sourceStop = sourceStop;
-    }
 
     @Override
     public Stop getDestinationStop() {
         return this.destinationStop;
-    }
-
-    @Override
-    public void setDestinationStop(Stop destinationStop) {
-        this.destinationStop = destinationStop;
     }
 
     @Override

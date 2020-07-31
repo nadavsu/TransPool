@@ -1,12 +1,16 @@
 package data.transpool.user.account;
 
-import data.transpool.TransPoolMap;
+import data.transpool.SingleMapEngine;
 import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.user.component.feedback.Feedback;
+import data.transpool.user.component.feedback.FeedbackDTO;
 import data.transpool.user.component.feedback.Feedbackable;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class TransPoolDriver extends TransPoolUserAccount implements Feedbackable, Driver {
 
@@ -18,19 +22,13 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
 
     public TransPoolDriver(String username) {
         super(username);
+        this.feedbacks = new ArrayList<>();
+        this.tripOffers = new ArrayList<>();
+
         this.setID(IDGenerator++);
         this.feedbacks = new ArrayList<>();
         this.averageRating = 0;
         this.totalRating = 0;
-    }
-
-    public TransPoolDriver(TransPoolDriver other) {
-        super(other.username);
-        this.setID(other.getID());
-        this.feedbacks = new ArrayList<>(other.feedbacks);
-        this.tripOffers = new ArrayList<>(other.tripOffers);
-        this.averageRating = other.averageRating;
-        this.totalRating = other.totalRating;
     }
 
     @Override
@@ -39,14 +37,17 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
     }
 
     @Override
-    public void addTripOffer(TransPoolMap map, TripOffer offer) {
-        map.addTripOffer(offer);
-        tripOffers.add(offer);
+    public List<TripOfferDTO> getTripOffersDetails() {
+        return tripOffers
+                .stream()
+                .map(TripOffer::getDetails)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<Feedback> getAllFeedbacks() {
-        return feedbacks;
+    public void addTripOffer(SingleMapEngine map, TripOffer offer) {
+        map.addTripOffer(offer);
+        tripOffers.add(offer);
     }
 
     @Override
@@ -55,10 +56,8 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
     }
 
     @Override
-    public void addFeedback(Feedback feedback) {
-        this.feedbacks.add(feedback);
-        this.totalRating += feedback.getRating();
-        this.averageRating = (totalRating / feedbacks.size());
+    public List<Feedback> getAllFeedbacks() {
+        return Collections.unmodifiableList(feedbacks);
     }
 
     @Override
@@ -68,6 +67,17 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
                 .filter(feedback -> feedback.getFeedbackerID() == riderID)
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public void addFeedback(Feedback feedback) {
+        this.feedbacks.add(feedback);
+        this.totalRating += feedback.getRating();
+        this.averageRating = (totalRating / feedbacks.size());
+    }
+
+    public FeedbackDTO getFeedbacksDetails() {
+        return new FeedbackDTO(this);
     }
 }
 

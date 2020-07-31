@@ -1,16 +1,16 @@
 package api;
 
 import data.transpool.MapDetailsDTO;
-import data.transpool.TransPoolMap;
+import data.transpool.SingleMapEngine;
 
 import java.util.Collection;
 import java.util.Map;
 
-public interface MapEngine {
-    void addMap(TransPoolMap map);
-    TransPoolMap getMap(String mapName);
+public interface MapsEngine {
+    void addMap(SingleMapEngine map);
+    SingleMapEngine getMap(String mapName);
     boolean isMapExists(String mapName);
-    Map<String, TransPoolMap> getMaps();
+    Map<String, SingleMapEngine> getMaps();
 
     Collection<MapDetailsDTO> getMapDetailsDTOs();
 }

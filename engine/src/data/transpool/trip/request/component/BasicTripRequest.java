@@ -7,13 +7,10 @@ import javafx.beans.property.ObjectProperty;
 
 public interface BasicTripRequest {
     TransPoolRider getTransPoolRider();
-    void setTransPoolRider(TransPoolRider transpoolRider);
 
     int getRequestID();
 
     Stop getSourceStop();
-    void setSourceStop(Stop sourceStop);
 
     Stop getDestinationStop();
-    void setDestinationStop(Stop destinationStop);
 }

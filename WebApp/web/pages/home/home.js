@@ -5,7 +5,7 @@ $(getUser(loadUserCard));
 $(function () {
     $.ajax({
         method: "POST",
-        url: "get-maps",
+        url: "get-map-details",
         timeout: 3000,
         error: function () {
             console.error("Failed to get ajax response");
@@ -18,27 +18,10 @@ $(function () {
                 )
             } else {
                 $.each(maps || [], loadMap);
+                initializeOpenMapSubmit();
             }
         }
     })
-});
-
-//On-submit when opening a map
-$("form.open-map").submit(function() {
-    var parameters = $(this).serialize();
-    $.ajax({
-        data: parameters,
-        url: this.action,
-        timeout: 2000,
-        error: function () {
-            console.log("AJAX Error");
-        },
-        success: function (resp) {
-            //redirect to relevant html page.
-            //load the relevant data.
-        }
-    });
-    return false;
 });
 
 //Loading map cards---------------------------------------------------------------------------------------------------//
@@ -71,15 +54,15 @@ function loadMap(index, map) {
                     $("<small class='text-muted'>")
                         .text("Uploaded by " + map.uploaderName)
                 )
-        )
+        );
 
     $(".card-columns").append(mapCard);
 }
 
 function createOpenMapForm(mapName) {
-    return $("<form class='open-map' method='GET' action='map'>")
+    return $("<form class='open-map' method='POST' action='get-map-type'>")
         .append(
-            $("<input type='hidden' name='map-name' id='map-name'>")            //name is the map-name
+            $("<input type='hidden' name='map-name' id='map-name'>")
                 .attr("value", mapName)
         )
         .append(
@@ -127,4 +110,25 @@ function loadRecentTransactions(index, transaction) {
         );
 
     $(".last-transactions").append(newTransaction);
+}
+
+//Loading map on click------------------------------------------------------------------------------------------------//
+//On-submit when opening a map
+
+function initializeOpenMapSubmit() {
+    $("form.open-map").submit(function () {
+        var parameters = $(this).serialize();
+        $.ajax({
+            data: parameters,
+            url: this.action,
+            timeout: 2000,
+            error: function () {
+                console.log("AJAX Error");
+            },
+            success: function (resp) {
+                window.location.assign(resp);
+            }
+        });
+        return false;
+    });
 }

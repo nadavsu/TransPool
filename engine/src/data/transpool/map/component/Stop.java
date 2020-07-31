@@ -11,20 +11,20 @@ public class Stop {
     private int ID;
     private int x;
     private int y;
-    private StringProperty name;
+    private String name;
 
     public Stop(data.generated.Stop JAXBStop) {
         this.ID = IDGenerator++;
         this.x = JAXBStop.getX();
         this.y = JAXBStop.getY();
-        this.name = new SimpleStringProperty(JAXBStop.getName().trim());
+        this.name = JAXBStop.getName().trim();
     }
 
     public Stop(Stop other) {
         this.ID = other.ID;
         this.x = other.x;
         this.y = other.y;
-        this.name = new SimpleStringProperty(other.getName());
+        this.name = other.name;
     }
 
 
@@ -41,10 +41,6 @@ public class Stop {
     }
 
     public String getName() {
-        return name.get();
-    }
-
-    public StringProperty nameProperty() {
         return name;
     }
 

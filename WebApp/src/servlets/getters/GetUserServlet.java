@@ -1,9 +1,10 @@
-package servlets;
+package servlets.getters;
 
 import com.google.gson.Gson;
 import constants.Constants;
 import data.transpool.user.UserEngine;
 import data.transpool.user.account.TransPoolUserAccount;
+import data.transpool.user.account.TransPoolUserAccountDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -30,8 +31,9 @@ public class GetUserServlet extends HttpServlet {
                 out.print(Constants.SIGNUP_URL);
             } else {
                 TransPoolUserAccount currentUser = userEngine.getUserAccount(userNameFromSession);
+                TransPoolUserAccountDTO currentUserDetails = currentUser.getDetails();
                 Gson gson = new Gson();
-                String userJson = gson.toJson(currentUser);
+                String userJson = gson.toJson(currentUserDetails);
                 out.print(userJson);
             }
 

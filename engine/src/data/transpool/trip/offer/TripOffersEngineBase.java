@@ -4,16 +4,16 @@ import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
 import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.graph.TripOfferGraph;
 import data.transpool.trip.offer.matching.PossibleRoute;
 import data.transpool.trip.offer.matching.PossibleRoutesList;
 import data.transpool.trip.request.component.TripRequest;
-import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -38,6 +38,14 @@ public class TripOffersEngineBase implements TripOffersEngine {
         update();
 
         this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
+    }
+
+    @Override
+    public List<TripOfferDTO> getTripOffersDetails() {
+        return allTripOffers
+                .stream()
+                .map(TripOffer::getDetails)
+                .collect(Collectors.toList());
     }
 
     @Override

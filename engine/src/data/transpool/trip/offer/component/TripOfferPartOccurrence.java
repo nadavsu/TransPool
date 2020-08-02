@@ -1,5 +1,6 @@
 package data.transpool.trip.offer.component;
 
+import data.transpool.SingleMapEngine;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeEngineBase;
 import data.transpool.time.component.Occurrence;
@@ -119,6 +120,11 @@ public class TripOfferPartOccurrence implements Occurrence, BasicTripOffer {
     @Override
     public Recurrence getRecurrences() {
         return occurrenceType;
+    }
+
+    @Override
+    public boolean isBelongToMap(SingleMapEngine map) {
+        return map.getTripOfferPart(mainOffer.getID(), ID) != null;
     }
 
     @Override

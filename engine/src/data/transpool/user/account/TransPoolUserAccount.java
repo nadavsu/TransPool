@@ -37,20 +37,21 @@ public abstract class TransPoolUserAccount implements User, Balance {
 
     @Override
     public void receiveCredit(double amount) {
+        //Order matters
         this.balance += amount;
-        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.RECEIVE, amount));
+        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.RECEIVE, amount, balance));
     }
 
     @Override
     public void depositCredit(double amount) {
+        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.CREDIT_CHARGE, amount, balance));
         this.balance += amount;
-        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.CREDIT_CHARGE, amount));
     }
 
     @Override
     public void transferCredit(double amount, Balance other) {
         this.balance -= amount;
-        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.PAY, amount));
+        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.PAY, amount, balance));
         other.receiveCredit(amount);
     }
 

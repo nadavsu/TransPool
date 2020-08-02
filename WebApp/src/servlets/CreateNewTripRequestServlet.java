@@ -46,10 +46,10 @@ public class CreateNewTripRequestServlet extends HttpServlet {
         try (PrintWriter out = resp.getWriter()) {
             try {
                 TripRequest newRequest = new TripRequestData(map, rider.getUsername(), sourceStop, destinationStop, departureDay, departureTime, false, isContinuous);
-                rider.addRequest(map, newRequest);
+                mapsEngine.addNewTripRequest(newRequest, rider, mapNameFromParameter);
                 out.print("Request added successfully!");
             } catch (TransPoolDataException e) {
-                out.print(e);
+                out.print(e.getMessage());
             }
         }
 

@@ -34,7 +34,7 @@ public class CreateNewTripOfferServlet extends HttpServlet {
         //Getting the parameters from the form.
         String mapNameFromParameter = req.getParameter(Constants.MAP_NAME);
         LocalTime departureTime = ParameterUtils.getTimeFromParameter(req.getParameter(Constants.DEPARTURE_TIME));
-        Recurrence recurrences = ParameterUtils.getRecurrenceFromParameter(Constants.RECURRENCES);
+        Recurrence recurrences = ParameterUtils.getRecurrenceFromParameter(req.getParameter(Constants.RECURRENCES));
         int dayStart = Integer.parseInt(req.getParameter(Constants.DEPARTURE_DAY));
         int PPK = Integer.parseInt(req.getParameter(Constants.PPK));
         int passengerCapacity = Integer.parseInt(req.getParameter(Constants.PASSENGER_CAPACITY));
@@ -46,7 +46,7 @@ public class CreateNewTripOfferServlet extends HttpServlet {
         try (PrintWriter out = resp.getWriter()) {
             try {
                 TripOffer newOffer = new TripOffer(map, driver, departureTime, dayStart, recurrences, passengerCapacity, PPK, route);
-                driver.addTripOffer(map, newOffer);
+                mapsEngine.addNewTripOffer(newOffer, driver, mapNameFromParameter);
                 out.print("Offer added successfully!");
             } catch (TransPoolDataException e) {
                 out.print(e);

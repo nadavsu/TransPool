@@ -1,12 +1,9 @@
-package data.transpool.trip.offer.graph;
+package data.transpool.trip.matching.component;
 
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.component.TripOfferPart;
-import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.offer.component.SingleTripOfferEngine;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,14 +14,14 @@ import java.util.List;
  * Weight - SubTripOffer
  */
 
-public class TripOfferGraph {
+public class TripOffersGraph {
     private List<List<TripOfferPart>> adjointList;
 
-    public TripOfferGraph() {
+    public TripOffersGraph() {
         adjointList = new ArrayList<>();
     }
 
-    public TripOfferGraph(int numOfStops, List<TripOffer> allTripOffers) {
+    public TripOffersGraph(int numOfStops, List<TripOffer> allTripOffers) {
         adjointList = new ArrayList<>();
         for (int i = 0; i < numOfStops; i ++) {
             adjointList.add(new ArrayList<>());

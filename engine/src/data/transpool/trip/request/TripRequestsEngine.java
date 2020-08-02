@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * THe engine interface that controls the trip requests.
  */
-public interface TripRequestEngine {
+public interface TripRequestsEngine {
     List<TripRequestDTO> getTripRequestsDetails();
 
     List<MatchedTripRequestDTO> getMatchedTripsDetails();

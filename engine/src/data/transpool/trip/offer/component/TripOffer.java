@@ -1,5 +1,6 @@
 package data.transpool.trip.offer.component;
 
+import data.transpool.SingleMapEngine;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
@@ -124,10 +125,6 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
                 .orElse(0);
     }
 
-    public TripOfferDTO getDetails() {
-        return new TripOfferDTO(this);
-    }
-
     @Override
     public int getID() {
         return ID;
@@ -169,7 +166,7 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
     }
 
     @Override
-    public TripOfferPart getSubTripOffer(int ID) {
+    public TripOfferPart getTripOfferPart(int ID) {
         return route
                 .stream()
                 .filter(subTripOffer -> subTripOffer.getID() == ID)
@@ -198,7 +195,7 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
     }
 
     @Override
-    public TripOfferPart getCurrentSubTripOffer() {
+    public TripOfferPart getOccurringTripOfferPart() {
         for (TripOfferPart tripOfferPart : route) {
             if (tripOfferPart.isCurrentlyDeparting()) {
                 return tripOfferPart;
@@ -248,6 +245,16 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
     @Override
     public List<Path> getUsedPaths() {
         return usedPaths;
+    }
+
+    @Override
+    public TripOfferDTO getDetails() {
+        return new TripOfferDTO(this);
+    }
+
+    @Override
+    public boolean isBelongToMap(SingleMapEngine map) {
+        return map.getTripRequest(ID) != null;
     }
 
     @Override

@@ -9,23 +9,28 @@ import data.transpool.time.component.TimeDay;
 import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeEngineBase;
 import data.transpool.time.component.TimeInterval;
+import data.transpool.trip.matching.component.TripOffersGraph;
 import data.transpool.trip.offer.TripOffersEngine;
 import data.transpool.trip.offer.TripOffersEngineBase;
 import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.trip.offer.component.TripOfferPart;
-import data.transpool.trip.offer.matching.PossibleRoutesList;
+import data.transpool.trip.matching.component.PossibleRoute;
+import data.transpool.trip.matching.component.PossibleRoutesList;
 import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.request.TripRequestEngine;
+import data.transpool.trip.request.TripRequestsEngine;
+import data.transpool.trip.request.TripRequestsEngineBase;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.MatchedTripRequestDTO;
 import data.transpool.trip.request.component.TripRequest;
-import data.transpool.trip.request.TripRequestEngineBase;
 import data.transpool.trip.request.component.TripRequestDTO;
+import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 /**
@@ -43,20 +48,19 @@ public class TransPoolMap implements SingleMapEngine {
 
     private BasicMap map;
     private TripOffersEngine tripOffersEngine;
-    private TripRequestEngine tripRequestEngine;
+    private TripRequestsEngine tripRequestsEngine;
     private TimeEngine timeEngine;
 
     private List<Updatable> updatables;
 
     public TransPoolMap(String mapName, String uploaderName, TransPool JAXBData) throws TransPoolDataException {
-        //TODO: this will create a problem when uploading multiple files. or would it?
         Stop.resetIDGenerator();
 
         this.mapName = mapName;
         this.uploaderName = uploaderName;
 
         this.map = new BasicMapData(JAXBData.getMapDescriptor());
-        this.tripRequestEngine = new TripRequestEngineBase();
+        this.tripRequestsEngine = new TripRequestsEngineBase();
         this.tripOffersEngine = new TripOffersEngineBase(map);
         this.timeEngine = new TimeEngineBase();
 
@@ -133,70 +137,111 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public TripOfferPart getSubTripOffer(int tripOfferID, int subTripOfferID) {
-        return tripOffersEngine.getSubTripOffer(tripOfferID, subTripOfferID);
+    public TripOfferPart getTripOfferPart(int tripOfferID, int subTripOfferID) {
+        return tripOffersEngine.getTripOfferPart(tripOfferID, subTripOfferID);
     }
 
     @Override
-    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
-        return tripOffersEngine.getAllPossibleRoutes(tripRequest, maximumMatches);
+    public TripOffersGraph getTripOffersGraph() {
+        return tripOffersEngine.getTripOffersGraph();
     }
 
     //TripRequestEngine------------------------------------------------------------//
 
     @Override
     public List<TripRequestDTO> getTripRequestsDetails() {
-        return tripRequestEngine.getTripRequestsDetails();
+        return tripRequestsEngine.getTripRequestsDetails();
     }
 
     @Override
     public List<MatchedTripRequestDTO> getMatchedTripsDetails() {
-        return tripRequestEngine.getMatchedTripsDetails();
+        return tripRequestsEngine.getMatchedTripsDetails();
     }
 
     @Override
     public void addTripRequest(TripRequest tripRequest) {
-        tripRequestEngine.addTripRequest(tripRequest);
+        tripRequestsEngine.addTripRequest(tripRequest);
     }
 
     @Override
     public TripRequest getTripRequest(int TripRequestID) {
-        return tripRequestEngine.getTripRequest(TripRequestID);
+        return tripRequestsEngine.getTripRequest(TripRequestID);
     }
 
     @Override
     public void deleteTripRequest(TripRequest requestToDelete) {
-        tripRequestEngine.deleteTripRequest(requestToDelete);
+        tripRequestsEngine.deleteTripRequest(requestToDelete);
     }
 
     @Override
     public List<TripRequest> getAllTripRequests() {
-        return tripRequestEngine.getAllTripRequests();
+        return tripRequestsEngine.getAllTripRequests();
     }
 
     @Override
     public MatchedTripRequest getMatchedTripRequest(int MatchedTripRequestID) {
-        return tripRequestEngine.getMatchedTripRequest(MatchedTripRequestID);
+        return tripRequestsEngine.getMatchedTripRequest(MatchedTripRequestID);
     }
 
     @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
-        tripRequestEngine.addMatchedRequest(matchedTripRequest);
+        tripRequestsEngine.addMatchedRequest(matchedTripRequest);
     }
 
     @Override
     public List<MatchedTripRequest> getAllMatchedTripRequests() {
-        return tripRequestEngine.getAllMatchedTripRequests();
+        return tripRequestsEngine.getAllMatchedTripRequests();
     }
 
     @Override
     public int getNumOfTripRequests() {
-        return tripRequestEngine.getNumOfTripRequests();
+        return tripRequestsEngine.getNumOfTripRequests();
     }
 
     @Override
     public int getNumOfMatchedRequests() {
-        return tripRequestEngine.getNumOfMatchedRequests();
+        return tripRequestsEngine.getNumOfMatchedRequests();
+    }
+
+    //Matching Engine-----------------------------------------------------------------------//
+
+    /**
+     * Gets the possible routes from the TripOfferMap, and filters all routes which are not relevant by
+     * departure or arrival time. Also filters all rides that are not continuous if the rider asked for continuous rides.
+     * @param tripRequestID - The ID of the trip request to match
+     * @param maximumMatches - The maximum number of matches.
+     * @return - PossibleRoutesList - a list of all possible routes.
+     */
+    @Override
+    public PossibleRoutesList getAllPossibleRoutes(int tripRequestID, int maximumMatches) throws NoResultsFoundException {
+        TripRequest requestToMatch = getTripRequest(tripRequestID);
+        Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {
+            if (requestToMatch.isTimeOfArrival()) {
+                return possibleRoute.getArrivalTime().equals(requestToMatch.getRequestTime());
+            } else {
+                return possibleRoute.getDepartureTime().equals(requestToMatch.getRequestTime());
+            }
+        };
+        Predicate<PossibleRoute> continuousRidePredicate = possibleRoute ->
+                !requestToMatch.isContinuous() || possibleRoute.isContinuous();
+
+        PossibleRoutesList possibleRoutes = getTripOffersGraph()
+                .getAllPossibleRoutes(
+                        requestToMatch.getSourceStop(),
+                        requestToMatch.getDestinationStop(),
+                        requestToMatch.getRequestTime())
+                .stream()
+                .filter(timeMatchPredicate)
+                .filter(continuousRidePredicate)
+                .limit(maximumMatches)
+                .collect(Collectors.toCollection(PossibleRoutesList::new));
+
+        if (possibleRoutes.isEmpty()) {
+            throw new NoResultsFoundException();
+        } else {
+            return possibleRoutes;
+        }
+
     }
 
     //Map-----------------------------------------------------------------------------------//

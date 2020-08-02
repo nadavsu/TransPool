@@ -4,7 +4,7 @@ import data.transpool.SingleMapEngine;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.user.component.feedback.Feedback;
-import data.transpool.user.component.feedback.FeedbackDTO;
+import data.transpool.user.component.feedback.FeedbacksDTO;
 import data.transpool.user.component.feedback.Feedbackable;
 
 import java.util.ArrayList;
@@ -45,8 +45,16 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
     }
 
     @Override
-    public void addTripOffer(SingleMapEngine map, TripOffer offer) {
-        map.addTripOffer(offer);
+    public List<TripOfferDTO> getTripOffersDetailsFromMap(SingleMapEngine map) {
+        return tripOffers
+                .stream()
+                .filter(offer -> offer.isBelongToMap(map))
+                .map(TripOffer::getDetails)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addTripOffer(TripOffer offer) {
         tripOffers.add(offer);
     }
 
@@ -76,8 +84,8 @@ public class TransPoolDriver extends TransPoolUserAccount implements Feedbackabl
         this.averageRating = (totalRating / feedbacks.size());
     }
 
-    public FeedbackDTO getFeedbacksDetails() {
-        return new FeedbackDTO(this);
+    public FeedbacksDTO getFeedbacksDetails() {
+        return new FeedbacksDTO(this);
     }
 }
 

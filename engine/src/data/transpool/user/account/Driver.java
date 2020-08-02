@@ -9,5 +9,6 @@ import java.util.Collection;
 public interface Driver {
     Collection<TripOffer> getTripOffers();
     Collection<TripOfferDTO> getTripOffersDetails();
-    void addTripOffer(SingleMapEngine map, TripOffer offer);
+    Collection<TripOfferDTO> getTripOffersDetailsFromMap(SingleMapEngine map);
+    void addTripOffer(TripOffer offer);
 }

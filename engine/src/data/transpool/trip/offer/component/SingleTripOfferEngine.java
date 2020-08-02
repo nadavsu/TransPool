@@ -1,5 +1,6 @@
 package data.transpool.trip.offer.component;
 
+import data.transpool.SingleMapEngine;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.Recurrence;
@@ -20,10 +21,10 @@ public interface SingleTripOfferEngine {
 
     TimeDay getTimeAtStop(Stop stop);
 
-    TripOfferPart getSubTripOffer(int subTripOfferID);
-    TripOfferPart getCurrentSubTripOffer();
+    TripOfferPart getTripOfferPart(int subTripOfferID);
+    TripOfferPart getOccurringTripOfferPart();
     boolean isCurrentlyHappening();
     void updateAfterMatch(TransPoolRider transPoolRider, TripOfferPartOccurrence subTripOffer);
-
+    TripOfferDTO getDetails();
 
 }

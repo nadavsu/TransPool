@@ -13,12 +13,12 @@ public interface Rider {
     Collection<MatchedTripRequest> getAllMatchedTripRequests();
 
     Collection<TripRequestDTO> getTripRequestsDetails();
+    Collection<TripRequestDTO> getTripRequestsDetailsFromMap(SingleMapEngine map);
     Collection<MatchedTripRequestDTO> getMatchedTripRequestDetails();
 
     TripRequest getRequest(int ID);
     MatchedTripRequest getMatchedTripRequest(int ID);
 
-    void addRequest(SingleMapEngine map, TripRequest request);
-    void acceptMatch(SingleMapEngine map, MatchedTripRequest matchedRequest);
-
+    void addRequest(TripRequest request);
+    void acceptMatch(MatchedTripRequest matchedRequest);
 }

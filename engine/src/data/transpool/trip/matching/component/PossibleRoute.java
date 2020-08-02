@@ -1,4 +1,4 @@
-package data.transpool.trip.offer.matching;
+package data.transpool.trip.matching.component;
 
 import data.transpool.time.component.TimeDay;
 import data.transpool.trip.offer.component.TripOfferPart;
@@ -48,7 +48,7 @@ public class PossibleRoute {
     }
 
     public boolean add(TripOfferPart offer, TimeDay departureTime) {
-        TripOfferPartOccurrence offerOccurrence = offer.getOccurrenceAfter(this.departureTime);
+        TripOfferPartOccurrence offerOccurrence = offer.getOccurrenceAfter(departureTime);
         if (offerOccurrence != null) {
             if (length == 0) {
                 return this.addToEmpty(offerOccurrence);
@@ -168,6 +168,10 @@ public class PossibleRoute {
 
     public int getDayEnd() {
         return arrivalTime.getDay();
+    }
+
+    public PossibleRouteDTO getDetails() {
+        return new PossibleRouteDTO(this);
     }
 
     @Override

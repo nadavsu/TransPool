@@ -1,9 +1,8 @@
 package data.transpool.trip.request.component;
 
 import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.offer.component.TripOfferPartOccurrence;
-import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.matching.component.PossibleRoute;
 import data.transpool.user.account.TransPoolDriver;
 import exception.data.RideFullException;
 

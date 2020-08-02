@@ -1,3 +1,10 @@
+$(function() {
+    $("#success-modal-button").click(function() {
+        location.reload();
+    })
+});
+
+
 //Function to load URL parameters into an array.
 function getUrlVars() {
     var vars = [], hash;
@@ -11,8 +18,8 @@ function getUrlVars() {
 }
 
 function initializeNewTripForm(mapName) {
-    $("input#map-name").attr("value", mapName);
-    $("form.new-trip").submit(function () {
+    $('input.map-name').attr("value", mapName);
+    $('form.new-trip').submit(function () {
         var parameters = $(this).serialize();
         $.ajax({
             data: parameters,
@@ -24,7 +31,6 @@ function initializeNewTripForm(mapName) {
             success: function (resp) {
                 $("div.notification-modal-body").text(resp);
                 $("#notification-modal").modal("show");
-                //todo: reload page here.
             }
         });
         return false;
@@ -35,7 +41,7 @@ function initializeNewTripForm(mapName) {
 //tripOffer = {driverName, departureTime, sourceStopName, destinationStopName, matchedRequestsDetails:[strings], PPK, fuelConsumption, route:[]}
 function loadTripOffer(index, tripOffer) {
     var currentOffer =
-        $("<button class='list-group-item list-group-item-action offer'>")
+        $('<button class="list-group-item list-group-item-action offer">')
             .append(
                 $('<div class="text-center">')
                     .append(
@@ -114,7 +120,8 @@ function createRouteList(route) {
 //feedback = {averageRating, feedbacks:[{feedbackerID, feedbackerName, rating, comment}]}
 function loadFeedbackTab(feedback) {
     $(".averageRating").text(feedback.averageRating);
-    $.each(feedback.feedbacks || [], loadFeedbackList);
+    var feedbacksList = feedback.feedbacks;
+    $.each(feedbacksList || [], loadFeedbackList);
 }
 
 function loadFeedbackList(index, feedback) {
@@ -146,9 +153,6 @@ function loadTripRequest(index, tripRequest) {
             ).append(
             $('<div>')
                 .append(
-                    $('<h5 class="trip-request-rider-name">')
-                        .text(tripRequest.riderName)
-                ).append(
                     $('<h5 class="trip-request-title">')
                         .text(tripRequest.riderName)
                 ).append(
@@ -159,7 +163,7 @@ function loadTripRequest(index, tripRequest) {
                     .text("Gets off " + tripRequest.destinationStopName)
             ).append(
                 $('<p class="requestTime">')
-                    .text("Request time of departure: " + tripRequest.requestTime)
+                    .text("Requested time of departure: " + tripRequest.requestTime)
             ).append(
                 $('<a href="#" class="btn btn-primary">View</a>\n')
             )
@@ -201,7 +205,7 @@ function loadMatchedTrip(index, matchedTrip) {
             ).append(
                 $('<ul class="list-group route-description">')
                     .append(
-                        createRouteList(matchedTrip.route)
+                        createRouteList(matchedTrip.routeDescription)
                     )
             ).append(
                 $('<h6 class="subtitle">')
@@ -215,7 +219,7 @@ function loadMatchedTrip(index, matchedTrip) {
                 )
         );
 
-    $('ul.matched-list').append(currentMatch);
+    $('ul.matches-list').append(currentMatch);
 
 }
 
@@ -228,3 +232,5 @@ function loadStops(index, stopName) {
             .text(stopName);
     $('ul.stops-list').append(stop);
 }
+
+//----------------------------------------------------------------------------------------------------------------------

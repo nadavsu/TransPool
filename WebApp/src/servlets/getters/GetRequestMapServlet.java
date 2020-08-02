@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import java.util.Set;
 
 @WebServlet(name = "GetRequestMapServlet", urlPatterns = {"/get-request-map"})
 public class GetRequestMapServlet extends HttpServlet {
@@ -40,17 +41,21 @@ public class GetRequestMapServlet extends HttpServlet {
                 List<TripRequestDTO> userTripRequests = rider.getTripRequestsDetails();
                 List<MatchedTripRequestDTO> userMatchedTripRequests = rider.getMatchedTripRequestDetails();
                 List<TripOfferDTO> mapTripOffers = map.getTripOffersDetails();
-                List<String> mapStops = map.getAllStopNamesAsList();
+                Set<String> feedbackablesUsernames = rider.getAllFeedbackablesUsernames();
+
+                //For the select menu in the matching tab.
+                List<TripRequestDTO> userTripRequestsInMap = rider.getTripRequestsDetailsFromMap(map);
 
                 String userTripRequestsJson = new Gson().toJson(userTripRequests);
                 String userMatchedTripRequestsJson = new Gson().toJson(userMatchedTripRequests);
                 String mapTripOffersJson = new Gson().toJson(mapTripOffers);
-                String mapStopsJson = new Gson().toJson(mapStops);
-
+                String feedbackablesUsernamesJson = new Gson().toJson(feedbackablesUsernames);
+                String userTripRequestsInMapJson = new Gson().toJson(userTripRequestsInMap);
                 String response = "[" + userTripRequestsJson + ","
                         + userMatchedTripRequestsJson + ","
                         + mapTripOffersJson + ","
-                        + mapStopsJson + "]";
+                        + feedbackablesUsernamesJson + ","
+                        + userTripRequestsInMapJson + "]";
 
                 out.print(response);
             } else{

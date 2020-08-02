@@ -1,5 +1,6 @@
 package data.transpool.trip.offer.component;
 
+import data.transpool.SingleMapEngine;
 import data.transpool.map.component.Path;
 import data.transpool.map.component.Stop;
 import data.transpool.time.TimeEngineBase;
@@ -96,6 +97,11 @@ public class TripOfferPart implements Schedule, BasicTripOffer {
     @Override
     public int getDayStart() {
         return departureTime.getDay();
+    }
+
+    @Override
+    public boolean isBelongToMap(SingleMapEngine map) {
+        return map.getTripOfferPart(mainOffer.getID(), ID) != null;
     }
 
     @Override

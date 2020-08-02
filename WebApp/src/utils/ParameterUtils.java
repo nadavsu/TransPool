@@ -25,6 +25,6 @@ public class ParameterUtils {
     }
 
     public static Boolean getBooleanParameter(String parameter) {
-        return parameter.equals("true");
+        return parameter != null;
     }
 }

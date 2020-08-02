@@ -9,7 +9,7 @@ import data.transpool.trip.request.component.MatchedTripRequestDTO;
 import data.transpool.trip.request.component.TripRequestDTO;
 import data.transpool.user.UserEngine;
 import data.transpool.user.account.TransPoolDriver;
-import data.transpool.user.component.feedback.FeedbackDTO;
+import data.transpool.user.component.feedback.FeedbacksDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -39,7 +39,7 @@ public class GetOfferMapServlet extends HttpServlet {
                 SingleMapEngine map = mapsEngine.getMap(mapNameFromParameter);
 
                 List<TripOfferDTO> userTripOffers = driver.getTripOffersDetails();
-                FeedbackDTO feedbacksDetails = driver.getFeedbacksDetails();
+                FeedbacksDTO feedbacksDetails = driver.getFeedbacksDetails();
                 List<TripRequestDTO> mapTripRequests = map.getTripRequestsDetails();
                 List<MatchedTripRequestDTO> mapMatchedTrips = map.getMatchedTripsDetails();
 

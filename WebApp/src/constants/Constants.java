@@ -18,10 +18,17 @@ public class Constants {
     public static final String SOURCE_STOP = "source-stop";
     public static final String DESTINATION_STOP = "destination-stop";
     public static final String IS_CONTINUOUS = "is-continuous";
+    public static final String ID_OF_REQUEST_TO_MATCH = "request-to-match";
+    public static final String NUM_OF_RESULTS = "num-of-results";
+    public static final String POSSIBLE_ROUTES = "possible-routes";
+    public static final String POSSIBLE_ROUTE_ID = "possible-route-id";
+    public static final String FEEDBACKEE = "feedbackee";
 
     public final static String HOME_URL = "home.html";
     public final static String SIGNUP_URL = "signup.html";
     public static final String ACCOUNT_URL = "account.html";
     public static final String TRIP_OFFER_MAP_URL = "offer-map.html";
     public static final String TRIP_REQUEST_MAP_URL = "request-map.html";
+    public static final String RATING = "rating";
+    public static final String COMMENT = "comment";
 }

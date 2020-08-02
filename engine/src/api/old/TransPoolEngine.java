@@ -1,4 +1,4 @@
-package api;
+package api.old;
 
 import api.components.*;
 import data.generated.TransPool;
@@ -6,7 +6,7 @@ import data.transpool.TransPoolMap;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.matching.component.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import data.transpool.user.account.TransPoolDriver;
@@ -36,10 +36,10 @@ import java.util.List;
 //Everything here will eventually be a serlvlet.
 public class TransPoolEngine implements Engine {
     private TransPoolMap data;
-    private MatchingEngine matchingEngine;
+    private MatchingEngineOLD matchingEngine;
 
     public TransPoolEngine() {
-        this.matchingEngine = new MatchingEngine();
+        this.matchingEngine = new MatchingEngineOLD();
     }
 
     @Override
@@ -78,6 +78,7 @@ public class TransPoolEngine implements Engine {
         data.addTripOffer(new TripOffer(data.getMap(), driver, departureTime, dayStart, recurrences, riderCapacity, PPK, route));
     }
 
+
     @Override
     public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException {
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
@@ -86,7 +87,7 @@ public class TransPoolEngine implements Engine {
     @Override
     public void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment) {
         feedbacker.leaveFeedback(feedbackee,
-                new Feedback(feedbacker.getFeedbackerID(), feedbacker.getFeedbackerName(), rating, comment)
+                new Feedback(feedbacker, rating, comment)
         );
     }
 

@@ -1,6 +1,7 @@
 package utils;
 
 import constants.Constants;
+import data.transpool.trip.matching.component.PossibleRoutesList;
 import data.transpool.user.account.TransPoolUserAccount;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,6 +17,19 @@ public class SessionUtils {
         }
         if (sessionAttribute != null) {
             return sessionAttribute.toString();
+        } else {
+            return null;
+        }
+    }
+
+    public static PossibleRoutesList getPossibleRoutes(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Object sessionAttribute = null;
+        if (session != null) {
+            sessionAttribute = session.getAttribute(Constants.POSSIBLE_ROUTES);
+        }
+        if (sessionAttribute != null) {
+            return (PossibleRoutesList) sessionAttribute;
         } else {
             return null;
         }

@@ -1,5 +1,6 @@
 package data.transpool.trip.request.component;
 
+import data.transpool.SingleMapEngine;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
@@ -48,12 +49,6 @@ public class TripRequestData extends BasicTripRequestData implements TripRequest
     public boolean isContinuous() {
         return isContinuous;
     }
-
-    @Override
-    public TimeDay requestTimeProperty() {
-        return requestTime;
-    }
-
 
     @Override
     public String toString() {

@@ -56,15 +56,21 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
     }
 
     @Override
-    public void addRequest(SingleMapEngine map, TripRequest request) {
-        map.addTripRequest(request);
+    public List<TripRequestDTO> getTripRequestsDetailsFromMap(SingleMapEngine map) {
+        return tripRequests
+                .stream()
+                .filter(request -> request.isBelongToMap(map))
+                .map(TripRequest::getDetails)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void addRequest(TripRequest request) {
         tripRequests.add(request);
     }
 
     @Override
-    public void acceptMatch(SingleMapEngine map, MatchedTripRequest matchedRequest) {
-        map.addMatchedRequest(matchedRequest);
-
+    public void acceptMatch(MatchedTripRequest matchedRequest) {
         tripRequests.remove(getRequest(matchedRequest.getRequestID()));
         matchedTripRequests.add(matchedRequest);
         feedbackables.addAll(matchedRequest.getTransPoolDrivers());
@@ -106,16 +112,6 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
     }
 
     @Override
-    public String getFeedbackerName() {
-        return username;
-    }
-
-    @Override
-    public int getFeedbackerID() {
-        return ID;
-    }
-
-    @Override
     public void leaveFeedback(Feedbackable feedbackee, Feedback feedback) {
         feedbackee.addFeedback(feedback);
     }
@@ -123,6 +119,13 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
     @Override
     public Set<Feedbackable> getAllFeedbackables() {
         return feedbackables;
+    }
+
+    public Set<String> getAllFeedbackablesUsernames() {
+        return feedbackables
+                .stream()
+                .map(User::getUsername)
+                .collect(Collectors.toSet());
     }
 
 }

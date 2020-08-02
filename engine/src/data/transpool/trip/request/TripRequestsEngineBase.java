@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TripRequestEngineBase implements TripRequestEngine {
+public class TripRequestsEngineBase implements TripRequestsEngine {
 
     private List<TripRequest> allTripRequests;
     private List<MatchedTripRequest> allMatchedTripRequests;
 
-    public TripRequestEngineBase() {
+    public TripRequestsEngineBase() {
         this.allTripRequests = new ArrayList<>();
         this.allMatchedTripRequests = new ArrayList<>();
     }

@@ -2,6 +2,12 @@ package api;
 
 import data.transpool.MapDetailsDTO;
 import data.transpool.SingleMapEngine;
+import data.transpool.trip.matching.component.PossibleRoute;
+import data.transpool.trip.offer.component.TripOffer;
+import data.transpool.trip.request.component.MatchedTripRequest;
+import data.transpool.trip.request.component.TripRequest;
+import data.transpool.user.account.TransPoolDriver;
+import data.transpool.user.account.TransPoolRider;
 
 import java.util.*;
 
@@ -43,5 +49,23 @@ public class MapsEngineBase implements MapsEngine {
         List<MapDetailsDTO> mapDetailsDTOs = new ArrayList<>();
         maps.forEach((mapName, map) -> mapDetailsDTOs.add(map.getMapDetails()));
         return mapDetailsDTOs;
+    }
+
+    @Override
+    public void addNewTripRequest(TripRequest request, TransPoolRider rider, String mapName) {
+        rider.addRequest(request);
+        maps.get(mapName).addTripRequest(request);
+    }
+
+    @Override
+    public void addNewTripOffer(TripOffer offer, TransPoolDriver driver, String mapName) {
+        driver.addTripOffer(offer);
+        maps.get(mapName).addTripOffer(offer);
+    }
+
+    @Override
+    public void addNewMatchedTripRequest(MatchedTripRequest matchedRequest, TransPoolRider rider, String mapName) {
+        rider.acceptMatch(matchedRequest);
+        maps.get(mapName).addMatchedRequest(matchedRequest);
     }
 }

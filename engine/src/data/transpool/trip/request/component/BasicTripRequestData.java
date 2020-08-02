@@ -1,12 +1,11 @@
 package data.transpool.trip.request.component;
 
+import data.transpool.SingleMapEngine;
 import data.transpool.map.BasicMap;
 import data.transpool.map.component.Stop;
-import data.transpool.trip.Trip;
 import data.transpool.user.account.TransPoolRider;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.*;
 
 import java.util.Objects;
 
@@ -71,6 +70,11 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
     @Override
     public Stop getDestinationStop() {
         return this.destinationStop;
+    }
+
+    @Override
+    public boolean isBelongToMap(SingleMapEngine map) {
+        return map.getTripRequest(this.requestID) != null;
     }
 
     @Override

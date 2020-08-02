@@ -1,7 +1,7 @@
 package api.components;
 
 import data.transpool.TransPoolMap;
-import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.matching.component.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import exception.NoResultsFoundException;
@@ -16,12 +16,12 @@ import java.util.stream.Collectors;
 /**
  * The engine used to find a match for a trip request. Contains the list of all possible matches, the request to match.
  */
-public class MatchingEngine {
+public class MatchingEngineOLD {
     private TripRequest tripRequestToMatch;
     private List<PossibleRoute> possibleRoutes;
     private boolean foundMatches;
 
-    public MatchingEngine() {
+    public MatchingEngineOLD() {
         possibleRoutes = new ArrayList<>();
         foundMatches = false;
     }
@@ -36,7 +36,7 @@ public class MatchingEngine {
      */
     public void findPossibleMatches(TransPoolMap data, TripRequest tripRequestToMatch, int maximumMatches) throws NoResultsFoundException {
         this.tripRequestToMatch = tripRequestToMatch;
-        possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
+        //possibleRoutes.addAll(data.getAllPossibleRoutes(tripRequestToMatch, maximumMatches));
 
         if (!possibleRoutes.isEmpty()) {
             foundMatches = true;

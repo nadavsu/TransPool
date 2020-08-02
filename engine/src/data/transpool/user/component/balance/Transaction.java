@@ -1,23 +1,22 @@
 package data.transpool.user.component.balance;
 
 import data.transpool.time.component.TimeDay;
-
+//add
 public class Transaction {
-
-    public enum Type {
-        CREDIT_CHARGE,
-        PAY,
-        RECEIVE
-    }
 
     private TimeDay date;
     private Type type;
-    private double amount;
+    private double transactionAmount;
+    private double amountBefore;
+    private double amountAfter;
 
-    public Transaction(TimeDay date, Type type, double sum) {
+    public Transaction(TimeDay date, Type type, double transactionAmount, double currentBalance) {
         this.date = date;
         this.type = type;
-        this.amount = sum;
+        this.transactionAmount = transactionAmount;
+
+        this.amountBefore = currentBalance;
+        this.amountAfter = currentBalance + transactionAmount;
     }
 
     public TimeDay getDate() {
@@ -28,8 +27,20 @@ public class Transaction {
         return type;
     }
 
-    public double getAmount() {
-        return amount;
+    public double getTransactionAmount() {
+        return transactionAmount;
+    }
+
+    public double getAmountBefore() {
+        return amountBefore;
+    }
+
+    public double getAmountAfter() {
+        return amountAfter;
+    }
+
+    public enum Type {
+        CREDIT_CHARGE, PAY, RECEIVE
     }
 
 }

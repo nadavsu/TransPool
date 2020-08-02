@@ -1,6 +1,6 @@
 $(getUser(createUserTable));
 
-// user = {ID: "" ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; type: "" ; sum: ""}}
+// user = {ID: "" ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; type: "" ; transactionAmount: ""; amountBefore; amountAfter}}
 function createUserTable(user) {
     var transactions = user.transactionHistory;
     $.each(transactions || [], addTransactionToTransactionsTable);
@@ -24,24 +24,14 @@ function addTransactionToTransactionsTable(index, transaction) {
                 .text("Day " + transaction.date.day + " at " + transactionHour + ":" + transactionMinute)
         ).append(
             $("<td class='transaction-amount'>")
-                .text("$" + transaction.amount)
+                .text("$" + transaction.transactionAmount)
+        ).append(
+            $("<td class='amount-before'>")
+                .text("$" + transaction.amountBefore)
+        ).append(
+            $("<td class='amount-after'>")
+                .text("$" + transaction.amountAfter)
         );
 
     $("tbody.transactions-data").append(newTransaction);
 }
-
-/*                <tr>
-                    <td>1,001</td>
-                    <td>Lorem</td>
-                    <td>ipsum</td>
-                    <td>dolor</td>
-                    <td>sit</td>
-                </tr>
-
-                                <tr>
-                    <th>Transaction Type</th>
-                    <th>Date</th>
-                    <th>Transaction Amount</th>
-                    <th>Amount Before</th>
-                    <th>Amount After</th>
-                </tr>*/

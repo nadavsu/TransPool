@@ -6,16 +6,12 @@ import data.transpool.time.component.TimeDay;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.trip.offer.component.TripOfferPart;
-import data.transpool.trip.offer.graph.TripOfferGraph;
-import data.transpool.trip.offer.matching.PossibleRoute;
-import data.transpool.trip.offer.matching.PossibleRoutesList;
-import data.transpool.trip.request.component.TripRequest;
+import data.transpool.trip.matching.component.TripOffersGraph;
+import data.transpool.trip.matching.component.PossibleRoutesList;
 import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -24,7 +20,7 @@ import java.util.stream.Collectors;
  */
 public class TripOffersEngineBase implements TripOffersEngine {
     private List<TripOffer> allTripOffers;
-    private TripOfferGraph tripOfferGraph;
+    private TripOffersGraph tripOffersGraph;
 
     //Live details
     private List<TripOffer> currentTripOffers;
@@ -37,7 +33,7 @@ public class TripOffersEngineBase implements TripOffersEngine {
         this.currentTripOffers = FXCollections.observableArrayList();
         update();
 
-        this.tripOfferGraph = new TripOfferGraph(map.getNumberOfStops(), allTripOffers);
+        this.tripOffersGraph = new TripOffersGraph(map.getNumberOfStops(), allTripOffers);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class TripOffersEngineBase implements TripOffersEngine {
     @Override
     public void addTripOffer(TripOffer tripOffer) {
         allTripOffers.add(tripOffer);
-        tripOfferGraph.add(tripOffer);
+        tripOffersGraph.add(tripOffer);
     }
 
     @Override
@@ -74,6 +70,11 @@ public class TripOffersEngineBase implements TripOffersEngine {
     }
 
     @Override
+    public TripOffersGraph getTripOffersGraph() {
+        return tripOffersGraph;
+    }
+
+    @Override
     public List<TripOffer> getCurrentOffers() {
         return currentTripOffers;
     }
@@ -84,42 +85,12 @@ public class TripOffersEngineBase implements TripOffersEngine {
     }
 
     @Override
-    public TripOfferPart getSubTripOffer(int tripOfferID, int subTripOfferID) {
-        return getTripOffer(tripOfferID).getSubTripOffer(subTripOfferID);
+    public TripOfferPart getTripOfferPart(int tripOfferID, int subTripOfferID) {
+        return getTripOffer(tripOfferID).getTripOfferPart(subTripOfferID);
     }
 
     //----------------------------------------------------------------------------------------------------------------//
 
-    /**
-     * Gets the possible routes from the TripOfferMap, and filters all routes which are not relevant by
-     * departure or arrival time. Also filters all rides that are not continuous if the rider asked for continuous rides.
-     * @param tripRequest
-     * @param maximumMatches
-     * @return
-     */
-    @Override
-    public PossibleRoutesList getAllPossibleRoutes(TripRequest tripRequest, int maximumMatches) {
-
-        Predicate<PossibleRoute> timeMatchPredicate = possibleRoute -> {
-            if (tripRequest.isTimeOfArrival()) {
-                return possibleRoute.getArrivalTime().equals(tripRequest.getRequestTime());
-            } else {
-                return possibleRoute.getDepartureTime().equals(tripRequest.getRequestTime());
-            }
-        };
-
-        Predicate<PossibleRoute> continuousRidePredicate = possibleRoute ->
-                !tripRequest.isContinuous() || possibleRoute.isContinuous();
-
-        PossibleRoutesList possibleRoutes = tripOfferGraph.getAllPossibleRoutes(
-                tripRequest.getSourceStop(), tripRequest.getDestinationStop(), tripRequest.getRequestTime());
-
-        return possibleRoutes.stream()
-                .filter(timeMatchPredicate)
-                .filter(continuousRidePredicate)
-                .limit(maximumMatches)
-                .collect(Collectors.toCollection(PossibleRoutesList::new));
-    }
 
     /**
      * This function updates the map every time the system's time is changed.
@@ -135,7 +106,7 @@ public class TripOffersEngineBase implements TripOffersEngine {
         for (TripOffer tripOffer : allTripOffers) {
             if (tripOffer.isCurrentlyHappening()) {
                 currentTripOffers.add(tripOffer);
-                currentTripOfferParts.add(tripOffer.getCurrentSubTripOffer());
+                currentTripOfferParts.add(tripOffer.getOccurringTripOfferPart());
             }
         }
         for (TripOfferPart tripOfferPart : currentTripOfferParts) {
@@ -148,7 +119,7 @@ public class TripOffersEngineBase implements TripOffersEngine {
     }
 
     public PossibleRoutesList getAllPossibleRoutes(Stop source, Stop destination, TimeDay departureTime) {
-        return tripOfferGraph.getAllPossibleRoutes(source, destination, departureTime);
+        return tripOffersGraph.getAllPossibleRoutes(source, destination, departureTime);
     }
 
 }

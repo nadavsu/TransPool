@@ -1,10 +1,10 @@
-package api;
+package api.old;
 
 import data.transpool.TransPoolMap;
 import data.transpool.time.component.Recurrence;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.offer.matching.PossibleRoute;
+import data.transpool.trip.matching.component.PossibleRoute;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
 import data.transpool.user.account.TransPoolDriver;

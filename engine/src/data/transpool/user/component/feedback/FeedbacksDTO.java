@@ -2,12 +2,12 @@ package data.transpool.user.component.feedback;
 
 import java.util.Collection;
 
-public class FeedbackDTO {
+public class FeedbacksDTO {
 
     private Collection<Feedback> feedbacks;
     private double averageRating;
 
-    public FeedbackDTO(Feedbackable feedbackable) {
+    public FeedbacksDTO(Feedbackable feedbackable) {
         this.feedbacks = feedbackable.getAllFeedbacks();
         this.averageRating = feedbackable.getAverageRating();
     }

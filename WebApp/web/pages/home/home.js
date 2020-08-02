@@ -86,7 +86,7 @@ function loadUserCard(user) {
     $.each(lastThreeTransactions || [], loadRecentTransactions);
 }
 
-// transaction = {"date":{"time":{"hour":0,"minute":0,"second":0,"nano":0},"day":1},"type":"PAY","amount":200.0}
+// transaction = {"date":{"time":{"hour":0,"minute":0,"second":0,"nano":0},"day":1},"type":"PAY","transactionAmount":200.0}
 function loadRecentTransactions(index, transaction) {
     var transactionHour = checkTime(transaction.date.time.hour);
     var transactionMinute = checkTime(transaction.date.time.minute);
@@ -97,15 +97,23 @@ function loadRecentTransactions(index, transaction) {
             $("<div>")
                 .append(
                     $("<h6 class='transaction-date'>")
-                        .text("Day " + transaction.date.day + "\n" + transactionHour + ":" + transactionMinute)
+                        .text("Day " + transaction.date.day + " at " + transactionHour + ":" + transactionMinute)
                         .append("<br>")
                         .append(
                             $("<img class='transaction-type'>")
                                 .attr("src", img)
                         ).append(
-                        $("<small class='text-muted transaction-amount'>")
-                            .text(" $" + transaction.amount)
-                    )
+                            $("<small class='text-muted transaction-amount'>")
+                                .text(" $" + transaction.transactionAmount)
+                        ).append(
+                            $("<br>")
+                        ).append(
+                            $("<p class='small text-muted amount-before'>")
+                                .text("Amount before: $" + transaction.amountBefore)
+                        ).append(
+                            $("<p class='small text-muted amount-after'>")
+                                .text("Amount after: $" + transaction.amountAfter)
+                        )
                 )
         );
 

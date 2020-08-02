@@ -1,5 +1,6 @@
-var RIDER_IMAGE = "common/images/cards/request_icon.png";
-var DRIVER_IMAGE = "common/images/cards/offer_icon.png";
+var RIDER_IMAGE = "common/images/cards/request_icon.svg";
+var DRIVER_IMAGE = "common/images/cards/offer_icon.svg";
+var MATCH_IMAGE = "common/images/cards/match_icon.svg";
 
 var PAY = "PAY";
 var CREDIT_CHARGE = "CREDIT_CHARGE";

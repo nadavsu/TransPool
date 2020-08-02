@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Map for drivers">
+    <meta name="author" content="Nadav Suliman">
+
+    <title class="page-title">TransPool - MAPNAME</title>
+    <link rel="stylesheet" type="text/css" href="pages/map/map.css">
+
+    <!--Default Header=================================================================================-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!--===============================================================================================-->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <!--===============================================================================================-->
+    <!-- jQuery library -->
+    <script type="text/javascript" src="common/lib/jquery-2.0.3.min.js"></script>
+    <!--===============================================================================================-->
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!--===============================================================================================-->
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    <!--===============================================================================================-->
+    <link rel="icon" href="common/images/icon32.png">
+    <!--===============================================================================================-->
+    <link rel="stylesheet" type="text/css" href="common/stylesheet/navbar.css">
+    <link rel="stylesheet" type="text/css" href="common/stylesheet/main.css">
+    <!--===============================================================================================-->
+
+    <script src="pages/map/map.js"></script>
+    <script src="pages/map/request-map.js"></script>
+
+</head>
+
+<body>
+<!-- Notification Modal -->
+<div class="modal fade" id="notification-modal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Notification</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body notification-modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="notification-modal-button" type="button" class="btn btn-secondary" data-dismiss="modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--Navbar-->
+<nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
+    <a class="navbar-brand" href="home.html">
+        <img src="common/images/logo_nav_bar.png" alt="TransPool" id="logo">
+    </a>
+    <a href="upload.html" class="btn align-middle btn-primary ml-auto mr-3 order-lg-last" type="button">Upload</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="home.html">Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="chat.html">Chat</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="account.html">Account</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="main-body row">
+
+    <!--Left tab pane-->
+    <div class="col-md-3">
+
+        <!--Tab pane's tabs-->
+        <div class="card left-sidebar">
+            <ul class="nav nav-pills">
+
+                <li class="nav-item">
+                    <a class="nav-link active" id="new-request-tab" data-toggle="tab" href="#new-request"
+                       role="tab" aria-controls="new-offer" aria-selected="true">New</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="my-requests-tab" data-toggle="tab" href="#my-requests" role="tab"
+                       aria-controls="my-requests" aria-selected="false">Requests</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="my-matches-tab" data-toggle="tab" href="#my-matches" role="tab"
+                       aria-controls="my-matches" aria-selected="false">Matches</a>
+                </li>
+            </ul>
+
+            <!--Tab Contents-->
+            <div class="tab-content">
+                <!--New Request-->
+                <div class="tab-pane fade show active" id="new-request" role="tabpanel"
+                     aria-labelledby="new-request-tab">
+                    <div class="card-body">
+                        <form class="new-trip" method="GET" action="create-new-request">
+                            <div class="form-group departure-time">
+                                <label for="departure-time" class="sr-only">Time Of Departure</label>
+                                <input type="time" id="departure-time" name="departure-time" class="form-control"
+                                       placeholder="Time of Departure (HH:MM)" required autofocus>
+                            </div>
+                            <div class="form-group departure-day">
+                                <label for="departure-day" class="sr-only">Day of departure</label>
+                                <input type="number" id="departure-day" name="departure-day" class="form-control"
+                                       placeholder="Day of Departure" min="1" required>
+                            </div>
+                            <div class="form-group source-stop">
+                                <label for="source-stop" class="sr-only">Source</label>
+                                <input type="text" id="source-stop" name="source-stop" class="form-control"
+                                       placeholder="Source" required>
+                            </div>
+                            <div class="form-group destination-stop">
+                                <label for="destination-stop" class="sr-only">PPK</label>
+                                <input type="text" id="destination-stop" name="destination-stop" class="form-control"
+                                       placeholder="Destination" required>
+                            </div>
+                            <div class="custom-control custom-checkbox is-continuous">
+                                <input type="checkbox" class="custom-control-input" id="is-continuous"
+                                       name="is-continuous">
+                                <label class="custom-control-label" for="is-continuous">I want my ride to be
+                                    continuous</label>
+                            </div>
+                            <input type="hidden" name="map-name" class="form-control map-name">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Create</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!--My Requests-->
+                <div class="tab-pane fade" id="my-requests" role="tabpanel" aria-labelledby="my-requests-tab">
+                    <ul class="list-group-flush requests-list">
+                        <!--Here will be list items of the user's requests-->
+                    </ul>
+                </div>
+
+                <!--Matches-->
+                <div class="tab-pane fade" id="my-matches" role="tabpanel" aria-labelledby="my-matches-tab">
+                    <ul class="list-group-flush matches-list">
+                        <!--Here will be list items of the user's matches-->
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!--Main map-->
+    <div class="col-md-6">
+        <div class="sticky-top">
+
+            <!--img src="common/images/sample_map.png" style="max-width:100%; max-height:100%;" class="fixed"-->
+            <div id="map-graph">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="chart map-graph" width="600" height="575" aria-labelledby="title" role="img">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="30" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path id="arrow-head" d="M0,0 L0,6 L6,3 z"/>
+                        </marker>
+                        <pattern id="background-map" patternUnits="userSpaceOnUse" width="600" height="575">
+                            <image xlink:href="common/images/sample_map.png" x="0" y="0" width="600" height="575" />
+                        </pattern>
+                    </defs>
+                    <path d="M5,5 l0,680 l980,0 l0,-680 l-980,0" fill="url(#background-map)" />
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <!--Right side-bar-->
+    <div class="col-md-3">
+        <!--Tabs-->
+        <div class="card right-sidebar">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link active small" id="offers-tab" data-toggle="tab" href="#offers"
+                       role="tab" aria-controls="offers" aria-selected="true">Offers</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link small" id="leave-feedback-tab" data-toggle="tab" href="#leave-feedback"
+                       role="tab"
+                       aria-controls="leave-feedback" aria-selected="false">Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link small" id="find-a-match-tab" data-toggle="tab" href="#find-a-match" role="tab"
+                       aria-controls="find-a-match" aria-selected="false">Find Match</a>
+                </li>
+            </ul>
+
+            <!--Tab contents-->
+            <div class="tab-content">
+                <!--List of offers-->
+                <div class="tab-pane fade show active" id="offers" role="tabpanel" aria-labelledby="offers-tab">
+                    <ul class="list-group-flush offers-list">
+                        <!--Here will be list items of the map's offers-->
+                    </ul>
+                </div>
+                <!--Feedback form-->
+                <div class="tab-pane fade" id="leave-feedback" role="tabpanel" aria-labelledby="leave-feedback-tab">
+                    <div class="card-body">
+                        <form class="leave-feedback" method="POST" action="leave-feedback">
+                            <div class="form-group">
+                                <select class="form-control feedbackees-select" name="feedbackee" id="feedbackee" required>
+                                    <!--Here will be the possible feedbackees to feedback-->
+                                    <!--value of each feedbackee in the 'select' is the id of the feedbackee-->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <select class="form-control rating-select" name="rating" id="rating">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="comment">Comment</label>
+                                <textarea class="form-control" id="comment" name="comment" rows="4"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Leave Feedback</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!--Find a match form-->
+                <div class="tab-pane fade" id="find-a-match" role="tabpanel" aria-labelledby="find-a-match-tab">
+                    <div class="card-body">
+                        <form class="find-a-match" method="POST" action="find-a-match">
+                            <div class="form-group">
+                                <select class="form-control requests-to-match-select" name="request-to-match"
+                                        id="request-to-match">
+                                    <!--Here will be the possible requests to match-->
+                                    <!--value of each request in the 'select' is the id of the request-->
+                                </select>
+                            </div>
+                            <div class="form-group num-of-results">
+                                <label for="num-of-results" class="sr-only">Number of Results</label>
+                                <input type="number" id="num-of-results" name="num-of-results" class="form-control"
+                                       placeholder="Number of results" min="1" required autofocus>
+                            </div>
+                            <input type="hidden" name="map-name" class="map-name form-control">
+                            <div class="form-group">
+                                <button class="btn btn-lg btn-primary btn-block" type="submit">Find matches</button>
+                            </div>
+                        </form>
+                        <div class="results">
+                            <ul class="results-list list-group-flush">
+                                <!--Here will be the list of results-->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

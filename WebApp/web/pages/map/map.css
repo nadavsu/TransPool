@@ -1,0 +1,44 @@
+g.stop {
+     fill: #FF1B57;
+     height: 10px;
+     width: 10px;
+     -webkit-transition: fill .3s ease;
+     transition: fill .3s ease;
+     cursor: pointer;
+     font-family: Helvetica, sans-serif;
+ }
+g.stop text {
+    fill: black;
+}
+
+g.stop {
+    stroke-width: 0;
+    fill: #0399ff;
+}
+
+g.stop:hover,
+g.stop:focus {
+    fill: #FF1B57 !important;
+}
+
+g.stop:hover text,
+g.stop:focus text {
+    fill: #FF1B57;
+}
+g.path {
+    stroke: gray;
+    stroke-width: 2;
+}
+
+#arrow-head {
+    fill: #FF1B57;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}​

@@ -5,7 +5,7 @@ package data.transpool.time.component;
  * An enum holding the recurrences with their names and values.
  */
 public enum Recurrence {
-    ONE_TIME("OneTime", 0),
+    ONE_TIME("One time", 0),
     DAILY("Daily",1),
     BI_DAILY("Bi-daily", 2),
     WEEKLY("Weekly", 7),
@@ -17,6 +17,21 @@ public enum Recurrence {
     Recurrence(String name, int value) {
         this.name = name;
         this.value = value;
+    }
+
+    public static Recurrence getRecurrence(String recurrence) {
+        switch (recurrence) {
+            case "Daily" :
+                return DAILY;
+            case "Bi-daily":
+                return BI_DAILY;
+            case "Weekly":
+                return WEEKLY;
+            case "Monthly":
+                return MONTHLY;
+            default:
+                return ONE_TIME;
+        }
     }
 
     public int getValue() {
@@ -39,6 +54,14 @@ public enum Recurrence {
         }
     }
 
+    public int getNextRecurrenceDay(int day, Recurrence recurrenceType) {
+        return day += recurrenceType.getValue();
+    }
+
+    /**
+     * Gets the name of the Recurrence
+     * @return - the name of the enum as a string.
+     */
     @Override
     public String toString() {
         return name;

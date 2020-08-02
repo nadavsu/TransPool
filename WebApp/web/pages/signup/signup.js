@@ -7,7 +7,7 @@ $(function () {
             url: this.action,
             timeout: 2000,
             error: function () {
-                console.log("Error");
+                console.log("JAXB Error");
             },
             success: function (resp) {
                 if (resp === "home.html" || resp === "signup.html") {

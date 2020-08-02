@@ -37,11 +37,9 @@ public class TimeDay {
         this.time = other.time;
     }
 
-    public void setDay(Integer day) throws InvalidDayStartException {
+    public void setDay(Integer day) {
         if (day == null) {
             this.day = 1;
-        } else if (day < 1) {
-            throw new InvalidDayStartException();
         } else {
             this.day = day;
         }
@@ -125,7 +123,7 @@ public class TimeDay {
     }
 
     public boolean isInRange(TimeDay time1, TimeDay time2) {
-        return this.isBefore(time2) && this.isAfter(time1);
+        return !this.isAfter(time2) && !this.isBefore(time1);
     }
 
     @Override
@@ -144,7 +142,7 @@ public class TimeDay {
 
     @Override
     public String toString() {
-        return "on time " + getTime() + " on day " + getDay();
+        return "Day " + day + " at " + time;
     }
 
 }

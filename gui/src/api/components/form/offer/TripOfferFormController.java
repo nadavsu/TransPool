@@ -6,7 +6,7 @@ import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXTimePicker;
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.time.component.Recurrence;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.FXCollections;
@@ -162,7 +162,7 @@ public class TripOfferFormController extends FormController {
                 && textFieldRiderCapacity.validate();
     }
 
-    public void bindDataToUI(TransPoolData data) {
+    public void bindDataToUI(TransPoolMapEngine data) {
         if (!allStops.isEmpty()) {
             allStops.clear();
             comboBoxStopToAdd.getItems().clear();

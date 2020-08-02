@@ -23,6 +23,7 @@ public class StationNode extends AbstractCell {
     private int y;
     private String name;
     private Supplier<StationDetailsDTO> detailsSupplier;
+
     public StationNode(int x, int y) {
         this.x = x;
         this.y = y;

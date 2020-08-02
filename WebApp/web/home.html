@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Signup page for new users">
+    <meta name="description" content="Home page for logged in users">
     <meta name="author" content="Nadav Suliman">
 
     <title>TransPool - Home</title>
@@ -29,8 +29,13 @@
     <link rel="stylesheet" type="text/css" href="common/stylesheet/navbar.css">
     <!--===============================================================================================-->
 
+    <script src="common/scripts/GetUser.js" type="text/javascript"></script>
+    <script src="common/scripts/Transaction.js" type="text/javascript"></script>
+    <script src="pages/home/home.js" type="text/javascript"></script>
 </head>
 <body>
+
+<!--Navbar-->
 <nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
     <a class="navbar-brand" href="home.html">
         <img src="common/images/logo_nav_bar.png" alt="TransPool" id="logo">
@@ -54,19 +59,16 @@
     </div>
 </nav>
 
-<!--End of navbar-->
-
-
 <!--Main body-->
 <div class="row main-body">
-    <div class="col-md-2">
+    <div class="col-md-3">
         <div class="card shadow p-3 mb-5 bg-white rounded">
-            <img class="card-img-top user-image" src="common/images/cards/offer_icon.png" alt="User image">
+            <img class="card-img-top user-image" src="common/images/cards/match_icon.svg" alt="User image">
             <div class="card-body">
                 <h5 class="card-title username"></h5>
                 <h6 class="card-subtitle text-muted">Balance: $<span class="balance"></span></h6>
                 <br/>
-                <h6 class="card-subtitle text-muted">Recent Transactions:</h6>
+                <h6 class="card-subtitle">Recent Transactions:</h6>
                 <ul class="list-group list-group-flush last-transactions">
                 </ul>
                 <br/>
@@ -74,99 +76,17 @@
             </div>
         </div>
     </div>
-    <div class="col-md-10">
+    <div class="col-md-9">
         <div class="card-columns">
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Tel Aviv</h4>
-                    <p class="card-text num-of-offers">23 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 5 are matched</p>
-                    <p class="card-text stops-paths">20 Stops, 21 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Nadav Suliman</small>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Rishon Lezion</h4>
-                    <p class="card-text num-of-offers">3 Trip offers</p>
-                    <p class="card-text num-of-requests">3 Ride requests, 2 are matched</p>
-                    <p class="card-text stops-paths">42 Stops, 21 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Nadav Suliman</small>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Herzliya</h4>
-                    <p class="card-text num-of-offers">42 Trip offers</p>
-                    <p class="card-text num-of-requests">3 Ride requests, 0 are matched</p>
-                    <p class="card-text stops-paths">23 Stops, 32 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Hadas Suliman</small>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Tel Aviv</h4>
-                    <p class="card-text num-of-offers">23 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 5 are matched</p>
-                    <p class="card-text stops-paths">20 Stops, 21 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Nadav Suliman</small>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Jerusalem</h4>
-                    <p class="card-text num-of-offers">62 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 11 are matched</p>
-                    <p class="card-text stops-paths">44 Stops, 20 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Nadav Suliman</small>
-                </div>
-            </div>
-            <div class="card">
-                <img class="card-img-top" src="common/images/sample_map.png" alt="Map">
-                <div class="card-body">
-                    <h4 class="card-title map-name">Tel Aviv</h4>
-                    <p class="card-text num-of-offers">23 Trip offers</p>
-                    <p class="card-text num-of-requests">12 Ride requests, 5 are matched</p>
-                    <p class="card-text stops-paths">20 Stops, 21 paths.</p>
-                    <a href="#" class="btn btn-primary">Open</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Uploaded by Nadav Suliman</small>
-                </div>
-            </div>
         </div>
     </div>
 </div>
 
-<script src="common/scripts/GetUser.js" type="text/javascript"></script>
-<script src="common/scripts/Transaction.js" type="text/javascript"></script>
-<script src="pages/home/home.js" type="text/javascript"></script>
-
 
 <hr class="featurette-divider">
+</body>
 <footer class="container">
     <p class="float-right"><a href="#">Back to top</a></p>
     <p>TransPool &middot; Created by <a href="https://www.linkedin.com/in/nadav-suliman/">Nadav Suliman</a> using Bootstrap</p>
 </footer>
-</body>
 </html>

@@ -4,7 +4,7 @@ import api.components.TransPoolController;
 import com.fxgraph.graph.Graph;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 import data.transpool.time.component.TimeInterval;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -95,7 +95,7 @@ public class MapController {
         return mapGraph;
     }
 
-    public void bindaUIToData(TransPoolData data) {
+    public void bindaUIToData(TransPoolMapEngine data) {
         currentTime.bind(data.getCurrentTime().timeProperty());
         currentDay.bind(data.getCurrentTime().dayProperty());
     }

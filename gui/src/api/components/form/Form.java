@@ -1,6 +1,6 @@
 package api.components.form;
 
-import data.transpool.TransPoolData;
+import data.transpool.TransPoolMapEngine;
 
 public interface Form {
     void clear();                   //Clears the form

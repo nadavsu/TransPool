@@ -1,5 +1,5 @@
 $(function() {
-    $("#success-modal-button").click(function() {
+    $("#notification-modal-button").click(function() {
         location.reload();
     })
 });
@@ -38,6 +38,68 @@ function initializeNewTripForm(mapName) {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+//mapDetails = List<StopDTO> allStops, List<PathDTO> allPaths, width, length
+function generateMap(mapDetails) {
+    var widthMultiplier = 600 / mapDetails.width;
+    var lengthMultiplier = 575 / mapDetails.length;
+    var allStops = mapDetails.allStops;
+    var allPaths = mapDetails.allPaths;
+
+    for (var j = 0; j < allPaths.length; j++) {
+        loadPath(allPaths[j], widthMultiplier, lengthMultiplier);
+    }
+    for (var i = 0; i < allStops.length; i++) {
+        loadStop(allStops[i], widthMultiplier, lengthMultiplier);
+    }
+
+}
+
+//Stop - {x, y, stopName}
+function loadStop(stop, widthMultiplier, lengthMultiplier) {
+    var x = stop.x * widthMultiplier;
+    var y = stop.y * lengthMultiplier;
+    var currentStop =
+        $('<g class=stop>')
+            .append(
+                $('<circle r="7"/>')
+                    .attr({
+                        cx: x,
+                        cy: y
+                    })
+            )
+            .append(
+                $('<text class="stop-label">').attr({
+                    x : x + 10,
+                    y : y
+                }).text(stop.stopName)
+            );
+    $('svg.map-graph').append(currentStop);
+    $("#map-graph").html($("#map-graph").html());
+}
+
+//path - x1, y1, sourceName, x2, y2 destinationName
+function loadPath(path, widthMultiplier, lengthMultiplier) {
+    var x1 = path.x1 * widthMultiplier;
+    var y1 = path.y1 * lengthMultiplier;
+    var x2 = path.x2 * widthMultiplier;
+    var y2 = path.y2 * lengthMultiplier;
+    var currPath =
+        $('<g class=path>')
+            .append(
+                $('<line>')
+                    .attr({
+                        x1: x1,
+                        y1: y1,
+                        x2: x2,
+                        y2: y2,
+                        "marker-end" : "url(#arrow)"
+                    })
+            );
+    $('svg.map-graph').append(currPath);
+    $("#map-graph").html($("#map-graph").html());
+}
+
+//----------------------------------------------------------------------------------------------------------------------
 //tripOffer = {driverName, departureTime, sourceStopName, destinationStopName, matchedRequestsDetails:[strings], PPK, fuelConsumption, route:[]}
 function loadTripOffer(index, tripOffer) {
     var currentOffer =
@@ -45,7 +107,7 @@ function loadTripOffer(index, tripOffer) {
             .append(
                 $('<div class="text-center">')
                     .append(
-                        $('<img src="common/images/cards/offer_icon.png">')
+                        $('<img src="common/images/cards/offer_icon.svg">')
                     )
             ).append(
             $('<div>')
@@ -117,30 +179,6 @@ function createRouteList(route) {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//feedback = {averageRating, feedbacks:[{feedbackerID, feedbackerName, rating, comment}]}
-function loadFeedbackTab(feedback) {
-    $(".averageRating").text(feedback.averageRating);
-    var feedbacksList = feedback.feedbacks;
-    $.each(feedbacksList || [], loadFeedbackList);
-}
-
-function loadFeedbackList(index, feedback) {
-    var currentFeedback =
-        $('<li class="list-group-item feedback">')
-            .append(
-                $('<h5 class="feedbacker-name">')
-                    .text(feedback.feedbackerName)
-            ).append(
-            $('<h6 class="subtitle text-muted rating">')
-                .text(feedback.rating + "/5 stars")
-        ).append(
-            $('<p class="comment">')
-                .text(feedback.comment)
-        );
-    $('ul.user-feedbacks').append(currentFeedback);
-}
-
-//----------------------------------------------------------------------------------------------------------------------
 //tripRequest = {riderName, sourceStopName, destinationStopName, requestTime:string}
 function loadTripRequest(index, tripRequest) {
     var currentRequest =
@@ -148,7 +186,7 @@ function loadTripRequest(index, tripRequest) {
             .append(
                 $('<div class="text-center">')
                     .append(
-                        $('<img src="common/images/cards/request_icon.png">')
+                        $('<img src="common/images/cards/request_icon.svg">')
                     )
             ).append(
             $('<div>')
@@ -180,7 +218,7 @@ function loadMatchedTrip(index, matchedTrip) {
             .append(
                 $('<div class="text-center">')
                     .append(
-                        $('<img src="common/images/cards/match_icon.png">')
+                        $('<img src="common/images/cards/match_icon.svg">')
                     )
             ).append(
             $('<div>')
@@ -209,7 +247,7 @@ function loadMatchedTrip(index, matchedTrip) {
                     )
             ).append(
                 $('<h6 class="subtitle">')
-                    .text("Total price: " + matchedTrip.totalPrice)
+                    .text("Total price: $" + matchedTrip.tripPrice)
             ).append(
                 $('<p class="small">')
                     .text("Congratulations! By travelling with TransPool you have saved " + matchedTrip.averageFuelConsumption + " litres of fuel!")
@@ -223,14 +261,5 @@ function loadMatchedTrip(index, matchedTrip) {
 
 }
 
-
-//----------------------------------------------------------------------------------------------------------------------
-
-function loadStops(index, stopName) {
-    var stop =
-        $('<button class="list-group-item list-group-item-action stop-name-list-item">')
-            .text(stopName);
-    $('ul.stops-list').append(stop);
-}
 
 //----------------------------------------------------------------------------------------------------------------------

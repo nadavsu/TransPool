@@ -109,6 +109,10 @@ public class Path {
         return (60 * length) / maxSpeed;
     }
 
+    public PathDTO getDetails() {
+        return new PathDTO(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

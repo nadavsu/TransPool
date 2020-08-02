@@ -114,6 +114,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
     @Override
     public void leaveFeedback(Feedbackable feedbackee, Feedback feedback) {
         feedbackee.addFeedback(feedback);
+        feedbackables.remove(feedbackee);
     }
 
     @Override

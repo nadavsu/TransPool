@@ -1,6 +1,6 @@
 package data.transpool;
 
-public class MapDetailsDTO {
+public class SingleMapEngineDTO {
 
     private String mapName;
     private String uploaderName;
@@ -11,7 +11,7 @@ public class MapDetailsDTO {
     private int numOfStops;
     private int numOfPaths;
 
-    public MapDetailsDTO(SingleMapEngine transpoolMap) {
+    public SingleMapEngineDTO(SingleMapEngine transpoolMap) {
         this.mapName = transpoolMap.getMapName();
         this.uploaderName = transpoolMap.getUploaderName();
         this.numOfTripOffers = transpoolMap.getNumOfTripOffers();

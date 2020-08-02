@@ -44,6 +44,10 @@ public class Stop {
         return name;
     }
 
+    public StopDTO getDetails() {
+        return new StopDTO(this);
+    }
+
     public static void resetIDGenerator() {
         IDGenerator = 0;
     }

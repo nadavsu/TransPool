@@ -4,6 +4,7 @@ $(initializeRequestMapPage());
 
 function initializeRequestMapPage() {
     mapName = getUrlVars()["map-name"];
+    $('title.page-title').text("TransPool - " + mapName);
     $.ajax({
         data: {"map-name": mapName},
         method: "POST",
@@ -15,11 +16,12 @@ function initializeRequestMapPage() {
         //Resp:
         //[userTripRequestsJson, userMatchedTripRequestsJson, mapTripOffersJson, userFeedbacksJson, userTripRequestsFromMapJson]
         success: function (resp) {
-            $.each(resp[0] || [], loadTripRequest);         //Loading the trip requests of the user.
-            $.each(resp[1] || [], loadMatchedTrip);         //Loading the matched trips of the user.
-            $.each(resp[2] || [], loadTripOffer);           //Loading trip offers in the right tab pane.
-            $.each(resp[3] || [], loadFeedbacksForm);               //Loading the select values in the feedback form
-            $.each(resp[4] || [], loadFindAMatchForm);        //Loading the select values in the matching form.
+            generateMap(resp[0]);
+            $.each(resp[1] || [], loadTripRequest);         //Loading the trip requests of the user.
+            $.each(resp[2] || [], loadMatchedTrip);         //Loading the matched trips of the user.
+            $.each(resp[3] || [], loadTripOffer);           //Loading trip offers in the right tab pane.
+            $.each(resp[4] || [], loadFeedbacksForm);               //Loading the select values in the feedback form
+            $.each(resp[5] || [], loadFindAMatchForm);        //Loading the select values in the matching form.
             initializeNewTripForm(mapName);
             initializeForm($('form.leave-feedback'));
             initializeFindMatchesForm();

@@ -6,7 +6,7 @@
     <meta name="description" content="Map for drivers">
     <meta name="author" content="Nadav Suliman">
 
-    <title>TransPool - MAPNAME</title>
+    <title class="page-title">TransPool - MAPNAME</title>
     <link rel="stylesheet" type="text/css" href="pages/map/map.css">
 
     <!--Default Header=================================================================================-->
@@ -177,8 +177,20 @@
     <!--Main map-->
     <div class="col-md-6">
         <div class="sticky-top">
-
-            <img src="common/images/sample_map.png" style="max-width:100%; max-height:100%;" class="fixed">
+            <!--img src="common/images/sample_map.png" style="max-width:100%; max-height:100%;" class="fixed"-->
+            <div id="map-graph">
+                <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="chart map-graph" width="600" height="575" aria-labelledby="title" role="img">
+                    <defs>
+                        <marker id="arrow" markerWidth="10" markerHeight="10" refX="30" refY="3" orient="auto" markerUnits="strokeWidth">
+                            <path id="arrow-head" d="M0,0 L0,6 L6,3 z"/>
+                        </marker>
+                        <pattern id="background-map" patternUnits="userSpaceOnUse" width="600" height="575">
+                            <image xlink:href="common/images/sample_map.png" x="0" y="0" width="600" height="575" />
+                        </pattern>
+                    </defs>
+                    <path d="M5,5 l0,680 l980,0 l0,-680 l-980,0" fill="url(#background-map)" />
+                </svg>
+            </div>
         </div>
     </div>
 

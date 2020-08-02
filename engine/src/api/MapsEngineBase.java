@@ -1,8 +1,7 @@
 package api;
 
-import data.transpool.MapDetailsDTO;
+import data.transpool.SingleMapEngineDTO;
 import data.transpool.SingleMapEngine;
-import data.transpool.trip.matching.component.PossibleRoute;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.TripRequest;
@@ -45,10 +44,10 @@ public class MapsEngineBase implements MapsEngine {
     }
 
     @Override
-    public List<MapDetailsDTO> getMapDetailsDTOs() {
-        List<MapDetailsDTO> mapDetailsDTOs = new ArrayList<>();
-        maps.forEach((mapName, map) -> mapDetailsDTOs.add(map.getMapDetails()));
-        return mapDetailsDTOs;
+    public List<SingleMapEngineDTO> getMapDetailsDTOs() {
+        List<SingleMapEngineDTO> singleMapEngineDTOS = new ArrayList<>();
+        maps.forEach((mapName, map) -> singleMapEngineDTOS.add(map.getMapEngineDetails()));
+        return singleMapEngineDTOS;
     }
 
     @Override

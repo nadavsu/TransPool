@@ -2,7 +2,9 @@ package data.transpool.map;
 
 import data.generated.MapDescriptor;
 import data.transpool.map.component.Path;
+import data.transpool.map.component.PathDTO;
 import data.transpool.map.component.Stop;
+import data.transpool.map.component.StopDTO;
 import exception.data.*;
 
 import java.util.ArrayList;
@@ -193,6 +195,27 @@ public class BasicMapData implements BasicMap {
     @Override
     public List<Path> getAllPaths() {
         return allPaths;
+    }
+
+    @Override
+    public BasicMapDTO getMapDetails() {
+        return new BasicMapDTO(this);
+    }
+
+    @Override
+    public List<StopDTO> getAllStopsDetails() {
+        return getAllStopsAsList()
+                .stream()
+                .map(Stop::getDetails)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PathDTO> getAllPathsDetails() {
+        return allPaths
+                .stream()
+                .map(Path::getDetails)
+                .collect(Collectors.toList());
     }
 
     public MapMatrix getMapMatrix() {

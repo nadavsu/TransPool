@@ -2,22 +2,22 @@ package data.transpool;
 
 import data.generated.TransPool;
 import data.transpool.map.BasicMap;
+import data.transpool.map.BasicMapDTO;
 import data.transpool.map.BasicMapData;
 import data.transpool.map.component.Path;
+import data.transpool.map.component.PathDTO;
 import data.transpool.map.component.Stop;
+import data.transpool.map.component.StopDTO;
 import data.transpool.time.component.TimeDay;
-import data.transpool.time.TimeEngine;
 import data.transpool.time.TimeEngineBase;
 import data.transpool.time.component.TimeInterval;
 import data.transpool.trip.matching.component.TripOffersGraph;
-import data.transpool.trip.offer.TripOffersEngine;
 import data.transpool.trip.offer.TripOffersEngineBase;
 import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.matching.component.PossibleRoute;
 import data.transpool.trip.matching.component.PossibleRoutesList;
 import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.request.TripRequestsEngine;
 import data.transpool.trip.request.TripRequestsEngineBase;
 import data.transpool.trip.request.component.MatchedTripRequest;
 import data.transpool.trip.request.component.MatchedTripRequestDTO;
@@ -27,6 +27,7 @@ import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -46,10 +47,10 @@ public class TransPoolMap implements SingleMapEngine {
     private String mapName;
     private String uploaderName;
 
-    private BasicMap map;
-    private TripOffersEngine tripOffersEngine;
-    private TripRequestsEngine tripRequestsEngine;
-    private TimeEngine timeEngine;
+    private BasicMapData map;
+    private TripOffersEngineBase tripOffersEngine;
+    private TripRequestsEngineBase tripRequestsEngine;
+    private TimeEngineBase timeEngine;
 
     private List<Updatable> updatables;
 
@@ -74,8 +75,8 @@ public class TransPoolMap implements SingleMapEngine {
 
     //Basic Components-------------------------------------------------------------//
     @Override
-    public MapDetailsDTO getMapDetails() {
-        return new MapDetailsDTO(this);
+    public SingleMapEngineDTO getMapEngineDetails() {
+        return new SingleMapEngineDTO(this);
     }
 
     @Override
@@ -306,6 +307,23 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
+    public List<StopDTO> getAllStopsDetails() {
+        return map.getAllStopsDetails();
+    }
+
+    @Override
+    public List<PathDTO> getAllPathsDetails() {
+        return map.getAllPathsDetails();
+    }
+
+    @Override
+    public BasicMapDTO getMapDetails() {
+        return map.getMapDetails();
+    }
+
+    //TimeEngine---------------------------------------------------------------------------------------//
+
+    @Override
     public void incrementTime(TimeInterval interval) {
         timeEngine.incrementTime(interval, this);
     }
@@ -315,7 +333,6 @@ public class TransPoolMap implements SingleMapEngine {
         timeEngine.decrementTime(interval, this);
     }
 
-    //TimeEngine---------------------------------------------------------------------------------------//
     @Override
     public TimeDay getCurrentTime() {
         return TimeEngineBase.currentTime;

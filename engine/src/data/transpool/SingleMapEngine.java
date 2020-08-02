@@ -9,6 +9,6 @@ import data.transpool.trip.request.TripRequestsEngine;
 public interface SingleMapEngine extends Updatable, BasicMap, TripOffersEngine, TripRequestsEngine, TimeEngine, MatchingEngine {
     String getMapName();
     String getUploaderName();
-    MapDetailsDTO getMapDetails();
+    SingleMapEngineDTO getMapEngineDetails();
     BasicMap getMap();
 }

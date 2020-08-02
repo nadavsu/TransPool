@@ -4,6 +4,7 @@ import api.MapsEngine;
 import com.google.gson.Gson;
 import constants.Constants;
 import data.transpool.SingleMapEngine;
+import data.transpool.map.BasicMapDTO;
 import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.trip.request.component.MatchedTripRequestDTO;
 import data.transpool.trip.request.component.TripRequestDTO;
@@ -39,16 +40,19 @@ public class GetOfferMapServlet extends HttpServlet {
                 SingleMapEngine map = mapsEngine.getMap(mapNameFromParameter);
 
                 List<TripOfferDTO> userTripOffers = driver.getTripOffersDetails();
-                FeedbacksDTO feedbacksDetails = driver.getFeedbacksDetails();
                 List<TripRequestDTO> mapTripRequests = map.getTripRequestsDetails();
                 List<MatchedTripRequestDTO> mapMatchedTrips = map.getMatchedTripsDetails();
+                FeedbacksDTO feedbacksDetails = driver.getFeedbacksDetails();
+                BasicMapDTO mapDetails = map.getMapDetails();
 
                 String allFeedbacksJson = new Gson().toJson(feedbacksDetails);
                 String userTripOffersJson = new Gson().toJson(userTripOffers);
                 String mapTripRequestsJson = new Gson().toJson(mapTripRequests);
                 String mapMatchedTripsJson = new Gson().toJson(mapMatchedTrips);
+                String mapDetailsJson = new Gson().toJson(mapDetails);
 
-                String response = "[" + userTripOffersJson + ","
+                String response = "[" + mapDetailsJson + ","
+                        + userTripOffersJson + ","
                         + allFeedbacksJson + ","
                         + mapTripRequestsJson + ","
                         + mapMatchedTripsJson + "]";

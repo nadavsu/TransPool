@@ -4,6 +4,7 @@ import api.MapsEngine;
 import com.google.gson.Gson;
 import constants.Constants;
 import data.transpool.SingleMapEngine;
+import data.transpool.map.BasicMapDTO;
 import data.transpool.trip.offer.component.TripOfferDTO;
 import data.transpool.trip.request.component.MatchedTripRequestDTO;
 import data.transpool.trip.request.component.TripRequestDTO;
@@ -38,20 +39,25 @@ public class GetRequestMapServlet extends HttpServlet {
                 TransPoolRider rider = (TransPoolRider) userEngine.getUserAccount(usernameFromSession);
                 SingleMapEngine map = mapsEngine.getMap(mapNameFromParameter);
 
+
                 List<TripRequestDTO> userTripRequests = rider.getTripRequestsDetails();
                 List<MatchedTripRequestDTO> userMatchedTripRequests = rider.getMatchedTripRequestDetails();
                 List<TripOfferDTO> mapTripOffers = map.getTripOffersDetails();
                 Set<String> feedbackablesUsernames = rider.getAllFeedbackablesUsernames();
+                BasicMapDTO mapDetails = map.getMapDetails();
 
                 //For the select menu in the matching tab.
                 List<TripRequestDTO> userTripRequestsInMap = rider.getTripRequestsDetailsFromMap(map);
 
+                String mapDetailsJson = new Gson().toJson(mapDetails);
                 String userTripRequestsJson = new Gson().toJson(userTripRequests);
                 String userMatchedTripRequestsJson = new Gson().toJson(userMatchedTripRequests);
                 String mapTripOffersJson = new Gson().toJson(mapTripOffers);
                 String feedbackablesUsernamesJson = new Gson().toJson(feedbackablesUsernames);
                 String userTripRequestsInMapJson = new Gson().toJson(userTripRequestsInMap);
-                String response = "[" + userTripRequestsJson + ","
+
+                String response = "[" + mapDetailsJson + ","
+                        + userTripRequestsJson + ","
                         + userMatchedTripRequestsJson + ","
                         + mapTripOffersJson + ","
                         + feedbackablesUsernamesJson + ","

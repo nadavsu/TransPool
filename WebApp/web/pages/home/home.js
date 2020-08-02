@@ -76,13 +76,6 @@ function createOpenMapForm(mapName) {
 // user = {ID: "" ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; transactionType: "" ; amount: ""}}
 function loadUserCard(user) {
     var lastThreeTransactions = user.transactionHistory.slice(Math.max(user.transactionHistory.length - 3, 0));
-    //TODO: There is no such k,v called user.type
-    if (user.type === "RIDER") {
-        $(".user-image").src = RIDER_IMAGE;
-    } else {
-        $(".user-image").src = DRIVER_IMAGE;
-
-    }
     $.each(lastThreeTransactions || [], loadRecentTransactions);
 }
 

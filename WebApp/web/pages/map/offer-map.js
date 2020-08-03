@@ -1,6 +1,12 @@
-$(function () {
-    var mapName = getUrlVars()["map-name"];
+var mapName;
+$(function() {
+    mapName = getUrlVars()["map-name"];
     $('title.page-title').text("TransPool - " + mapName);
+    initializeOfferMapPage()
+
+});
+
+function initializeOfferMapPage() {
     $.ajax({
         data: {"map-name": mapName},
         method: "POST",
@@ -20,7 +26,7 @@ $(function () {
             initializeNewTripForm(mapName);
         }
     })
-});
+}
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -1,10 +1,11 @@
 var mapName;
-
-$(initializeRequestMapPage());
-
-function initializeRequestMapPage() {
+$(function () {
+    initializeRequestMapPage();
     mapName = getUrlVars()["map-name"];
     $('title.page-title').text("TransPool - " + mapName);
+});
+
+function initializeRequestMapPage() {
     $.ajax({
         data: {"map-name": mapName},
         method: "POST",
@@ -20,8 +21,8 @@ function initializeRequestMapPage() {
             $.each(resp[1] || [], loadTripRequest);         //Loading the trip requests of the user.
             $.each(resp[2] || [], loadMatchedTrip);         //Loading the matched trips of the user.
             $.each(resp[3] || [], loadTripOffer);           //Loading trip offers in the right tab pane.
-            $.each(resp[4] || [], loadFeedbacksForm);               //Loading the select values in the feedback form
-            $.each(resp[5] || [], loadFindAMatchForm);        //Loading the select values in the matching form.
+            $.each(resp[4] || [], loadFeedbacksForm);       //Loading the select values in the feedback form
+            $.each(resp[5] || [], loadFindAMatchForm);      //Loading the select values in the matching form.
             initializeNewTripForm(mapName);
             initializeForm($('form.leave-feedback'));
             initializeFindMatchesForm();
@@ -29,25 +30,7 @@ function initializeRequestMapPage() {
     })
 }
 
-function initializeForm(form) {
-    form.submit(function() {
-        var parameters = $(this).serialize();
-        $.ajax({
-            method: this.method,
-            data: parameters,
-            url: this.action,
-            timeout: 2000,
-            error: function() {
-                console.log("AJAX Error");
-            },
-            success: function(resp) {
-                $("div.notification-modal-body").text(resp);
-                $("#notification-modal").modal("show");
-            }
-        });
-        return false;
-    })
-}
+//----------------------------------------------------------------------------------------------------------------------
 
 function initializeFindMatchesForm() {
     $('form.find-a-match').submit(function() {

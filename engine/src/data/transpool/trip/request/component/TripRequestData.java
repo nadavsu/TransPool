@@ -1,12 +1,9 @@
 package data.transpool.trip.request.component;
 
-import data.transpool.SingleMapEngine;
 import data.transpool.map.BasicMap;
-import data.transpool.map.component.Stop;
 import data.transpool.time.component.TimeDay;
-import exception.data.InvalidDayStartException;
+import exception.time.InvalidDayStartException;
 import exception.data.TransPoolDataException;
-import javafx.beans.property.*;
 
 import java.time.LocalTime;
 import java.util.Objects;

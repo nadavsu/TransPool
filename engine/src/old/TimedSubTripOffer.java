@@ -1,4 +1,4 @@
-package data.transpool.old;
+package old;
 
 import data.transpool.time.component.TimeDay;
 import data.transpool.trip.offer.component.TripOfferPart;

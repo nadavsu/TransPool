@@ -1,4 +1,4 @@
-package data.transpool.old;
+package old;
 
 import data.transpool.time.component.Recurrence;
 import data.transpool.trip.offer.component.BasicTripOffer;

@@ -10,6 +10,7 @@ import data.transpool.trip.request.component.MatchedTripRequestDTO;
 import data.transpool.trip.request.component.TripRequestDTO;
 import data.transpool.user.UserEngine;
 import data.transpool.user.account.TransPoolDriver;
+import data.transpool.user.component.feedback.Feedback;
 import data.transpool.user.component.feedback.FeedbacksDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;

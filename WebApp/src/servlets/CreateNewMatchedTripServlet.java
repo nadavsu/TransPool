@@ -49,7 +49,7 @@ public class CreateNewMatchedTripServlet extends HttpServlet {
                     out.print(e.getMessage());
                 }
             } else {
-
+                out.print("No possible routes!");
             }
 
         }

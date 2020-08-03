@@ -15,8 +15,10 @@ import java.util.stream.Collectors;
 public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedbacker {
 
     private static int IDGenerator = 40000;
+
     private List<TripRequest> tripRequests;
     private List<MatchedTripRequest> matchedTripRequests;
+
     private Set<Feedbackable> feedbackables;
 
     public TransPoolRider(String username) {
@@ -77,9 +79,10 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
 
         matchedRequest
                 .getRoute()
-                .forEach(tripOfferPart -> transferCredit(
-                        tripOfferPart.getPrice(),
-                        tripOfferPart.getTransPoolDriver()
+                .forEach(tripOfferPartOccurrence -> transferCredit(
+                        tripOfferPartOccurrence.getPrice(),
+                        tripOfferPartOccurrence.getTransPoolDriver(),
+                        tripOfferPartOccurrence.getDepartureTime()
                 ));
     }
 

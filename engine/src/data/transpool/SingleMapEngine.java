@@ -2,6 +2,7 @@ package data.transpool;
 
 import data.transpool.map.BasicMap;
 import data.transpool.time.TimeEngine;
+import data.transpool.time.component.Updatable;
 import data.transpool.trip.matching.MatchingEngine;
 import data.transpool.trip.offer.TripOffersEngine;
 import data.transpool.trip.request.TripRequestsEngine;

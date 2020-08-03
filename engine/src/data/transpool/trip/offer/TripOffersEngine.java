@@ -1,6 +1,6 @@
 package data.transpool.trip.offer;
 
-import data.transpool.Updatable;
+import data.transpool.time.component.Updatable;
 import data.transpool.trip.matching.component.TripOffersGraph;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.component.TripOfferDTO;

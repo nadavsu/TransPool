@@ -1,12 +1,14 @@
 package data.transpool.user.component.balance;
 
+import data.transpool.time.component.TimeDay;
+
 import java.util.Collection;
 
 public interface Balance {
     double getBalance();
 
-    void receiveCredit(double amount);
-    void transferCredit(double amount, Balance other);
+    void receiveCredit(double amount, TimeDay timeReceived);
+    void transferCredit(double amount, Balance other, TimeDay timeTransferred);
     void depositCredit(double amount);
 
     Collection<Transaction> getTransactionHistory();

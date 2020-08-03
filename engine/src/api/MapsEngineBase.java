@@ -39,7 +39,7 @@ public class MapsEngineBase implements MapsEngine {
     }
 
     @Override
-    public Map<String, SingleMapEngine> getMaps() {
+    public synchronized Map<String, SingleMapEngine> getMaps() {
         return Collections.unmodifiableMap(maps);
     }
 

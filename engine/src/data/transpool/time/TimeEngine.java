@@ -1,6 +1,6 @@
 package data.transpool.time;
 
-import data.transpool.Updatable;
+import data.transpool.time.component.Updatable;
 import data.transpool.time.component.TimeDay;
 import data.transpool.time.component.TimeInterval;
 

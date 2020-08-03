@@ -1,4 +1,6 @@
-package exception.data;
+package exception.time;
+
+import exception.data.TransPoolDataException;
 
 public class InvalidDayStartException extends TransPoolDataException {
     private final String EXCEPTION_MESSAGE = "Day must be bigger than 0";

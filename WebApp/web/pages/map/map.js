@@ -17,6 +17,26 @@ function getUrlVars() {
     return vars;
 }
 
+function initializeForm(form) {
+    form.submit(function() {
+        var parameters = $(this).serialize();
+        $.ajax({
+            method: this.method,
+            data: parameters,
+            url: this.action,
+            timeout: 2000,
+            error: function() {
+                console.log("AJAX Error");
+            },
+            success: function(resp) {
+                $("div.notification-modal-body").text(resp);
+                $("#notification-modal").modal("show");
+            }
+        });
+        return false;
+    })
+}
+
 function initializeNewTripForm(mapName) {
     $('input.map-name').attr("value", mapName);
     $('form.new-trip').submit(function () {
@@ -31,6 +51,7 @@ function initializeNewTripForm(mapName) {
             success: function (resp) {
                 $("div.notification-modal-body").text(resp);
                 $("#notification-modal").modal("show");
+
             }
         });
         return false;
@@ -58,8 +79,8 @@ function generateMap(mapDetails) {
 function loadStop(stop, widthMultiplier, lengthMultiplier) {
     var x = stop.x * widthMultiplier;
     var y = stop.y * lengthMultiplier;
-    var currentStop =
-        $('<g class=stop>')
+    var stopGroup = $('<g class=stop>').attr('id', stop.stopName);
+    var currentStop = stopGroup
             .append(
                 $('<circle r="7"/>')
                     .attr({
@@ -112,7 +133,7 @@ function loadTripOffer(index, tripOffer) {
             ).append(
             $('<div>')
                 .append(
-                    $('<h5 class="trip-offer-driver-name">')
+                    $('<h4 class="trip-offer-driver-name">')
                         .text(tripOffer.driverName)
                 ).append(
                     $('<h5 class="trip-offer-title">')
@@ -179,10 +200,10 @@ function createRouteList(route) {
 
 
 //----------------------------------------------------------------------------------------------------------------------
-//tripRequest = {riderName, sourceStopName, destinationStopName, requestTime:string}
+//tripRequest = {requestID, riderName, sourceStopName, destinationStopName, requestTime:string}
 function loadTripRequest(index, tripRequest) {
     var currentRequest =
-        $("<button class='list-group-item list-group-item-action request'>")
+        $("<button class='list-group-item list-group-item-action request view-request'>")
             .append(
                 $('<div class="text-center">')
                     .append(
@@ -191,19 +212,19 @@ function loadTripRequest(index, tripRequest) {
             ).append(
             $('<div>')
                 .append(
-                    $('<h5 class="trip-request-title">')
+                    $('<h4 class="trip-request-title">')
                         .text(tripRequest.riderName)
                 ).append(
-                $('<h6 class="subtitle text-muted">')
+                $('<h6 class="subtitle text-muted request-source-stop">')
                     .text("Gets on " + tripRequest.sourceStopName)
             ).append(
-                $('<h6 class="subtitle text-muted">')
+                $('<h6 class="subtitle text-muted request-destination-stop">')
                     .text("Gets off " + tripRequest.destinationStopName)
             ).append(
-                $('<p class="requestTime">')
+                $('<p class="request-time">')
                     .text("Requested time of departure: " + tripRequest.requestTime)
             ).append(
-                $('<a href="#" class="btn btn-primary">View</a>\n')
+                $('<button class="btn btn-primary view-request">').text('View')
             )
         );
 
@@ -214,7 +235,7 @@ function loadTripRequest(index, tripRequest) {
 //matchedTrip = {riderName, sourceStopName, destinationStopName, departureTime:{}, arrivalTime{}, routeDescription:[], tripPrice, averageFuelConsumption}
 function loadMatchedTrip(index, matchedTrip) {
     var currentMatch =
-        $("<button class='list-group-item list-group-item-action match'>")
+        $("<button class='list-group-item list-group-item-action match view-match'>")
             .append(
                 $('<div class="text-center">')
                     .append(
@@ -223,13 +244,13 @@ function loadMatchedTrip(index, matchedTrip) {
             ).append(
             $('<div>')
                 .append(
-                    $('<h5 class="match-title">')
+                    $('<h5 class="match-title match-rider-name">')
                         .text(matchedTrip.riderName)
                 ).append(
-                $('<h6 class="subtitle text-muted">')
+                $('<h6 class="subtitle text-muted match-source-stop">')
                     .text("Gets on " + matchedTrip.sourceStopName)
             ).append(
-                $('<h6 class="subtitle text-muted">')
+                $('<h6 class="subtitle text-muted match-destination-stop">')
                     .text("Gets off " + matchedTrip.destinationStopName)
             ).append(
                 $('<p class="request-time">')
@@ -253,7 +274,7 @@ function loadMatchedTrip(index, matchedTrip) {
                     .text("Congratulations! By travelling with TransPool you have saved " + matchedTrip.averageFuelConsumption + " litres of fuel!")
             )
                 .append(
-                    $('<a href="#" class="btn btn-primary">View</a>\n')
+                    $('<button class="btn btn-primary view-match">').text('View')
                 )
         );
 

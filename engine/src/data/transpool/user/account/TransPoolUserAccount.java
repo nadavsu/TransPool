@@ -1,6 +1,7 @@
 package data.transpool.user.account;
 
 import data.transpool.time.TimeEngineBase;
+import data.transpool.time.component.TimeDay;
 import data.transpool.user.component.balance.Balance;
 import data.transpool.user.component.balance.Transaction;
 
@@ -11,6 +12,7 @@ public abstract class TransPoolUserAccount implements User, Balance {
 
     protected int ID;
     protected String username;
+
     protected double balance;
     protected List<Transaction> transactionHistory;
 
@@ -36,10 +38,10 @@ public abstract class TransPoolUserAccount implements User, Balance {
     }
 
     @Override
-    public void receiveCredit(double amount) {
+    public void receiveCredit(double amount, TimeDay timeReceived) {
         //Order matters
         this.balance += amount;
-        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.RECEIVE, amount, balance));
+        this.transactionHistory.add(new Transaction(timeReceived, Transaction.Type.RECEIVE, amount, balance));
     }
 
     @Override
@@ -49,10 +51,10 @@ public abstract class TransPoolUserAccount implements User, Balance {
     }
 
     @Override
-    public void transferCredit(double amount, Balance other) {
+    public void transferCredit(double amount, Balance other, TimeDay timeTransferred) {
+        this.transactionHistory.add(new Transaction(timeTransferred, Transaction.Type.PAY, amount, balance));
         this.balance -= amount;
-        this.transactionHistory.add(new Transaction(TimeEngineBase.currentTime, Transaction.Type.PAY, amount, balance));
-        other.receiveCredit(amount);
+        other.receiveCredit(amount, timeTransferred);
     }
 
     @Override

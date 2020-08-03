@@ -1,4 +1,4 @@
-package data.transpool.old;
+package old;
 
 import data.transpool.trip.offer.component.TripOfferPart;
 import data.transpool.trip.request.component.BasicTripRequest;

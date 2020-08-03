@@ -1,6 +1,5 @@
-package api.old;
+package old;
 
-import api.components.*;
 import data.generated.TransPool;
 import data.transpool.TransPoolMap;
 import data.transpool.time.component.Recurrence;
@@ -14,7 +13,7 @@ import data.transpool.user.component.feedback.Feedback;
 import data.transpool.user.component.feedback.Feedbackable;
 import data.transpool.user.component.feedback.Feedbacker;
 import exception.NoResultsFoundException;
-import exception.data.InvalidDayStartException;
+import exception.time.InvalidDayStartException;
 import exception.data.StopNotFoundException;
 import exception.data.TransPoolDataException;
 import javafx.collections.FXCollections;
@@ -43,7 +42,7 @@ public class TransPoolEngine implements Engine {
     }
 
     @Override
-    //TODO: DONE IN SERVLET.
+    //DONE IN SERVLET.
     public void loadFile(File file) throws JAXBException, TransPoolDataException {
         JAXBContext jaxbContext = JAXBContext.newInstance(TransPool.class);
         Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -52,7 +51,7 @@ public class TransPoolEngine implements Engine {
         data = new TransPoolMap("generic_name", "generic_username", JAXBData);
     }
 
-    //TODO: DONE IN SEVLET
+    //DONE IN SERVLET
     @Override
     public void createNewTransPoolTripRequest(String riderName, String source, String destination,
                                               int day, LocalTime time, boolean isArrivalTime, boolean isContinuous) throws
@@ -68,7 +67,7 @@ public class TransPoolEngine implements Engine {
 
     }
 
-    //TODO: DONE IN SERVLET
+    //DONE IN SERVLET
     @Override
     public void createNewTripOffer(TransPoolDriver driver, LocalTime departureTime, int dayStart, Recurrence recurrences,
                                    int riderCapacity, int PPK, ObservableList<String> route) throws TransPoolDataException {
@@ -79,11 +78,13 @@ public class TransPoolEngine implements Engine {
     }
 
 
+    //DONE IN SERVLET
     @Override
     public void findPossibleMatches(TripRequest request, int maximumMatches) throws NoResultsFoundException {
         matchingEngine.findPossibleMatches(data, request, maximumMatches);
     }
 
+    //DONE IN SERVLET
     @Override
     public void createNewFeedback(Feedbacker feedbacker, Feedbackable feedbackee, int rating, String comment) {
         feedbacker.leaveFeedback(feedbackee,
@@ -96,6 +97,7 @@ public class TransPoolEngine implements Engine {
         this.data = data;
     }
 
+    //DONE IN SERVLET
     @Override
     public void addNewMatch(int possibleMatchIndex) throws TransPoolDataException {
         matchingEngine.addNewMatch(data, possibleMatchIndex);

@@ -11,6 +11,7 @@ import data.transpool.map.component.StopDTO;
 import data.transpool.time.component.TimeDay;
 import data.transpool.time.TimeEngineBase;
 import data.transpool.time.component.TimeInterval;
+import data.transpool.time.component.Updatable;
 import data.transpool.trip.matching.component.TripOffersGraph;
 import data.transpool.trip.offer.TripOffersEngineBase;
 import data.transpool.trip.offer.component.TripOfferDTO;
@@ -27,7 +28,6 @@ import exception.NoResultsFoundException;
 import exception.data.TransPoolDataException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -75,7 +75,7 @@ public class TransPoolMap implements SingleMapEngine {
 
     //Basic Components-------------------------------------------------------------//
     @Override
-    public SingleMapEngineDTO getMapEngineDetails() {
+    public synchronized SingleMapEngineDTO getMapEngineDetails() {
         return new SingleMapEngineDTO(this);
     }
 
@@ -103,17 +103,17 @@ public class TransPoolMap implements SingleMapEngine {
 
 
     @Override
-    public List<TripOfferDTO> getTripOffersDetails() {
+    public synchronized List<TripOfferDTO> getTripOffersDetails() {
         return tripOffersEngine.getTripOffersDetails();
     }
 
     @Override
-    public void addTripOffer(TripOffer tripOffer) {
+    public synchronized void addTripOffer(TripOffer tripOffer) {
         tripOffersEngine.addTripOffer(tripOffer);
     }
 
     @Override
-    public List<TripOffer> getAllTripOffers() {
+    public synchronized List<TripOffer> getAllTripOffers() {
         return tripOffersEngine.getAllTripOffers();
     }
 
@@ -150,7 +150,7 @@ public class TransPoolMap implements SingleMapEngine {
     //TripRequestEngine------------------------------------------------------------//
 
     @Override
-    public List<TripRequestDTO> getTripRequestsDetails() {
+    public synchronized List<TripRequestDTO> getTripRequestsDetails() {
         return tripRequestsEngine.getTripRequestsDetails();
     }
 
@@ -160,7 +160,7 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public void addTripRequest(TripRequest tripRequest) {
+    public synchronized void addTripRequest(TripRequest tripRequest) {
         tripRequestsEngine.addTripRequest(tripRequest);
     }
 
@@ -170,12 +170,12 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public void deleteTripRequest(TripRequest requestToDelete) {
+    public synchronized void deleteTripRequest(TripRequest requestToDelete) {
         tripRequestsEngine.deleteTripRequest(requestToDelete);
     }
 
     @Override
-    public List<TripRequest> getAllTripRequests() {
+    public synchronized List<TripRequest> getAllTripRequests() {
         return tripRequestsEngine.getAllTripRequests();
     }
 
@@ -185,12 +185,12 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
+    public synchronized void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
         tripRequestsEngine.addMatchedRequest(matchedTripRequest);
     }
 
     @Override
-    public List<MatchedTripRequest> getAllMatchedTripRequests() {
+    public synchronized List<MatchedTripRequest> getAllMatchedTripRequests() {
         return tripRequestsEngine.getAllMatchedTripRequests();
     }
 

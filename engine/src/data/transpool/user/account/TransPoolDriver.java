@@ -3,6 +3,8 @@ package data.transpool.user.account;
 import data.transpool.SingleMapEngine;
 import data.transpool.trip.offer.component.TripOffer;
 import data.transpool.trip.offer.component.TripOfferDTO;
+import data.transpool.trip.offer.component.TripOfferPartOccurrence;
+import data.transpool.trip.request.component.MatchedTripRequestPart;
 import data.transpool.user.component.feedback.Feedback;
 import data.transpool.user.component.feedback.FeedbacksDTO;
 import data.transpool.user.component.feedback.Feedbackable;
@@ -15,8 +17,10 @@ import java.util.stream.Collectors;
 public class TransPoolDriver extends TransPoolUserAccount implements Feedbackable, Driver {
 
     private static int IDGenerator = 30000;
+
     private List<Feedback> feedbacks;
     private List<TripOffer> tripOffers;
+
     private double averageRating;
     private double totalRating;
 

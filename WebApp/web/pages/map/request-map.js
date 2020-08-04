@@ -1,9 +1,15 @@
 var mapName;
+var refreshRate = 3000;
 $(function () {
-    initializeRequestMapPage();
     mapName = getUrlVars()["map-name"];
     $('title.page-title').text("TransPool - " + mapName);
+    initializeRequestMapPage();
+    setInterval(updateRequestMapPage, refreshRate);
 });
+
+function updateRequestMapPage() {
+    getMapTripOffers()
+}
 
 function initializeRequestMapPage() {
     $.ajax({
@@ -31,6 +37,22 @@ function initializeRequestMapPage() {
 }
 
 //----------------------------------------------------------------------------------------------------------------------
+
+function getMapTripOffers() {
+    $.ajax({
+        data: {'map-name': mapName},
+        url: 'get-map-offers',
+        timeout: 2000,
+        error: function() {
+            console.error('Failed to get ajax response')
+        },
+        //Resp - List<TripOfferDTO>
+        success: function(resp) {
+            $('ul.offers-list').empty();
+            $.each(resp || [], loadTripOffer);
+        }
+    })
+}
 
 function initializeFindMatchesForm() {
     $('form.find-a-match').submit(function() {

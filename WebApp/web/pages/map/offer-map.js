@@ -1,32 +1,91 @@
 var mapName;
-$(function() {
+var refreshRate = 2000;
+
+$(function () {
     mapName = getUrlVars()["map-name"];
     $('title.page-title').text("TransPool - " + mapName);
-    initializeOfferMapPage()
-
+    initializeOfferMapPage();
+    setInterval(updateOfferMapPage, refreshRate);
 });
 
+function updateOfferMapPage() {
+    getMapTripRequests();
+    getMapMatchedTripRequests();
+    getDriverFeedbacks();
+}
+
 function initializeOfferMapPage() {
+    getMap();
+    getMapTripRequests();
+    getMapMatchedTripRequests();
+    getDriverFeedbacks();
+    getDriverTripOffers();
+    initializeNewTripForm(mapName);
+}
+
+//-------------------------------------------------------------------------------------------------------------------//
+
+function getMapTripRequests() {
     $.ajax({
-        data: {"map-name": mapName},
-        method: "POST",
-        url: "get-offer-map",
-        timeout: 3000,
+        data: {'map-name': mapName},
+        url: 'get-map-requests',
+        timeout: 2000,
         error: function () {
-            console.error("Failed to get ajax response");
+            console.error('Failed to get ajax response')
         },
-        //Resp:
-        //[mapDetails, userTripOffersJson, allFeedbacksJson, mapTripRequestsJson, mapMatchedTripsJson]
+        //Resp - List<TripRequestDTO>
         success: function (resp) {
-            generateMap(resp[0]);
-            $.each(resp[1] || [], loadTripOffer);
-            $.each(resp[3] || [], loadTripRequest);
-            $.each(resp[4] || [], loadMatchedTrip);
-            loadFeedbackTab(resp[2]);
-            initializeNewTripForm(mapName);
+            $('ul.requests-list').empty();
+            $.each(resp || [], loadTripRequest);
         }
     })
 }
+
+function getMapMatchedTripRequests() {
+    $.ajax({
+        data: {'map-name': mapName},
+        url: 'get-map-matches',
+        timeout: 2000,
+        error: function () {
+            console.error('Failed to get ajax response')
+        },
+        //Resp - List<MatchedTripDTO>
+        success: function (resp) {
+            $('ul.matches-list').empty();
+            $.each(resp || [], loadMatchedTrip);
+        }
+    })
+}
+
+function getDriverFeedbacks() {
+    $.ajax({
+        url: 'get-driver-feedbacks',
+        timeout: 2000,
+        error: function () {
+            console.error('Failed to get ajax response')
+        },
+        //Resp - FeedbackDTO
+        success: function (resp) {
+            $('ul.user-feedbacks').empty();
+            loadFeedbackTab(resp);
+        }
+    })
+}
+
+function getDriverTripOffers() {
+    $.ajax({
+        url: 'get-driver-offers',
+        timeout: 2000,
+        error: function () {
+            console.error('Failed to get ajax response')
+        },
+        //Resp - List<TripOfferDTO>
+        success: function (resp) {
+            $.each(resp || [], loadTripOffer);
+        }
+    })
+}
+
 
 //----------------------------------------------------------------------------------------------------------------------
 
@@ -52,4 +111,28 @@ function loadFeedbackList(index, feedback) {
         );
     $('ul.user-feedbacks').append(currentFeedback);
 }
+
+
+/*function initializeOfferMapPage() {
+    $.ajax({
+        data: {"map-name": mapName},
+        method: "POST",
+        url: "get-offer-map",
+        timeout: 3000,
+        error: function () {
+            console.error("Failed to get ajax response");
+        },
+        //Resp:
+        //[mapDetails, userTripOffersJson, allFeedbacksJson, mapTripRequestsJson, mapMatchedTripsJson]
+        success: function (resp) {
+            generateMap(resp[0]);
+            $.each(resp[1] || [], loadTripOffer);
+            $.each(resp[3] || [], loadTripRequest);
+            $.each(resp[4] || [], loadMatchedTrip);
+            loadFeedbackTab(resp[2]);
+            initializeNewTripForm(mapName);
+        }
+    })
+}*/
+
 

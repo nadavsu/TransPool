@@ -1,8 +1,8 @@
 package old;
 
-import data.transpool.trip.offer.component.TripOfferPart;
-import data.transpool.trip.request.component.BasicTripRequest;
-import exception.data.RideFullException;
+import api.transpool.trip.offer.component.TripOfferPart;
+import api.transpool.trip.request.component.BasicTripRequest;
+import exception.parser.RideFullException;
 
 import java.util.ArrayList;
 import java.util.List;

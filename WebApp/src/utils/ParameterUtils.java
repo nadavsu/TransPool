@@ -1,7 +1,6 @@
 package utils;
 
-import constants.Constants;
-import data.transpool.time.component.Recurrence;
+import api.transpool.time.component.Recurrence;
 
 import java.time.LocalTime;
 import java.util.Arrays;

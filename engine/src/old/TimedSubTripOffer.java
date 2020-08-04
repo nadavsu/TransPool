@@ -1,9 +1,9 @@
 package old;
 
-import data.transpool.time.component.TimeDay;
-import data.transpool.trip.offer.component.TripOfferPart;
-import data.transpool.trip.request.component.BasicTripRequest;
-import exception.data.RideFullException;
+import api.transpool.time.component.TimeDay;
+import api.transpool.trip.offer.component.TripOfferPart;
+import api.transpool.trip.request.component.BasicTripRequest;
+import exception.parser.RideFullException;
 
 /**
  * A sub trip offer with a timestamp. THis class is used for the matching, and searching for relevant routes.

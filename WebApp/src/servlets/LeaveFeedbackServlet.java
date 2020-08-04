@@ -1,10 +1,10 @@
 package servlets;
 
 import constants.Constants;
-import data.transpool.user.UserEngine;
-import data.transpool.user.component.feedback.Feedback;
-import data.transpool.user.component.feedback.Feedbackable;
-import data.transpool.user.component.feedback.Feedbacker;
+import api.transpool.user.UserEngine;
+import api.transpool.user.component.feedback.Feedback;
+import api.transpool.user.component.feedback.Feedbackable;
+import api.transpool.user.component.feedback.Feedbacker;
 import utils.ServletUtils;
 import utils.SessionUtils;
 

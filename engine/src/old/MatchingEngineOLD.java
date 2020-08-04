@@ -1,11 +1,11 @@
 package old;
 
-import data.transpool.TransPoolMap;
-import data.transpool.trip.matching.component.PossibleRoute;
-import data.transpool.trip.request.component.MatchedTripRequest;
-import data.transpool.trip.request.component.TripRequest;
-import exception.NoResultsFoundException;
-import exception.data.TransPoolDataException;
+import api.transpool.TransPoolMap;
+import api.transpool.trip.matching.component.PossibleRoute;
+import api.transpool.trip.request.component.MatchedTripRequest;
+import api.transpool.trip.request.component.TripRequest;
+import exception.parser.NoResultsFoundException;
+import exception.parser.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

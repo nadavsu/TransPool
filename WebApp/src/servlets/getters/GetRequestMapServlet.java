@@ -3,13 +3,13 @@ package servlets.getters;
 import api.MapsEngine;
 import com.google.gson.Gson;
 import constants.Constants;
-import data.transpool.SingleMapEngine;
-import data.transpool.map.BasicMapDTO;
-import data.transpool.trip.offer.component.TripOfferDTO;
-import data.transpool.trip.request.component.MatchedTripRequestDTO;
-import data.transpool.trip.request.component.TripRequestDTO;
-import data.transpool.user.UserEngine;
-import data.transpool.user.account.TransPoolRider;
+import api.transpool.SingleMapEngine;
+import api.transpool.map.BasicMapDTO;
+import api.transpool.trip.offer.component.TripOfferDTO;
+import api.transpool.trip.request.component.MatchedTripRequestDTO;
+import api.transpool.trip.request.component.TripRequestDTO;
+import api.transpool.user.UserEngine;
+import api.transpool.user.account.TransPoolRider;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -25,6 +25,7 @@ import java.util.Set;
 
 @WebServlet(name = "GetRequestMapServlet", urlPatterns = {"/get-request-map"})
 public class GetRequestMapServlet extends HttpServlet {
+
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
         String mapNameFromParameter = req.getParameter(Constants.MAP_NAME);

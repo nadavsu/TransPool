@@ -2,13 +2,13 @@ package servlets;
 
 import api.MapsEngine;
 import constants.Constants;
-import data.transpool.trip.matching.component.PossibleRoute;
-import data.transpool.trip.matching.component.PossibleRoutesList;
-import data.transpool.trip.request.component.MatchedTripRequest;
-import data.transpool.trip.request.component.TripRequest;
-import data.transpool.user.UserEngine;
-import data.transpool.user.account.TransPoolRider;
-import exception.data.RideFullException;
+import api.transpool.trip.matching.component.PossibleRoute;
+import api.transpool.trip.matching.component.PossibleRoutesList;
+import api.transpool.trip.request.component.MatchedTripRequest;
+import api.transpool.trip.request.component.TripRequest;
+import api.transpool.user.UserEngine;
+import api.transpool.user.account.TransPoolRider;
+import exception.parser.RideFullException;
 import utils.ServletUtils;
 import utils.SessionUtils;
 

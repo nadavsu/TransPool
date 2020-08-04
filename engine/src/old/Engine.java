@@ -1,17 +1,17 @@
 package old;
 
-import data.transpool.TransPoolMap;
-import data.transpool.time.component.Recurrence;
-import data.transpool.time.component.TimeInterval;
-import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.matching.component.PossibleRoute;
-import data.transpool.trip.request.component.MatchedTripRequest;
-import data.transpool.trip.request.component.TripRequest;
-import data.transpool.user.account.TransPoolDriver;
-import data.transpool.user.component.feedback.Feedbackable;
-import data.transpool.user.component.feedback.Feedbacker;
-import exception.NoResultsFoundException;
-import exception.data.TransPoolDataException;
+import api.transpool.TransPoolMap;
+import api.transpool.time.component.Recurrence;
+import api.transpool.time.component.TimeInterval;
+import api.transpool.trip.offer.component.TripOffer;
+import api.transpool.trip.matching.component.PossibleRoute;
+import api.transpool.trip.request.component.MatchedTripRequest;
+import api.transpool.trip.request.component.TripRequest;
+import api.transpool.user.account.TransPoolDriver;
+import api.transpool.user.component.feedback.Feedbackable;
+import api.transpool.user.component.feedback.Feedbacker;
+import exception.parser.NoResultsFoundException;
+import exception.parser.TransPoolDataException;
 import javafx.collections.ObservableList;
 
 import javax.xml.bind.JAXBException;

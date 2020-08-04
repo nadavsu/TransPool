@@ -14,7 +14,7 @@ When opening TransPool the first thing you need to do is load a file:
 
 3. On the bottom left hand side, you could see the status of the program while it is loading the file.
 
-4. Once the TransPool finished loading the file, the buttons in the  action bar (left hand side bar) should be enabled. Also, the live map should and the data should be shown on the screen like the image below.
+4. Once the TransPool finished loading the file, the buttons in the  action bar (left hand side bar) should be enabled. Also, the live map should and the api should be shown on the screen like the image below.
 
 5. Should an error occur, the label on the bottom right will let you know what went wrong.
 
@@ -86,7 +86,7 @@ The tab pane on the right hand side of the application displays the necessary in
 3. Requests - displays all trip requests on the system, irregardless of time.
 4. Matches - Shows all matched trips on the system, irregardless of time.
 
-Each tab contains a list of **cards**. Each card displays the data of each offer/request/whatever.
+Each tab contains a list of **cards**. Each card displays the api of each offer/request/whatever.
 
 
 

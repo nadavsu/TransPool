@@ -1,16 +1,23 @@
+var refreshRate = 2000; //ms
+
 //On-load get the user and on success loading the user card.
-$(getUser(loadUserCard));
+$(function () {
+    getUser(loadUserCard);
+    getMapList();
+    setInterval(getMapList, refreshRate)
+});
 
 //On-load get the maps and load DTOs to cards UI.
-$(function () {
+function getMapList() {
     $.ajax({
         method: "POST",
-        url: "get-map-details",
+        url: "get-map-engines",
         timeout: 3000,
         error: function () {
             console.error("Failed to get ajax response");
         },
         success: function (maps) {
+            $('#all-maps').empty();
             if (maps.length === 0) {
                 $(".card-columns").append(
                     $("<h2>")
@@ -22,7 +29,7 @@ $(function () {
             }
         }
     })
-});
+}
 
 //Loading map cards---------------------------------------------------------------------------------------------------//
 // map = {mapName: "" ; uploaderName: "" ; numOfTripOffers: "" ; numOfTripRequests: "" ; numOfMatchedRequests: "" ; numOfStops: "", numOfPaths: ""}

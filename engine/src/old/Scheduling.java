@@ -1,9 +1,9 @@
 package old;
 
-import data.transpool.time.TimeEngineBase;
-import data.transpool.time.component.Recurrence;
-import data.transpool.time.component.TimeDay;
-import exception.data.TransPoolDataException;
+import api.transpool.time.TimeEngineBase;
+import api.transpool.time.component.Recurrence;
+import api.transpool.time.component.TimeDay;
+import exception.parser.TransPoolDataException;
 import javafx.beans.property.*;
 
 import java.time.LocalTime;

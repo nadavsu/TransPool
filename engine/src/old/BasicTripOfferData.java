@@ -1,8 +1,8 @@
 package old;
 
-import data.transpool.time.component.Recurrence;
-import data.transpool.trip.offer.component.BasicTripOffer;
-import data.transpool.user.account.TransPoolDriver;
+import api.transpool.time.component.Recurrence;
+import api.transpool.trip.offer.component.BasicTripOffer;
+import api.transpool.user.account.TransPoolDriver;
 
 /**
  * Contains basic data of a trip offer - be it a sub-trip offer or a normal trip offer.

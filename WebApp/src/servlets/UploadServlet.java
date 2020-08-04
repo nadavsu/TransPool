@@ -2,10 +2,10 @@ package servlets;
 
 import api.MapsEngine;
 import constants.Constants;
-import data.generated.TransPool;
-import data.transpool.TransPoolMap;
+import api.generated.TransPool;
+import api.transpool.TransPoolMap;
 import exception.FileTypeException;
-import exception.data.TransPoolDataException;
+import exception.parser.TransPoolDataException;
 import utils.ServletUtils;
 import utils.SessionUtils;
 

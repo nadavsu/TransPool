@@ -1,21 +1,21 @@
 package old;
 
-import data.generated.TransPool;
-import data.transpool.TransPoolMap;
-import data.transpool.time.component.Recurrence;
-import data.transpool.time.component.TimeInterval;
-import data.transpool.trip.offer.component.TripOffer;
-import data.transpool.trip.matching.component.PossibleRoute;
-import data.transpool.trip.request.component.MatchedTripRequest;
-import data.transpool.trip.request.component.TripRequest;
-import data.transpool.user.account.TransPoolDriver;
-import data.transpool.user.component.feedback.Feedback;
-import data.transpool.user.component.feedback.Feedbackable;
-import data.transpool.user.component.feedback.Feedbacker;
-import exception.NoResultsFoundException;
+import api.generated.TransPool;
+import api.transpool.TransPoolMap;
+import api.transpool.time.component.Recurrence;
+import api.transpool.time.component.TimeInterval;
+import api.transpool.trip.offer.component.TripOffer;
+import api.transpool.trip.matching.component.PossibleRoute;
+import api.transpool.trip.request.component.MatchedTripRequest;
+import api.transpool.trip.request.component.TripRequest;
+import api.transpool.user.account.TransPoolDriver;
+import api.transpool.user.component.feedback.Feedback;
+import api.transpool.user.component.feedback.Feedbackable;
+import api.transpool.user.component.feedback.Feedbacker;
+import exception.parser.NoResultsFoundException;
 import exception.time.InvalidDayStartException;
-import exception.data.StopNotFoundException;
-import exception.data.TransPoolDataException;
+import exception.parser.StopNotFoundException;
+import exception.parser.TransPoolDataException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 

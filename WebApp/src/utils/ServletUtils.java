@@ -2,8 +2,8 @@ package utils;
 
 import api.MapsEngine;
 import api.MapsEngineBase;
-import data.transpool.user.UserEngine;
-import data.transpool.user.UserEngineBase;
+import api.transpool.user.UserEngine;
+import api.transpool.user.UserEngineBase;
 
 import javax.servlet.ServletContext;
 
@@ -33,4 +33,5 @@ public class ServletUtils {
         }
         return (MapsEngine) servletContext.getAttribute(MAP_ENGINE_ATTRIBUTE_NAME);
     }
+
 }

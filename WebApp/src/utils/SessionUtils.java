@@ -1,8 +1,7 @@
 package utils;
 
 import constants.Constants;
-import data.transpool.trip.matching.component.PossibleRoutesList;
-import data.transpool.user.account.TransPoolUserAccount;
+import api.transpool.trip.matching.component.PossibleRoutesList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;

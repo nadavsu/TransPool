@@ -3,10 +3,9 @@ package servlets;
 import api.MapsEngine;
 import com.google.gson.Gson;
 import constants.Constants;
-import data.transpool.SingleMapEngine;
-import data.transpool.trip.matching.component.PossibleRouteDTO;
-import data.transpool.trip.matching.component.PossibleRoutesList;
-import exception.NoResultsFoundException;
+import api.transpool.SingleMapEngine;
+import api.transpool.trip.matching.component.PossibleRoutesList;
+import exception.parser.NoResultsFoundException;
 import utils.ServletUtils;
 
 import javax.servlet.ServletException;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
 @WebServlet(name = "FindMatchesServlet", urlPatterns = {"/find-a-match"})
 public class FindMatchesServlet extends HttpServlet {

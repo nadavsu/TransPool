@@ -284,3 +284,19 @@ function loadMatchedTrip(index, matchedTrip) {
 
 
 //----------------------------------------------------------------------------------------------------------------------
+
+
+function getMap() {
+    $.ajax({
+        data: {'map-name': mapName},
+        url: 'get-map',
+        timeout: 2000,
+        error: function() {
+            console.error('Failed to get ajax response')
+        },
+        //Resp - BasicMapDTO
+        success: function(resp) {
+            generateMap(resp);
+        }
+    })
+}

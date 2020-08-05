@@ -42,7 +42,7 @@ The account page displays the balance information and all transactions made for 
 
 - You can charge your account with credit by entering an amount and then clicking the 'Charge' button.
 - Transaction types are marked with icons
-  - ![pay](https://github.com/nadavsu/TransPool/blob/master/WebApp/web/common/images/transactions/charge.svg)Red arrow for **payment**
+  - ![pay](https://github.com/nadavsu/TransPool/blob/master/WebApp/web/common/images/transactions/pay.svg)Red arrow for **payment**
   - ![receive](https://github.com/nadavsu/TransPool/blob/master/WebApp/web/common/images/transactions/receive.svg)Green arrow for **recieving money**
   - ![charge](https://github.com/nadavsu/TransPool/blob/master/WebApp/web/common/images/transactions/charge.svg)Blue plus sign for **charge**
 

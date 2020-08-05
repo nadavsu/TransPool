@@ -1,5 +1,6 @@
 package servlets.getters;
 
+import api.transpool.trip.request.component.MatchedTripRequestPart;
 import api.transpool.user.component.feedback.Feedback;
 import com.google.gson.Gson;
 import constants.Constants;
@@ -18,8 +19,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet(name = "GetDriverFeedbacksServlet", urlPatterns = {"/get-driver-feedbacks"})
-public class GetDriverFeedbacksServlet extends HttpServlet {
+@WebServlet(name = "GetDriverRidersServlet", urlPatterns = {"/get-driver-riders"})
+public class GetDriverRidersServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
@@ -31,16 +32,25 @@ public class GetDriverFeedbacksServlet extends HttpServlet {
             if (usertypeFromSession != null && usertypeFromSession.equals(Constants.DRIVER)) {
                 TransPoolDriver driver = (TransPoolDriver) userEngine.getUserAccount(usernameFromSession);
 
-                int feedbackVersionFromParameter = Integer.parseInt(req.getParameter(Constants.FEEDBACK_VERSION));
-                int driverFeedbacksVersion = driver.getFeedbacksVersion();
-                double averageRating = driver.getAverageRating();
-                List<Feedback> recentFeedbacks = driver.getFeedbacks(feedbackVersionFromParameter);
-                FeedbacksDTO driverFeedbacksDTO = new FeedbacksDTO(recentFeedbacks, averageRating, driverFeedbacksVersion);
+                int ridersVersionFromPatameter = Integer.parseInt(req.getParameter(Constants.RIDERS_VERSION));
+                int driverRidersVersion = driver.getRidersVersion();
+                List<MatchedTripRequestPart> recentRiders = driver.getRiders(ridersVersionFromPatameter);
+                RidersAndVersion ridersAndVersion = new RidersAndVersion(recentRiders, driverRidersVersion);
 
-                String driverFeedbacksDTOJson = new Gson().toJson(driverFeedbacksDTO);
-                out.print(driverFeedbacksDTOJson);
+                String ridersAndVersionJson = new Gson().toJson(ridersAndVersion);
+                out.print(ridersAndVersionJson);
                 out.flush();
             }
+        }
+    }
+
+    private class RidersAndVersion {
+        private List<MatchedTripRequestPart> riders;
+        private int version;
+
+        public RidersAndVersion(List<MatchedTripRequestPart> riders, int version) {
+            this.riders = riders;
+            this.version = version;
         }
     }
 

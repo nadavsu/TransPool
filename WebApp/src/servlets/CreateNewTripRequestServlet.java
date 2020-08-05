@@ -50,6 +50,8 @@ public class CreateNewTripRequestServlet extends HttpServlet {
                 out.print("Request added successfully!");
             } catch (TransPoolDataException e) {
                 out.print(e.getMessage());
+            } finally {
+                out.flush();
             }
         }
 

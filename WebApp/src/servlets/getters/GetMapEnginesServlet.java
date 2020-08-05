@@ -20,6 +20,7 @@ public class GetMapEnginesServlet extends HttpServlet {
             Gson gson = new Gson();
             String mapJson = gson.toJson(mapsEngine.getAllMapEnginesDetails());
             out.print(mapJson);
+            out.flush();
         }
     }
 

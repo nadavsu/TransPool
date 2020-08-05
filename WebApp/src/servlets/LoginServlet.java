@@ -34,11 +34,13 @@ public class LoginServlet extends HttpServlet {
                 //Redirected from index.html
                 if (userNameFromParameter == null || userNameFromParameter.isEmpty()) {
                     out.print(Constants.SIGNUP_URL);
+                    out.flush();
                 } else {
                     userNameFromParameter = userNameFromParameter.trim();
                     synchronized (this) {
                         if (userEngine.isUserExists(userNameFromParameter)) {
                             out.print("The username " + userNameFromParameter + " is already taken.");
+                            out.flush();
                         } else {
                             if (userTypeFromParameter.equals(Constants.RIDER)) {
                                 userEngine.addUser(new TransPoolRider(userNameFromParameter));
@@ -46,16 +48,19 @@ public class LoginServlet extends HttpServlet {
                                 userEngine.addUser(new TransPoolDriver(userNameFromParameter));
                             } else {
                                 out.print("User must be a rider or a driver.");
+                                out.flush();
                                 return;
                             }
                             request.getSession(true).setAttribute(Constants.USERNAME, userNameFromParameter);
                             request.getSession(true).setAttribute(Constants.ACCOUNT_TYPE, userTypeFromParameter);
                             out.print(Constants.HOME_URL);
+                            out.flush();
                         }
                     }
                 }
             } else {
                 out.print(Constants.HOME_URL);
+                out.flush();
             }
         }
 

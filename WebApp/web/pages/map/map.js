@@ -1,6 +1,7 @@
 $(function() {
-    $("#notification-modal-button").click(function() {
+    $('#notification-modal-button').click(function() {
         location.reload();
+        $('.notification-modal-body').empty();
     })
 });
 

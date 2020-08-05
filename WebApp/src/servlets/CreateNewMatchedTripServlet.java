@@ -47,9 +47,11 @@ public class CreateNewMatchedTripServlet extends HttpServlet {
                     out.print("Ride matched successfully!");
                 } catch (RideFullException e) {
                     out.print(e.getMessage());
+                    out.flush();
                 }
             } else {
                 out.print("No possible routes!");
+                out.flush();
             }
 
         }

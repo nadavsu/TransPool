@@ -9,25 +9,37 @@ import api.transpool.user.account.TransPoolRider;
  */
 public class MatchedTripRequestPart {
 
+    private int tripID;
+    private int tripPrice;
     private String sourceStopName;
     private String destinationStopName;
-    private TimeDay departureTime;
-    private TimeDay arrivalTime;
+    private String departureTime;
+    private String arrivalTime;
     private String riderUsername;
 
     public MatchedTripRequestPart(TransPoolRider rider, TripOfferPartOccurrence tripOfferPartOccurrence) {
         this.riderUsername = rider.getUsername();
         this.sourceStopName = tripOfferPartOccurrence.getSourceStop().getName();
-        this.departureTime = tripOfferPartOccurrence.getDepartureTime();
+        this.departureTime = tripOfferPartOccurrence.getDepartureTime().toString();
         this.destinationStopName = tripOfferPartOccurrence.getDestinationStop().getName();
-        this.arrivalTime = tripOfferPartOccurrence.getArrivalTime();
+        this.arrivalTime = tripOfferPartOccurrence.getArrivalTime().toString();
+        this.tripID = tripOfferPartOccurrence.getID();
+        this.tripPrice = tripOfferPartOccurrence.getPrice();
+    }
+
+    public int getTripPrice() {
+        return tripPrice;
+    }
+
+    public int getTripID() {
+        return tripID;
     }
 
     public String getSourceStopName() {
         return sourceStopName;
     }
 
-    public TimeDay getDepartureTime() {
+    public String getDepartureTime() {
         return departureTime;
     }
 
@@ -35,7 +47,7 @@ public class MatchedTripRequestPart {
         return destinationStopName;
     }
 
-    public TimeDay getArrivalTime() {
+    public String getArrivalTime() {
         return arrivalTime;
     }
 

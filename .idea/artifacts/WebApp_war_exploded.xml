@@ -2,18 +2,19 @@
   <artifact type="exploded-war" name="WebApp:war exploded">
     <output-path>$PROJECT_DIR$/out/artifacts/WebApp_war_exploded</output-path>
     <root id="root">
-      <element id="javaee-facet-resources" facet="WebApp/web/Web" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="WebApp" />
           <element id="module-output" name="engine" />
-          <element id="module-output" name="gui" />
+          <element id="library" level="application" name="bootstrap" />
+          <element id="library" level="application" name="popper" />
         </element>
         <element id="directory" name="lib">
-          <element id="library" level="project" name="fxgraph-0.0.3" />
-          <element id="library" level="project" name="jfoenix-8.0.8" />
+          <element id="file-copy" path="$PROJECT_DIR$/WebApp/web/WEB-INF/lib/gson-2.8.6.jar" />
         </element>
       </element>
+      <element id="library" level="project" name="fxgraph-0.0.3" />
+      <element id="javaee-facet-resources" facet="WebApp/web/Web" />
     </root>
   </artifact>
 </component>

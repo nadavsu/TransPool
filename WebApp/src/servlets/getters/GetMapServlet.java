@@ -27,6 +27,7 @@ public class GetMapServlet extends HttpServlet {
             BasicMapDTO mapDTO = map.getMapDetails();
             String mapDTOJson = new Gson().toJson(mapDTO);
             out.print(mapDTOJson);
+            out.flush();
         }
     }
 

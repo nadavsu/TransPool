@@ -30,6 +30,7 @@ public class OpenMapServlet extends HttpServlet {
             } else {
                 out.print(Constants.SIGNUP_URL);
             }
+            out.flush();
         }
 
     }

@@ -35,11 +35,9 @@ import java.util.stream.Collectors;
 
 
 /**
- * The main class which holds the model of the system.
- * MapGraph - holds the live map model and the basic map data.
- * TripOfferEngine - holds the trip offer data.
- * TripRequestEngine - The engine for trip requests and matched requests - holds the data.
- * TimeEngine - Controls the system time.
+ * The class containing the data for a single map. An implementation of SingleMapEngine.
+ * Contains engines for the trip offers in the map, trip requests in the map and the time. Also
+ * contains the map itself (stops adn paths.)
  */
 
 public class TransPoolMap implements SingleMapEngine {

@@ -225,8 +225,10 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
     }
 
     @Override
-    public void updateAfterMatch(TransPoolRider rider, TripOfferPartOccurrence subTripOffer) {
-        matchedRequestsDetails.add(new MatchedTripRequestPart(rider, subTripOffer));
+    public void updateAfterMatch(TransPoolRider rider, TripOfferPartOccurrence offerPartOccurrence) {
+        MatchedTripRequestPart matchedPart = new MatchedTripRequestPart(rider, offerPartOccurrence);
+        matchedRequestsDetails.add(matchedPart);
+        transpoolDriver.addRider(matchedPart);
     }
 
     @Override

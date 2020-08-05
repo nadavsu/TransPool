@@ -65,6 +65,7 @@ public class GetRequestMapServlet extends HttpServlet {
                         + userTripRequestsInMapJson + "]";
 
                 out.print(response);
+                out.flush();
             } else{
                 resp.sendRedirect(Constants.SIGNUP_URL);
             }

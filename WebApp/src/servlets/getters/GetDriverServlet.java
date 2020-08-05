@@ -1,11 +1,10 @@
 package servlets.getters;
 
-import api.transpool.user.component.feedback.Feedback;
+import api.transpool.user.dto.TransPoolDriverDTO;
 import com.google.gson.Gson;
 import constants.Constants;
 import api.transpool.user.UserEngine;
 import api.transpool.user.account.TransPoolDriver;
-import api.transpool.user.component.feedback.FeedbacksDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -16,10 +15,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 
-@WebServlet(name = "GetDriverFeedbacksServlet", urlPatterns = {"/get-driver-feedbacks"})
-public class GetDriverFeedbacksServlet extends HttpServlet {
+@WebServlet(name = "GetDriverServlet", urlPatterns = {"/get-driver"})
+public class GetDriverServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("application/json");
@@ -28,21 +26,16 @@ public class GetDriverFeedbacksServlet extends HttpServlet {
             String usertypeFromSession = SessionUtils.getUserType(req);
             UserEngine userEngine = ServletUtils.getUserEngine(getServletContext());
 
-            if (usertypeFromSession != null && usertypeFromSession.equals(Constants.DRIVER)) {
+            /*if (usertypeFromSession != null && usertypeFromSession.equals(Constants.DRIVER)) {
                 TransPoolDriver driver = (TransPoolDriver) userEngine.getUserAccount(usernameFromSession);
-
-                int feedbackVersionFromParameter = Integer.parseInt(req.getParameter(Constants.FEEDBACK_VERSION));
-                int driverFeedbacksVersion = driver.getFeedbacksVersion();
-                double averageRating = driver.getAverageRating();
-                List<Feedback> recentFeedbacks = driver.getFeedbacks(feedbackVersionFromParameter);
-                FeedbacksDTO driverFeedbacksDTO = new FeedbacksDTO(recentFeedbacks, averageRating, driverFeedbacksVersion);
-
-                String driverFeedbacksDTOJson = new Gson().toJson(driverFeedbacksDTO);
-                out.print(driverFeedbacksDTOJson);
+                TransPoolDriverDTO driverDTO = driver.getDetails();
+                String driverDTOJson = new Gson().toJson(driverDTO);
+                out.print(driverDTOJson);
                 out.flush();
-            }
+            }*/
         }
     }
+
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

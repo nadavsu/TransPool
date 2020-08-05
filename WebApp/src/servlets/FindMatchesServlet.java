@@ -43,6 +43,8 @@ public class FindMatchesServlet extends HttpServlet {
             } catch (NoResultsFoundException e) {
                 resp.setContentType("text/html");
                 out.print(e.getMessage());
+            } finally {
+                out.flush();
             }
         }
     }

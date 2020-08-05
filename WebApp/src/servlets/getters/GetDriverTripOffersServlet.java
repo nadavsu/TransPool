@@ -32,6 +32,7 @@ public class GetDriverTripOffersServlet extends HttpServlet {
                 List<TripOfferDTO> tripOffersDetails = driver.getTripOffersDetails();
                 String tripOffersDetailsJson = new Gson().toJson(tripOffersDetails);
                 out.print(tripOffersDetailsJson);
+                out.flush();
             }
         }
     }

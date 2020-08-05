@@ -28,6 +28,7 @@ public class GetMapTripMatchesServlet extends HttpServlet {
             List<MatchedTripRequestDTO> matchedTripRequestDTOList = map.getMatchedTripsDetails();
             String matchedTripRequestDTOListJson = new Gson().toJson(matchedTripRequestDTOList);
             out.print(matchedTripRequestDTOListJson);
+            out.flush();
         }
     }
 

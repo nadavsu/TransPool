@@ -38,6 +38,7 @@ public class UploadServlet extends HttpServlet {
         synchronized (this) {
             if (mapsEngine.isMapExists(mapNameFromParameter)) {
                 out.print("A map with this name already exists.");
+                out.flush();
             } else if (part != null) {
                 try {
                     loadFile(mapsEngine, part, mapNameFromParameter, uploaderNameFromSession);
@@ -46,9 +47,12 @@ public class UploadServlet extends HttpServlet {
                     out.print(e.getMessage());
                 } catch (JAXBException e) {
                     out.print("Error parsing map.");
+                } finally {
+                    out.flush();
                 }
             } else {
                 out.print("File cannot be empty.");
+                out.flush();
             }
         }
     }

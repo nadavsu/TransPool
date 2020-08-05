@@ -8,9 +8,15 @@ import api.transpool.trip.request.component.TripRequestDTO;
 import api.transpool.user.component.feedback.Feedback;
 import api.transpool.user.component.feedback.Feedbackable;
 import api.transpool.user.component.feedback.Feedbacker;
+import api.transpool.user.dto.TransPoolRiderDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
+
+/**
+ * The class for a TransPool user which is a rider.
+ * Implements Rider and a Feedbacker
+ */
 
 public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedbacker {
 
@@ -41,6 +47,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
         setID(other.getID());
     }
 
+    //Rider functions-------------------------------------------------------------------------
     @Override
     public List<TripRequestDTO> getTripRequestsDetails() {
         return tripRequests
@@ -114,6 +121,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
                 .orElse(null);
     }
 
+    //Feedback functions-------------------------------------------------------------------------
     @Override
     public void leaveFeedback(Feedbackable feedbackee, Feedback feedback) {
         feedbackee.addFeedback(feedback);

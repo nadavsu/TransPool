@@ -1,142 +1,89 @@
 ![Title and slogan cropped](https://user-images.githubusercontent.com/53123142/81192618-24fa4e80-8fc3-11ea-9d8e-809b7ee11ac5.png)
 TransPool, the ride sharing application. With TransPool, it has never been easier finding someone to ride with for work. Whether you are fed up with public transportation and looking for a way to reduce your commute time or if you want to cover your automobile fees each month. TransPool is the application for you!
 
-
 # Application Instructions
 
 ## Getting Started
 
-When opening TransPool the first thing you need to do is load a file:
+After opening Tomcat, navigate to - localhost:8080/TransPool/ to open up the web application, and the landing page should open.
 
-1. Choose File -> Open... from the menu bar on the top left hand side of the window
+To go straight to the signup page - localhost:8080/TransPool/signup.html
 
-2. Select your XML file and click on Open.
+Enter your username, choose your account type and you should be redirected to the TransPool homepage seen below
 
-3. On the bottom left hand side, you could see the status of the program while it is loading the file.
+## The Homepage
 
-4. Once the TransPool finished loading the file, the buttons in the  action bar (left hand side bar) should be enabled. Also, the live map should and the api should be shown on the screen like the image below.
+Use the navbar on the top page to navigate through the website. You can start by uploading a map to the system by clicking the blue "Upload" button on the top right.
 
-5. Should an error occur, the label on the bottom right will let you know what went wrong.
+After uploading maps and doing some actions the page should look something like this:
 
-    ![mainscreen](https://user-images.githubusercontent.com/53123142/85154627-5c197c00-b260-11ea-9f02-d0c4a69befe0.png)
+![homepage2](https://user-images.githubusercontent.com/53123142/89461530-cafd5680-d774-11ea-8f3b-a4522b63cd88.png)
 
+### User Card
 
-## The Action Bar
+- A blue circle is the icon for a rider account and a red circle is the icon for a driver account
+- Last three transactions and balance can be viewed under the username.
+- A button to charge credit to your account is displayed on the bottom of this card, and it will take you to the account page of the user.
+- To know more about transactions go to the transactions section in the readme file.
 
-The tab pane on the left hand side of the window contains 4 different tabs where actions can be done.
+### Map Cards
 
-**Note: By default, only the first two tabs are shown. You can show the 2 other tabs by scrolling up and down on your mouse while hovering over the tabs, or by dragging the tabs left and right**
+- Map cards contain basic information about the uploaded map.
+- You can open a map by clicking the Open button on the card, which will take you to page two.
 
-### Trip Request
 
-Input your name, source stop (case sensitive), destination stop (case sensitive) the day of departure, and the time of departure.
 
-Clicking on the clock icon will open an easy way of inputting the time.
+## Account Page
+![account](https://user-images.githubusercontent.com/53123142/89461613-e23c4400-d774-11ea-8f8a-ce4649bb8584.png)
 
-To select time using the time selector:
 
-1. Choose your hour
-2. Click on the minutes on the top right (50 in the image)
-3. Choose your minutes.
 
-Arrival time option is disabled. This feature is not yet done.
+The account page displays the balance information and all transactions made for the user throughout the system's life.
 
-When done click "Add request".
+- You can charge your account with credit by entering an amount and then clicking the 'Charge' button.
+- Transaction types are marked with icons
+  - ![pay](TransPool/WebApp/web/common/images/transactions/pay.svg)Red arrow for **payment**
+  - ![receive](TransPool/WebApp/web/common/images/transactions/receive.svg)Green arrow for **recieving money**
+  - ![charge](TransPool/WebApp/web/common/images/transactions/charge.svg)Blue plus sign for **charge**
 
 
 
-### Trip Offer
+## Map Page
 
-1. Enter your details and time like in the Trip Request seciton above
-2. To add you route -
-   1. Choose your first station from the combobox with the stations
-   2. Click on the `+` button to add the station to your route
-   3. Any undesired stations can be removed by choosing the station and clicking on the `-` button.
-   4. The last station in the list will be the last station in your route.
+When clicking 'Open' on a map in the homepage, you will see the map page. This page is different for each user type as each user can do different actions.
 
+### For Drivers
 
+![driver-map](https://user-images.githubusercontent.com/53123142/89461666-f1bb8d00-d774-11ea-8abe-e9ca83b68286.png)
 
-### Matching
+The left side bar shows information about the user's offers, and the user's feedbacks from all the maps. The right side bar shows requests and matches on this map.
 
-1. Choose the ride you want to match from the combobox
-2. Enter the number of results - a number bigger than 0
-3. Click search.
-4. Choose the desired route from the list (if any) and click match. A match will be created and can be viewed in the information bar on the right hand side of the application.
-5. If you want to add another match for another trip, the form must be cleared first. This is done by clicking on the clear button.
+**IMPORTANT: To create a new trip offer - the route must be entered as stop names, comma seperated without spaces between the commas!**
 
 
 
-### Feedback
+### For Riders
 
-1. Choose who you want to feedback as
-2. Click on Show Drivers to view the matched requests drivers
-3. Select the driver you want to add feedback to from the list, add rating from the combobox and write a comment if you want.
-4. When done, click on add feedback and the feedback should be shown in the trip offer's feedback section inside the information bar.
+![rider-map](https://user-images.githubusercontent.com/53123142/89461721-0861e400-d775-11ea-8d71-f809d5271d9b.png)
 
+The left side-bar shows all information about the current user, while the right side-bar shows all information about the current map (regardless of the user).
 
+#### Left side-bar
 
-## Information Bar
+In the left side bar, the user can view his ride requests, his upcoming matches, or create a new trip request for the map.
 
-The tab pane on the right hand side of the application displays the necessary information of each trip offer/request matched or unmatched. There are 4 tabs located on the leftmost side of the window
+#### Right side-bar
 
+On the right side bar, the user can view the trip offers on this current map. In addition to that, the user can find a match for a request he has made on this map, or feedback a driver he had ridden with in the past.
 
+##### Finding a match
 
-1. Trip Offers - displays all trip offers on system, irregardless of time.
-2. Current Offers - displays all trip offers at the current selected time in the time selector on the bottom of the window.
-3. Requests - displays all trip requests on the system, irregardless of time.
-4. Matches - Shows all matched trips on the system, irregardless of time.
+![find-a-match](https://user-images.githubusercontent.com/53123142/89463036-fda84e80-d776-11ea-8a68-4c3a18831595.png)
 
-Each tab contains a list of **cards**. Each card displays the api of each offer/request/whatever.
+To find a match, you must choose the request you want to match, choose the amount of matches you want to see and if there are any matches found, then a list of ride descriptions will be shown below. Each ride description has a button 'Match' which will allow you to join the ride.
 
+Once you join a ride, the driver will be notified.
 
+##### Feedbacking
 
-### Trip Offer Card
-
-![Screen Shot 2020-06-19 at 0 05 04](https://user-images.githubusercontent.com/53123142/85154731-7e12fe80-b260-11ea-92e9-5fdcd57ee9e5.png)
-
-- Name and rating are displayed at the top\
-- The number below the rating is the TripOffer ID
-- The schedule of the Trip Offer is displayed below the ID, and below that the route (read from left to right)
-- The lists below show the matched riders - who gets on/off when/where - and the feedbacks from the matched riders.
-- The matched riders are shown irregardless of time. To view the matched drivers with respect to time you must click on the current stop at the right time in the map
-
-
-
-### Trip Request Card
-
-![Screen Shot 2020-06-19 at 0 13 56](https://user-images.githubusercontent.com/53123142/85154767-8bc88400-b260-11ea-8e9b-1c3c8733daae.png)
-
-
-### Matched Request Card
-
-- Contains the route - where he gets on and off and when.
-- Contains route summary.
-
-![Screen Shot 2020-06-19 at 0 14 59](https://user-images.githubusercontent.com/53123142/85154817-a1d64480-b260-11ea-8924-ab37b67b2ae9.png)
-
-
-### Current Offers
-
-- Displays the current trip offers happening on the current chosen time. Updates as you move through time.
-
-
-
-## Live Map & Time Selector
-
-The live map displays live information about the rides and their current stops at the current selected time. 
-
-### Time Selector
-
-The time selector allows the user to move through time and see where each ride is. The user can choose to jump by 5 minutes, 30 minutes, 1 hour, 2 hours or a full day. This is done by clicking on the combobox on the bottom containing the intervals. To the right of that, 2 labels hold the current day and current time.
-
-
-
-### Live Map
-
-- Each pink dot is a stop
-- If a stop turns blue, then there is a carpool at that stop right now.
-- You can view the name of each stop by hovering over the blue dot and waiting for the tooltip.
-- Above each stop there's a number containing the number of rides currently at that stop.
-- You can view who is currently at this stop by clicking on the stop.
-
-![Screen Shot 2020-06-19 at 0 25 21](https://user-images.githubusercontent.com/53123142/85154880-b61a4180-b260-11ea-8ae4-be14d484ca03.png)
+To feedback a user, you must choose the relvant user you want to feedback, add a comment (optional) and rating, and click 'Feedback'. The user will receive a notification about your feedback.

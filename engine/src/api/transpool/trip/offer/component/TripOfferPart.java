@@ -14,8 +14,8 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Contains the data of a part of a trip offer (made from a single path)
- * dayToDetailsMap - contains the details of the matched trips on the relevant days.
+ * Contains the static data of a part of a trip offer (made from a single path)
+ * DayToOccurrenceMap contains the TripOfferPart's occurrences in each day.
  */
 public class TripOfferPart implements Schedule, BasicTripOffer {
     private TripOffer mainOffer;

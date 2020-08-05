@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * A servlet used for charging the balance of the user stored in the session.
+ */
 @WebServlet(name = "ChargeServlet", urlPatterns = {"/charge"})
 public class ChargeServlet extends HttpServlet {
 

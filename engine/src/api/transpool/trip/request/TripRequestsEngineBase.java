@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Holds TripRequests and MatchedTripRequests, and functions that control them.
+ * Like a TripRequestManager
+ */
+
 public class TripRequestsEngineBase implements TripRequestsEngine {
 
     private List<TripRequest> allTripRequests;

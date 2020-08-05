@@ -15,6 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+
+/**
+ * A servlet which gets the details of a map whose name is stored in a parameter inside the request.
+ * Used for generating the map SVG.
+ */
 @WebServlet(name = "GetMapServlet", urlPatterns = {"/get-map"})
 public class GetMapServlet extends HttpServlet {
 

@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * A servlet which gets the details on all map engines - used in the homepgae to create the map cards.
+ */
 @WebServlet(name = "GetMapEnginesDetailsServlet", urlPatterns = {"/get-map-engines"})
 public class GetMapEnginesServlet extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {

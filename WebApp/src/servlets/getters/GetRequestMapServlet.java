@@ -23,6 +23,9 @@ import java.io.PrintWriter;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * Loads the request map. Sends multiple Jsons at once by chaining them together inside an array.
+ */
 @WebServlet(name = "GetRequestMapServlet", urlPatterns = {"/get-request-map"})
 public class GetRequestMapServlet extends HttpServlet {
 

@@ -16,6 +16,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Finds matches for the user.
+ * Parameters: map-name: The associated map
+ *             request-id: The ID of the request to match
+ *             num-of-results: The number of results to display
+ * The servlet stored the PossibleRoutesList in the users session.
+ */
 @WebServlet(name = "FindMatchesServlet", urlPatterns = {"/find-a-match"})
 public class FindMatchesServlet extends HttpServlet {
 

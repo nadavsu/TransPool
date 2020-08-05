@@ -18,6 +18,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Gets the the current session's driver's feedbacks and returns them as Jsons.
+ */
+
 @WebServlet(name = "GetDriverFeedbacksServlet", urlPatterns = {"/get-driver-feedbacks"})
 public class GetDriverFeedbacksServlet extends HttpServlet {
 

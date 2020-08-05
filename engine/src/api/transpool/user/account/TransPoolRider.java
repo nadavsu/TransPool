@@ -78,6 +78,12 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
         tripRequests.add(request);
     }
 
+    /**
+     * Accepts a match created for this request. Adds the match to the rider's matches
+     * Pays each relevant balance in the matched request.
+     * Adds the feedbackable drivers.
+     * @param matchedRequest - The matched request to accept.
+     */
     @Override
     public void acceptMatch(MatchedTripRequest matchedRequest) {
         tripRequests.remove(getRequest(matchedRequest.getRequestID()));

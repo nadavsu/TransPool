@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Gets all the trip offers in the current map whose name is stored in the requests parameter.
+ */
 @WebServlet(name = "GetMapTripOffersServlet", urlPatterns = {"/get-map-offers"})
 public class GetMapTripOffersServlet extends HttpServlet {
 

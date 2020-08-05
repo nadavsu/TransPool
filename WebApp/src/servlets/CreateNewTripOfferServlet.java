@@ -22,6 +22,9 @@ import java.io.PrintWriter;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * A servlet which creates a new trip request.
+ */
 @WebServlet(name = "CreateNewTripOffer", urlPatterns = {"/create-new-offer"})
 public class CreateNewTripOfferServlet extends HttpServlet {
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {

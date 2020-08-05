@@ -16,6 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * Gets a the current user data from the session.
+ */
 @WebServlet(name = "GetUserServlet", urlPatterns = {"/get-user"})
 public class GetUserServlet extends HttpServlet {
 

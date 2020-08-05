@@ -17,6 +17,7 @@ import java.util.*;
 
 /**
  * Contains the static data for a TransPool trip offered by TransPool drivers.
+ * Implements SingleTripOfferEngine, as it is the engine for all TripOfferParts in the route.
  */
 public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
 
@@ -67,6 +68,9 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
         initializeTripOfferParts();
     }
 
+    /**
+     * The timetable holds the time at each stop in the route. Initialized here through the used paths.
+     */
     private void initializeTimeTable() {
         TimeDay timeAtStop = new TimeDay(departureTime);
         Path firstPath = usedPaths.get(0);
@@ -80,13 +84,21 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
         }
     }
 
+    /**
+     * Initializes the route of the TripOffer.
+     */
     private void initializeTripOfferParts() {
         for (int i = 0; i < usedPaths.size(); i++) {
             route.add(new TripOfferPart(ID + 100*i, usedPaths.get(i), this));
         }
     }
 
-
+    /**
+     * Initialized the used paths used by this TripOffer.
+     * @param route - The route containing only stop names
+     * @param map - The map containing the paths.
+     * @throws PathDoesNotExistException - If a path does not exist, this exception is thrown.
+     */
     private void initializeUsedPaths(List<String> route, BasicMap map) throws PathDoesNotExistException {
         for (int i = 0; i < route.size() - 1; i++) {
             Path foundPath = map.getPath(route.get(i).trim(), route.get(i + 1).trim());
@@ -224,6 +236,12 @@ public class TripOffer implements SingleTripOfferEngine, BasicTripOffer {
         return matchedRequestsDetails;
     }
 
+
+    /**
+     * Used for updating this class and the driver after a new matched has been created.
+     * @param rider
+     * @param offerPartOccurrence
+     */
     @Override
     public void updateAfterMatch(TransPoolRider rider, TripOfferPartOccurrence offerPartOccurrence) {
         MatchedTripRequestPart matchedPart = new MatchedTripRequestPart(rider, offerPartOccurrence);

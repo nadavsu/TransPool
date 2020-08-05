@@ -20,6 +20,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * A servlet which creates a new match on the server.
+ * Parameters: map-name: the map associated with the match.
+ *             possible-route-id: the index of the possible route in the PossibleRoutesList created by the matching engine
+ *             request-id: the ID of the request to match.
+ */
 @WebServlet(name = "CreateNewMatchedTripServlet", urlPatterns = {"/create-match"})
 public class CreateNewMatchedTripServlet extends HttpServlet {
 

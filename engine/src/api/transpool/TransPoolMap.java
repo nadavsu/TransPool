@@ -111,7 +111,7 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public synchronized List<TripOffer> getAllTripOffers() {
+    public synchronized Map<Integer, TripOffer> getAllTripOffers() {
         return tripOffersEngine.getAllTripOffers();
     }
 
@@ -173,7 +173,7 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public synchronized List<TripRequest> getAllTripRequests() {
+    public synchronized Map<Integer, TripRequest> getAllTripRequests() {
         return tripRequestsEngine.getAllTripRequests();
     }
 
@@ -188,7 +188,7 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public synchronized List<MatchedTripRequest> getAllMatchedTripRequests() {
+    public synchronized Map<Integer, MatchedTripRequest> getAllMatchedTripRequests() {
         return tripRequestsEngine.getAllMatchedTripRequests();
     }
 

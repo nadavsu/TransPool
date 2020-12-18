@@ -2,45 +2,38 @@ package api.transpool.user;
 
 import api.transpool.user.account.TransPoolUserAccount;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class UserEngineBase implements UserEngine {
 
-    private Set<TransPoolUserAccount> userAccounts;
+    private Map<String, TransPoolUserAccount> userAccounts;
 
     public UserEngineBase() {
-        userAccounts = new HashSet<>();
+        userAccounts = new HashMap<>();
     }
 
     @Override
     public synchronized void addUser(TransPoolUserAccount user) {
-        userAccounts.add(user);
+        userAccounts.put(user.getUsername(), user);
     }
 
     @Override
     public synchronized void removeUser(TransPoolUserAccount user) {
-        userAccounts.remove(user);
+        userAccounts.remove(user.getUsername());
     }
 
     @Override
-    public synchronized Set<TransPoolUserAccount> getUsers() {
-        return Collections.unmodifiableSet(userAccounts);
+    public synchronized Map<String, TransPoolUserAccount> getUsers() {
+        return Collections.unmodifiableMap(userAccounts);
     }
 
     @Override
     public boolean isUserExists(String username) {
-        TransPoolUserAccount userAccount = getUserAccount(username);
-        return userAccount != null && userAccounts.contains(userAccount);
+        return userAccounts.containsKey(username);
     }
 
     @Override
     public TransPoolUserAccount getUserAccount(String username) {
-        return userAccounts
-                .stream()
-                .filter(userAccount -> userAccount.getUsername().equals(username))
-                .findFirst()
-                .orElse(null);
+        return userAccounts.get(username);
     }
 }

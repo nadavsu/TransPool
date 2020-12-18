@@ -8,7 +8,7 @@ public interface BasicTripRequest {
 
     TransPoolRider getTransPoolRider();
 
-    int getRequestID();
+    int getID();
 
     Stop getSourceStop();
 

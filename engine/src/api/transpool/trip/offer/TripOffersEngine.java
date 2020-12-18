@@ -7,6 +7,7 @@ import api.transpool.trip.offer.component.TripOfferDTO;
 import api.transpool.trip.offer.component.TripOfferPart;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * The engine interface responsible for controlling the trip offers.
@@ -18,7 +19,7 @@ public interface TripOffersEngine extends Updatable {
 
     void addTripOffer(TripOffer tripOffer);
 
-    List<TripOffer> getAllTripOffers();
+    Map<Integer, TripOffer> getAllTripOffers();
 
     int getNumOfTripOffers();
 

@@ -5,8 +5,9 @@ import api.transpool.trip.request.component.MatchedTripRequestDTO;
 import api.transpool.trip.request.component.TripRequest;
 import api.transpool.trip.request.component.TripRequestDTO;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -16,17 +17,18 @@ import java.util.stream.Collectors;
 
 public class TripRequestsEngineBase implements TripRequestsEngine {
 
-    private List<TripRequest> allTripRequests;
-    private List<MatchedTripRequest> allMatchedTripRequests;
+    private Map<Integer, TripRequest> allTripRequests;
+    private Map<Integer, MatchedTripRequest> allMatchedTripRequests;
 
     public TripRequestsEngineBase() {
-        this.allTripRequests = new ArrayList<>();
-        this.allMatchedTripRequests = new ArrayList<>();
+        this.allTripRequests = new HashMap<>();
+        this.allMatchedTripRequests = new HashMap<>();
     }
 
     @Override
     public List<TripRequestDTO> getTripRequestsDetails() {
         return allTripRequests
+                .values()
                 .stream()
                 .map(TripRequest::getDetails)
                 .collect(Collectors.toList());
@@ -36,6 +38,7 @@ public class TripRequestsEngineBase implements TripRequestsEngine {
     @Override
     public List<MatchedTripRequestDTO> getMatchedTripsDetails() {
         return allMatchedTripRequests
+                .values()
                 .stream()
                 .map(MatchedTripRequest::getDetails)
                 .collect(Collectors.toList());
@@ -43,30 +46,22 @@ public class TripRequestsEngineBase implements TripRequestsEngine {
 
     @Override
     public TripRequest getTripRequest(int ID) {
-        return allTripRequests
-                .stream()
-                .filter(t -> t.getRequestID() == ID)
-                .findFirst()
-                .orElse(null);
+        return allTripRequests.get(ID);
     }
 
     @Override
     public MatchedTripRequest getMatchedTripRequest(int ID) {
-        return allMatchedTripRequests
-                .stream()
-                .filter(m -> m.getRequestID() == ID)
-                .findFirst()
-                .orElse(null);
+        return allMatchedTripRequests.get(ID);
     }
 
     @Override
     public void deleteTripRequest(TripRequest requestToDelete) {
-        allTripRequests.remove(requestToDelete);
+        allTripRequests.remove(requestToDelete.getID());
     }
 
     @Override
     public void addTripRequest(TripRequest tripRequest) {
-        allTripRequests.add(tripRequest);
+        allTripRequests.put(tripRequest.getID(), tripRequest);
     }
 
     @Override
@@ -76,17 +71,17 @@ public class TripRequestsEngineBase implements TripRequestsEngine {
 
     @Override
     public void addMatchedRequest(MatchedTripRequest matchedTripRequest) {
-        allMatchedTripRequests.add(matchedTripRequest);
-        deleteTripRequest(getTripRequest(matchedTripRequest.getRequestID()));
+        allMatchedTripRequests.put(matchedTripRequest.getID(), matchedTripRequest);
+        deleteTripRequest(getTripRequest(matchedTripRequest.getID()));
     }
 
     @Override
-    public List<TripRequest> getAllTripRequests() {
+    public Map<Integer, TripRequest> getAllTripRequests() {
         return allTripRequests;
     }
 
     @Override
-    public List<MatchedTripRequest> getAllMatchedTripRequests() {
+    public Map<Integer, MatchedTripRequest> getAllMatchedTripRequests() {
         return allMatchedTripRequests;
     }
 

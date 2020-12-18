@@ -1,0 +1,7 @@
+- Remove TimeDay object and make it LocalDateTime
+- Improve matching algorithm using Dijkstra
+- Add matching by arrival time
+- Add chat
+
+Frontend:
+- Flip recent transactions orders

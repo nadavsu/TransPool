@@ -9,6 +9,7 @@ import api.transpool.user.account.TransPoolDriver;
 import api.transpool.user.account.TransPoolRider;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 /**
@@ -45,9 +46,11 @@ public class MapsEngineBase implements MapsEngine {
 
     @Override
     public List<SingleMapEngineDTO> getAllMapEnginesDetails() {
-        List<SingleMapEngineDTO> singleMapEngineDTOS = new ArrayList<>();
-        maps.forEach((mapName, map) -> singleMapEngineDTOS.add(map.getMapEngineDetails()));
-        return singleMapEngineDTOS;
+        return Collections.unmodifiableList(maps
+                .values()
+                .stream()
+                .map(SingleMapEngine::getMapEngineDetails)
+                .collect(Collectors.toList()));
     }
 
     @Override

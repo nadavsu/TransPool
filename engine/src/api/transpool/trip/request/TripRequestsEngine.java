@@ -6,6 +6,7 @@ import api.transpool.trip.request.component.TripRequest;
 import api.transpool.trip.request.component.TripRequestDTO;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * THe engine interface that controls the trip requests.
@@ -23,9 +24,9 @@ public interface TripRequestsEngine {
 
     void addMatchedRequest(MatchedTripRequest matchedTripRequest);
 
-    List<TripRequest> getAllTripRequests();
+    Map<Integer, TripRequest> getAllTripRequests();
 
-    List<MatchedTripRequest> getAllMatchedTripRequests();
+    Map<Integer, MatchedTripRequest> getAllMatchedTripRequests();
 
     MatchedTripRequest getMatchedTripRequest(int feedbackerID);
 

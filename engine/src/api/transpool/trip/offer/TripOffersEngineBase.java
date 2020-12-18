@@ -11,7 +11,9 @@ import api.transpool.trip.matching.component.PossibleRoutesList;
 import javafx.collections.FXCollections;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -19,7 +21,7 @@ import java.util.stream.Collectors;
  * such as current trip offers and current trip offer part occurrences which are happening.
  */
 public class TripOffersEngineBase implements TripOffersEngine {
-    private List<TripOffer> allTripOffers;
+    private Map<Integer, TripOffer> allTripOffers;
     private TripOffersGraph tripOffersGraph;
 
     //Live details
@@ -28,17 +30,18 @@ public class TripOffersEngineBase implements TripOffersEngine {
 
 
     public TripOffersEngineBase(BasicMap map) {
-        this.allTripOffers = FXCollections.observableArrayList();
+        this.allTripOffers = new HashMap<>();
         this.currentTripOfferParts = new ArrayList<>();
         this.currentTripOffers = FXCollections.observableArrayList();
         update();
 
-        this.tripOffersGraph = new TripOffersGraph(map.getNumberOfStops(), allTripOffers);
+        this.tripOffersGraph = new TripOffersGraph(map.getNumberOfStops(), allTripOffers.values());
     }
 
     @Override
     public List<TripOfferDTO> getTripOffersDetails() {
         return allTripOffers
+                .values()
                 .stream()
                 .map(TripOffer::getDetails)
                 .collect(Collectors.toList());
@@ -46,21 +49,17 @@ public class TripOffersEngineBase implements TripOffersEngine {
 
     @Override
     public TripOffer getTripOffer(int ID) {
-        return allTripOffers
-                .stream()
-                .filter(t -> t.getID() == ID)
-                .findFirst()
-                .orElse(null);
+        return allTripOffers.get(ID);
     }
 
     @Override
     public void addTripOffer(TripOffer tripOffer) {
-        allTripOffers.add(tripOffer);
+        allTripOffers.put(tripOffer.getID(), tripOffer);
         tripOffersGraph.add(tripOffer);
     }
 
     @Override
-    public List<TripOffer> getAllTripOffers() {
+    public Map<Integer, TripOffer> getAllTripOffers() {
         return allTripOffers;
     }
 
@@ -103,7 +102,7 @@ public class TripOffersEngineBase implements TripOffersEngine {
     public void update() {
         currentTripOffers.clear();
         currentTripOfferParts.clear();
-        for (TripOffer tripOffer : allTripOffers) {
+        for (TripOffer tripOffer : allTripOffers.values()) {
             if (tripOffer.isCurrentlyHappening()) {
                 currentTripOffers.add(tripOffer);
                 currentTripOfferParts.add(tripOffer.getOccurringTripOfferPart());

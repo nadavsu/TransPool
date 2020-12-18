@@ -8,7 +8,6 @@ import api.transpool.trip.request.component.TripRequestDTO;
 import api.transpool.user.component.feedback.Feedback;
 import api.transpool.user.component.feedback.Feedbackable;
 import api.transpool.user.component.feedback.Feedbacker;
-import api.transpool.user.dto.TransPoolRiderDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -86,7 +85,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
      */
     @Override
     public void acceptMatch(MatchedTripRequest matchedRequest) {
-        tripRequests.remove(getRequest(matchedRequest.getRequestID()));
+        tripRequests.remove(getRequest(matchedRequest.getID()));
         matchedTripRequests.add(matchedRequest);
         feedbackables.addAll(matchedRequest.getTransPoolDrivers());
 
@@ -113,7 +112,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
     public TripRequest getRequest(int ID) {
         return tripRequests
                 .stream()
-                .filter(request -> request.getRequestID() == ID)
+                .filter(request -> request.getID() == ID)
                 .findFirst()
                 .orElse(null);
     }
@@ -122,7 +121,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
     public MatchedTripRequest getMatchedTripRequest(int ID) {
         return matchedTripRequests
                 .stream()
-                .filter(match -> match.getRequestID() == ID)
+                .filter(match -> match.getID() == ID)
                 .findFirst()
                 .orElse(null);
     }

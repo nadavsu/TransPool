@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * This servlet determines which map to open based on the type of the user (rider or driver). Generates a context path
+ * with the relevant values and parameters for the next servlet.
+ */
 @WebServlet(name = "OpenMapServlet", urlPatterns = {"/get-map-type"})
 public class OpenMapServlet extends HttpServlet {
 

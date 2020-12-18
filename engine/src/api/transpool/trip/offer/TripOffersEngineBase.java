@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * The main class which holds the trip offer graph and all the trip offers data. Also holds the timed data
- * such as current trip offers and current sub trip offers which are happening.
+ * such as current trip offers and current trip offer part occurrences which are happening.
  */
 public class TripOffersEngineBase implements TripOffersEngine {
     private List<TripOffer> allTripOffers;

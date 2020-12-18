@@ -1,7 +1,11 @@
 package api.transpool.user.component.balance;
 
 import api.transpool.time.component.TimeDay;
-//add
+
+/**
+ * A single transaction information. This object is used with Balance interface to keep track of the
+ * transaction history.
+ */
 public class Transaction {
 
     private TimeDay date;

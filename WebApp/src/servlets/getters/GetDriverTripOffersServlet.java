@@ -17,6 +17,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Gets the the current session's driver's trip offers details and returns them as Jsons.
+ */
 @WebServlet(name = "GetDriverTripOffersServlet", urlPatterns = {"/get-driver-offers"})
 public class GetDriverTripOffersServlet extends HttpServlet {
 

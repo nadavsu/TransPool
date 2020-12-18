@@ -13,6 +13,11 @@ import api.transpool.user.dto.TransPoolRiderDTO;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * The class for a TransPool user which is a rider.
+ * Implements Rider and a Feedbacker
+ */
+
 public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedbacker {
 
     private static int IDGenerator = 40000;
@@ -42,6 +47,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
         setID(other.getID());
     }
 
+    //Rider functions-------------------------------------------------------------------------
     @Override
     public List<TripRequestDTO> getTripRequestsDetails() {
         return tripRequests
@@ -72,6 +78,12 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
         tripRequests.add(request);
     }
 
+    /**
+     * Accepts a match created for this request. Adds the match to the rider's matches
+     * Pays each relevant balance in the matched request.
+     * Adds the feedbackable drivers.
+     * @param matchedRequest - The matched request to accept.
+     */
     @Override
     public void acceptMatch(MatchedTripRequest matchedRequest) {
         tripRequests.remove(getRequest(matchedRequest.getRequestID()));
@@ -115,6 +127,7 @@ public class TransPoolRider extends TransPoolUserAccount implements Rider, Feedb
                 .orElse(null);
     }
 
+    //Feedback functions-------------------------------------------------------------------------
     @Override
     public void leaveFeedback(Feedbackable feedbackee, Feedback feedback) {
         feedbackee.addFeedback(feedback);

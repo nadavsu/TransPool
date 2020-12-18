@@ -16,6 +16,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Gets all the trip matches in the current map whose name is stored in the requests parameter.
+ */
 @WebServlet(name = "GetMapTripMatchesServlet", urlPatterns = {"/get-map-matches"})
 public class GetMapTripMatchesServlet extends HttpServlet {
 

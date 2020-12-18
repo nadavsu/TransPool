@@ -13,6 +13,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A driver account - imlplements feedbackable and driver.
+ */
 public class TransPoolDriver extends TransPoolUserAccount implements Feedbackable, Driver {
 
     private static int IDGenerator = 30000;

@@ -19,6 +19,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+/**
+ * Gets the the current session's driver's riders (matched trips) and returns them as Jsons.
+ * Used for checking notifications.
+ */
 @WebServlet(name = "GetDriverRidersServlet", urlPatterns = {"/get-driver-riders"})
 public class GetDriverRidersServlet extends HttpServlet {
 

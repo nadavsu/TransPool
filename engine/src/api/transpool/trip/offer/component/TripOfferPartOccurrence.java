@@ -14,6 +14,12 @@ import exception.parser.RideFullException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A single occurrence of a trip offer part. Each trip offer part occurrence can occur on different days, and have
+ * different riders. These objects are used for creating the route, and for storing the the information of a trip
+ * on a single day, rather than the static trip offer.
+ */
+
 public class TripOfferPartOccurrence implements Occurrence, BasicTripOffer {
     private TripOffer mainOffer;
 

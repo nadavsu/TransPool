@@ -4,17 +4,17 @@
     <root id="root">
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
-          <element id="module-output" name="WebApp" />
+          <element id="module-output" name="webapp" />
           <element id="module-output" name="engine" />
           <element id="library" level="application" name="bootstrap" />
           <element id="library" level="application" name="popper" />
         </element>
         <element id="directory" name="lib">
-          <element id="file-copy" path="$PROJECT_DIR$/WebApp/web/WEB-INF/lib/gson-2.8.6.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/webapp/web/WEB-INF/lib/gson-2.8.6.jar" />
         </element>
       </element>
       <element id="library" level="project" name="fxgraph-0.0.3" />
-      <element id="javaee-facet-resources" facet="WebApp/web/Web" />
+      <element id="javaee-facet-resources" facet="webapp/web/Web" />
     </root>
   </artifact>
 </component>

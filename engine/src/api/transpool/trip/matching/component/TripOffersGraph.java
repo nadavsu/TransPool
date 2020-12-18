@@ -6,6 +6,7 @@ import api.transpool.trip.offer.component.TripOffer;
 import api.transpool.trip.offer.component.TripOfferPart;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class TripOffersGraph {
         adjointList = new ArrayList<>();
     }
 
-    public TripOffersGraph(int numOfStops, List<TripOffer> allTripOffers) {
+    public TripOffersGraph(int numOfStops, Collection<TripOffer> allTripOffers) {
         adjointList = new ArrayList<>();
         for (int i = 0; i < numOfStops; i ++) {
             adjointList.add(new ArrayList<>());

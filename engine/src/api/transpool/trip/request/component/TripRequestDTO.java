@@ -8,7 +8,7 @@ public class TripRequestDTO {
     private String requestTime;
 
     public TripRequestDTO(TripRequest tripRequest) {
-        this.requestID = tripRequest.getRequestID();
+        this.requestID = tripRequest.getID();
         this.riderName = tripRequest.getTransPoolRider().getUsername();
         this.sourceStopName = tripRequest.getSourceStop().getName();
         this.destinationStopName = tripRequest.getDestinationStop().getName();

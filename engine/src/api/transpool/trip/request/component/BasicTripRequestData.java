@@ -28,7 +28,7 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
     }
 
     public BasicTripRequestData(TripRequest other) {
-        this.requestID = other.getRequestID();
+        this.requestID = other.getID();
         this.transpoolRider = new TransPoolRider(other.getTransPoolRider());
         this.sourceStop = new Stop(other.getSourceStop());
         this.destinationStop = new Stop(other.getDestinationStop());
@@ -51,7 +51,7 @@ public abstract class BasicTripRequestData implements BasicTripRequest {
     }
 
     @Override
-    public int getRequestID() {
+    public int getID() {
         return this.requestID;
     }
 

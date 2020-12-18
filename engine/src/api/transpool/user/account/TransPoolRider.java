@@ -8,6 +8,7 @@ import api.transpool.trip.request.component.TripRequestDTO;
 import api.transpool.user.component.feedback.Feedback;
 import api.transpool.user.component.feedback.Feedbackable;
 import api.transpool.user.component.feedback.Feedbacker;
+import api.transpool.user.dto.TransPoolRiderDTO;
 
 import java.util.*;
 import java.util.stream.Collectors;

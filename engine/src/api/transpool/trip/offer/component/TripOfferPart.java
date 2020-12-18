@@ -57,8 +57,6 @@ public class TripOfferPart implements Schedule, BasicTripOffer {
         this.occurrenceType = tripOffer.getRecurrences();
     }
 
-
-
     @Override
     public int getID() {
         return ID;

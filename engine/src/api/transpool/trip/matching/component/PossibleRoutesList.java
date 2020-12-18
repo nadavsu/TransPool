@@ -1,6 +1,9 @@
 package api.transpool.trip.matching.component;
 
+import javafx.geometry.Pos;
+
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,32 +19,43 @@ public class PossibleRoutesList extends ArrayList<PossibleRoute>{
                 .collect(Collectors.toList());
     }
 
-    public void sortCheapestFirst() {
-
+    public PossibleRoutesList sortLeastChangesFirst() {
+        return this.stream()
+                .sorted(Comparator.comparingInt(PossibleRoute::getTotalPrice))
+                .collect(Collectors.toCollection(PossibleRoutesList::new));
     }
 
-    public void sortLeastChangesFirst() {
-
+    public PossibleRoutesList sortFastestFirst() {
+        return this.stream()
+                .sorted(Comparator.comparing(PossibleRoute::getArrivalTime))
+                .collect(Collectors.toCollection(PossibleRoutesList::new));
     }
 
-    public void sortFastestFirst() {
-
-    }
-
-    public void sortGreenestFist() {
-
+    public PossibleRoutesList sortGreenestFist() {
+        return this.stream()
+                .sorted(Comparator.comparingDouble(PossibleRoute::getAverageFuelConsumption))
+                .collect(Collectors.toCollection(PossibleRoutesList::new));
     }
 
     public PossibleRoute getCheapest() {
-        return null;
+        return this
+                .stream()
+                .min(Comparator.comparingInt(PossibleRoute::getTotalPrice))
+                .get();
     }
 
     public PossibleRoute getFastest() {
-        return null;
+        return this
+                .stream()
+                .min(Comparator.comparing(PossibleRoute::getArrivalTime))
+                .get();
     }
 
     public PossibleRoute getGreenest() {
-        return null;
+        return this
+                .stream()
+                .min(Comparator.comparingDouble(PossibleRoute::getAverageFuelConsumption))
+                .get();
     }
 
     public PossibleRoute getLeastChanges() {

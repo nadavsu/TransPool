@@ -28,6 +28,7 @@ public class GetMapTripRequestsServlet extends HttpServlet {
             List<TripRequestDTO> tripRequestDTOList = map.getTripRequestsDetails();
             String tripRequestDTOListJson = new Gson().toJson(tripRequestDTOList);
             out.print(tripRequestDTOListJson);
+            out.flush();
         }
     }
 

@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import constants.Constants;
 import api.transpool.user.UserEngine;
 import api.transpool.user.account.TransPoolUserAccount;
-import api.transpool.user.account.TransPoolUserAccountDTO;
+import api.transpool.user.dto.TransPoolUserAccountDTO;
 import utils.ServletUtils;
 import utils.SessionUtils;
 
@@ -20,7 +20,6 @@ import java.io.PrintWriter;
 public class GetUserServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = resp.getWriter()) {
 
             String userNameFromSession = SessionUtils.getUsername(req);
@@ -28,13 +27,16 @@ public class GetUserServlet extends HttpServlet {
 
             //If somehow there is no session when reaching the home page.
             if (userNameFromSession == null) {
+                resp.setContentType("text/html;charset=UTF-8");
                 out.print(Constants.SIGNUP_URL);
             } else {
+                resp.setContentType("application/json");
                 TransPoolUserAccount currentUser = userEngine.getUserAccount(userNameFromSession);
                 TransPoolUserAccountDTO currentUserDetails = currentUser.getDetails();
                 Gson gson = new Gson();
                 String userJson = gson.toJson(currentUserDetails);
                 out.print(userJson);
+                out.flush();
             }
 
         }

@@ -1,11 +1,50 @@
 var refreshRate = 2000; //ms
+var feedbacksVersion = 0;
+var ridersVersion = 0;
+
+var DRIVER_TYPE = "driver";
+var RIDER_TYPE = "rider";
+var CURRENT_USER_TYPE;
+
+var RIDER_IMAGE = "common/images/cards/request_icon.svg";
+var DRIVER_IMAGE = "common/images/cards/offer_icon.svg";
+var MATCH_IMAGE = "common/images/cards/match_icon.svg";
+
+
 
 //On-load get the user and on success loading the user card.
 $(function () {
     getUser(loadUserCard);
+    getDriverFeedbacks(function (feedback) {
+        feedbacksVersion = feedback.version;
+    });
+    getDriverRiders(function (riders) {
+        ridersVersion = riders.version;
+    });
     getMapList();
-    setInterval(getMapList, refreshRate)
+    setInterval(updateHomePage, refreshRate)
 });
+
+function updateHomePage() {
+    getMapList();
+    if (CURRENT_USER_TYPE === DRIVER_TYPE) {
+        getDriverFeedbacks(function (feedback) {
+            if (feedback.version !== feedbacksVersion) {
+                feedbacksVersion = feedback.version;
+                $.each(feedback.feedbacks || [], appendFeedbackMessage);
+                $("#notification-modal").modal("show");
+            }
+        });
+        getDriverRiders(function (riders) {
+            if (riders.version !== ridersVersion) {
+                ridersVersion = riders.version;
+                riderList = riders.riders;
+                $.each(riderList || [], appendRidersMessage);
+                $("#notification-modal").modal("show");
+            }
+        })
+    }
+}
 
 //On-load get the maps and load DTOs to cards UI.
 function getMapList() {
@@ -80,10 +119,22 @@ function createOpenMapForm(mapName) {
 
 
 //Loading user card---------------------------------------------------------------------------------------------------//
-// user = {ID: "" ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; transactionType: "" ; amount: ""}}
+// user = {ID: "" ; userType ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; transactionType: "" ; amount: ""}}
 function loadUserCard(user) {
+    CURRENT_USER_TYPE = user.userType;
+    $('.username').text(user.username);
+    $('.balance').text(user.balance);
+    $('ul.last-transactions').empty();
     var lastThreeTransactions = user.transactionHistory.slice(Math.max(user.transactionHistory.length - 3, 0));
     $.each(lastThreeTransactions || [], loadRecentTransactions);
+
+    if (user.userType === DRIVER_TYPE) {
+        $('img.user-image').attr("src" ,DRIVER_IMAGE);
+    } else if (user.userType === RIDER_TYPE) {
+        $('img.user-image').attr("src" ,RIDER_IMAGE);
+    } else {
+        $('img.user-image').attr("src" ,MATCH_IMAGE);
+    }
 }
 
 // transaction = {"date":{"time":{"hour":0,"minute":0,"second":0,"nano":0},"day":1},"type":"PAY","transactionAmount":200.0}

@@ -2,6 +2,8 @@ $(getUser(createUserTable));
 
 // user = {ID: "" ; username: "" ; balance: "" ; transactionHistory: {date: "{}" ; type: "" ; transactionAmount: ""; amountBefore; amountAfter}}
 function createUserTable(user) {
+    $(".username").text(user.username);
+    $(".balance").text(user.balance);
     var transactions = user.transactionHistory;
     $.each(transactions || [], addTransactionToTransactionsTable);
 }

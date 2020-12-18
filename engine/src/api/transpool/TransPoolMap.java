@@ -325,12 +325,12 @@ public class TransPoolMap implements SingleMapEngine {
 
     @Override
     public void incrementTime(TimeInterval interval) {
-        timeEngine.incrementTime(interval, this);
+        timeEngine.incrementTime(interval, updatables);
     }
 
     @Override
     public void decrementTime(TimeInterval interval) {
-        timeEngine.decrementTime(interval, this);
+        timeEngine.decrementTime(interval, updatables);
     }
 
     @Override
@@ -344,13 +344,13 @@ public class TransPoolMap implements SingleMapEngine {
     }
 
     @Override
-    public void incrementTime(TimeInterval interval, Updatable updatable) {
-        timeEngine.incrementTime(interval, updatable);
+    public void incrementTime(TimeInterval interval, List<Updatable> updatables) {
+        timeEngine.incrementTime(interval, updatables);
     }
 
     @Override
-    public void decrementTime(TimeInterval interval, Updatable updatable) {
-        timeEngine.decrementTime(interval, updatable);
+    public void decrementTime(TimeInterval interval, List<Updatable> updatables) {
+        timeEngine.decrementTime(interval, updatables);
     }
 
 }

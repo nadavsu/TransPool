@@ -11,14 +11,17 @@ import api.transpool.user.account.TransPoolRider;
 import java.util.Collection;
 import java.util.Map;
 
+
+//test comment.
+
 public interface MapsEngine {
+    Map<String, SingleMapEngine> getMaps();
+
     void addMap(SingleMapEngine map);
 
     SingleMapEngine getMap(String mapName);
 
     boolean isMapExists(String mapName);
-
-    Map<String, SingleMapEngine> getMaps();
 
     Collection<SingleMapEngineDTO> getAllMapEnginesDetails();
 

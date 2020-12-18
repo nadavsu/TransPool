@@ -4,6 +4,8 @@ import api.transpool.time.component.Updatable;
 import api.transpool.time.component.TimeDay;
 import api.transpool.time.component.TimeInterval;
 
+import java.util.List;
+
 public class TimeEngineBase implements TimeEngine {
     public static TimeDay currentTime = new TimeDay();
 
@@ -11,15 +13,15 @@ public class TimeEngineBase implements TimeEngine {
     }
 
     @Override
-    public void incrementTime(TimeInterval interval, Updatable updatable) {
+    public void incrementTime(TimeInterval interval, List<Updatable> updatables) {
         currentTime.plus(interval.getMinutes());
-        updatable.update();
+        updatables.forEach(Updatable::update);
     }
 
     @Override
-    public void decrementTime(TimeInterval interval, Updatable updatable) {
+    public void decrementTime(TimeInterval interval, List<Updatable> updatables) {
         currentTime.minus(interval.getMinutes());
-        updatable.update();
+        updatables.forEach(Updatable::update);
     }
 
     @Override

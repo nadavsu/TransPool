@@ -2,6 +2,7 @@ package api.transpool.time.component;
 
 import exception.parser.TransPoolDataException;
 
+import java.sql.Time;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -9,7 +10,7 @@ import java.util.Objects;
  * A class for managing the time and day. Not only live time and day, but also some timestamp. (what?)
  */
 
-public class TimeDay {
+public class TimeDay implements Comparable<TimeDay> {
 
     private static final int DAY_START = 1;
     private static final LocalTime TIME_START = LocalTime.MIDNIGHT;
@@ -140,4 +141,14 @@ public class TimeDay {
         return "Day " + day + " at " + time;
     }
 
+    @Override
+    public int compareTo(TimeDay o) {
+        if (this.isBefore(o)) {
+            return -1;
+        } else if (this.equals(o)) {
+            return 0;
+        } else {
+            return 1;
+        }
+    }
 }

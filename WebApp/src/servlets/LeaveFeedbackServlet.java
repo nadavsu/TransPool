@@ -33,6 +33,7 @@ public class LeaveFeedbackServlet extends HttpServlet {
 
             feedbacker.leaveFeedback(feedbackable, new Feedback(feedbacker, rating, comment));
             out.print("Feedbacked " + feedbackeeUsernameFromParameter + " successfully!");
+            out.flush();
         }
     }
 

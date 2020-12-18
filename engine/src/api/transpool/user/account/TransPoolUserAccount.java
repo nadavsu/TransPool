@@ -4,6 +4,7 @@ import api.transpool.time.TimeEngineBase;
 import api.transpool.time.component.TimeDay;
 import api.transpool.user.component.balance.Balance;
 import api.transpool.user.component.balance.Transaction;
+import api.transpool.user.dto.TransPoolUserAccountDTO;
 
 import java.util.ArrayList;
 import java.util.List;
